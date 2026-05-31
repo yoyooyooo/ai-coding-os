@@ -8,6 +8,9 @@ AI Coding OS is a methodology and skill suite for highly capable coding agents.
 It assumes models will keep improving, so the system should give agents clear
 boundaries, routing, verification paths, and claim standards instead of locking
 them into defensive process tables.
+It turns human intent into evidence-backed workspace state transitions: form a
+goal contract, find the current `proof_step`, append evidence, and reduce that
+evidence into the next state.
 
 The default application boundary is a workspace: a repo, product surface, docs
 set, and goal flow. The method applies to MVPs, features, migrations,
@@ -53,13 +56,14 @@ completion claims.
 Most users should name only `$ai-coding-os`. Advanced users may call a
 specific method or phase skill directly.
 
-## Diffusion Analogy
+## State Transition Model
 
-Goal Diffusion remains a metaphor only: a coarse target becomes sharper through
+The public mainline is intent-to-evidence state transition. Goal Diffusion
+remains only a metaphor for that loop: a coarse target becomes sharper through
 smaller verified states.
 
 ```text
-coarse goal -> proof step -> evidenced state change -> sharper next action
+human intent -> goal contract -> proof_step -> evidence -> next_action
 ```
 
 The formal method name is Goal Proof System. The formal CLI is `goal-proof`.
@@ -87,19 +91,19 @@ Goal Proof System is the long-running goal carrier for AI Coding OS.
 
 ```text
 human intent
-  -> goal.yaml
+  -> goal.yaml goal contract
   -> progress.yaml proof_step
-  -> work item
-  -> checks
-  -> evidence.jsonl evidence record
+  -> evidence.jsonl evidence
   -> apply progress
-  -> proof_step | continue | needs_plan | blocked | review | done | needs_human
+  -> next_action: proof_step | continue | needs_plan | blocked | review | done | needs_human
 ```
 
 A Goal Pack is ready when the goal contract is stable and the next
 `proof_step` can prove or falsify a meaningful movement. It is not ready merely
 because a work item list exists.
 
+Work items and checks are execution details, not required top-level concepts in
+the goal loop.
 Use `plans/<work_id>.md` only when a selected work item is high risk and needs a
 reviewed execution plan before implementation. It is not a second task system.
 

@@ -44,6 +44,19 @@ The goal contract is the protected surface. Agents may not silently change objec
 authority, completion, claim_limit, stop rules, or explicitly protected
 fields while running.
 
+## Goal Distance
+
+Choose the minimum sufficient horizon for `objective`.
+
+- It must be wider than the first `proof_step`, so natural follow-up work can
+  continue without asking the user to restate the obvious next movement.
+- It must be narrow enough for `completion.required_evidence`, `claim_limit`,
+  and `stop_rules` to close the claim.
+- If either side fails, repair the goal contract or ask for a human decision.
+
+Goal distance belongs in `goal.yaml`. The current executable movement belongs
+in `progress.yaml.proof_step`.
+
 ## Quick Workflow
 
 1. Read project authority context: host instructions, docs router, SSoT,
@@ -53,12 +66,13 @@ fields while running.
    When selecting from existing work, use Goal Pack state, evidence records, and CLI
    output for ready / running / done facts. Roadmap anchors constrain strategy
    and gates but are not sufficient progress facts.
-3. Write or update `goal.yaml`.
-4. Define `completion.signal` and `completion.required_evidence`.
-5. Define `claim_limit`: what the evidence chain may and may not claim.
-6. Define `agent_authority`: what agents may revise and which fields cannot change
+3. Set `objective` to the minimum sufficient horizon.
+4. Write or update `goal.yaml`.
+5. Define `completion.signal` and `completion.required_evidence`.
+6. Define `claim_limit`: what the evidence chain may and may not claim.
+7. Define `agent_authority`: what agents may revise and which fields cannot change
    silently.
-7. Route to the proof-step phase to discover the first falsifiable proof step.
+8. Route to the proof-step phase to discover the first falsifiable proof step.
 
 ## Contract-To-Proof-Step Contract
 

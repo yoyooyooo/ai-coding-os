@@ -57,6 +57,10 @@ CLI 状态读取 / evidence record / apply -> packages/cli/**
 
 当前 CLI / checker / skills / templates / historical dogfood Goal Packs 已迁移到 v2 Goal Pack 主路径。CLI 包名暂保留 `goal-proof`。
 
+## 结构视图
+
+- [AI Coding OS 整仓分层拆解](repository-layer-breakdown.md)
+
 ## Read Next
 
 - 当前事实：[../ssot/README.md](../ssot/README.md)

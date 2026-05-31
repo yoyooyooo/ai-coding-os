@@ -7,6 +7,8 @@
 AI Coding OS 是一套面向高智能 agent 的 AI coding 方法论和 skill suite。
 它默认相信模型能力会持续进化，所以系统不把 agent 当弱执行器，也不把
 agent 锁进防御式流程表格。它提供的是边界、路由、验证路径和 claim 标准。
+它把人类意图推进为有证据支撑的 workspace 状态变化：形成 goal contract，
+找到当前 `proof_step`，追加 evidence，并把 evidence 归约成下一步状态。
 
 默认落地边界是 workspace：一个 repo、一个产品表面、一组 docs、一个目标流。
 这套方法可用于 MVP、功能、迁移、重构、排障、审计、研究、文档治理和工具建设。
@@ -47,12 +49,13 @@ gap 显式留下
 | `harness/` | `ui-product-harness` | interface-headless、render wiring、browser-visible、production-near UI proof |
 | `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、evidence envelope |
 
-## Diffusion 隐喻
+## 状态变化模型
 
-Goal Diffusion 只保留为隐喻：粗目标通过更小、更清楚、已验证的状态逐步变清晰。
+正式主线是 intent-to-evidence state transition。Goal Diffusion 只保留为这条
+主线的隐喻：粗目标通过更小、更清楚、已验证的状态逐步变清晰。
 
 ```text
-coarse goal -> proof step -> evidenced state change -> sharper next action
+human intent -> goal contract -> proof_step -> evidence -> next_action
 ```
 
 正式方法名是 Goal Proof System。正式 CLI 是 `goal-proof`。
@@ -80,18 +83,17 @@ Goal Proof System 是 OS 的长期目标载体。
 
 ```text
 human intent
-  -> goal.yaml
+  -> goal.yaml goal contract
   -> progress.yaml proof_step
-  -> work item
-  -> checks
-  -> evidence.jsonl evidence record
+  -> evidence.jsonl evidence
   -> apply progress
-  -> proof_step | continue | needs_plan | blocked | review | done | needs_human
+  -> next_action: proof_step | continue | needs_plan | blocked | review | done | needs_human
 ```
 
 Goal Pack ready 的条件是：goal contract 稳定，且当前 `proof_step` 能证明或证伪一次有意义推进。
 不是因为列了 work item 就 ready。
 
+Work item 和 checks 是执行细节，不是顶层目标循环的必经概念。
 `plans/<work_id>.md` 只在高风险 work item 需要先审计划时出现。它不是第二套任务系统。
 
 完成必须有 review evidence record，包含 `completion_satisfied: true`，并用

@@ -74,9 +74,14 @@ the tokens or observations it must emit.
 
 ## Rolling Proof Step
 
-In rolling Goal execution, a proof step is the next gate, not the whole goal.
-After a gate succeeds, use the new evidence to choose the next smallest
-falsifiable gate without changing protected goal fields.
+In rolling Goal execution, a proof step is the current falsifiable movement,
+not the goal horizon. After evidence succeeds, choose the next smallest
+falsifiable movement without changing protected goal fields.
+
+`proof_step` may narrow execution focus, but it must not rewrite `objective`,
+`completion`, `claim_limit`, `stop_rules`, or `authority_refs`. If evidence
+shows the goal contract is too near, too far, or no longer authorized, return
+to goal-contract repair or a human decision.
 
 When the next movement crosses a proof level, make the level boundary explicit
 inside existing fields:

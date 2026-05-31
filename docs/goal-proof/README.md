@@ -93,6 +93,9 @@ Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation grap
 
 已被消费但需要保留追溯的材料放这里。Sources 不是开放候选。
 
+- `sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md` - 已消费的顶层叙事 delta source：公共主线采用 intent-to-evidence state transition，compiler 仅保留为辅助隐喻，不新增公共 Check、schema 或 CLI。
+- `sources/2026-05-24-goal-proof-v2-dogfood-migration-handoff.md` - v2 Goal Pack schema dogfood migration 的历史 handoff 来源。
+
 ## Read Next
 
 - 文档治理：`../standards/docs-governance.md`

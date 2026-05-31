@@ -80,16 +80,15 @@ For related Goal Packs, keep work in the active Goal Pack. Do not reopen a done
 predecessor for normal follow-up. Record successor evidence in the current
 evidence chain and reference predecessor evidence records through `relations`.
 
-## Gate Transition
+## State Transition
 
-In rolling execution, do not stop only because the current gate passed. After
-evidence is recorded and checks pass, decide the next state:
+After evidence is recorded and checks pass, reduce it to the next state:
 
 ```text
 same proof_step still has useful safe work -> continue
-current gate proved -> sharpen next proof_step and continue
+current movement proved -> sharpen next proof_step and continue
 required evidence satisfied -> completion review
-no honest next gate -> blocked
+no honest next movement -> blocked
 protected field or claim boundary must change -> needs_human
 ```
 
@@ -97,6 +96,15 @@ Before crossing to a stronger proof level, confirm the previous evidence names
 `positive_tokens`, preserves `not_claimed`, and satisfies the relevant
 `promotion_gate`. A lower-level proof can support the next level, but it must
 not be reported as the next level's claim.
+
+State reduction writes only existing surfaces: evidence `claims`, evidence
+`not_claimed`, `progress.yaml.next_action`, `progress.yaml.proof_step`,
+`progress.yaml.active_work_item`, `progress.yaml.work_items[].status`,
+`progress.yaml.blockers`, and `progress.yaml.last_check`.
+
+If the next useful movement requires changing `objective`, `completion`,
+`claim_limit`, `stop_rules`, `authority_refs`, or other protected fields, set
+`needs_human` or return to goal-contract repair.
 
 ## Evidence Record
 
@@ -124,7 +132,8 @@ examples, tests/fixtures, and active Goal Pack artifacts.
 
 After appending an evidence record, update `progress.yaml`: `active_work_item`,
 `work_items[].status`, `blockers`, `last_check`, `next_action`, and
-`proof_step` when the next proof step is known.
+`proof_step` when the next proof step is known. The update is a reduction from
+evidence to existing progress state.
 
 Do not rewrite historical evidence records. Add another evidence record if interpretation
 changes.

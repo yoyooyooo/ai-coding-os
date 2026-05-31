@@ -11,11 +11,21 @@ description: >-
 
 # Goal Proof System
 
-Goal Proof System turns a human goal into a sequence of verified state changes.
+Goal Proof System turns human intent into evidence-backed Goal Pack state
+transitions.
 
 ```text
-human intent -> goal contract -> proof_step -> work item -> evidence record -> next_action
+human intent -> goal contract -> proof_step -> evidence -> next_action
 ```
+
+Controller invariant:
+
+```text
+Roll past the current plan, not past the goal contract.
+```
+
+`goal.yaml` protects the goal contract, `progress.yaml` carries rolling state,
+and `evidence.jsonl` records append-only transition evidence.
 
 Invariant:
 
@@ -107,9 +117,10 @@ before editing production code.
 
 ## Rolling Execution
 
-For broad goals, the current `proof_step` is a rolling gate, not the whole work
-ceiling. Completing one proof step does not require stopping when the goal
-contract remains valid and another honest falsifiable step is visible.
+For broad goals, the current `proof_step` is the current falsifiable movement,
+not the whole work ceiling. Completing one proof step does not require stopping
+when the goal contract remains valid and another honest falsifiable step is
+visible.
 
 After each evidence record:
 

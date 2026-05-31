@@ -166,6 +166,10 @@ Automatically route to rolling Goal execution when repo reality, Goal Pack
 state, completion evidence, and proof path indicate a long-running
 multi-evidence task that can keep moving safely.
 
+Router owns the handoff, not the durable state. If discussion has produced a
+useful first slice, route to Goal Proof instead of making that slice the whole
+objective.
+
 ```text
 route to goal-proof
 -> run current proof_step
@@ -175,16 +179,8 @@ route to goal-proof
 -> otherwise review, block, or ask for a human decision
 ```
 
-Rolling execution uses a small stable vocabulary: `target_slice`,
-`proof_level`, `claim_ceiling`, `positive_tokens`, `not_claimed`,
-`promotion_gate`, `next_action`, and `failure_inspection`. These may appear in
-Goal Pack prose, companion traces, or evidence records; do not invent parallel
-schema when existing fields can carry the meaning.
-
-Do not compress multiple proof levels into one evidence record. Continuing is
-allowed only while the next step is honest, falsifiable, inside the current
-claim boundary, and does not require product-truth, public API/schema/protocol,
-security, private-data, destructive, or `claim_limit` decisions.
+Continue routing only while the owning method can stay inside the current
+authority and claim boundary.
 
 ## Non-Ownership Rules
 

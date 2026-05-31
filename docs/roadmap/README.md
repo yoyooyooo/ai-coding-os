@@ -44,11 +44,15 @@ roadmap 视为过期索引。修正链接和 gate 摘要，不复制 evidence �
 - skill suite 已扩展为 interface capability / product harness system / UI harness / headless harness 四层：新增 `interface-capability-planning`、`product-harness-system` 与 `ui-product-harness`。
 - Repo shell 已收敛：GitHub repo / remote URL 为 `github.com/yoyooyooo/ai-coding-os`。
 - 公开 skill suite 源码布局已收敛：canonical suite 使用本仓 `skills/**` grouped layout，公开触发名由 `SKILL.md` frontmatter `name` 决定，旧入口不保留 active alias。
+- 顶层叙事 delta proposal 已收敛并完成首轮采纳：公共主线采用 `intent-to-evidence state transition`，`compiler` 只作 README / product 辅助隐喻，README 已将 `Diffusion` 并入该 loop。
+- Goal Proof owner-local skill delta 已落地：`goal-contracts` 承载 `minimum sufficient horizon` 准则，`proof-step-implementation` 承载 evidence-to-progress 归约 guard，`ai-coding-os` 仅保留轻路由。
+- 整仓 architecture view 已补齐：`docs/architecture/repository-layer-breakdown.md` 描述 public shell、method source、execution engine、authority docs、long-running artifacts、verification / release support 的分层边界。
 
 已完成 Goal Pack 状态由 `../goal-proof/goals/` 下 evidence records 保留。当前没有 active Goal Pack。
 
 ## 后续波次
 
+- 如果后续继续 polish product / SSoT 叙事，只采纳 artifact ownership 和用户价值表述；不得新增 workflow、schema、CLI 或公共 Check 名。
 - 如果未来决定重命名 CLI / npm package，再单独开 Goal Pack；当前明确保留 `goal-proof`。
 - 如果 OS 入口未来承载 CLI 或更重 artifact lifecycle，再重新评估 CLI / npm package 命名。
 
@@ -67,6 +71,8 @@ README / docs / templates / tests 已按 `AI Coding OS` / `$ai-coding-os` /
 - 当前事实：`../ssot/README.md`
 - 命名 ADR：`../adr/2026-05-28-ai-coding-os-naming-and-boundary.md`
 - Skill source layout 标准：`../standards/skill-source-layout.md`
+- 顶层叙事 delta proposal：`../goal-proof/sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md`
+- 顶层叙事 review ledger：`../review-plan/runs/2026-05-31-compiler-narrative-delta-proposal-review.md`
 - v2 迁移记录：`../goal-proof/goals/2026-05-24-goal-proof-v2-dogfood-migration/`
 - Repo shell evidence：`gh repo view yoyooyooo/ai-coding-os`、`git remote -v`
 

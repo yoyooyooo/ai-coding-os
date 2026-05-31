@@ -51,6 +51,7 @@ plans/<work_id>.md
 | `docs/adr/**` | 已采纳取舍及后果 | 当前任务状态或完整标准 |
 | `docs/architecture/**` | 系统结构、模块关系、运行时视图 | 覆盖 SSoT 或隐藏任务 |
 | `docs/roadmap/**` | 顺序、状态、证据链接、迁移波次 | 逐步实施任务清单 |
+| `docs/review-plan/**` | `$plan-optimality-loop` 对结构化计划、SSoT contract、proposal 和叙事候选稿的评审 ledger | 产品事实、SSoT、ADR、Goal Pack 运行状态 |
 | `docs/interface-capabilities/**` | 项目级 InterfaceCapability / InterfaceSurface trace artifact，当项目选择集中管理 UI 能力追溯时使用 | 业务事实、测试代码、Goal Pack 运行状态 |
 | `docs/product-harness/**` | 项目级 HarnessScenario / HarnessFixture refs / HarnessRoute refs / evidence refs / `claim_ceiling` / Harness Coverage Matrix | 用户能力语义、产品事实、测试代码、Goal Pack 运行状态 |
 | `docs/goal-proof/**` | Goal Pack、inbox、sources、evidence records、Goal Relations | 项目级 docs 治理或产品权威 |
@@ -83,6 +84,7 @@ docs/ssot/**
 - 已采纳取舍 -> `docs/adr/**`
 - 结构视图 -> `docs/architecture/**`
 - 顺序/状态/证据链接 -> `docs/roadmap/**`
+- 计划评审 ledger -> `docs/review-plan/**`
 - 项目级界面能力 trace -> `docs/interface-capabilities/**`
 - 项目级 harness 证明合同、Harness Coverage Matrix 和 evidence refs -> `docs/product-harness/**`
 - Goal Pack 生命周期 -> `docs/goal-proof/**`
