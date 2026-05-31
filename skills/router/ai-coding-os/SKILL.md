@@ -43,6 +43,8 @@ ui-product-harness        owns frontend/UI harness design and evidence
 headless-product-harness  owns proof command and evidence-envelope design
 frontend-architecture     owns frontend dependency direction, naming, package
                            boundaries, and React/Effect/Query/Store doctrine
+effect-best-practices     owns Effect Service/Layer/Scope/runtime/error channel,
+                           resource lifecycle, and v4/v3 migration doctrine
 ```
 
 Do not create OS-owned durable state. If something must be persisted, route it
@@ -64,6 +66,9 @@ to the owning method:
 - reusable frontend architecture, feature-first layout, source-only shared /
   package boundaries, naming suffixes, React/Effect/Query/Zustand split, or
   frontend architecture audit -> `$frontend-architecture`;
+- Effect `Context.Service` / `Layer` / runtime / Scope, error channel,
+  Promise integration, retry/timeout, resource lifecycle, or v4/v3 migration
+  details -> `$effect-best-practices`;
 - small work that can be completed and verified in the current turn -> inline.
 
 ## Routing Rules
@@ -97,6 +102,10 @@ Otherwise route by intent:
   rules, naming semantics, React/Effect/Query/Zustand boundaries,
   `packages/client`, `packages/ui`, source-only shared rules, or frontend
   architecture audit -> `$frontend-architecture`;
+- asks for Effect Service/Layer/runtime/Scope, typed error channels,
+  `Effect.gen`, Promise integration, timeout/retry, ManagedRuntime,
+  Stream/Queue/SubscriptionRef, or Effect v4/v3 API differences ->
+  `$effect-best-practices`;
 - asks for high-risk execution planning inside a Goal Pack -> route through
   `$goal-proof` to `write-work-plans`;
 - asks for a small concrete change with one clear verification path -> stay
@@ -137,6 +146,9 @@ A gap is not automatically blocked. First classify the missing piece by owner:
   evidence envelope -> `$headless-product-harness`;
 - missing reusable frontend architecture rule, naming decision, source-only
   package boundary, or React/Effect/Query/Store split -> `$frontend-architecture`;
+- missing Effect runtime ownership, Service/Layer boundary, Scope/resource
+  lifecycle, error-channel shape, or v4/v3 migration detail ->
+  `$effect-best-practices`;
 - small local defect with one clear proof path -> inline.
 
 Continue when an honest minimum path can be named inside current authority and
@@ -196,6 +208,8 @@ Do not own or rewrite:
 - docs layer lifecycle rules that belong to `$docs-governance`;
 - command/evidence schema details that belong to `$headless-product-harness`;
 - frontend architecture doctrine that belongs to `$frontend-architecture`;
+- Effect Service/Layer/Scope/runtime or error-channel doctrine that belongs to
+  `$effect-best-practices`;
 - product truth, public API/schema/protocol posture, security policy, or
   private/raw-data handling decisions.
 

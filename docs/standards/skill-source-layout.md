@@ -49,6 +49,7 @@ proof-step-implementation
 write-work-plans
 docs-governance
 frontend-architecture
+effect-best-practices
 interface-capability-planning
 product-harness-system
 ui-product-harness

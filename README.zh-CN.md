@@ -14,8 +14,9 @@ agent 锁进防御式流程表格。它提供的是边界、路由、验证路�
 这套方法可用于 MVP、功能、迁移、重构、排障、审计、研究、文档治理和工具建设。
 
 默认入口是 `$ai-coding-os`。它不拥有持久 artifact，只负责把工作路由到
-Goal Proof System、Docs Governance、Interface Capability Planning、Product
-Harness System、UI Product Harness、Headless Product Harness，或一轮内 inline 实施。
+Goal Proof System、Docs Governance、Effect Best Practices、Interface
+Capability Planning、Product Harness System、UI Product Harness、Headless
+Product Harness，或一轮内 inline 实施。
 
 ## 核心原则
 
@@ -44,6 +45,7 @@ gap 显式留下
 | `goal/` | `write-work-plans` | 为高风险 work item 写 `plans/<work_id>.md` |
 | `governance/` | `docs-governance` | docs layer、SSoT、standards、ADR、roadmap、cleanup、audit |
 | `architecture/` | `frontend-architecture` | TypeScript 前端架构、依赖方向、命名语义、React/Effect/Query/Store 分层和 harness-ready 边界 |
+| `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime、错误通道、资源生命周期和 v4/v3 迁移差异 |
 | `capability/` | `interface-capability-planning` | UI/IA、InterfaceCapability、surface、state/data ownership、harness handoff |
 | `harness/` | `product-harness-system` | harness artifact model、`claim_ceiling`、Harness Coverage Matrix、trace lifecycle |
 | `harness/` | `ui-product-harness` | interface-headless、render wiring、browser-visible、production-near UI proof |

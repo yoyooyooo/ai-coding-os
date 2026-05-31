@@ -29,6 +29,9 @@ domain/application, durable store, accepted projection, or a backfill endpoint.
 3. Does the transport have resource lifecycle?
    - Yes: default to Effect runtime/service/Layer/Scope or the repo's equivalent
      runtime boundary. Do not hide it in React.
+   - If the repo is Effect-first, callback-only transport is a bridge; live/fake
+     subscription implementations should move toward Effect-managed Service /
+     Layer / Scope / Stream / Queue behind a runtime-bound facade.
 4. Is this feature-level event consumption?
    - Yes: put envelope -> reducer/cache/store adapter logic in
      `<feature>.realtime.ts`.
@@ -136,6 +139,9 @@ drift, prefer invalidate/backfill over local invention.
   reported as business fact.
 - Fake client is used as a production fallback.
 - Missing events are reconstructed locally instead of backfilled from authority.
+- Operation helpers tunnel `config`, `WebSocketImpl`, auth, base URL, or request
+  id factories through every subscribe input instead of binding them at the
+  client factory / Layer boundary.
 
 ## Testing Requirements
 
@@ -154,3 +160,31 @@ fake client covers success/error/gap/close paths
 
 Browser-visible and production-near proof belong to UI/product harness workflows.
 This reference only fixes architecture boundaries.
+
+## Effect-First Adapter
+
+For an Effect-first repo, the preferred realtime implementation is:
+
+```text
+Effect Service / Layer
+  owns live/fake transport, decode, typed errors, retry/backoff, timeout,
+  cancellation, resource close, and test harness seams
+
+runtime-bound facade
+  exposes subscribe(input, handlers): { close(): void }
+
+feature realtime adapter
+  consumes typed envelope and writes Query / local UI state through explicit
+  callbacks or actions
+
+React hook
+  calls subscribe on mount and close on unmount
+```
+
+The facade may be callback-shaped for React ergonomics. That does not mean the
+live implementation should be callback-only when Scope, retry, timeout, or fake
+Layer would materially improve testability.
+
+Host dependencies such as `WebSocketImpl`, base URLs, auth builders, and request
+id factories are not subscription input. Normalize them once at the package
+factory / Layer boundary.

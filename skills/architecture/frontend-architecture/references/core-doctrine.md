@@ -97,6 +97,12 @@ All reusable packages are source-only packages.
 
 `packages/client` is the typed capability gateway between hosts and backend/runtime capabilities. It may import `packages/api-contract`. It may contain Effect service key/Layer/live/fake, transport, decode/assert, normalized errors, timeout/retry/cancel/resource lifecycle. It must not import React, TanStack Query, Zustand, UI, app, features, or app-local shared.
 
+The default public surface of `packages/client` should be a runtime-bound
+capability facade: factory functions, Promise-returning methods, subscription
+facades, and normalized errors. Internal Effect service keys, Layers, and
+transports should stay internal unless the package deliberately exposes a
+separate Effect-native API for Effect consumers.
+
 `packages/ui` owns business-neutral UI primitives and composite primitives. It may import `packages/design-tokens`. It must not import client, api-contract, app, features, or business contracts. It must not contain app shell, route, or business components.
 
 `packages/design-tokens` owns design tokens and primitive theme data. It does not import UI/client/app/features.
@@ -116,6 +122,7 @@ It carries:
 - normalized client errors;
 - Effect service/Layer/live/fake;
 - host variants such as `.browser.live.ts`, `.server.live.ts`, `.desktop.live.ts`.
+- runtime-bound facades that bind host deps once at the package boundary.
 
 It does not carry:
 
@@ -126,6 +133,8 @@ It does not carry:
 - route params;
 - page/surface components;
 - app shell.
+- operation inputs that tunnel host deps such as `fetchImpl`, `WebSocketImpl`,
+  config, auth builders, or request id factories.
 
 Return DTOs or client-level normalized results, not UI view-models. Web, desktop, server routes, and tests should all be able to consume the same capability gateway with different live/fake implementations.
 

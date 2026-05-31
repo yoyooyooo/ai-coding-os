@@ -1,0 +1,5 @@
+[interface]
+display_name = "Effect Best Practices"
+short_description = "effect-ts 最佳实践与常见坑（含 CLI 契约）"
+brand_color = "#0EA5E9"
+default_prompt = "写/改 Effect 代码先看 references/cheatsheet.md；Effect v4/v3 差异看 references/effect-v4-gap.md；React 集成看 references/frontend-react-integration.md；写/评审 @effect/cli CLI 看 references/cli-contract.md；涉及资源生命周期看 references/scope-resources.md；写测试看 references/testing-effect.md；写 HttpApi 看 references/httpapi.md；设计 repo/DB 可选看 references/repo-and-db-optional.md。"

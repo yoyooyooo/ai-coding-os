@@ -18,9 +18,9 @@ refactors, debugging campaigns, audits, research, documentation governance, and
 tooling.
 
 The default entry is `$ai-coding-os`. It owns no durable artifacts. It
-routes work to Goal Proof System, Docs Governance, Interface Capability
-Planning, Product Harness System, UI Product Harness, Headless Product Harness,
-or inline execution.
+routes work to Goal Proof System, Docs Governance, Effect Best Practices,
+Interface Capability Planning, Product Harness System, UI Product Harness,
+Headless Product Harness, or inline execution.
 
 ## Core Principles
 
@@ -48,6 +48,7 @@ completion claims.
 | `goal/` | `write-work-plans` | Write `plans/<work_id>.md` for high-risk work items |
 | `governance/` | `docs-governance` | Docs layers, SSoT, standards, ADRs, roadmaps, cleanup, audit |
 | `architecture/` | `frontend-architecture` | TypeScript frontend architecture, dependency direction, naming semantics, React/Effect/Query/Store split, and harness-ready boundaries |
+| `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime/error-channel/resource lifecycle guidance and v4/v3 migration gaps |
 | `capability/` | `interface-capability-planning` | UI/IA capability contracts, surfaces, state/data ownership, harness handoff |
 | `harness/` | `product-harness-system` | Harness artifact model, `claim_ceiling`, Harness Coverage Matrix, trace lifecycle |
 | `harness/` | `ui-product-harness` | Interface-headless, render wiring, browser-visible, production-near UI proof |

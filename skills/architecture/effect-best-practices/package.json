@@ -1,0 +1,12 @@
+{
+  "name": "effect-best-practices-skill",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck:examples": "tsc -p examples/tsconfig.json"
+  },
+  "devDependencies": {
+    "effect": "4.0.0-beta.59",
+    "typescript": "^5.9.3"
+  }
+}

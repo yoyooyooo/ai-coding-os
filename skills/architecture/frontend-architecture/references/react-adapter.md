@@ -37,6 +37,11 @@ Do not put these in React components:
 - Query key string literals;
 - server truth mirrors in local state.
 
+React hooks should be adapter-only. Prefer stable deps/actions from app runtime,
+Zustand actions for local UI transitions, and Effect services/programs for async
+orchestration. Components should call actions and render derived state, not own
+capability logic.
+
 ## Query
 
 Feature `.query.ts` owns TanStack Query options and optional hooks.
@@ -141,6 +146,7 @@ Forbidden:
 - canonical domain facts;
 - fetch/mutation side effects;
 - realtime connection ownership.
+- Effect runtime, live Layer, or transport construction.
 
 If state can be derived from server projection and local interaction state, derive it in a mapper or view-model.
 
@@ -207,6 +213,31 @@ Effect belongs at the boundary:
 - `app`: runtime wiring, provider/context injection, config selection;
 - `features`: consume client contracts through props/context/query options.
 
+In Effect-first repos, use Effect DI beyond classic "client" objects whenever a
+capability boundary needs fake replacement, resource lifecycle, retry/timeout,
+cancellation, typed errors, or harness isolation. The app should expose a
+runtime-bound deps object; features should not know whether a dependency is
+implemented by Effect internally.
+
+Package boundary pattern:
+
+```text
+package internal
+  Effect Service / Layer / Scope
+
+package factory
+  create closed runtime
+  bind config / fetch / WebSocket once
+
+package public API
+  Promise-returning methods
+  subscription facade
+```
+
+Do not tunnel host dependencies through operation inputs just to keep Effect out
+of React. `fetchImpl`, `WebSocketImpl`, base URLs, request id factories, and auth
+header builders belong at the factory / Layer boundary.
+
 Feature code should not import `app/runtime`. The app creates the live client and route/provider context passes the contract downward.
 
 Bad:
@@ -227,6 +258,18 @@ function ChannelRoute() {
   return <ChannelPage channelId={channelId} client={client.channel} />;
 }
 ```
+
+Thin bridge pattern:
+
+```text
+app runtime creates deps/actions/subscription facades
+  -> React provider exposes deps object
+  -> feature page consumes deps/actions
+  -> components call stable callbacks
+```
+
+Do not expose a raw Runtime through React context or create generic hooks that
+encourage arbitrary component-level `Effect.runPromise` calls.
 
 ## Page And Surface
 
