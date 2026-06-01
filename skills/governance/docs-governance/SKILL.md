@@ -41,8 +41,8 @@ public API/schema/protocol, private-data, or claim_limit choice.
 1. Read `AGENTS.md`, `docs/README.md`, and existing docs governance /
    architecture skills when present; missing files are convergence input.
 2. Classify: `governance-convergence`, `signal-placement`, `placement`,
-   `migration-cleanup`, `skill-handoff`, `artifact-graph`,
-   `harness-placement`, or `audit`.
+   `workflow-supplement`, `migration-cleanup`, `skill-handoff`,
+   `artifact-graph`, `harness-placement`, or `audit`.
 3. Load required references. Do not answer mature cleanup or convergence from
    `SKILL.md` alone.
 4. Apply the host repo's document-language rules before writing or rewriting
@@ -57,6 +57,10 @@ public API/schema/protocol, private-data, or claim_limit choice.
 - `governance-convergence`: read [Docs Layer Model](references/docs-layer-model.md),
   [Human-Agent SOP](references/human-agent-sop.md), and
   [Lifecycle and Cleanup](references/lifecycle-cleanup.md).
+- `workflow-supplement`: read [Human-Agent SOP](references/human-agent-sop.md)
+  and [Docs Layer Model](references/docs-layer-model.md). Treat it as a narrow
+  governance convergence pass over the repo's human-agent workflow surface, not
+  as a separate bootstrap doctrine.
 - `signal-placement`: read [Human-Agent SOP](references/human-agent-sop.md),
   [Lifecycle and Cleanup](references/lifecycle-cleanup.md), and
   [Artifact Graph](references/artifact-graph.md) when deciding where weak
@@ -88,6 +92,7 @@ docs/* top-level folders are document layers, not project hobbies.
 Goal flow controls work; docs governance controls where truths live.
 Implementation plans execute near; evidence decides what can be claimed.
 Convergence handles initialization, migration, and periodic cleanup as one flow.
+Workflow supplements are convergence passes, not new project-specific methods.
 ```
 
 Goal Proof System owns Goal Pack goal contracts, progress state, evidence
@@ -123,6 +128,10 @@ protocol/API/schema authority change, or unsafe raw/private data handling.
   `$goal-proof`; otherwise `docs/proposals/**`.
 
 ## Convergence Rules
+- A workflow supplement adds or repairs the repo's human-agent operating loop
+  after a baseline already exists. It may update `AGENTS.md`,
+  `docs/standards/**`, layer README files, and indexes, but it should not create
+  a parallel project-local docs-governance method.
 - `$goal-proof` owns method-internal lifecycle: inbox/source/Goal Pack,
   evidence-backed completion, retention/demotion within that method, Goal
   Relations, and completion review. This skill owns docs-layer placement, layer

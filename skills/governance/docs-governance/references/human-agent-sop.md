@@ -56,6 +56,9 @@ Treat user input as one of:
 
 - `governance-convergence`: initialize, migrate, or periodically clean planning
   and docs governance so material lands in the right layer.
+- `workflow-supplement`: add or repair a repo's human-agent workflow baseline
+  after a docs foundation already exists. This is a narrow convergence pass,
+  not a second bootstrap doctrine.
 - `signal-placement`: decide which layer or method should hold a weak signal,
   open candidate, source note, Goal Pack, report, or implementation artifact.
 - `proposal`: shaped candidate with tradeoffs or open questions when the repo
@@ -114,6 +117,29 @@ docs/adr/README.md and docs/adr/_template.md
 Add optional layers such as `docs/goal-proof/**`, `docs/roadmap/**`,
 `docs/protocols/**`, `docs/design/**`, or root `specs/**` only when the project
 actually needs that artifact type or is explicitly adopting that workflow.
+
+### Workflow Supplement
+
+Use workflow supplement when the repo already has some docs foundation, but the
+agent operating loop is missing, scattered, or too implicit. It usually touches
+the project entry instructions, the standards layer, nearby README indexes, and
+the docs router. It should not duplicate the full docs bootstrap or create a
+project-local replacement for this governance skill.
+
+The supplement loop is:
+
+```text
+inspect current workflow surface
+  -> identify the missing collaboration contract
+  -> update the thinnest authority files
+  -> add index links
+  -> verify private/local tooling did not leak into public doctrine
+  -> report proven changes and not_claimed
+```
+
+Good workflow supplements define how agents read, route, implement, verify, and
+report in that repo. They do not encode one user's private runtime, local skill
+distribution, or a specific retrieval provider as generic project doctrine.
 
 ## 2. Read Before Writing
 
