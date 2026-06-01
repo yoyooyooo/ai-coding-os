@@ -17,6 +17,7 @@ AI Coding OS 面向高智能 agent，不面向弱模型防御式流程。默认�
 
 - `$goal-proof`：目标计划、Goal Pack、跨会话延续、长期执行。
 - `$docs-governance`：docs 分层、权威放置、文档清理和审计。
+- `$agentic-architecture`：AI agent 时代的底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate。
 - `$frontend-architecture`：TypeScript 前端架构、依赖方向、命名语义、React / Effect / Query / Store 分层和 source-only package 边界。
 - `$effect-best-practices`：Effect Service / Layer / Scope / runtime、错误通道、资源生命周期和 v4/v3 差异口径。
 - `$interface-capability-planning`：UI/IA、surface、route、交互状态、前端状态/数据归属和 InterfaceCapability trace 规划。

@@ -23,6 +23,7 @@
 | `router/` | `ai-coding-os` | 用户默认入口，轻量路由和编排 |
 | `goal/` | `goal-proof`, `goal-contracts`, `finding-proof-step`, `proof-step-implementation`, `write-work-plans` | Goal Pack、目标授权、当前验证步、执行、证据记录和高风险实施计划 |
 | `governance/` | `docs-governance` | 文档分层、权威放置、cleanup、audit |
+| `architecture/` | `agentic-architecture`, `frontend-architecture`, `effect-best-practices` | 底层架构公理、前端架构、Effect runtime / Service / Layer doctrine |
 | `capability/` | `interface-capability-planning` | UI/IA、交互能力、前端状态/数据归属和 trace artifact |
 | `harness/` | `product-harness-system`, `ui-product-harness`, `headless-product-harness` | harness artifact、`claim_ceiling`、Harness Coverage Matrix、UI/headless proof |
 

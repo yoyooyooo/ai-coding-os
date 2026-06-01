@@ -18,9 +18,9 @@ refactors, debugging campaigns, audits, research, documentation governance, and
 tooling.
 
 The default entry is `$ai-coding-os`. It owns no durable artifacts. It
-routes work to Goal Proof System, Docs Governance, Effect Best Practices,
-Interface Capability Planning, Product Harness System, UI Product Harness,
-Headless Product Harness, or inline execution.
+routes work to Agentic Architecture, Goal Proof System, Docs Governance, Effect
+Best Practices, Interface Capability Planning, Product Harness System, UI
+Product Harness, Headless Product Harness, or inline execution.
 
 ## Core Principles
 
@@ -47,6 +47,7 @@ completion claims.
 | `goal/` | `proof-step-implementation` | Execute, verify, add evidence, apply progress |
 | `goal/` | `write-work-plans` | Write `plans/<work_id>.md` for high-risk work items |
 | `governance/` | `docs-governance` | Docs layers, SSoT, standards, ADRs, roadmaps, cleanup, audit |
+| `architecture/` | `agentic-architecture` | AI-agent-era architecture doctrine: authority, Capability Ports / Adapters, composition roots, replaceability, and evidence gates |
 | `architecture/` | `frontend-architecture` | TypeScript frontend architecture, dependency direction, naming semantics, React/Effect/Query/Store split, and harness-ready boundaries |
 | `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime/error-channel/resource lifecycle guidance and v4/v3 migration gaps |
 | `capability/` | `interface-capability-planning` | UI/IA capability contracts, surfaces, state/data ownership, harness handoff |
@@ -245,6 +246,14 @@ This repository's docs layer rules live in `docs/standards/docs-governance.md`;
 public skill source layout and trigger-name rules live in
 `docs/standards/skill-source-layout.md`.
 
+Architecture baseline:
+
+```text
+Use $agentic-architecture:
+Review authority, Capability Ports / Adapters, composition roots,
+provider/runtime/memory/plugin boundaries, replaceability, and evidence gates.
+```
+
 ## CLI Quick Inspect
 
 ```bash
@@ -304,6 +313,7 @@ packages/cli/                         TypeScript CLI, built with Bun
 skills/router/                        OS entry and user intent routing
 skills/goal/                          Goal Pack method and execution phases
 skills/governance/                    Docs layer governance
+skills/architecture/                  Agentic / frontend / Effect architecture doctrine
 skills/capability/                    Interface capability planning
 skills/harness/                       Product, headless, and UI harness guidance
 skills/README.md                      Skill suite group index

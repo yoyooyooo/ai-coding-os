@@ -36,6 +36,7 @@
 skills/router/                        薄入口：用户意图路由和方法编排
 skills/goal/                          目标治理：Goal Pack 方法、阶段 skill、执行和 evidence record
 skills/governance/                    文档治理：docs 层、权威、cleanup、audit
+skills/architecture/                  架构 doctrine：agentic、frontend、Effect 边界和审计
 skills/capability/                    界面能力规划：IA、交互合同、状态/数据归属、testability
 skills/harness/                       Harness 总纲、headless proof、UI proof 与 evidence envelope
 packages/cli/**                       goal-proof CLI
@@ -48,6 +49,7 @@ README*.md                            对外入口
 ```text
 目标计划 / 长期执行 -> docs/goal-proof/goals/<goal-id>/
 文档权威 / standards / ADR / roadmap -> docs/*
+底层架构公理 / capability port / adapter 边界 -> skills/architecture/agentic-architecture/
 界面能力 trace -> docs/interface-capabilities/** 或 Goal Pack interface-capabilities.yaml
 通用 harness trace / coverage -> docs/product-harness/** 或 Goal Pack product-harness.yaml
 UI harness 方法与证据 envelope -> owning project test surface + optional Goal Pack evidence records

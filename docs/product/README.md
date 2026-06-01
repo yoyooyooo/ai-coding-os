@@ -7,7 +7,7 @@
 - AI Coding OS 服务谁。
 - 适用场景和非目标。
 - 面向高智能 agent 的默认姿态。
-- 用户为什么需要统一入口、目标计划、文档治理、界面能力规划、Product Harness System、UI harness、证据 harness 和滚动实施。
+- 用户为什么需要统一入口、底层架构公理、目标计划、文档治理、界面能力规划、Product Harness System、UI harness、证据 harness 和滚动实施。
 
 ## Must Not Own
 
@@ -52,6 +52,7 @@ strong-agent optimistic workflow
 | `ai-coding-os` | 默认用户入口；薄路由，不拥有持久 artifact |
 | `goal-proof` | 目标计划和滚动执行；Goal Pack 是规划与延续载体 |
 | `docs-governance` | 文档层、SSoT、standards、ADR、roadmap 的治理 |
+| `agentic-architecture` | 底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate |
 | `interface-capability-planning` | UI/IA 交互能力、状态/数据归属和 testability contract 的规划 |
 | `product-harness-system` | 通用 harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范 |
 | `ui-product-harness` | 界面能力的 interface-headless、render wiring、browser-visible 和 production-near proof |

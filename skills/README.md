@@ -9,7 +9,7 @@
 | `router/` | 用户意图入口和方法编排 | `ai-coding-os` |
 | `goal/` | Goal Pack、长期目标流转、evidence-backed execution | `goal-proof`, `goal-contracts`, `finding-proof-step`, `proof-step-implementation`, `write-work-plans` |
 | `governance/` | docs layer、authority placement、cleanup、audit | `docs-governance` |
-| `architecture/` | 可复用工程架构 doctrine、依赖方向、命名语义和边界审计 | `frontend-architecture` |
+| `architecture/` | 可复用工程架构 doctrine、依赖方向、命名语义和边界审计 | `agentic-architecture`, `frontend-architecture`, `effect-best-practices` |
 | `capability/` | interface capability、surface、state/data ownership、trace planning | `interface-capability-planning` |
 | `harness/` | harness contract、headless proof、UI harness proof | `product-harness-system`, `headless-product-harness`, `ui-product-harness` |
 

@@ -37,6 +37,8 @@ standards 可以规定怎么执行；roadmap 可以说明何时迁移；Goal Pac
 - 默认用户入口是 `ai-coding-os`。它只路由和编排，不拥有持久 artifact。
 - 命名裁决由 [ADR: AI Coding OS 命名与边界](../adr/2026-05-28-ai-coding-os-naming-and-boundary.md) 固化。
 - `docs-governance` 独立公开，拥有文档分层、权威放置、cleanup 和 audit。
+- `agentic-architecture` 独立公开，拥有 AI agent 时代的底层架构公理、authority-first doctrine、Capability Port / Adapter、composition root、可替换性、agent freedom boundary 和 evidence gate。
+- `agentic-architecture` 是上游 architecture lens；它指导前端、Effect、harness、memory、provider / runtime 等具体方法的边界判断，但不拥有这些领域的实现细节。
 - `interface-capability-planning` 独立公开，拥有 UI/IA 交互能力合同、状态/数据归属、testability planning 和 harness handoff。
 - `product-harness-system` 独立公开，拥有通用 Harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范。
 - `ui-product-harness` 独立公开，拥有 interface-headless、render wiring、browser-visible 和 production-near UI proof 方法。
