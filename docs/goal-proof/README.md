@@ -65,7 +65,7 @@ goals/<goal-id>/
 
 ## Active Goal Packs
 
-当前没有 active Goal Pack。
+- `goals/2026-05-31-goal-proof-dag-frontier-cli/` - ready Goal Pack for implementing schema-first structured blockers and the read-only `goal-proof dag` frontier view.
 
 ## Completed Goal Packs
 
@@ -80,7 +80,7 @@ goals/<goal-id>/
 ## Goal Threads
 
 - `agent-first-cli` - CLI command and output surfaces optimized for agent routing and bounded context.
-- `goal-relations` - completed protocol and CLI verification packs.
+- `goal-relations` - relation metadata, thread discovery, relations CLI, and DAG/frontier work.
 - `evidence-cli` - evidence record command-surface improvements for agent-first read/write workflows.
 
 Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation graph 是派生视图，不作为存储规划状态。
@@ -94,6 +94,7 @@ Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation grap
 已被消费但需要保留追溯的材料放这里。Sources 不是开放候选。
 
 - `sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md` - 已消费的顶层叙事 delta source：公共主线采用 intent-to-evidence state transition，compiler 仅保留为辅助隐喻，不新增公共 Check、schema 或 CLI。
+- `sources/2026-05-31-goal-proof-dag-frontier-view-proposal.md` - 已收敛的 CLI delta implementation plan：采用 schema-first 的只读 `goal-proof dag` frontier view，并保持 `relations` 为 discovery / relation evidence surface。
 - `sources/2026-05-24-goal-proof-v2-dogfood-migration-handoff.md` - v2 Goal Pack schema dogfood migration 的历史 handoff 来源。
 
 ## Read Next
