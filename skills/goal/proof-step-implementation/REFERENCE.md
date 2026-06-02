@@ -45,6 +45,19 @@ choose useful slice
 `goal-proof evidence add --apply --check` is the compact path when evidence
 record append, progress update, and validation should happen together.
 
+## Rolling Review Boundary
+
+When a completed proof step creates a new wave that depends on a structured
+plan, contract, high-risk work plan, or broad proof-step rationale, use the
+normal Goal Proof checks unless plan-optimality review has been explicitly
+opted in for that boundary.
+
+If opted in, use `next_action: review` or `needs_plan`, route the plan object
+through `$plan-optimality-loop`, synthesize the adopted correction plan, apply
+accepted changes to the plan / proof-step text, and record review or planning
+evidence. Unresolved findings stay in `blockers`, `not_claimed`,
+`remaining_gaps`, or require a human decision.
+
 ## Allowed Revisions
 
 Inside the current goal contract, the agent may revise:

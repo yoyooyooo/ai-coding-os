@@ -13,4 +13,8 @@
 - freeze record
 - converge / consensus 状态
 
-这些文件是评审证据，不是产品事实或实施完成证明。
+这些文件是评审证据，不是产品事实、completion evidence、implementation status 或实施完成证明。
+
+## 最近运行
+
+- `2026-06-02-strong-agent-ready-gate-diff-review.md`：C-001 公共口径闭合评审 ledger；不拥有最终 SSoT、standard、completion evidence 或 implementation status。

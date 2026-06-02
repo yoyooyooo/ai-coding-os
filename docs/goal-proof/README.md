@@ -24,6 +24,27 @@ notes、relations、completion review 和 source material。它可以生成 comp
 候选稿，但不能长期替代 `docs/interface-capabilities/**`、`docs/product-harness/**`、
 SSoT、standards、ADR 或 roadmap。
 
+## Strong-Agent Ready Gate
+
+Goal Proof System 默认采用 `strong-agent optimistic workflow`。Goal Pack ready 不是因为
+计划够完整，而是因为目标合同稳定，且下一步已被授权在 claim limit 内产出或检查
+`completion.required_evidence`。
+
+```text
+ready = goal contract stable + authorized proof_step can produce/inspect completion.required_evidence within claim_limit
+```
+
+工作项列表、roadmap 段落、future command name 或 docs-only preface 都不能单独使 Goal
+Pack ready。first proof step 应是 runnable 或 inspectable movement；docs-only first
+proof step 只在目标 delta 本身就是承载 claim 的 doc / review authority surface，且
+proof step 能检查 diff、交叉引用、authority conflict 或 static scan 时成立。
+
+Completion review 应使用由 SSoT / Goal Proof 拥有的跨方法 Evidence Envelope
+Discipline：每个 claim 回扣实际 command / check / evidence record，列出叙事性的
+changed surfaces，并区分 `not_claimed`、叙事性的 `not_proven` 和 remaining gaps。
+除非同步升级 schema、template 和 checker，`changed surfaces` 与 `not_proven` 不表示
+v2 completion review 的正式字段。
+
 ## Promotion / Demotion
 
 - Goal Pack completion 后必须判断 companion artifact 和 notes 的 retention verdict。

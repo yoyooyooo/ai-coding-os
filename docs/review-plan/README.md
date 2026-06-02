@@ -11,6 +11,7 @@
 
 - 产品事实、当前术语权威或已采纳取舍。
 - Goal Pack 运行状态和 evidence record。
+- Completion evidence 或 implementation status。
 - README、SSoT、standard 或 ADR 的最终正文。
 
 ## Boundary
@@ -29,6 +30,10 @@
 | 角色 | 路径 |
 | --- | --- |
 | review ledgers | `runs/*.md` |
+
+最近 ledger：
+
+- `runs/2026-06-02-strong-agent-ready-gate-diff-review.md`：C-001 owner split、ready gate、docs-only proof-surface predicate 和叙事 envelope 边界评审。
 
 ## Read Next
 

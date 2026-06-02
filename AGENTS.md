@@ -23,7 +23,7 @@ AI Coding OS 面向高智能 agent，不面向弱模型防御式流程。默认�
 - `$interface-capability-planning`：UI/IA、surface、route、交互状态、前端状态/数据归属和 InterfaceCapability trace 规划。
 - `$product-harness-system`：通用 Harness artifact、claim ceiling、coverage matrix、生命周期和 trace 规范。
 - `$ui-product-harness`：interface-headless、render wiring、browser-visible 和 production-near UI proof。
-- `$headless-product-harness`：headless proof command、smoke evidence、fixture/replay、证据 envelope。
+- `$headless-product-harness`：headless proof command、smoke evidence、fixture/replay、headless command JSON / JSONL output shape。
 - inline work：一轮内可完成且有明确验证路径的小改动。
 
 Goal Proof System 是本套件的目标计划和滚动执行载体。只要用户要求“生成目标计划 / Goal Plan / Goal Pack / 使用 Goal Proof System”，就进入 Goal Proof System；随口小改动不创建 Goal Pack，直接实施并验证。
@@ -63,8 +63,9 @@ notes/                   长材料，不承载当前状态
 - DSL 要薄：能从源码、测试、路由、命令输出或现有 authority 推导的内容，不写进长期合同；除非它本身就是 contract。
 - 字段按 claim 触发：不要为了“完整”添加字段；新增字段必须能约束 claim、暴露 gap、避免 overclaim，或改善 agent 执行。
 - ownership 要硬：一个概念只能有一个主 owner；如果像两个 skill 都该管，先收敛边界，不新增混合层。
+- 跨方法 Evidence Envelope Discipline 归 SSoT / Goal Proof；headless harness 只拥有本地命令输出 shape。
 - proof level 不是 checklist：按 claim 选择最低诚实 proof level；不要默认跑满所有 harness 层级。
-- 记录不声称的内容：会被误读的相邻 surface 要写 `not_claimed`；没有检查过的写 `not_proven`，不要伪装成已证明。
+- 记录不声称的内容：会被误读的相邻 surface 要写 `not_claimed`；没有检查过的用叙事性 `not_proven` 或 `remaining_gaps` 表达，不要伪装成已证明。
 - 保持 claim 诚实：改 skill 口径时区分本仓公开 source claim 和下游 runtime install claim；本仓验证不能被说成任意 runtime 已安装。
 
 ## 目录结构

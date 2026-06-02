@@ -53,7 +53,7 @@ completion claims.
 | `capability/` | `interface-capability-planning` | UI/IA capability contracts, surfaces, state/data ownership, harness handoff |
 | `harness/` | `product-harness-system` | Harness artifact model, `claim_ceiling`, Harness Coverage Matrix, trace lifecycle |
 | `harness/` | `ui-product-harness` | Interface-headless, render wiring, browser-visible, production-near UI proof |
-| `harness/` | `headless-product-harness` | Proof commands, smoke checks, fixture/replay, evidence envelope |
+| `harness/` | `headless-product-harness` | Proof commands, smoke checks, fixture/replay, headless command JSON/JSONL output shape |
 
 Most users should name only `$ai-coding-os`. Advanced users may call a
 specific method or phase skill directly.
@@ -101,8 +101,8 @@ human intent
 ```
 
 A Goal Pack is ready when the goal contract is stable and the next
-`proof_step` can prove or falsify a meaningful movement. It is not ready merely
-because a work item list exists.
+`proof_step` is authorized to produce or inspect `completion.required_evidence`
+inside `claim_limit`. It is not ready merely because a work item list exists.
 
 Work items and checks are execution details, not required top-level concepts in
 the goal loop.
@@ -111,6 +111,9 @@ reviewed execution plan before implementation. It is not a second task system.
 
 Completion requires a review evidence record with `completion_satisfied: true`
 and `claim_evidence` mapping each completion claim to evidence.
+Cross-method Evidence Envelope Discipline is owned by SSoT / Goal Proof.
+`changed surfaces` and `not_proven` are narrative envelope concepts here, not
+formal v2 schema fields unless templates and checkers are explicitly upgraded.
 
 ## Goal Pack Files
 
@@ -230,8 +233,8 @@ Headless proof:
 
 ```text
 Use $headless-product-harness:
-Design the smallest proof command, fixture/replay path, evidence envelope, and
-not_claimed list for this capability.
+Design the smallest proof command, fixture/replay path, headless command output
+envelope, and not_claimed list for this capability.
 ```
 
 Docs governance:

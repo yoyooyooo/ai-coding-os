@@ -47,6 +47,15 @@ item writes or updates it.
 - no-match or allowlist checks for retired terms when absence is claimed
 - public-surface rename/alias checks when schema fields are renamed
 
+## Plan Optimality Review
+
+- review gate:
+- review object:
+- reviewer contract:
+- adopted correction plan:
+- unresolved findings:
+- ledger/evidence refs:
+
 ## Execution Chunks
 
 ### Chunk 1: <name>
@@ -89,6 +98,14 @@ item writes or updates it.
 The plan is valid only if it preserves the Goal Pack goal contract and can
 return to implementation without changing fields listed in
 `agent_authority.requires_human_decision`.
+
+For high-risk wave boundaries, `$plan-optimality-loop` is optional. If the user
+or active Goal Pack / work plan explicitly enables it, the plan must pass that
+gate before `ready_for_run: true`. Passing means reviewers have no unresolved
+findings, or residual risks are explicitly moved to `not_claimed`,
+`remaining_gaps`, `blockers`, or a human decision; the adopted correction plan
+has been applied to the plan artifact and any bound proof-step text; and the
+review / planning evidence record cites the ledger or reviewer outputs.
 
 `ready_for_run: true` also requires `progress.yaml.proof_step` to remain
 falsifiable after the plan. If the plan changes the evidence path, update the

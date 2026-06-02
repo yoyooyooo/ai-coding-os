@@ -86,11 +86,22 @@ After evidence is recorded and checks pass, reduce it to the next state:
 
 ```text
 same proof_step still has useful safe work -> continue
-current movement proved -> sharpen next proof_step and continue
+current movement proved and next wave does not depend on a new/changed
+structured plan -> sharpen next proof_step and continue
+current movement proved and next wave depends on a structured plan, contract,
+high-risk work plan, or broad proof-step rationale and plan-optimality review is
+explicitly opted in -> next_action: review or needs_plan, then run the rolling
+review gate before implementation continues
 required evidence satisfied -> completion review
 no honest next movement -> blocked
 protected field or claim boundary must change -> needs_human
 ```
+
+Do not imply `$plan-optimality-loop` is mandatory. When the next movement is
+plan-controlled, create or update the selected plan artifact and use the normal
+Goal Proof checks unless the user or Goal Pack explicitly opted into the rolling
+review gate. If opted in, synthesize the adopted correction plan and record
+review / planning evidence before setting `next_action: continue`.
 
 Before crossing to a stronger proof level, confirm the previous evidence names
 `positive_tokens`, preserves `not_claimed`, and satisfies the relevant

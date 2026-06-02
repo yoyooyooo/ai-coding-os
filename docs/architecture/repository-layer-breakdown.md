@@ -162,7 +162,7 @@ docs/README.md
 | `docs/adr/**` | 已采纳取舍 | 命名与边界决策 |
 | `docs/architecture/**` | 结构视图和数据流 | 本文件、仓库模块关系 |
 | `docs/roadmap/**` | 迁移顺序、状态、证据链接 | 后续波次和 gate |
-| `docs/review-plan/**` | plan/proposal review ledger | `$plan-optimality-loop` 评审记录 |
+| `docs/review-plan/**` | plan/proposal review ledger；不拥有 completion evidence | `$plan-optimality-loop` 评审记录 |
 | `docs/interface-capabilities/**` | 项目级 interface trace | UI/IA 追溯 |
 | `docs/product-harness/**` | 项目级 harness contract | coverage matrix、claim ceiling |
 

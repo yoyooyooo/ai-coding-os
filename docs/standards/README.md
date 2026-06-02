@@ -75,12 +75,24 @@ bun run check
 ## Goal Proof System 标准
 
 - 默认采用 strong-agent optimistic workflow。
+- Strong-agent optimistic workflow 要求 proof path 优先；文档、计划、work item list 只有在缩短执行、验证、审计或交接路径时才应保留。
 - Goal Proof System 是当前唯一规划载体：用户明确要求目标计划、Goal Pack 或使用 `$goal-proof` 时由它生成规划。
 - 随口小需求不创建 Goal Pack；直接 inline 实施并验证。
 - 简单工作不引入 strict proof。
 - 高风险工作使用 `evidence_mode: strict`。
 - 真实 Goal Pack 的历史 `evidence.jsonl` 不重写，只追加。
 - `plans/<work_id>.md` 不作为第二套任务系统。
+- Goal Pack ready 必须同时满足 goal contract stable，且 `progress.yaml.proof_step`
+  已被授权在 `claim_limit` 内产出或检查 `completion.required_evidence`；roadmap
+  段落、future command name、work item list 或 docs-only preface 不能单独使 Goal Pack ready。
+- First proof step 应是 runnable 或 inspectable movement。docs-only first proof step
+  只在目标 delta 本身就是承载 claim 的 doc / review authority surface，且 proof
+  step 能检查 diff、交叉引用、authority conflict 或 static scan 时成立。
+- 重要 completion / promotion evidence 应采用 SSoT / Goal Proof 拥有的跨方法
+  Evidence Envelope Discipline：列出实际 commands/checks、positive evidence、叙事性的
+  changed surfaces、`not_claimed`、叙事性的 `not_proven` 或 remaining gaps，不能只堆散 token。
+  除非同步升级 schema、template 和 checker，`changed surfaces` 与 `not_proven` 不表示
+  v2 completion review 的正式字段。
 
 ## Read Next
 

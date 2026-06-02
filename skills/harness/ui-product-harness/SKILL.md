@@ -4,7 +4,7 @@ description: >-
   Designs and audits UI-first product harnesses for high-capability coding
   agents: interface-headless tests, render wiring, browser-visible proof,
   frontend state/data/realtime/router adapter discovery, claim ceilings, and
-  evidence envelopes. Use when validating UI/UX functionality, frontend
+  local UI proof output shapes. Use when validating UI/UX functionality, frontend
   state-management behavior, async data/cache/mutation flows, browser dogfood,
   Playwright/agent-browser coverage, or when an InterfaceCapability needs test
   harness planning.
@@ -23,14 +23,15 @@ This skill applies those rules to frontend and browser proof.
 
 ```text
 Owns: interface-headless proof, render wiring proof, browser-visible proof,
-frontend state/data/router/realtime adapter discovery, UI evidence envelope, and
-UI gaps.
+frontend state/data/router/realtime adapter discovery, UI proof local output
+shape, Interface Trace DSL evidence shape, and UI gaps.
 Does not own: product facts, final visual/IA decisions, shared harness lifecycle
-policy, Goal Pack evidence records, docs placement, or headless command proof.
+policy, cross-method Evidence Envelope Discipline, Goal Pack evidence records,
+docs placement, or headless command proof.
 Inputs: InterfaceCapability, frontend owner map, harness scenario /
 claim_ceiling, headless proof refs, test stack, and browser/runtime constraints.
 Outputs: UI harness plan, Harness Component/Route guidance, browser-visible
-path, evidence envelope, status recommendation, gaps, not_claimed, and
+path, local output shape, status recommendation, gaps, not_claimed, and
 not_proven.
 Handoff: missing capability contract -> interface capability workflow;
 product-fact proof -> headless harness workflow; shared coverage / claim_ceiling
@@ -97,11 +98,11 @@ Always name what the harness level proves and what it does not prove. Default
 
 ## Evidence
 
-Use the envelope in [Interface Trace DSL](references/interface-trace-dsl.md)
-when a durable evidence add is needed. Include `interface_capability`, `scenario`,
-`claim_ceiling`, `frontend_owners`, `headless_proof_refs`,
-`positive_tokens`, `not_claimed`, `not_proven`, `status`, and
-`gaps`.
+Use the local evidence shape in
+[Interface Trace DSL](references/interface-trace-dsl.md) when a durable UI proof
+output is needed. Include `interface_capability`, `scenario`, `claim_ceiling`,
+`frontend_owners`, `headless_proof_refs`, `positive_tokens`, `not_claimed`,
+`not_proven`, `status`, and `gaps`.
 
 ## Rolling Handoff
 

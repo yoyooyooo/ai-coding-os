@@ -36,13 +36,26 @@ Goals are connected by proof paths and evidence records, not by speculative work
 Ready gate:
 
 ```text
-Goal Pack ready = goal contract stable + proof_step falsifiable
+Goal Pack ready = stable goal contract + authorized proof_step can produce/inspect completion.required_evidence within claim_limit
 ```
 
 A work item list, roadmap paragraph, or future command name does not make a
 Goal Pack ready. If `goal.yaml` exists but `progress.yaml.proof_step` cannot
-prove or falsify the next movement, route to `finding-proof-step` before
-implementation.
+produce or inspect evidence for `completion.required_evidence` within
+`claim_limit`, route to `finding-proof-step` before implementation.
+
+Strong-agent rule:
+
+```text
+proof path before plan surface
+```
+
+Goal Proof System is for strong agents, not defensive process tables. Durable
+plans, notes, ledgers, and companions are useful only when they shorten
+execution, verification, audit, handoff, or overclaim control. A docs-only first
+proof step is valid only when the target delta itself is the claim-bearing doc
+or review authority surface and the proof step can inspect diffs, cross
+references, authority conflicts, or static scans.
 
 ## Collaboration Contract
 
@@ -128,6 +141,12 @@ After each evidence record:
 apply progress
 -> check the Goal Pack
 -> preserve not_claimed and claim_limit
+-> if the user or Goal Pack explicitly opted into plan-optimality review for the
+   current wave / proof-step boundary:
+     route that artifact through plan-optimality-loop
+     synthesize the adopted correction plan
+     record review / planning evidence
+     keep next_action as review or needs_plan until unresolved findings are gone
 -> if next step is clear, update proof_step and continue
 -> if completion evidence is satisfied, write completion review
 -> otherwise block or ask only for protected human decisions
@@ -137,6 +156,38 @@ Do not merge multiple proof levels into one evidence record. Use separate
 records when moving through levels such as `interface_headless`,
 `render_wiring`, `browser_visible`, `headless_product`, `production_near`, or a
 project-specific equivalent.
+
+## Rolling Review Gate
+
+Plan-optimality review is an opt-in planning gate for wave / proof-step
+boundaries. Goal Proof should not treat it as a default step, even for broad or
+high-risk work. Route the plan object through `$plan-optimality-loop` only when
+the user has explicitly authorized multi-reviewer / subagent challenge for this
+boundary, or when the active Goal Pack / work plan explicitly requires that
+gate.
+
+When opted in, the review gate may apply to:
+
+- `plans/<work_id>.md`;
+- a changed `goal.yaml` contract proposal before it becomes authority;
+- a changed `progress.yaml.proof_step` rationale when it controls a broad next
+  wave;
+- SSoT contracts or implementation plans referenced by the Goal Pack;
+- completion reviews that would claim a broad migration, public surface, or
+  multi-evidence outcome.
+
+When active, the gate passes only when the plan-optimality loop reaches an
+adopted candidate with no unresolved findings, or the residual risks are
+explicitly moved to `not_claimed`, `remaining_gaps`, `blockers`, or a human
+decision. Reviewer findings do not directly edit implementation. The main agent
+synthesizes an adopted correction plan, records the adoption as review /
+planning evidence, updates the active plan or proof step, and only then resumes
+implementation.
+
+If the review changes protected goal fields, stop for goal-contract repair or a
+human decision. If it only changes work order, proof path, implementation shape,
+or harness strength, update `progress.yaml` and continue inside the same Goal
+Pack.
 
 ## Goal Pack Shape
 
@@ -208,6 +259,14 @@ Use phase skills through this controller unless the user targets a phase:
 
 Completion requires a review evidence record that maps the evidence chain to
 `completion.required_evidence` and sets `completion_satisfied: true`.
+
+Use cross-method Evidence Envelope Discipline for nontrivial completion claims:
+map claims to executed commands or checks, positive evidence, narrative changed
+surfaces, and explicit `not_claimed`, narrative `not_proven`, or remaining
+gaps. Positive tokens require an executed or inspected path; unverified adjacent
+surfaces are gaps, not decorative negative tokens. Unless schema, templates, and
+checkers are explicitly upgraded, `changed surfaces` and `not_proven` are
+narrative concepts, not formal v2 completion review fields.
 
 If the Goal Pack is a successor, completion review should include relation
 evidence tokens proving predecessor evidence records and required evidence were

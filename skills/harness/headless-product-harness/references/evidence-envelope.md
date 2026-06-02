@@ -1,6 +1,23 @@
 # Evidence Envelope
 
-Use this reference when defining JSON/JSONL output for headless proof commands.
+Use this reference only when defining JSON / JSONL output shape for headless
+proof commands.
+
+Owner split:
+
+- SSoT / Goal Proof own the cross-method Evidence Envelope Discipline.
+- Headless Product Harness owns the command JSON / JSONL output shape for
+  headless proof commands.
+
+This file imports the canonical discipline; it does not define completion
+review, harness promotion, or cross-method claim rules. For Goal Proof
+completion reviews, use SSoT / Goal Proof wording. In those reviews, `changed
+surfaces` and `not_proven` are narrative envelope concepts unless schema,
+templates, and checkers are explicitly upgraded.
+
+For headless proof commands, emit the JSON / JSONL envelopes below. Do not use
+the command envelope as a checklist. It exists to keep command claims honest
+without turning the command into product truth.
 
 ## Success Envelope
 

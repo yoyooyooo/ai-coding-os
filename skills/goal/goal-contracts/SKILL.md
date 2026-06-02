@@ -90,8 +90,14 @@ evidence.jsonl stays empty until work runs
 
 Use `status: forming` or `next_action: needs_plan` while `goal.yaml` exists but
 the first honest proof step is missing. Use `status: ready` only when the protected
-goal fields are stable and `proof_step` identifies the next proof path that
-would prove or falsify the next movement.
+goal fields are stable and `proof_step` identifies an authorized path that can
+produce or inspect `completion.required_evidence` within `claim_limit`.
+
+Do not make the first proof step docs-only unless the target delta itself is a
+claim-bearing doc or review authority surface and the proof step can inspect
+diffs, cross references, authority conflicts, or static scans. For implementation
+goals, planning prose may be a preface, but the ready gate needs a runnable or
+inspectable movement.
 
 ## Goal Contract Rules
 

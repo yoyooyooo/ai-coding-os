@@ -3,6 +3,17 @@
 This is a thin YAML convention for traceability. It is not a UI generation
 language, a workflow engine, or a replacement for tests.
 
+Owner split:
+
+- SSoT / Goal Proof own the cross-method Evidence Envelope Discipline.
+- UI Product Harness owns local UI proof output shape and this Interface Trace
+  DSL evidence shape.
+- Durable harness placement and lifecycle still follow `product-harness-system`
+  and Goal Proof handoff rules.
+
+`not_claimed` and `not_proven` remain local UI output-shape fields here. This
+reference does not change Goal Pack schema, checker rules, or templates.
+
 ## Goals
 
 - connect IA, interaction capability, UI harness, headless proof, and evidence;

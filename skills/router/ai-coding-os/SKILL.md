@@ -43,8 +43,9 @@ docs-governance           owns docs/* layer governance and cleanup
 goal-proof            owns Goal Pack planning and execution artifacts
 interface-capability-planning owns UI/IA interaction capability contracts
 product-harness-system    owns shared harness artifact model and lifecycle
-ui-product-harness        owns frontend/UI harness design and evidence
-headless-product-harness  owns proof command and evidence-envelope design
+ui-product-harness        owns frontend/UI harness design and local output shape
+headless-product-harness  owns proof command and headless command JSON / JSONL
+                           output shape
 frontend-architecture     owns frontend dependency direction, naming, package
                            boundaries, and React/Effect/Query/Store doctrine
 effect-best-practices     owns Effect Service/Layer/Scope/runtime/error channel,
@@ -67,8 +68,8 @@ to the owning method:
   `$product-harness-system`;
 - frontend state/data/cache/mutation/realtime/router testing, UI dogfood,
   browser-visible proof, Playwright/agent-browser harnesses,
-  interface-headless proof, or UI evidence envelopes -> `$ui-product-harness`;
-- command surface, smoke proof, fixture/replay, or evidence envelope ->
+  interface-headless proof, or UI evidence output shape -> `$ui-product-harness`;
+- command surface, smoke proof, fixture/replay, or headless command output shape ->
   `$headless-product-harness`;
 - reusable frontend architecture, feature-first layout, source-only shared /
   package boundaries, naming suffixes, React/Effect/Query/Zustand split, or
@@ -104,10 +105,10 @@ Otherwise route by intent:
   `$product-harness-system`;
 - asks for frontend state/data/cache/mutation/realtime/router testing, UI
   product proof, browser-visible acceptance, agent-browser/Playwright dogfood,
-  interface-headless tests, render wiring, or UI evidence envelopes ->
+  interface-headless tests, render wiring, or UI evidence output shape ->
   `$ui-product-harness`;
 - asks for xtask / just / pnpm command surfaces, smoke checks, headless proof,
-  fixture replay, boundary checks, evidence envelope, or not_claimed ->
+  fixture replay, boundary checks, headless command output shape, or not_claimed ->
   `$headless-product-harness`;
 - asks for reusable frontend architecture standards, feature-first directory
   rules, naming semantics, React/Effect/Query/Zustand boundaries,
@@ -201,10 +202,10 @@ A gap is not automatically blocked. First classify the missing piece by owner:
 - missing shared harness artifact model, trace spine, Harness Coverage Matrix,
   lifecycle, placement, or claim_ceiling -> `$product-harness-system`;
 - missing frontend harness, interface-headless reducer/store/query proof,
-  render wiring test, browser-visible proof, or UI evidence envelope ->
+  render wiring test, browser-visible proof, or UI evidence output shape ->
   `$ui-product-harness`;
 - missing command wrapper, fixture, replay, boundary check, proof path, or
-  evidence envelope -> `$headless-product-harness`;
+  headless command output shape -> `$headless-product-harness`;
 - missing reusable frontend architecture rule, naming decision, source-only
   package boundary, or React/Effect/Query/Store split -> `$frontend-architecture`;
 - missing Effect runtime ownership, Service/Layer boundary, Scope/resource
@@ -268,13 +269,26 @@ objective.
 route to goal-proof
 -> run current proof_step
 -> append evidence and apply progress
--> if the goal contract is still valid and the next step is falsifiable:
+-> if the user or Goal Pack explicitly opted into plan-optimality review for
+   this wave / proof-step boundary, route the structured plan artifact through
+   plan-optimality-loop
+-> if that optional review finds gaps, synthesize an adopted correction plan and
+   route it back into Goal Proof state before implementation continues
+-> if the goal contract is still valid, any opted-in review gate is satisfied,
+   and the next step is falsifiable:
      sharpen next proof_step and continue
 -> otherwise review, block, or ask for a human decision
 ```
 
 Continue routing only while the owning method can stay inside the current
 authority and claim boundary.
+
+Plan-optimality review is an optional gate, not a default cost of rolling
+execution. Use `$plan-optimality-loop` only when the user explicitly asks for
+multi-reviewer / subagent plan challenge, or when the active Goal Pack / work
+plan explicitly requires it. When opted in, the review must converge on an
+adopted correction plan; unresolved findings keep the Goal Pack at
+`next_action: review` or `needs_plan` instead of continuing implementation.
 
 ## Non-Ownership Rules
 
@@ -291,7 +305,7 @@ Do not own or rewrite:
   `$product-harness-system`;
 - UI harness command/evidence details that belong to `$ui-product-harness`;
 - docs layer lifecycle rules that belong to `$docs-governance`;
-- command/evidence schema details that belong to `$headless-product-harness`;
+- headless command output details that belong to `$headless-product-harness`;
 - frontend architecture doctrine that belongs to `$frontend-architecture`;
 - Effect Service/Layer/Scope/runtime or error-channel doctrine that belongs to
   `$effect-best-practices`;

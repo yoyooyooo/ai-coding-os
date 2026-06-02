@@ -65,12 +65,20 @@ Before calling a proof step ready, check that it answers these questions in
 - What positive evidence tokens, assertions, or observations must appear?
 - What `not_claimed` entries must be recorded?
 - What is the claim limit of this proof level?
+- How can the step produce or inspect `completion.required_evidence` within
+  `claim_limit`?
 - Where should the next agent inspect first if the proof step fails?
 
 If the only verification is a future command name, sharpen the proof step by defining
-the command contract and evidence envelope. If the command itself is the
+the command contract and expected evidence observations. If the command itself is the
 missing product work, make command creation the proof-step target and still specify
 the tokens or observations it must emit.
+
+If the candidate first step is docs-only, check whether the target delta itself
+is the claim-bearing doc or review authority surface and whether the proof step
+can inspect diffs, cross references, authority conflicts, or static scans. If
+not, treat the doc as a preface and find the first runnable or inspectable proof
+path instead.
 
 ## Rolling Proof Step
 

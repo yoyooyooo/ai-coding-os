@@ -50,7 +50,7 @@ gap 显式留下
 | `capability/` | `interface-capability-planning` | UI/IA、InterfaceCapability、surface、state/data ownership、harness handoff |
 | `harness/` | `product-harness-system` | harness artifact model、`claim_ceiling`、Harness Coverage Matrix、trace lifecycle |
 | `harness/` | `ui-product-harness` | interface-headless、render wiring、browser-visible、production-near UI proof |
-| `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、evidence envelope |
+| `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、headless command JSON/JSONL output shape |
 
 ## 状态变化模型
 
@@ -93,7 +93,8 @@ human intent
   -> next_action: proof_step | continue | needs_plan | blocked | review | done | needs_human
 ```
 
-Goal Pack ready 的条件是：goal contract 稳定，且当前 `proof_step` 能证明或证伪一次有意义推进。
+Goal Pack ready 的条件是：goal contract 稳定，且当前 `proof_step` 已被授权在
+`claim_limit` 内产出或检查 `completion.required_evidence`。
 不是因为列了 work item 就 ready。
 
 Work item 和 checks 是执行细节，不是顶层目标循环的必经概念。
@@ -101,6 +102,9 @@ Work item 和 checks 是执行细节，不是顶层目标循环的必经概念�
 
 完成必须有 review evidence record，包含 `completion_satisfied: true`，并用
 `claim_evidence` 把 completion claim 映射到 evidence。
+跨方法 Evidence Envelope Discipline 由 SSoT / Goal Proof 拥有。这里的
+`changed surfaces` 和 `not_proven` 是叙事 envelope 概念；除非同步升级
+templates / checker，不是 v2 schema 正式字段。
 
 ## Goal Pack 文件
 
@@ -215,7 +219,7 @@ Headless proof：
 
 ```text
 使用 $headless-product-harness：
-设计最小 proof command、fixture/replay、evidence envelope 和 not_claimed。
+设计最小 proof command、fixture/replay、headless command output envelope 和 not_claimed。
 ```
 
 Docs governance：

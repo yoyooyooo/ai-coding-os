@@ -5,7 +5,8 @@ description: >-
   surfaces, smoke evidence gates, fixture/replay ladders, boundary checks, and
   claim ceilings. Use when a repo needs to prove product capability before
   server/web UI, or when the user mentions headless first, agent-first commands,
-  xtask, smoke, harness, evidence envelope, fixture replay, or boundary checks.
+  xtask, smoke, harness, headless command output shape, fixture replay, or
+  boundary checks.
 ---
 
 # Headless Product Harness
@@ -21,13 +22,14 @@ those rules to headless command, smoke, fixture/replay, and boundary proof.
 
 ```text
 Owns: command surface, smoke proof, fixture/replay ladder, boundary check,
-evidence envelope, claim_ceiling, not_claimed, and not_proven for headless
-proof.
+headless command JSON / JSONL output shape, claim_ceiling, not_claimed, and
+not_proven for headless proof.
 Does not own: UI/browser-visible proof, final interface semantics, shared
-harness lifecycle policy, product truth, Goal Pack evidence records, or docs placement.
+harness lifecycle policy, product truth, cross-method Evidence Envelope
+Discipline, Goal Pack evidence records, or docs placement.
 Inputs: product authority, capability/claim, schema/contract boundaries,
 harness scenario if present, fixture/replay material, and prior evidence.
-Outputs: runnable command contract, evidence contract, fixture/replay plan,
+Outputs: runnable command contract, command output contract, fixture/replay plan,
 boundary check, positive tokens, not_claimed, not_proven, and gaps.
 Handoff: user-visible interface path -> interface capability workflow;
 render/browser proof -> UI harness workflow; shared coverage / placement ->
@@ -45,7 +47,7 @@ or destructive behavior.
    `adapter`, `projection`, `db_backed`, or `real_runtime_opt_in`.
 3. State `claim_ceiling` for that proof level before implementation.
 4. Design the smallest stable command that proves one capability.
-5. Define evidence output, positive tokens, `not_claimed`, and `not_proven`.
+5. Define headless command output, positive tokens, `not_claimed`, and `not_proven`.
 6. Place tests near the authority; keep the harness as orchestration.
 7. Report only what the command proves and what it explicitly does not prove.
 
@@ -72,8 +74,8 @@ focus, layout-critical behavior, and frontend state orchestration. Do not report
    later work, but it must not be reported as proof of a higher-level surface.
 4. Write the command contract. See
    [command-surface.md](references/command-surface.md).
-5. Write the evidence contract with `claim_ceiling.level: headless_product` and
-   the selected `headless_sublevel`. See
+5. Write the headless command output contract with
+   `claim_ceiling.level: headless_product` and the selected `headless_sublevel`. See
    [evidence-envelope.md](references/evidence-envelope.md).
 6. Add or update the boundary check when structure can drift. See
    [boundary-check.md](references/boundary-check.md).
@@ -85,7 +87,7 @@ focus, layout-critical behavior, and frontend state orchestration. Do not report
 Missing harness detail is implementation scope when product authority, allowed
 write scope, claim_ceiling, forbidden claims, and falsifiable evidence intent
 are clear. Create the minimum command, fixture, replay, boundary check, or
-evidence envelope needed to prove or falsify the current capability.
+command output envelope needed to prove or falsify the current capability.
 
 Stop only when no honest falsifiable path exists, or when continuing would
 require changing product truth, claim_ceiling, public API/schema/protocol
@@ -117,7 +119,7 @@ hand browser/render claims to `ui-product-harness` and shared cell promotion to
 ## Report Shape
 
 When designing or reviewing a harness, report `authority_map`, `capability`,
-`command`, `evidence_contract`, `claim_ceiling`, `not_claimed`,
+`command`, `command_output_contract`, `claim_ceiling`, `not_claimed`,
 `tests_near_authority`, `fixtures_or_replay`, `boundary_rules`, `not_proven`,
 and `docs_to_update`.
 
@@ -125,4 +127,4 @@ and `docs_to_update`.
 
 If the work item is about where harness docs live, lifecycle, retained evidence,
 or docs layer authority, hand off to `docs-governance`. This skill owns the
-concrete command/evidence design.
+concrete command/output design.
