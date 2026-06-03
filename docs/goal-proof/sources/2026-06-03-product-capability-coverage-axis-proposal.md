@@ -1,381 +1,425 @@
-# Product Capability Coverage Axis Proposal
+# Product Capability Coverage Skill Proposal
 
-## 状态
+## Status
 
 ```yaml
-status: frozen-implementation-candidate
+status: reviewed-implementation-plan
 created_at: 2026-06-03
+review_ledger: ../../review-plan/runs/2026-06-03-product-capability-coverage-axis-rearchitecture-review.md
 source_kind: method-upgrade-proposal
 target_skill:
-  - ai-coding-os
   - product-capability-coverage
+  - ai-coding-os
   - product-harness-system
   - ui-product-harness
   - headless-product-harness
   - interface-capability-planning
 target_layers:
+  - skills/capability/product-capability-coverage/SKILL.md
+  - skills/capability/product-capability-coverage/evals/evals.json
   - skills/router/ai-coding-os/SKILL.md
-  - skills/coverage/product-capability-coverage/SKILL.md
-  - skills/README.md
   - skills/harness/product-harness-system/SKILL.md
   - skills/harness/ui-product-harness/SKILL.md
   - skills/harness/headless-product-harness/SKILL.md
   - skills/capability/interface-capability-planning/SKILL.md
-  - docs/product-harness/README.md
+  - skills/README.md
+  - docs/README.md
+  - docs/product/README.md
   - docs/ssot/README.md
+  - docs/standards/skill-source-layout.md
+  - README.md
+  - README.zh-CN.md
+  - docs/goal-proof/README.md
 not_authority: true
+source_standalone_semantics: true
+downstream_distribution_claimed: false
 ```
 
-本文件冻结“能力覆盖轴”升级方案。它不是当前 skill 行为、目录结构或公开口径 authority。
-若采纳，应先转成 Goal Pack 或实施计划，再修改 skill / README / docs。
+本文件是已评审的实施计划，不是当前 skill 行为或 SSoT authority。若采纳实施，
+应创建 Goal Pack 或执行计划，再修改 skill、eval、router、README 和 docs。
 
-## 背景
+## Reviewed Target Function
 
-当前 AI Coding OS 已有完整的 artifact owner 分层：
-
-- `product-harness-system`：Harness artifact、`claim_ceiling`、Harness Coverage Matrix、生命周期。
-- `ui-product-harness`：interface-headless、render wiring、browser-visible、production-near UI proof。
-- `headless-product-harness`：proof command、smoke、fixture / replay、DB-backed、real runtime opt-in。
-- `interface-capability-planning`：InterfaceCapability、surface、状态 / 数据归属、testability handoff。
-
-这些 skill 互补，但用户常问的是另一类任务：
+本轮采用新目标函数：
 
 ```text
-这个产品功能怎么测？
-这个 bug 修复后 regression 放哪层？
-用户行为矩阵怎么下沉成测试？
-哪些 e2e 需要保留，哪些应该下沉？
-headless product proof 和 UI proof 怎么组合？
+产品能力 / 用户行为 / bug / workflow
+  -> claim slices
+  -> risk axes
+  -> proof home recommendation
+  -> e2e sentinel rationale
+  -> regression sink handoff
+  -> not_claimed / gaps
 ```
 
-这类问题横跨 product、domain、API、storage、realtime、UI、runtime 和 release。
-把它塞进任意现有 harness skill，都会让 artifact owner 变成策略入口。
-
-## Adopted Candidate
+这是一项可独立使用的 agent skill 能力，不只是 AI Coding OS 内部 harness
+路由分支。第一波应新增薄 `product-capability-coverage` skill，并定义
+standalone 最小语义；AI Coding OS suite integration 是可选映射。
 
 采用：
 
 ```text
-Product Capability Coverage Axis
+Standalone Product Capability Coverage Core + Optional AI Coding OS Integrations
 ```
 
-新增独立 skill：
+## Why A Separate Skill
+
+独立 skill 成立，因为它处理的是 pre-owner decomposition：
+
+- 用户给的是产品能力、用户行为矩阵、bug、workflow 或验收疑问。
+- 目标不是立刻设计 Harness artifact，也不是立刻写 UI/headless proof。
+- 第一动作是拆 claim slices、识别 risk axes、建议 proof home、决定 e2e sentinel
+  是否只是跨层接缝、并给 root regression sink。
+
+把这件事放进 `product-harness-system` 会让 Harness artifact owner 吞掉前置产品能力
+拆解；放进 `ai-coding-os` router 又不能 standalone；放进 UI/headless 任一 owner 会
+提前偏向某种 proof surface。
+
+## Name Boundary
+
+公开触发名采用用户目标语义：
 
 ```text
 product-capability-coverage
 ```
 
-定位：
+这里的 `coverage` 只表示 route-time claim/risk coverage analysis，不表示：
 
-```text
-用户给一个产品功能、bug、workflow、用户行为矩阵或 headless capability
-  -> 拆 claim slices
-  -> 识别 claim-bearing axes
-  -> 找 owner layer
-  -> 选择 lowest honest proof level
-  -> 决定 regression placement
-  -> 只在无法下沉的跨层接缝保留 e2e / production-near sentinel
-```
+- Harness Coverage Matrix。
+- coverage status。
+- test coverage percentage。
+- durable coverage artifact。
+- proof completion state。
 
-## Core Doctrine
+不得新增 `Coverage Map`、`coverage_map`、`coverage status`、新的 proof-level enum、
+Goal Pack schema 字段或 CLI checker 行为。
 
-### 1. 用户行为是发现维度，不是 e2e 列表
+## Core Axioms
 
-用户行为用于暴露风险轴：
+1. Claim slice is not proof.
+   A slice names what might need proof; it does not decide final proof authority.
+2. User behavior is risk discovery, not an e2e list.
+   Blank input, duplicate submit, reload, backfill, retry, concurrency, and
+   realtime gaps reveal risk axes; they do not automatically become browser e2e.
+3. Lowest honest proof home first.
+   Prefer the owner closest to the fact, state, contract, projection, UI
+   consumption, runtime composition, or release seam being claimed.
+4. E2E is a seam sentinel.
+   Keep e2e / browser / production-near only for cross-layer composition that
+   lower owners cannot observe honestly.
+5. E2E bug must sink root regression.
+   A visible failure should produce a lower-level regression sink when root
+   cause is localizable; if not, record a gap.
+6. Handoff is not final authority.
+   This skill recommends proof homes and requests; receiving owners freeze final
+   placement, claim ceiling, proof ladder, runner, evidence, and lifecycle.
 
-- 空白、trim、格式、unicode、多行、长文本。
-- 重复提交、快速点击、并发、idempotency。
-- 切换对象、stale projection、reload、backfill。
-- 网络失败、重试、离线、WS gap、stream close。
-- runtime busy、queue、drain、restart、migration。
-
-这些行为不自动变成 browser e2e。每一项先下沉到最小可证明层。
-
-### 2. Headless product 不是绕开 UI
-
-Headless product proof 优先证明产品事实、projection、persistence、runtime seam。
-它不能声明用户可见路径成功；UI proof 也不能单独声明 domain fact 完成。
-
-### 3. 每个 claim slice 找最低诚实证明层
-
-默认 proof placement：
-
-| Axis | Preferred owner / proof |
-| --- | --- |
-| input / intent semantics | interface-headless 或 render wiring |
-| command shape | client / transport contract test |
-| public schema / DTO | contract guard / schema sync test |
-| domain fact | domain / application test |
-| idempotency / concurrency | application / storage seam test |
-| persistence / restart / migration | DB-backed smoke |
-| projection / read model | projection test / API smoke |
-| realtime / async lifecycle | reducer、stream kernel、backfill test |
-| visible UI state | render wiring / browser-visible |
-| reload / navigation recovery | browser-visible |
-| package / runtime / DB composition | production-near sentinel |
-| external real runtime | real_runtime_opt_in only |
-
-### 4. e2e 是接缝哨兵，不是覆盖主力
-
-e2e / browser / production-near 只保留：
-
-- 下层无法观察的跨层 composition。
-- package / runtime / DB / browser / reload 的真实组合路径。
-- 用户可见路径和 headless proof 之间的消费接缝。
-
-每个高风险链路默认少量 sentinel；不得把所有用户排列组合推成 e2e suite。
-
-### 5. e2e 发现 bug 后必须下沉 root regression
-
-当 e2e 或手测发现问题：
-
-```text
-production-near failure
-  -> root cause owner
-  -> lower-level regression
-  -> e2e sentinel 保留跨层接缝证明
-```
-
-如果 root cause 无法下沉，必须在 `not_proven` / gap 中写明原因。
-
-## New Skill Contract
+## Standalone Contract
 
 ### Owns
 
-- Product capability coverage decomposition.
-- 用户行为 / headless capability 到 claim slices 的拆解。
-- `Coverage Map` 轻量输出。
-- test / proof placement 决策。
-- e2e / production-near sentinel 选择。
-- regression 下沉建议。
-- gap audit for coverage.
+- Product capability claim slicing.
+- User behavior / bug / workflow risk-axis discovery.
+- Generic proof-home recommendation.
+- E2E / production-near sentinel rationale.
+- Root regression sink recommendation.
+- Inline handoff note / response contract.
+- `not_claimed` and `gaps` for unproven adjacent surfaces.
 
 ### Does Not Own
 
-- 产品事实、domain authority、API schema。
-- 具体测试代码、runner、Playwright 脚本、xtask 命令实现。
-- Harness artifact 生命周期、Harness Coverage Matrix。
-- Goal Pack state、evidence record、completion review。
-- UI/IA 最终语义或 InterfaceCapability authority。
+- Product truth, domain authority, API schema, DB state, or design authority.
+- Test runner implementation, Playwright scripts, command surfaces, fixtures,
+  replay files, or concrete test code.
+- Final proof placement, claim ceiling, evidence record, lifecycle, or coverage
+  status.
+- Harness Coverage Matrix or any Harness artifact.
+- Goal Pack state, schema, evidence records, or completion review.
+- UI/headless proof ladder ownership.
 
-### Handoff
+### Generic Vocabulary
 
-```text
-coverage strategy / test placement -> product-capability-coverage
-HarnessScenario / claim_ceiling / Matrix lifecycle -> product-harness-system
-UI proof design / render / browser-visible -> ui-product-harness
-headless command / smoke / fixture / replay -> headless-product-harness
-InterfaceCapability semantics -> interface-capability-planning
-multi-turn evidence execution -> goal-proof
-architecture authority ambiguity -> agentic-architecture
-docs placement / promotion -> docs-governance
-```
-
-## Output Shape
-
-`product-capability-coverage` 默认输出轻量 `Coverage Map`，不是 durable Harness Matrix。
-
-```text
-capability:
-entrypoints:
-claim_slices:
-risk_axes:
-coverage_map:
-  - slice:
-    owner_layer:
-    proof_level:
-    test_placement:
-    existing_coverage:
-    gap:
-    promotion_gate:
-e2e_sentinels:
-root_regressions_to_sink:
-not_claimed:
-next_tests:
-```
-
-字段含义：
-
-- `Coverage Map`：一次任务的轻量覆盖决策，可直接用于实现或 review。
-- `Harness Coverage Matrix`：长期 proof contract，仍归 `product-harness-system`。
-- `promotion_gate`：什么时候从轻量 map promote 到 durable HarnessScenario / Matrix。
-
-## Single-Skill Mode
-
-该 skill 必须可单独安装和使用。项目没有完整 OS suite 时，它仍能输出：
+Use standalone terms by default:
 
 ```text
 capability
-claim_slices
-owner_layer
-proof_level
-test_placement
+user_job
+workflow_step
+bug_or_failure_mode
+claim_slice
+risk_axis
+proof_home
+proof_request
 e2e_sentinel
+regression_sink
+handoff
+not_claimed
 gaps
 ```
 
-在完整 AI Coding OS suite 中，它作为 coverage axis router，按需要转交到
-UI / headless / harness / interface / goal skills。
-
-## Group Structure
-
-推荐从当前 artifact-owner 目录升级为 task-axis + owner-skill 并存结构：
+Generic proof homes:
 
 ```text
-router/
-  ai-coding-os
-
-goal/
-  goal-proof
-  goal-contracts
-  finding-proof-step
-  proof-step-implementation
-  write-work-plans
-
-coverage/
-  product-capability-coverage
-
-architecture/
-  agentic-architecture
-  frontend-architecture
-  effect-best-practices
-
-interface/
-  interface-capability-planning
-
-harness/
-  product-harness-system
-  ui-product-harness
-  headless-product-harness
-
-governance/
-  docs-governance
+product_owner
+domain_owner
+api_or_contract_owner
+service_owner
+data_owner
+projection_owner
+ui_owner
+runtime_owner
+release_owner
+human_acceptance
 ```
 
-第一波可以只新增 `skills/coverage/product-capability-coverage/SKILL.md`，
-不立即迁移 `skills/capability/interface-capability-planning` 到 `skills/interface/`。
-目录迁移应另设 migration gate，避免把新 skill 引入和大规模 layout churn 混在一起。
+AI Coding OS skill names appear only under optional integrations, not in the
+standalone output.
 
-## Router Changes
+## Output Shape
 
-`ai-coding-os` 应新增明确路由：
+Output is an inline answer / handoff note, not a durable artifact. It must not
+include stable IDs, lifecycle state, promotion status, evidence refs, or matrix
+cell status.
+
+Recommended shape:
 
 ```text
-用户问“怎么测 / 覆盖 / regression / e2e 是否需要 / 用户行为矩阵 / bug 测试落点”
-  -> product-capability-coverage
-
-用户问 Harness artifact / claim_ceiling / Harness Coverage Matrix / lifecycle
-  -> product-harness-system
+capability:
+user_job:
+claim_slices:
+  - slice:
+    risk_axes:
+    proof_home:
+    proof_request:
+    e2e_sentinel:
+    regression_sink:
+    handoff:
+not_claimed:
+gaps:
+optional_integrations:
+  ai_coding_os:
 ```
 
-`product-harness-system` 需要降权澄清：它不再作为普通“功能怎么测”的入口。
-它只拥有 durable harness artifact、matrix、trace、promotion / retirement。
-
-## Acceptance Trace
-
-输入：
+Handoff sentence template:
 
 ```text
-Channel message 输入：用户可能空白、重复提交、第一条 active 时发第二条、刷新后仍 working。
+Put `<slice>` under `<proof_home>` because `<risk_axis>`.
+Minimum proof request: `<proof_request>`.
+Keep e2e sentinel only for `<seam_reason>`.
+Sink regression to `<regression_sink>` if the failure localizes there.
+Not claimed: `<not_claimed>`.
+Gap: `<gap>`.
 ```
 
-Expected Coverage Map：
+## Optional AI Coding OS Integrations
+
+When the full AI Coding OS suite is available, map generic proof homes to owner
+skills:
 
 ```text
-blank / whitespace content
-  owner_layer: transport + application
-  proof_level: contract/application test
-  e2e_sentinel: false
-
-rapid duplicate submit
-  owner_layer: UI mutation/store/render
-  proof_level: interface_headless + render_wiring
-  e2e_sentinel: false
-
-first active + second queued + drain
-  owner_layer: application/storage seam
-  proof_level: application + DB-backed
-  e2e_sentinel: only package/PGlite/reload seam
-
-package tgz + PGlite statement-by-statement + browser reload
-  owner_layer: production-near composition
-  proof_level: production_near
-  e2e_sentinel: true, one bounded sentinel
+user-facing capability semantics -> interface-capability-planning
+durable HarnessScenario / claim_ceiling / Harness Coverage Matrix -> product-harness-system
+UI render / browser-visible / production-near path -> ui-product-harness
+headless command / fixture / replay / DB-backed proof -> headless-product-harness
+multi-record execution / evidence / completion review -> goal-proof
+docs placement / promotion / demotion -> docs-governance
+architecture authority ambiguity -> agentic-architecture
 ```
+
+`ai-coding-os` routes ordinary “怎么测 / regression 放哪层 / e2e 是否保留 /
+用户行为矩阵怎么下沉” requests to `product-capability-coverage` first, unless the
+user explicitly selects a more specific owner skill.
 
 ## Implementation Waves
 
-### Wave 1: 新 skill 和 router 口径
+### Wave 1: Standalone Skill Source
 
-- 新增 `skills/coverage/product-capability-coverage/SKILL.md`。
-- 更新 `skills/README.md` group 表。
-- 更新 `skills/router/ai-coding-os/SKILL.md` 路由。
-- 更新 `docs/ssot/README.md` 方法事实。
-- 不迁移现有目录。
+Allowed scope:
 
-### Wave 2: Harness skill handoff
+- `skills/capability/product-capability-coverage/SKILL.md`
+- `skills/capability/product-capability-coverage/evals/evals.json`
+- `skills/router/ai-coding-os/SKILL.md`
+- `skills/harness/product-harness-system/SKILL.md`
+- `skills/harness/ui-product-harness/SKILL.md`
+- `skills/harness/headless-product-harness/SKILL.md`
+- `skills/capability/interface-capability-planning/SKILL.md`
+- `skills/README.md`
+- `docs/README.md`
+- `docs/product/README.md`
+- `docs/ssot/README.md`
+- `docs/standards/skill-source-layout.md`
+- `README.md`
+- `README.zh-CN.md`
+- `docs/goal-proof/README.md`
+- this source file and review ledger
 
-- `product-harness-system` 增加“普通 coverage strategy 转交 coverage skill”。
-- `ui-product-harness` 增加“coverage skill 决定是否进入 UI proof”。
-- `headless-product-harness` 增加“coverage skill 决定是否需要 headless proof / smoke”。
-- `interface-capability-planning` 增加“coverage intent 可被 coverage skill 消费”。
+Tasks:
 
-### Wave 3: Reference 和 eval
+1. Add `skills/capability/product-capability-coverage/SKILL.md`.
+2. Frontmatter description must say this is standalone product capability
+   coverage analysis for feature / bug / workflow / behavior-matrix testing
+   placement.
+3. Add the standalone contract, core axioms, generic vocabulary, output shape,
+   handoff template, `does_not_own`, and optional AI Coding OS integrations.
+4. Update `ai-coding-os` router so coverage / testing / regression placement /
+   e2e sentinel / user behavior matrix asks route to `product-capability-coverage`.
+5. Update product harness, UI harness, headless harness, and interface capability
+   skills only as consumers of handoff. They do not lose final authority.
+6. Update `skills/README.md`, root README, README.zh-CN, `docs/README.md`,
+   `docs/product/README.md`, `docs/ssot/README.md`, and
+   `docs/standards/skill-source-layout.md` in the same wave because this changes
+   the public skill suite.
+7. Add minimum evals to `skills/capability/product-capability-coverage/evals/evals.json`.
 
-- 添加 coverage decomposition examples。
-- 添加 evals：
-  - 用户行为矩阵不生成全 e2e。
-  - e2e bug 下沉 root regression。
-  - headless capability 不声明 browser path。
-  - Coverage Map 不等同 Harness Coverage Matrix。
+Do not add `skills/coverage/` in Wave 1. The existing `capability/` group is
+acceptable because this is product capability decomposition, not a new artifact
+family. A future source-layout review may move task-axis skills later.
 
-### Wave 4: 可选目录迁移
+### Wave 2: Optional Layout Reclassification
 
-- 将 `skills/capability/interface-capability-planning` 迁到 `skills/interface/`。
-- 需要同步 skill layout docs、README、tests、sync scripts。
-- 不作为 Wave 1 阻塞。
+Only if future evidence shows `capability/` becomes overloaded:
+
+- Review whether `product-capability-coverage` and
+  `interface-capability-planning` should remain in `capability/`, or whether a
+  new `coverage/` / `interface/` grouping is worth the public layout churn.
+- This requires a separate skill-source-layout review and same-wave README /
+  SSoT / standards updates.
+
+## Minimum Evals
+
+Eval ids:
+
+- `product-capability-coverage-feature-behavior-matrix`
+- `product-capability-coverage-bug-regression-sink`
+- `product-capability-coverage-headless-not-browser-claim`
+- `product-capability-coverage-e2e-sentinel-only-seam`
+- `product-capability-coverage-standalone-no-os-taxonomy`
+- `product-capability-coverage-not-harness-matrix`
+
+Behavior expectations:
+
+- Feature/user behavior matrix decomposes into multiple claim slices and proof
+  homes; it does not become a full e2e suite.
+- Bug report includes failure mode, likely root regression sink, e2e sentinel
+  rationale, and gap if root cannot be localized.
+- Headless proof request does not claim browser-visible path.
+- UI/browser proof request does not claim product fact unless paired with product
+  owner proof.
+- Standalone output does not require AI Coding OS skill names.
+- Output does not define Harness Coverage Matrix, coverage status, claim ceiling,
+  evidence record, or lifecycle state.
+
+## Acceptance Trace
+
+Input:
+
+```text
+用户提交评论时可能空白、重复点击提交、第一条还在发送时发第二条、刷新后仍应看到正确状态。
+```
+
+Expected standalone output:
+
+```text
+capability: submit comment
+user_job: publish one valid comment without duplicates or lost queued work
+claim_slices:
+  - slice: blank / whitespace input rejected
+    risk_axes: input semantics, validation boundary
+    proof_home: api_or_contract_owner + domain_owner
+    proof_request: contract/domain validation
+    e2e_sentinel: no
+    regression_sink: validation rule near product/domain owner
+  - slice: rapid duplicate submit does not create duplicates
+    risk_axes: idempotency, UI mutation, service concurrency
+    proof_home: service_owner, optionally ui_owner for disabled/pending state
+    proof_request: service/application test plus UI state request if user-visible
+    e2e_sentinel: no unless duplicate only appears through browser/runtime composition
+    regression_sink: idempotency/application owner
+  - slice: first active + second queued drains correctly
+    risk_axes: queue, persistence, async lifecycle
+    proof_home: service_owner + data_owner
+    proof_request: application/storage test
+    e2e_sentinel: only if reload/runtime composition is the claim
+    regression_sink: queue/storage owner
+not_claimed:
+  - browser reload recovery unless browser/runtime sentinel is exercised
+gaps:
+  - external production reliability not proven
+```
+
+AI Coding OS optional integration may map:
+
+```text
+api_or_contract_owner -> headless-product-harness
+domain_owner / service_owner / data_owner -> headless-product-harness or project tests
+ui_owner -> ui-product-harness
+durable matrix / claim_ceiling -> product-harness-system
+multi-step evidence -> goal-proof
+```
 
 ## Verification Plan
 
-第一波验收：
+Required:
 
 ```bash
 bun run check
 python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
 git diff --check
+python3 -m json.tool skills/capability/product-capability-coverage/evals/evals.json >/dev/null
+rg -n "product-capability-coverage" README.md README.zh-CN.md docs/README.md docs/product/README.md docs/ssot/README.md docs/standards/skill-source-layout.md skills/README.md skills/router/ai-coding-os/SKILL.md
+rg -n "product-capability-coverage-feature-behavior-matrix|product-capability-coverage-bug-regression-sink|product-capability-coverage-headless-not-browser-claim|product-capability-coverage-e2e-sentinel-only-seam|product-capability-coverage-standalone-no-os-taxonomy|product-capability-coverage-not-harness-matrix" skills/capability/product-capability-coverage/evals/evals.json
 ```
 
-静态核对：
+Boundary checks:
 
 ```bash
-rg "product-capability-coverage|Coverage Map|Harness Coverage Matrix" skills docs
-rg "how to test|怎么测|coverage strategy" skills/router/ai-coding-os/SKILL.md
+test ! -d skills/coverage
+! rg -n "Coverage Map|coverage_map|coverage status|new proof-level enum" skills/capability/product-capability-coverage skills/router skills/harness docs/ssot docs/product README.md README.zh-CN.md
+git diff -- packages/cli/src packages/cli/test
 ```
 
-不得在第一波改变：
-
-- Goal Proof CLI parser。
-- Goal Pack schema。
-- existing skill runtime trigger names。
-- 已有 harness proof ladder 名称。
+Allowed negative / historical mentions of rejected terms may appear only in this
+source, review ledger, historical evidence, or eval negative examples.
 
 ## Non-Goals
 
-- 不合并 `product-harness-system`、`ui-product-harness` 和 `headless-product-harness`。
-- 不把所有非 Goal Proof skill 收进一个 mega skill。
-- 不新增第二套 Harness vocabulary。
-- 不把 Coverage Map 升级成强制 artifact。
-- 不要求所有项目使用 e2e。
-- 不要求所有项目维护 durable Harness Coverage Matrix。
-- 不替代 Goal Proof evidence / completion review。
+- No CLI / Goal Pack schema / checker behavior change.
+- No Harness Coverage Matrix replacement or second Harness artifact.
+- No product truth ownership.
+- No test runner, Playwright script, command, fixture, replay, or concrete test
+  implementation ownership.
+- No UI/headless proof ladder ownership.
+- No Goal Pack evidence or completion review ownership.
+- No downstream runtime installed-state claim.
+- No `coverage/` group in Wave 1.
 
 ## Frozen Decisions
 
-- 新增独立 skill：`product-capability-coverage`。
-- 新增 coverage axis，但不吞并现有 owner skills。
-- `Coverage Map` 是轻量决策输出；`Harness Coverage Matrix` 仍归 `product-harness-system`。
-- 用户行为驱动和 headless product 驱动统一进入 claim-slice / owner-layer / proof-level 拆解。
-- e2e / production-near 是 bounded sentinel，不是默认覆盖主力。
-- e2e 发现 bug 后必须尝试下沉 root regression。
-- 第一波不做大规模目录迁移；先新增 skill 和路由口径。
-- 后续可选将 `capability/` 改为 `interface/`，但必须独立迁移 gate。
+- Wave 1 adds a standalone `product-capability-coverage` skill.
+- The skill lives under `skills/capability/` in Wave 1.
+- `source_standalone_semantics: true`.
+- `downstream_distribution_claimed: false`.
+- Default output uses generic proof homes, not AI Coding OS skill names.
+- AI Coding OS owner skills are optional integrations.
+- Handoff is recommendation, not final authority.
+- `coverage` in the skill name means route-time claim/risk coverage analysis, not
+  Harness Coverage Matrix or coverage status.
+- Public README / docs / SSoT / skill-source-layout must update in the same wave.
+
+## Ready-To-Implement Summary
+
+First implementation Goal Pack should claim:
+
+```text
+repo-local source update for standalone product-capability-coverage skill,
+router integration, optional suite handoffs, public docs sync, and eval coverage
+```
+
+It must not claim:
+
+```text
+downstream runtime installation
+new CLI/schema/checker behavior
+new Harness artifact or Matrix
+product truth or test runner implementation
+```

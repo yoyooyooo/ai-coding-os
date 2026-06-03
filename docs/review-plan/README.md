@@ -33,6 +33,8 @@
 
 最近 ledger：
 
+- `runs/2026-06-03-product-capability-coverage-axis-rearchitecture-review.md`：Product Capability Coverage proposal 重审，收敛为 standalone `product-capability-coverage` 薄 skill，放入 `skills/capability/`，AI Coding OS 集成为 optional mapping。
+- `runs/2026-06-03-product-capability-coverage-axis-proposal-review.md`：Product Capability Coverage Axis proposal，收敛为 decision-gated Product Proof Placement Lens；第一波不新增 public skill / coverage group / Coverage Map artifact。
 - `runs/2026-06-03-goal-contract-semantic-coverage-gate-proposal-review.md`：Triggered Claim Coverage Review proposal，收敛 semantic coverage gate 为现有 v2 surface 上的 E999 claim coverage review。
 - `runs/2026-06-02-strong-agent-ready-gate-diff-review.md`：C-001 owner split、ready gate、docs-only proof-surface predicate 和叙事 envelope 边界评审。
 

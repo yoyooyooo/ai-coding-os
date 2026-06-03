@@ -119,7 +119,7 @@ Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation grap
 已被消费但需要保留追溯的材料放这里。Sources 不是开放候选。
 
 - `sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md` - 已消费的顶层叙事 delta source：公共主线采用 intent-to-evidence state transition，compiler 仅保留为辅助隐喻，不新增公共 Check、schema 或 CLI。
-- `sources/2026-06-03-product-capability-coverage-axis-proposal.md` - 冻结候选：新增 `product-capability-coverage` 独立 skill 和 coverage axis，用 Coverage Map 指导功能覆盖拆解、测试下沉和 e2e sentinel 选择。
+- `sources/2026-06-03-product-capability-coverage-axis-proposal.md` - 已评审实施计划：收敛为 standalone `product-capability-coverage` 薄 skill，第一波放入 `skills/capability/` 并同步 public docs、router、handoff consumers 和 evals；不新增 `coverage/` group、CLI/schema 或 Harness Matrix 替代物。
 - `sources/2026-06-03-goal-contract-claim-coverage-review-proposal.md` - 已消费的 Triggered Claim Coverage Review proposal：第一波采用现有 v2 surface 的 E999 claim coverage review，不新增 schema 或 CLI parser 行为。
 - `sources/2026-05-31-goal-proof-dag-frontier-view-proposal.md` - 已收敛的 CLI delta implementation plan：采用 schema-first 的只读 `goal-proof dag` frontier view，并保持 `relations` 为 discovery / relation evidence surface。
 - `sources/2026-05-24-goal-proof-v2-dogfood-migration-handoff.md` - v2 Goal Pack schema dogfood migration 的历史 handoff 来源。
