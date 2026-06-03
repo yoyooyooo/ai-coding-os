@@ -57,6 +57,34 @@ proof step is valid only when the target delta itself is the claim-bearing doc
 or review authority surface and the proof step can inspect diffs, cross
 references, authority conflicts, or static scans.
 
+## Triggered Claim Coverage Review
+
+Use Triggered Claim Coverage Review when the goal has semantic risk: broad or
+multi-stage scope, mixed proof levels, public surface or schema/protocol/CLI/
+template/skill changes, authority actions, product truth or quality judgments,
+permission/security/destructive/compliance boundaries, multiple evidence
+records, or relation-backed completion.
+
+The ready gate stays unchanged:
+
+```text
+stable goal contract + authorized proof_step can produce/inspect
+completion.required_evidence within claim_limit
+```
+
+When triggered, existing v2 surfaces must carry claim coverage:
+
+```text
+goal.yaml completion.required_evidence -> scoped claim slices
+goal.yaml claim_limit / non_goals / constraints -> excluded adjacent axes
+progress.yaml proof_step -> current slice + proof level + claim ceiling
+implementation evidence claims / not_claimed -> proved slice + exclusions
+E999 claim_evidence / not_claimed / remaining_gaps -> completion mapping
+```
+
+Do not add semantic coverage fields, a proof-level enum, token naming rules, or
+CLI natural-language parsing to satisfy this review.
+
 ## Collaboration Contract
 
 ```text
@@ -267,6 +295,11 @@ gaps. Positive tokens require an executed or inspected path; unverified adjacent
 surfaces are gaps, not decorative negative tokens. Unless schema, templates, and
 checkers are explicitly upgraded, `changed surfaces` and `not_proven` are
 narrative concepts, not formal v2 completion review fields.
+
+For triggered claim coverage review, E999 must map each completed claim slice to
+the required evidence, evidence ref or command/check, proof level, and explicit
+`not_claimed` / `remaining_gaps`. A broad completion token is not enough when
+the objective carries claim-bearing axes that were not proved or excluded.
 
 If the Goal Pack is a successor, completion review should include relation
 evidence tokens proving predecessor evidence records and required evidence were

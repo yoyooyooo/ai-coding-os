@@ -65,6 +65,20 @@ no-match claim such as "old vocabulary is absent", the command should be an
 inverted search (`! rg ...`) or the evidence should name the allowed matches
 explicitly. Do not record a plain positive search as proof of absence.
 
+## Triggered Claim Coverage Review Boundary
+
+The checker does not parse objective semantics, proof-level labels, token names,
+or natural-language coverage claims. First-wave Triggered Claim Coverage Review
+is guidance and template surface only: agents must use existing v2 fields such
+as `completion.required_evidence`, `claim_limit`, evidence `claims`,
+`not_claimed`, E999 `claim_evidence`, and `remaining_gaps`.
+
+Future checker work may add opt-in structural lint only, for example checking
+that a completion review contains `claim_evidence`, `not_claimed`, and
+`remaining_gaps`, or that `claim_evidence[].claim` references visible
+`completion.required_evidence` entries. It must not claim natural-language
+semantic coverage, enforce proof-level enums, or enforce token naming rules.
+
 ## Completion Checks
 
 A done Goal Pack must include a review evidence record:

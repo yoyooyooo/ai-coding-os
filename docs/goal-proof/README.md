@@ -86,6 +86,7 @@ goals/<goal-id>/
 
 ## Active Goal Packs
 
+- `goals/2026-06-03-triggered-claim-coverage-review/` - ready Goal Pack for implementing Triggered Claim Coverage Review as first-wave Goal Proof skill/template/docs guidance with no CLI/schema behavior change.
 - `goals/2026-05-31-goal-proof-dag-frontier-cli/` - ready Goal Pack for implementing schema-first structured blockers and the read-only `goal-proof dag` frontier view.
 
 ## Completed Goal Packs
@@ -101,6 +102,7 @@ goals/<goal-id>/
 ## Goal Threads
 
 - `agent-first-cli` - CLI command and output surfaces optimized for agent routing and bounded context.
+- `goal-proof-method` - Goal Proof method, schema, template, completion review, and skill guidance changes.
 - `goal-relations` - relation metadata, thread discovery, relations CLI, and DAG/frontier work.
 - `evidence-cli` - evidence record command-surface improvements for agent-first read/write workflows.
 
@@ -110,11 +112,15 @@ Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation grap
 
 弱信号、开放候选和未准备进入 Goal Pack 的输入放这里。Inbox 不是 backlog。
 
+当前无开放 inbox item。
+
 ## Sources
 
 已被消费但需要保留追溯的材料放这里。Sources 不是开放候选。
 
 - `sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md` - 已消费的顶层叙事 delta source：公共主线采用 intent-to-evidence state transition，compiler 仅保留为辅助隐喻，不新增公共 Check、schema 或 CLI。
+- `sources/2026-06-03-product-capability-coverage-axis-proposal.md` - 冻结候选：新增 `product-capability-coverage` 独立 skill 和 coverage axis，用 Coverage Map 指导功能覆盖拆解、测试下沉和 e2e sentinel 选择。
+- `sources/2026-06-03-goal-contract-claim-coverage-review-proposal.md` - 已消费的 Triggered Claim Coverage Review proposal：第一波采用现有 v2 surface 的 E999 claim coverage review，不新增 schema 或 CLI parser 行为。
 - `sources/2026-05-31-goal-proof-dag-frontier-view-proposal.md` - 已收敛的 CLI delta implementation plan：采用 schema-first 的只读 `goal-proof dag` frontier view，并保持 `relations` 为 discovery / relation evidence surface。
 - `sources/2026-05-24-goal-proof-v2-dogfood-migration-handoff.md` - v2 Goal Pack schema dogfood migration 的历史 handoff 来源。
 

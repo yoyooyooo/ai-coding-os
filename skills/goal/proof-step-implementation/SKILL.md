@@ -139,6 +139,18 @@ matches. For schema or terminology migrations, include active surfaces in the
 evidence: templates, references, agents, evals, CLI help/flags, README
 examples, tests/fixtures, and active Goal Pack artifacts.
 
+For goals that hit the semantic risk trigger, implementation evidence must
+preserve the claim coverage review instead of flattening it into broad tokens:
+
+- `claims` names the completed claim slice and proof level.
+- `evidence` cites the command, check, inspected diff, trace, or observation
+  that proves that slice.
+- `not_claimed` records adjacent public surfaces, runtime modes, authority
+  actions, or safety boundaries not proved by this evidence.
+- Different proof levels use separate evidence records when crossing a
+  promotion gate; lower-level proof may support the next level but does not
+  become that level's claim.
+
 ## State Update
 
 After appending an evidence record, update `progress.yaml`: `active_work_item`,

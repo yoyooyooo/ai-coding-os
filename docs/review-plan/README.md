@@ -33,6 +33,7 @@
 
 最近 ledger：
 
+- `runs/2026-06-03-goal-contract-semantic-coverage-gate-proposal-review.md`：Triggered Claim Coverage Review proposal，收敛 semantic coverage gate 为现有 v2 surface 上的 E999 claim coverage review。
 - `runs/2026-06-02-strong-agent-ready-gate-diff-review.md`：C-001 owner split、ready gate、docs-only proof-surface predicate 和叙事 envelope 边界评审。
 
 ## Read Next

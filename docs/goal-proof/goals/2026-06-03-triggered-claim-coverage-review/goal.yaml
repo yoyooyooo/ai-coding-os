@@ -1,0 +1,99 @@
+schema_version: 2
+id: "2026-06-03-triggered-claim-coverage-review"
+status: done
+
+intent:
+  source: "docs/goal-proof/sources/2026-06-03-goal-contract-claim-coverage-review-proposal.md"
+  interpreted_as: "Implement the reviewed Triggered Claim Coverage Review proposal as a Goal Proof method update across skills, templates, and local docs."
+  assumptions:
+    - "The plan-optimality ledger reached consensus and is the adopted implementation input."
+    - "First wave is guidance/template/docs only and must not change CLI parser, checker behavior, or Goal Pack schema."
+    - "Future checker work requires a separate reviewed proposal unless it remains structural and opt-in."
+  open_questions: []
+
+objective: "Add Triggered Claim Coverage Review to Goal Proof authoring, proof-step, run, and completion guidance so semantic-risk Goal Packs map claim slices to required evidence, evidence refs, proof level, and not_claimed / remaining_gaps without adding new schema fields or CLI semantic parsing."
+guiding_principle: "Keep Goal Proof strong-agent optimistic: use existing v2 surfaces, make broad completion claims honest, and avoid a second workflow, second ledger, second contract, proof-level enum, or token naming DSL."
+
+relations:
+  thread_id: goal-proof-method
+  links:
+    - goal_id: 2026-05-24-goal-proof-v2-dogfood-migration
+      relation: related_to
+      evidence_ref: E999
+      evidence:
+        - completion_satisfied=true
+
+authority_refs:
+  - "docs/goal-proof/sources/2026-06-03-goal-contract-claim-coverage-review-proposal.md"
+  - "docs/review-plan/runs/2026-06-03-goal-contract-semantic-coverage-gate-proposal-review.md"
+  - "docs/goal-proof/README.md"
+  - "docs/standards/docs-governance.md"
+  - "skills/goal/goal-proof-system/SKILL.md"
+  - "skills/goal/goal-proof-system/references/checker-rules.md"
+  - "skills/goal/goal-proof-system/templates/evidence.jsonl"
+  - "skills/goal/goal-contracts/SKILL.md"
+  - "skills/goal/finding-proof-step/SKILL.md"
+  - "skills/goal/proof-step-implementation/SKILL.md"
+  - "packages/cli/src/lib/goal-pack.ts"
+
+engineering_guidance:
+  standards:
+    - "docs/standards/docs-governance.md"
+    - "docs/standards/skill-source-layout.md"
+  architecture_notes:
+    - "Canonical completion-time home is E999 claim_evidence / not_claimed / remaining_gaps."
+    - "goal.yaml and progress.yaml receive guidance only; do not add semantic_coverage_notes, proof_modality_by_path, not_in_scope, or another top-level field."
+    - "Ready gate stays: stable goal contract plus authorized proof_step can produce or inspect completion.required_evidence within claim_limit."
+    - "Semantic risk trigger makes claim coverage review mandatory only for broad, multi-stage, real-runtime, public-surface, authority-action, product-truth, quality, permission, destructive, compliance, multi-evidence, or relation-backed goals."
+    - "Proof levels reuse the existing proof ladder and owner-local harness vocabulary."
+    - "Future checker work is out of this first wave unless it is documented as structural and opt-in only."
+  quality_bar: "A future agent reading only the phase skills, E999 template, checker-rules note, and Goal Proof README can apply Triggered Claim Coverage Review without inventing new schema, parser behavior, or token naming rules."
+  preferred_proof_path: "Static diff inspection plus rg assertions, docs audit, Goal Pack check, git diff --check, and bun run check."
+
+constraints:
+  - "Do not change packages/cli/src/lib/goal-pack.ts or any CLI parser/checker behavior in W001."
+  - "Do not introduce a new Goal Pack schema field or required YAML field."
+  - "Do not add a global proof modality enum."
+  - "Do not require every small Goal Pack to write a matrix."
+  - "Do not enforce token naming conventions."
+  - "Do not rename the existing Evidence Envelope Discipline or Harness Coverage Matrix concepts."
+  - "Do not move current truth into the consumed source or review ledger; implementation guidance belongs in skills/templates/docs."
+
+non_goals:
+  - "No CLI semantic coverage checker in the first wave."
+  - "No natural-language objective parser."
+  - "No external project migration or runtime skill installation claim."
+  - "No implementation of future opt-in structural lint."
+  - "No change to Goal Pack ready formula."
+
+completion:
+  signal: "Goal Proof skills, E999 template, checker-rules note, and local Goal Proof docs present Triggered Claim Coverage Review as an existing-surface guidance/template change, with first-wave CLI/schema non-change boundaries explicit."
+  required_evidence: "Skill guidance updated in goal-contracts, finding-proof-step, proof-step-implementation, and goal-proof-system; E999 template demonstrates claim coverage review using claim_evidence / not_claimed / remaining_gaps; checker-rules states first wave does not parse semantic coverage and future checker is structural opt-in only; docs/goal-proof README indexes the active Goal Pack and consumed source; static scan shows rejected field names are not active schema; packages/cli/src/lib/goal-pack.ts has no diff; bun run check, docs audit, goal-proof check for this pack, and git diff --check pass; completion review maps each claim slice to evidence with proof level and not_claimed / remaining_gaps."
+
+claim_limit: "This Goal Pack may claim only repository-local Goal Proof method guidance, template, checker-rules documentation, and docs index updates for Triggered Claim Coverage Review. It does not claim CLI parser/checker behavior changes, new schema fields, external project migration, runtime skill promotion, natural-language semantic checking, or a future structural lint implementation."
+
+stop_rules:
+  - "Stop if implementation requires changing CLI parser, checker behavior, or package public API in W001."
+  - "Stop if the guidance cannot be expressed without a new Goal Pack schema field."
+  - "Stop if future checker wording would imply objective natural-language parsing or token naming enforcement."
+  - "Stop if docs governance routes the adopted rule to SSoT, ADR, or standards instead of skill/template guidance."
+  - "Stop if review ledger residual risks require reopening the adopted candidate."
+
+agent_authority:
+  continue_by_default: true
+  requires_human_decision:
+    - objective
+    - authority_refs
+    - engineering_guidance
+    - constraints
+    - completion
+    - claim_limit
+    - stop_rules
+  agent_may_revise:
+    - proof_step
+    - work_order
+    - proof_path
+    - implementation_shape
+    - documentation_shape
+
+evidence_mode: strict
