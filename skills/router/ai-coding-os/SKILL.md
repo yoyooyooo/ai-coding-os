@@ -114,7 +114,8 @@ Otherwise route by intent:
   rules, naming semantics, React/Effect/Query/Zustand boundaries,
   `packages/client`, `packages/ui`, source-only shared rules, or frontend
   architecture audit -> `$frontend-architecture`;
-- asks for Effect Service/Layer/runtime/Scope, typed error channels,
+- asks for Effect-first backend capability slices, API / CLI / worker handlers,
+  Effect `Context.Service` / `Layer` / runtime / Scope, typed error channels,
   `Effect.gen`, Promise integration, timeout/retry, ManagedRuntime,
   Stream/Queue/SubscriptionRef, or Effect v4/v3 API differences ->
   `$effect-best-practices`;

@@ -1,10 +1,10 @@
 ---
 name: effect-best-practices
 description: >-
-  Effect TypeScript best practices. Use when writing/reviewing Effect.gen, Service/Layer, error
-  channels, Promise integration, timeout/retry, ManagedRuntime, Cache, SubscriptionRef,
-  Config/Schema, @effect/platform, @effect/cli, Scope, or tests. Do not use for scaffolding the
-  HttpApi app template; use effect-api-app-kit.
+  Effect TypeScript best practices for Effect-first backend/frontend code. Use when writing or
+  reviewing Effect.gen, Service/Layer, backend capability slices, API/CLI/worker handlers,
+  repo/adapters, runtime composition, error channels, Promise integration, timeout/retry,
+  ManagedRuntime, Cache, SubscriptionRef, Config/Schema, Scope, resources, or tests.
 ---
 
 # Effect 最佳实践
@@ -16,6 +16,7 @@ description: >-
 - 设计内部模块组织、命名语义，或需要和项目级架构规范配合时，先读 `references/module-organization-coordination.md`。
 - 当项目已经明确采用 Effect 作为总体运行时骨架时，优先遵守“外层骨架默认 Effect、内层纯逻辑保持普通函数”的分层规则；具体边界见 `references/module-organization-coordination.md` 与 `references/cheatsheet.md`。
 - 当项目标记为 Effect-first 时，复杂异步、资源生命周期、可替换依赖和测试 harness 默认优先用 Effect Service / Layer / Scope / Stream / Queue 建模；具体场景模板先读 `references/async-scenario-templates.md`。
+- 新增或评审后端 capability slice（API / CLI / worker / internal use case）时，先读 `references/backend-capability-slice.md`，再按需进入 HttpApi、repo/db、资源和测试参考。
 - 写/评审 Effect CLI 时，先读 `references/cli-contract.md`（A/B/C：对外契约 + 工程模板 + 情境因子）。
 - 写/改涉及资源的代码（server/daemon/db/ws/child_process）时，读 `references/scope-resources.md`。
 - 写测试（vitest/@effect/vitest/contract/integration）时，读 `references/testing-effect.md`。
@@ -32,6 +33,7 @@ description: >-
 - `references/cheatsheet.md`：Effect 最佳实践速查（含错误语义、R/Service/Layer、timeout/retry、Promise、ManagedRuntime、Cache、SubscriptionRef、Schema/Config/HTTP 等）。
 - `references/effect-v4-gap.md`：Effect v4 默认口径与 v3 迁移差异（Service、Layer.effect、Scope、ManagedRuntime、React 集成）。
 - `references/module-organization-coordination.md`：与 `$meta-project-architecture` 的协同规则，以及 `repo / live / runtime` 的 Effect 映射、骨架与纯函数边界。
+- `references/backend-capability-slice.md`：Effect-first 后端 capability 切片模板（authority → contract → domain → port → flow → adapter → runtime → surface → proof）。
 - `references/async-scenario-templates.md`：Effect-first 场景模板（WebSocket / SSE、HTTP client、polling、daemon / child_process、Queue / Stream、React bridge、TDD harness）。
 - `references/cli-contract.md`：Effect CLI 最佳实践（A/B/C：对外契约、工程模板因子、情境固化因子）。
 - `references/scope-resources.md`：资源与生命周期（Scope/Layer.effect/acquireRelease、取消/超时、避免泄漏）。
