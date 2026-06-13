@@ -299,7 +299,9 @@ bun run release 0.2.0
 
 `bun run release:check` 只执行发布决策预检，不改文件。`bun run release`
 创建临时本地 release 分支，更新版本文件，提交，给该提交打 `vX.Y.Z` tag，
-只 push tag，然后回到原分支。GitHub Actions 从 tag 发布 npm 包。
+只把 tag 推到配置好的公网 GitHub release remote，然后回到原分支。
+GitHub Actions 从 tag 发布 npm 包。AGS remote 可以继续用于局域网同步，
+但不是发布触发面。
 
 ## 开发
 

@@ -50,10 +50,11 @@ function git(cwd: string, args: string[]): void {
   assert.equal(result.status, 0, result.stderr || result.stdout);
 }
 
-function runRelease(cwd: string, args: string[]): RunResult {
+function runRelease(cwd: string, args: string[], env: Record<string, string> = {}): RunResult {
   const result = spawnSync(process.execPath, [join(cwd, "scripts/release.ts"), ...args], {
     cwd,
     encoding: "utf8",
+    env: { ...process.env, ...env },
   });
   return {
     status: result.status,
@@ -106,6 +107,63 @@ test("release no-push tags a temporary release commit without mutating main", ()
     assert.equal(JSON.parse(tagVersion.stdout).version, "1.2.4");
   } finally {
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("release can push a tag to a direct repository URL", () => {
+  const root = makeReleaseRepo();
+  const remote = mkdtempSync(join(tmpdir(), "release-remote-"));
+  try {
+    git(remote, ["init", "--bare"]);
+    const configPath = join(root, ".github/release.config.json");
+    const config = JSON.parse(readFileSync(configPath, "utf8"));
+    config.remote = remote;
+    writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
+    git(root, ["add", ".github/release.config.json"]);
+    git(root, ["commit", "-m", "release config"]);
+
+    const result = runRelease(root, ["patch"]);
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /v1\.2\.4 pushed\. CI publish workflow should start\./);
+
+    const remoteTag = spawnSync("git", ["--git-dir", remote, "rev-parse", "-q", "--verify", "refs/tags/v1.2.4^{}"], {
+      encoding: "utf8",
+    });
+    assert.equal(remoteTag.status, 0, remoteTag.stderr || remoteTag.stdout);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(remote, { recursive: true, force: true });
+  }
+});
+
+test("release falls back to bun pm view when npm is unavailable", () => {
+  const root = makeReleaseRepo();
+  const bin = mkdtempSync(join(tmpdir(), "release-bin-"));
+  try {
+    const configPath = join(root, ".github/release.config.json");
+    const config = JSON.parse(readFileSync(configPath, "utf8"));
+    config.publishMode = "npm";
+    config.publishPackage = "goal-proof";
+    writeFileSync(configPath, `${JSON.stringify(config, null, 2)}\n`);
+    git(root, ["add", ".github/release.config.json"]);
+    git(root, ["commit", "-m", "npm release config"]);
+
+    writeFileSync(join(bin, "npm"), "#!/bin/sh\necho 'Executable not found in $PATH: \"npm\"' >&2\nexit 127\n");
+    writeFileSync(join(bin, "bun"), "#!/bin/sh\nif [ \"$1\" = \"pm\" ] && [ \"$2\" = \"view\" ]; then echo '[\"1.2.8\"]'; exit 0; fi\necho unexpected bun args: \"$@\" >&2\nexit 1\n");
+    spawnSync("chmod", ["+x", join(bin, "npm"), join(bin, "bun")]);
+
+    const result = runRelease(root, ["patch", "--precheck", "--no-push"], {
+      PATH: `${bin}:${process.env.PATH ?? ""}`,
+    });
+
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /package: goal-proof/);
+    assert.match(result.stdout, /next: 1\.2\.9/);
+    assert.match(result.stdout, /reason: new release from base 1\.2\.8/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(bin, { recursive: true, force: true });
   }
 });
 

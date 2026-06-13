@@ -1,6 +1,6 @@
 {
   "defaultBranch": "main",
-  "remote": "origin",
+  "remote": "git@github.com:yoyooyooo/ai-coding-os.git",
   "tagPrefix": "v",
   "versionFiles": [
     "package.json",
@@ -21,7 +21,7 @@
   ],
   "commitMessage": "chore: release {tag}",
   "publishMode": "npm",
-  "publishPackage": "goal-diffusion",
+  "publishPackage": "goal-proof",
   "publishRegistry": "https://registry.npmjs.org",
   "reuseFailedVersion": true,
   "releaseBranchPrefix": "release/"

@@ -324,8 +324,10 @@ bun run release 0.2.0
 
 `bun run release:check` validates release readiness without changing files.
 `bun run release` creates a temporary local release branch, updates package
-versions, commits, tags `vX.Y.Z`, pushes only the tag, then returns to the
-original branch. GitHub Actions publishes the npm package from the tag.
+versions, commits, tags `vX.Y.Z`, pushes only the tag to the configured public
+GitHub release remote, then returns to the original branch. GitHub Actions
+publishes the npm package from the tag. Local AGS remotes may be used for LAN
+sync, but they are not the release trigger.
 
 The npm tarball contains only `dist/`, `README.md`, `README.zh-CN.md`,
 `LICENSE`, and package metadata.

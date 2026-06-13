@@ -169,6 +169,7 @@ function usage(): string {
 
 Default model:
   Creates a temporary local release branch, writes version files, commits, tags that commit, pushes tag only.
+  The release remote may be a configured git remote name or a direct repository URL.
   If latest git tag is absent from npm, it is treated as a failed release and reused.`;
 }
 
@@ -183,7 +184,9 @@ function ensureGitBase(config: Config, options: Options): void {
   }
   if (!options.noPush) {
     const remote = execCommand("git", ["remote", "get-url", config.remote], false);
-    if (remote.exitCode !== 0) fail(`Missing git remote: ${config.remote}. Add it or run with --no-push.`);
+    if (remote.exitCode !== 0 && !looksLikeRepositoryLocation(config.remote)) {
+      fail(`Missing git remote or repository URL: ${config.remote}. Add it or run with --no-push.`);
+    }
   }
 }
 
@@ -213,7 +216,11 @@ function readPublishedVersions(config: Config): string[] {
     fail("release config publishPackage is required for npm publish mode.");
   }
   if (config.publishPackage === null || config.publishPackage.length === 0) return [];
-  const result = execCommand("npm", ["view", config.publishPackage, "versions", "--json", "--registry", config.publishRegistry], false);
+  const viewArgs = ["view", config.publishPackage, "versions", "--json", "--registry", config.publishRegistry];
+  let result = execCommand("npm", viewArgs, false);
+  if (result.exitCode !== 0 && commandUnavailable(result, "npm")) {
+    result = execCommand("bun", ["pm", ...viewArgs], false);
+  }
   if (result.exitCode !== 0) {
     if (result.stderr.includes("E404") || result.stdout.includes("E404")) return [];
     fail(`Unable to read npm versions for ${config.publishPackage}.\n${result.stderr || result.stdout}`);
@@ -306,7 +313,7 @@ function printPlan(
   reason: ${decision.reason}
   replace failed tag: ${decision.reusingFailedTag ? "yes" : "no"}
   local branch: temporary ${config.releaseBranchPrefix}${tag}-<sha>
-  pushes: ${options.noPush ? "none" : "tag only"}
+  pushes: ${options.noPush ? "none" : `tag only to ${config.remote}`}
   main commit: no
   known tags: ${tagVersions.length}
 `);
@@ -336,7 +343,28 @@ function run(command: string, args: string[], options: { quiet?: boolean } = {})
 function execCommand(command: string, args: string[], logCommand: boolean): { exitCode: number; stdout: string; stderr: string } {
   if (logCommand) console.log(`$ ${formatCommand([command, ...args])}`);
   const result = spawnSync(command, args, { cwd: repoRoot, encoding: "utf8" });
-  return { exitCode: result.status ?? 1, stdout: result.stdout ?? "", stderr: result.stderr ?? "" };
+  const spawnError = result.error instanceof Error ? result.error.message : "";
+  return {
+    exitCode: result.status ?? 1,
+    stdout: result.stdout ?? "",
+    stderr: [result.stderr ?? "", spawnError].filter(Boolean).join("\n"),
+  };
+}
+
+function looksLikeRepositoryLocation(value: string): boolean {
+  return /^(https?|ssh|git|file):\/\//.test(value)
+    || /^[^@\s]+@[^:\s]+:.+/.test(value)
+    || value.startsWith("/")
+    || value.startsWith("./")
+    || value.startsWith("../");
+}
+
+function commandUnavailable(result: { stderr: string }, command: string): boolean {
+  return result.stderr.includes("ENOENT")
+    || result.stderr.includes(`Executable not found in $PATH: "${command}"`)
+    || result.stderr.includes(`spawnSync ${command}`)
+    || result.stderr.includes(`${command}: command not found`)
+    || result.stderr.includes(`command not found: ${command}`);
 }
 
 function isBumpKind(value: string): value is "major" | "minor" | "patch" {
