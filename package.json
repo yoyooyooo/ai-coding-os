@@ -1,6 +1,6 @@
 {
   "name": "ai-coding-os-monorepo",
-  "version": "0.1.0",
+  "version": "0.1.11",
   "private": true,
   "description": "AI Coding OS suite with Goal Proof skills and CLI.",
   "type": "module",

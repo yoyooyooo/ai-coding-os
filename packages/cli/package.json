@@ -1,6 +1,6 @@
 {
   "name": "goal-proof",
-  "version": "0.1.0",
+  "version": "0.1.11",
   "description": "A Goal Proof CLI for evidence-backed long-running AI coding loops.",
   "type": "module",
   "license": "MIT",
