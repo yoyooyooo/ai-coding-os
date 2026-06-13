@@ -45,7 +45,7 @@ goal-proof work brief <goal-pack> [--work <id>] [--json]
 goal-proof work activate <goal-pack> --work <id> [--dry-run]
 goal-proof evidence list <goal-pack> [--limit N] [--work <id>] [--type discovery|decision|implementation|coordination|review|planning] [--result done|blocked] [--decision <value>] [--next-action proof_step|continue|needs_plan|blocked|review|done|needs_human] [--completion-satisfied true|false] [--changed-file <glob>] [--command-status pass|fail] [--contains <text>] [--include fields] [--show-empty] [--json]
 goal-proof evidence show <goal-pack> --index N [--json]
-goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check]
+goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check] [--dry-run]
 goal-proof relations list [project-root|goals-dir] [--thread <id>] [--limit N] [--include fields] [--show-empty] [--json]
 goal-proof relations goals [project-root|goals-dir] [--thread <id>] [--completion all|todo|done] [--status forming|ready|running|blocked|done|retired] [--next-action proof_step|continue|needs_plan|blocked|review|done|needs_human] [--limit N] [--include fields] [--show-empty] [--json]
 goal-proof relations work [project-root|goals-dir] [--thread <id>] [--completion all|todo|done] [--status queued|active|blocked|done] [--goal-completion all|todo|done] [--goal-status forming|ready|running|blocked|done|retired] [--goal <goal-id>] [--limit N] [--include fields] [--show-empty] [--json]
@@ -72,7 +72,8 @@ status 不是 `done`。
 record 摘要。需要展开单条完整 evidence record 时使用 `evidence show --index N`。
 对 `evidence add`，必须在 `--file`、`--json`、`--stdin` 三个输入源里选一个。
 `--stdin` 用于 heredoc JSON；常见追加、确定性 apply、校验路径可用
-`--apply --check`。
+`--apply --check`。加 `--dry-run` 可预览 append/apply/check 而不写文件；
+JSON 输出包含 `changed_paths`。
 
 对 `relations`，`list` 显示关系元数据，`goals` 发现 thread 成员 Goal Pack，
 `work` 发现 thread 成员 work item，`check` 用 token-aware 方式校验关系证据，

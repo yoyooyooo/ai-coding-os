@@ -111,6 +111,71 @@ next_action: ${nextAction}
 `;
 }
 
+function progressYamlWithAuditFields() {
+  return `
+schema_version: 2
+goal_id: cli-test-goal
+status: running
+thread_id: cli-thread
+activation:
+  waits_for:
+    - upstream-goal
+  satisfied_by:
+    - goal: upstream-goal
+      evidence_reference: ../upstream/evidence.jsonl:E001
+      status: ready
+proof_step:
+  from:
+    - "Previous slice A"
+    - "Previous slice B"
+  target_delta:
+    - "Next slice"
+  proof_path:
+    - "Run CLI tests"
+  checks:
+    - "bun test packages/cli/test/goal-pack-cli.test.ts"
+  failure_inspection:
+    - "packages/cli/src/"
+proof_step_claim_limit:
+  may_claim:
+    - "bounded CLI state transition"
+  must_not_claim:
+    - "external Goal Pack migration"
+active_work_item: W001
+work_items:
+  - id: W001
+    type: implementation
+    status: active
+    objective: "Implement command scripts."
+    allowed_scope:
+      - "packages/cli/**"
+    checks:
+      - "bun test packages/cli/test/goal-pack-cli.test.ts"
+    stop_if:
+      - "Need package manager changes."
+    evidence_reference: null
+    claim_ceiling: "bounded implementation only"
+  - id: W002
+    type: review
+    status: queued
+    objective: "Review command scripts."
+    evidence_reference: null
+    claim_ceiling: "review only"
+blockers: []
+last_check:
+  result: unknown
+  checks: []
+  evidence_reference: evidence.jsonl:E000
+last_verification:
+  command: "previous command"
+  status: pass
+  evidence_reference: evidence.jsonl:E000
+  timestamp: "2026-05-27T00:00:00Z"
+evidence_cursor: evidence.jsonl:E000
+next_action: continue
+`;
+}
+
 function doneProgressYaml(id = "cli-done-goal") {
   return `
 schema_version: 2
@@ -324,6 +389,81 @@ test("evidence list/show/add and apply update progress", () => {
   }
 });
 
+test("evidence add apply preserves progress audit fields and YAML shapes", () => {
+  const root = makePack({ progress: progressYamlWithAuditFields() });
+  try {
+    const record = implementationEvidence({ evidenceId: "E003", nextAction: "review" });
+    const add = run(["evidence", "add", root, "--stdin", "--apply", "--check"], { input: JSON.stringify(record) });
+    assert.equal(add.status, 0, add.stderr);
+    const payload = JSON.parse(add.stdout);
+    assert.equal(payload.applied.active_work_item, "W002");
+    assert.match(payload.changed_paths.join("\n"), /progress\.work_items\.W001\.status/);
+
+    const progress = readFileSync(join(root, "progress.yaml"), "utf8");
+    assert.match(progress, /activation:\n[\s\S]*satisfied_by:/);
+    assert.match(progress, /proof_step:\n  from:\n    - "Previous slice A"\n    - "Previous slice B"/);
+    assert.match(progress, /proof_step_claim_limit:\n[\s\S]*must_not_claim:/);
+    assert.match(progress, /id: W001[\s\S]*status: done[\s\S]*evidence_reference: evidence\.jsonl:E003[\s\S]*claim_ceiling: "bounded implementation only"/);
+    assert.match(progress, /id: W002[\s\S]*status: active[\s\S]*claim_ceiling: "review only"/);
+    assert.match(progress, /last_check:\n  result: pass\n  checks:\n    - "bun test packages\/cli\/test\/goal-pack-cli\.test\.ts \[pass\]"\n  evidence_reference: evidence\.jsonl:E003/);
+    assert.match(progress, /last_verification:\n  command: "previous command"/);
+    assert.match(progress, /evidence_cursor: evidence\.jsonl:E003/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("evidence add dry-run previews append and apply without writing", () => {
+  const root = makePack();
+  const beforeProgress = readFileSync(join(root, "progress.yaml"), "utf8");
+  const beforeEvidence = readFileSync(join(root, "evidence.jsonl"), "utf8");
+  try {
+    const record = implementationEvidence({ evidenceId: "E004", nextAction: "review" });
+    const add = run(["evidence", "add", root, "--stdin", "--apply", "--check", "--dry-run"], { input: JSON.stringify(record) });
+    assert.equal(add.status, 0, add.stderr);
+    const payload = JSON.parse(add.stdout);
+    assert.equal(payload.dry_run, true);
+    assert.equal(payload.check.ok, true);
+    assert.match(payload.changed_paths.join("\n"), /evidence\.jsonl/);
+    assert.match(payload.changed_paths.join("\n"), /progress\.work_items\.W001\.status/);
+    assert.equal(readFileSync(join(root, "progress.yaml"), "utf8"), beforeProgress);
+    assert.equal(readFileSync(join(root, "evidence.jsonl"), "utf8"), beforeEvidence);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("check accepts structured claim_limit and emits actionable weak warnings", () => {
+  const structuredGoal = goalYaml().replace(
+    'claim_limit: "Only proves local CLI behavior."',
+    `claim_limit:
+  may_claim:
+    - "bounded CLI behavior"
+  must_not_claim:
+    - "external project migration"`,
+  );
+  const weakGoal = goalYaml().replace(
+    'claim_limit: "Only proves local CLI behavior."',
+    `claim_limit:
+  may_claim:
+    - "bounded CLI behavior"`,
+  );
+  const structured = makePack({ goal: structuredGoal });
+  const weak = makePack({ goal: weakGoal });
+  try {
+    const ok = run(["check", structured]);
+    assert.equal(ok.status, 0, ok.stderr);
+    assert.doesNotMatch(JSON.parse(ok.stdout).warnings.join("\n"), /claim_limit/);
+
+    const warned = run(["check", weak]);
+    assert.equal(warned.status, 0, warned.stderr);
+    assert.match(JSON.parse(warned.stdout).warnings.join("\n"), /claim_limit\.must_not_claim is missing or weak/);
+  } finally {
+    rmSync(structured, { recursive: true, force: true });
+    rmSync(weak, { recursive: true, force: true });
+  }
+});
+
 test("main CLI exposes the Goal Proof command surface without old aliases", () => {
   const root = makePack();
   try {
@@ -359,7 +499,7 @@ test("help is structured at every official command layer", () => {
     { args: ["evidence", "--help"], patterns: [/Usage: goal-proof evidence \[options\] \[command\]/, /list/, /show/, /add/] },
     { args: ["evidence", "list", "--help"], patterns: [/Usage: goal-proof evidence list \[options\] <goal-pack>/, /--work <id>/, /--next-action <value>/, /--completion-satisfied <value>/] },
     { args: ["evidence", "show", "--help"], patterns: [/Usage: goal-proof evidence show \[options\] <goal-pack>/, /--index <number>/] },
-    { args: ["evidence", "add", "--help"], patterns: [/Usage: goal-proof evidence add \[options\] <goal-pack>/, /--stdin/, /--apply/, /--check/] },
+    { args: ["evidence", "add", "--help"], patterns: [/Usage: goal-proof evidence add \[options\] <goal-pack>/, /--stdin/, /--apply/, /--check/, /--dry-run/] },
     { args: ["relations", "work", "--help"], patterns: [/Usage: goal-proof relations work \[options\] \[target\]/, /--goal-status <value>/] },
     { args: ["apply", "--help"], patterns: [/Usage: goal-proof apply \[options\] <goal-pack>/, /--dry-run/] },
     { args: ["check", "--help"], patterns: [/Usage: goal-proof check \[options\] <goal-pack>/] },

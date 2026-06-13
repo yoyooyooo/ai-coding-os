@@ -47,7 +47,7 @@ goal-proof work brief <goal-pack> [--work <id>] [--json]
 goal-proof work activate <goal-pack> --work <id> [--dry-run]
 goal-proof evidence list <goal-pack> [--limit N] [--work <id>] [--type discovery|decision|implementation|coordination|review|planning] [--result done|blocked] [--decision <value>] [--next-action proof_step|continue|needs_plan|blocked|review|done|needs_human] [--completion-satisfied true|false] [--changed-file <glob>] [--command-status pass|fail] [--contains <text>] [--include fields] [--show-empty] [--json]
 goal-proof evidence show <goal-pack> --index N [--json]
-goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check]
+goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check] [--dry-run]
 goal-proof relations list [project-root|goals-dir] [--thread <id>] [--limit N] [--include fields] [--show-empty] [--json]
 goal-proof relations goals [project-root|goals-dir] [--thread <id>] [--completion all|todo|done] [--status forming|ready|running|blocked|done|retired] [--next-action proof_step|continue|needs_plan|blocked|review|done|needs_human] [--limit N] [--include fields] [--show-empty] [--json]
 goal-proof relations work [project-root|goals-dir] [--thread <id>] [--completion all|todo|done] [--status queued|active|blocked|done] [--goal-completion all|todo|done] [--goal-status forming|ready|running|blocked|done|retired] [--goal <goal-id>] [--limit N] [--include fields] [--show-empty] [--json]
@@ -75,7 +75,8 @@ For `evidence list`, filters compose with AND semantics and compact evidence
 record summaries are shown by default. Use `evidence show --index N` to expand
 one full evidence record. For `evidence add`, choose exactly one input source.
 Use `--stdin` for heredoc JSON and `--apply --check` for the common append,
-deterministic progress update, and validation path.
+deterministic progress update, and validation path. Add `--dry-run` to preview
+append/apply/check without writing files; JSON output includes `changed_paths`.
 
 For `relations`, `list` shows relation metadata, `goals` discovers
 thread-member Goal Packs, `work` discovers thread-member work items, `check`

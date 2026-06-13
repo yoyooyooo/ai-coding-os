@@ -103,7 +103,7 @@ export function parseGoal(text) {
       signal: pathScalar(text, ["completion"], "signal"),
       required_evidence: pathScalar(text, ["completion"], "required_evidence"),
     },
-    claim_limit: topScalar(text, "claim_limit"),
+    claim_limit: parseClaimLimit(text),
     agent_authority: {
       continue_by_default: pathScalar(text, ["agent_authority"], "continue_by_default"),
       requires_human_decision: listScalar(agentAuthorityBody, "requires_human_decision", 2),
@@ -111,6 +111,34 @@ export function parseGoal(text) {
     },
     evidence_mode: topScalar(text, "evidence_mode"),
   };
+}
+
+function parseClaimLimit(text) {
+  const scalar = topScalar(text, "claim_limit");
+  if (scalar !== null && !Array.isArray(scalar)) return scalar;
+  const body = blockText(text, "claim_limit", 0);
+  if (!body) return scalar;
+  return {
+    may_claim: listScalar(body, "may_claim", 2),
+    must_not_claim: listScalar(body, "must_not_claim", 2),
+  };
+}
+
+function claimLimitWarnings(claimLimit) {
+  if (typeof claimLimit === "object" && claimLimit !== null && !Array.isArray(claimLimit)) {
+    const warnings = [];
+    if (!Array.isArray(claimLimit.may_claim) || claimLimit.may_claim.length === 0) {
+      warnings.push("claim_limit.may_claim is missing or weak; add concrete allowed claim slices");
+    }
+    if (!Array.isArray(claimLimit.must_not_claim) || claimLimit.must_not_claim.length === 0) {
+      warnings.push("claim_limit.must_not_claim is missing or weak; add explicit non-claim boundaries");
+    }
+    return warnings;
+  }
+  if (isWeak(claimLimit)) {
+    return ["claim_limit is missing or weak; use a concrete scalar or claim_limit.may_claim / claim_limit.must_not_claim entries"];
+  }
+  return [];
 }
 
 function parseRelations(text) {
@@ -311,7 +339,7 @@ export function validateGoalPack(pack) {
   }
   if (isWeak(goal.completion.signal)) warnings.push("completion.signal is missing or weak");
   if (isWeak(goal.completion.required_evidence)) warnings.push("completion.required_evidence is missing or weak");
-  if (isWeak(goal.claim_limit)) warnings.push("claim_limit is missing or weak");
+  warnings.push(...claimLimitWarnings(goal.claim_limit));
   if (progress.work_items.length === 0) errors.push("progress.yaml work_items must contain at least one work item");
 
   const activeWorkItems = progress.work_items.filter((item) => item.status === "active");
@@ -431,7 +459,7 @@ function validateProgressActionHints(progress, warnings) {
   warnings.push(`first queued work item ${firstQueued.id} is planning but next_action is ${progress.next_action || "<missing>"}; consider next_action: needs_plan`);
 }
 
-export function appendEvidenceRecord(goalRoot, record) {
+export function appendEvidenceRecord(goalRoot, record, { dryRun = false } = {}) {
   const pack = loadGoalPack(goalRoot);
   const errors = validateEvidenceRecord(pack, record);
   if (errors.length > 0) {
@@ -442,8 +470,8 @@ export function appendEvidenceRecord(goalRoot, record) {
 
   const existing = pack.texts.evidence;
   const prefix = existing.length > 0 && !existing.endsWith("\n") ? "\n" : "";
-  atomicWrite(pack.files.evidence, `${existing}${prefix}${JSON.stringify(record)}\n`);
-  return { ok: true, evidence_record: record };
+  if (!dryRun) atomicWrite(pack.files.evidence, `${existing}${prefix}${JSON.stringify(record)}\n`);
+  return { ok: true, dry_run: dryRun, evidence_record: record, changed_paths: ["evidence.jsonl"] };
 }
 
 type ActivateGoalWorkOptions = {
@@ -487,16 +515,22 @@ export function activateGoalWork(goalRoot, { workId, dryRun = false }: ActivateG
     nextProgress.next_action = actionForWorkItem(nextWorkItem);
   }
 
-  const serializedProgress = serializeProgress(nextProgress);
+  const progressPatch = patchProgressText(pack.texts.progress, pack.progress, nextProgress, null, { updateLastCheck: false });
   const goalStatus = pack.goal.status === "running"
     ? pack.goal.status
     : "running";
   const serializedGoal = goalStatus !== pack.goal.status
     ? updateTopScalar(pack.texts.goal, "status", goalStatus)
     : pack.texts.goal;
+  const changedPaths = [
+    ...progressPatch.changed_paths,
+    ...(serializedGoal !== pack.texts.goal ? ["goal.status"] : []),
+  ];
 
-  if (!dryRun && !alreadyActive) {
-    atomicWrite(pack.files.progress, serializedProgress);
+  if (!dryRun && progressPatch.text !== pack.texts.progress && !alreadyActive) {
+    atomicWrite(pack.files.progress, progressPatch.text);
+  }
+  if (!dryRun) {
     if (serializedGoal !== pack.texts.goal) atomicWrite(pack.files.goal, serializedGoal);
   }
 
@@ -511,13 +545,14 @@ export function activateGoalWork(goalRoot, { workId, dryRun = false }: ActivateG
     active_work_item: nextProgress.active_work_item,
     next_action: nextProgress.next_action,
     goal_status: goalStatus,
+    changed_paths: changedPaths,
     warnings,
   };
 }
 
-export function applyGoalProgress(goalRoot, { dryRun = false } = {}) {
+export function applyGoalProgress(goalRoot, { dryRun = false, evidenceRecord = null } = {}) {
   const pack = loadGoalPack(goalRoot);
-  const latest = pack.evidence_records.at(-1);
+  const latest = evidenceRecord || pack.evidence_records.at(-1);
   if (!latest) throw new Error("evidence.jsonl has no evidence records to apply from");
 
   const errors = validateEvidenceRecord(pack, latest);
@@ -562,13 +597,17 @@ export function applyGoalProgress(goalRoot, { dryRun = false } = {}) {
     applyNextAction(nextProgress, action, warnings);
   }
 
-  const serializedProgress = serializeProgress(nextProgress);
+  const progressPatch = patchProgressText(pack.texts.progress, pack.progress, nextProgress, latest);
   const serializedGoal = goalStatus !== pack.goal.status
     ? updateTopScalar(pack.texts.goal, "status", goalStatus)
     : pack.texts.goal;
+  const changedPaths = [
+    ...progressPatch.changed_paths,
+    ...(serializedGoal !== pack.texts.goal ? ["goal.status"] : []),
+  ];
 
   if (!dryRun) {
-    atomicWrite(pack.files.progress, serializedProgress);
+    atomicWrite(pack.files.progress, progressPatch.text);
     if (serializedGoal !== pack.texts.goal) atomicWrite(pack.files.goal, serializedGoal);
   }
 
@@ -577,9 +616,241 @@ export function applyGoalProgress(goalRoot, { dryRun = false } = {}) {
     dry_run: dryRun,
     evidence_record: compactEvidenceRecord(latest),
     progress: nextProgress,
+    progress_text: progressPatch.text,
     goal_status: goalStatus,
+    changed_paths: changedPaths,
     warnings,
   };
+}
+
+export function validateGoalPackPreview(goalRoot, { progressText = null, evidenceRecord = null } = {}) {
+  const pack = loadGoalPack(goalRoot);
+  return validateGoalPack({
+    ...pack,
+    texts: {
+      ...pack.texts,
+      progress: progressText ?? pack.texts.progress,
+      evidence: evidenceRecord
+        ? `${pack.texts.evidence}${pack.texts.evidence && !pack.texts.evidence.endsWith("\n") ? "\n" : ""}${JSON.stringify(evidenceRecord)}\n`
+        : pack.texts.evidence,
+    },
+    progress: progressText ? parseProgress(progressText) : pack.progress,
+    evidence_records: evidenceRecord ? [...pack.evidence_records, evidenceRecord] : pack.evidence_records,
+  });
+}
+
+function patchProgressText(originalText, currentProgress, nextProgress, latest, { updateLastCheck = true } = {}) {
+  if (!originalText.trim()) {
+    return {
+      text: serializeProgress(nextProgress),
+      changed_paths: ["progress.yaml"],
+    };
+  }
+
+  let text = originalText;
+  const changedPaths = [];
+  const apply = (path, update) => {
+    const nextText = update(text);
+    if (nextText !== text) {
+      text = nextText;
+      changedPaths.push(path);
+    }
+  };
+
+  if (currentProgress.status !== nextProgress.status) {
+    apply("progress.status", (value) => setTopScalarText(value, "status", nextProgress.status));
+  }
+  if (currentProgress.active_work_item !== nextProgress.active_work_item) {
+    apply("progress.active_work_item", (value) =>
+      setTopScalarText(value, "active_work_item", nextProgress.active_work_item || null),
+    );
+  }
+  if (currentProgress.next_action !== nextProgress.next_action) {
+    apply("progress.next_action", (value) =>
+      setTopScalarText(value, "next_action", nextProgress.next_action || "proof_step"),
+    );
+  }
+  if (!arrayEqual(currentProgress.blockers, nextProgress.blockers)) {
+    apply("progress.blockers", (value) => setTopListText(value, "blockers", nextProgress.blockers || []));
+  }
+
+  for (const item of nextProgress.work_items) {
+    const current = currentProgress.work_items.find((candidate) => candidate.id === item.id);
+    if (current && current.status !== item.status) {
+      apply(`progress.work_items.${item.id}.status`, (value) =>
+        setWorkItemScalarText(value, item.id, "status", item.status, { onlyIfPresent: false }),
+      );
+    }
+  }
+
+  const evidenceRef = latest?.evidence_id ? `evidence.jsonl:${latest.evidence_id}` : null;
+  if (latest?.work_id && evidenceRef) {
+    apply(`progress.work_items.${latest.work_id}.evidence_reference`, (value) =>
+      setWorkItemScalarText(value, latest.work_id, "evidence_reference", evidenceRef, { onlyIfPresent: true }),
+    );
+  }
+
+  if (updateLastCheck) {
+    apply("progress.last_check", (value) =>
+      setLastCheckText(value, nextProgress.last_check || { result: "unknown", checks: [] }, evidenceRef),
+    );
+  }
+
+  if (updateLastCheck && evidenceRef && topKeyExists(text, "evidence_cursor")) {
+    apply("progress.evidence_cursor", (value) => setTopScalarText(value, "evidence_cursor", evidenceRef));
+  }
+
+  return {
+    text,
+    changed_paths: unique(changedPaths),
+  };
+}
+
+function setTopScalarText(text, key, value) {
+  return mutateYamlLines(text, (lines) => {
+    const line = `${key}: ${yamlScalar(value)}`;
+    const index = findKeyLine(lines, key, 0);
+    if (index === -1) {
+      lines.unshift(line);
+      return;
+    }
+    lines[index] = line;
+  });
+}
+
+function setTopListText(text, key, values) {
+  return mutateYamlLines(text, (lines) => {
+    const replacement = yamlListLines(key, values, 0);
+    const index = findKeyLine(lines, key, 0);
+    if (index === -1) {
+      lines.push("", ...replacement);
+      return;
+    }
+    const end = blockEnd(lines, index, 0);
+    lines.splice(index, end - index, ...replacement);
+  });
+}
+
+function setLastCheckText(text, lastCheck, evidenceRef) {
+  return mutateYamlLines(text, (lines) => {
+    let parent = findKeyLine(lines, "last_check", 0);
+    if (parent === -1) {
+      const insertAt = findKeyLine(lines, "next_action", 0);
+      const block = [
+        "last_check:",
+        `  result: ${yamlScalar(lastCheck.result || "unknown")}`,
+        ...yamlListLines("checks", lastCheck.checks || [], 2),
+        ...(evidenceRef ? [`  evidence_reference: ${yamlScalar(evidenceRef)}`] : []),
+        "",
+      ];
+      if (insertAt === -1) lines.push("", ...block);
+      else lines.splice(insertAt, 0, ...block);
+      return;
+    }
+    setBlockChildScalarLines(lines, parent, 0, "result", lastCheck.result || "unknown");
+    parent = findKeyLine(lines, "last_check", 0);
+    setBlockChildListLines(lines, parent, 0, "checks", lastCheck.checks || []);
+    if (evidenceRef) {
+      parent = findKeyLine(lines, "last_check", 0);
+      setBlockChildScalarLines(lines, parent, 0, "evidence_reference", evidenceRef);
+    }
+  });
+}
+
+function setWorkItemScalarText(text, workId, key, value, { onlyIfPresent }) {
+  return mutateYamlLines(text, (lines) => {
+    const range = findWorkItemRange(lines, workId);
+    if (!range) return;
+    const childIndex = findKeyLineInRange(lines, key, 4, range.start + 1, range.end);
+    if (childIndex === -1) {
+      if (onlyIfPresent) return;
+      lines.splice(range.start + 1, 0, `    ${key}: ${yamlScalar(value)}`);
+      return;
+    }
+    lines[childIndex] = `    ${key}: ${yamlScalar(value)}`;
+  });
+}
+
+function mutateYamlLines(text, mutate) {
+  const normalized = text.replace(/\r\n/g, "\n");
+  const hadTrailingNewline = normalized.endsWith("\n");
+  const lines = normalized.split("\n");
+  if (hadTrailingNewline) lines.pop();
+  mutate(lines);
+  return `${lines.join("\n")}${hadTrailingNewline ? "\n" : ""}`;
+}
+
+function yamlListLines(key, values, indent) {
+  const prefix = " ".repeat(indent);
+  const itemPrefix = " ".repeat(indent + 2);
+  if (!values || values.length === 0) return [`${prefix}${key}: []`];
+  return [`${prefix}${key}:`, ...values.map((value) => `${itemPrefix}- ${yamlScalar(value)}`)];
+}
+
+function setBlockChildScalarLines(lines, parent, parentIndent, key, value) {
+  const childIndent = parentIndent + 2;
+  const end = blockEnd(lines, parent, parentIndent);
+  const index = findKeyLineInRange(lines, key, childIndent, parent + 1, end);
+  const line = `${" ".repeat(childIndent)}${key}: ${yamlScalar(value)}`;
+  if (index === -1) lines.splice(end, 0, line);
+  else lines[index] = line;
+}
+
+function setBlockChildListLines(lines, parent, parentIndent, key, values) {
+  const childIndent = parentIndent + 2;
+  const end = blockEnd(lines, parent, parentIndent);
+  const index = findKeyLineInRange(lines, key, childIndent, parent + 1, end);
+  const replacement = yamlListLines(key, values, childIndent);
+  if (index === -1) {
+    lines.splice(end, 0, ...replacement);
+    return;
+  }
+  const childEnd = blockEnd(lines, index, childIndent);
+  lines.splice(index, childEnd - index, ...replacement);
+}
+
+function findKeyLineInRange(lines, key, indent, start, end) {
+  const pattern = new RegExp(`^ {${indent}}${escapeRegExp(key)}:(?:[ \t]*(.*))?$`);
+  for (let index = start; index < end; index += 1) {
+    if (pattern.test(lines[index])) return index;
+  }
+  return -1;
+}
+
+function findWorkItemRange(lines, workId) {
+  const workItems = findKeyLine(lines, "work_items", 0);
+  if (workItems === -1) return null;
+  const itemPattern = new RegExp(`^ {2}- id:[ \t]*${escapeRegExp(workId)}[ \t]*$`);
+  for (let index = workItems + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (line.trim() && lineIndent(line) === 0) return null;
+    if (!itemPattern.test(line)) continue;
+    let end = index + 1;
+    for (; end < lines.length; end += 1) {
+      const candidate = lines[end];
+      if (/^ {2}- id:[ \t]*/.test(candidate)) break;
+      if (candidate.trim() && lineIndent(candidate) === 0) break;
+    }
+    return { start: index, end };
+  }
+  return null;
+}
+
+function blockEnd(lines, start, indent) {
+  let end = start + 1;
+  for (; end < lines.length; end += 1) {
+    const line = lines[end];
+    if (line.trim() && lineIndent(line) <= indent) break;
+  }
+  return end;
+}
+
+function topKeyExists(text, key) {
+  return findKeyLine(text.split(/\r?\n/), key, 0) !== -1;
+}
+
+function arrayEqual(left = [], right = []) {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
 }
 
 export function serializeProgress(progress) {

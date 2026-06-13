@@ -184,23 +184,28 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
     .addOption(new Option("--stdin", "read evidence JSON from stdin").conflicts(["file", "json"]))
     .option("--apply", "apply deterministic progress after adding evidence")
     .option("--check", "validate the Goal Pack after adding and optional apply")
-    .action((goalRoot: string, options: { file?: string; json?: string; stdin?: boolean; apply?: boolean; check?: boolean }) => {
+    .option("--dry-run", "preview evidence append/apply/check without writing files")
+    .action((goalRoot: string, options: { file?: string; json?: string; stdin?: boolean; apply?: boolean; check?: boolean; dryRun?: boolean }) => {
       const result = runAppendEvidence(goalRoot, {
         file: options.file ?? null,
         json: options.json ?? null,
         stdin: Boolean(options.stdin),
         apply: Boolean(options.apply),
         check: Boolean(options.check),
+        dryRun: Boolean(options.dryRun),
       });
       emit(JSON.stringify({
         ok: result.ok && (result.check ? result.check.ok : true),
+        dry_run: result.dry_run,
         evidence_id: result.evidence_record.evidence_id,
         work_id: result.evidence_record.work_id,
         result: result.evidence_record.result,
+        changed_paths: result.changed_paths,
         applied: result.applied ? {
           status: result.applied.progress.status,
           active_work_item: result.applied.progress.active_work_item,
           next_action: result.applied.progress.next_action,
+          changed_paths: result.applied.changed_paths,
           warnings: result.applied.warnings,
         } : null,
         check: result.check ? {
@@ -330,6 +335,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
         status: result.progress.status,
         active_work_item: result.progress.active_work_item,
         next_action: result.progress.next_action,
+        changed_paths: result.changed_paths,
         warnings: result.warnings,
       }, null, 2));
     });
