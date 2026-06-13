@@ -413,6 +413,40 @@ test("evidence add apply preserves progress audit fields and YAML shapes", () =>
   }
 });
 
+test("evidence add apply exits running when no active successor exists", () => {
+  const proofStepRoot = makePack({
+    progress: progressYaml({ includeReview: false }),
+  });
+  const continueRoot = makePack({
+    progress: progressYaml({ includeReview: false }),
+  });
+  try {
+    const proofStepRecord = implementationEvidence({ evidenceId: "E003", nextAction: "proof_step" });
+    const proofStep = run(["evidence", "add", proofStepRoot, "--stdin", "--apply", "--check"], { input: JSON.stringify(proofStepRecord) });
+    assert.equal(proofStep.status, 0, proofStep.stderr);
+    const proofStepPayload = JSON.parse(proofStep.stdout);
+    assert.equal(proofStepPayload.applied.status, "ready");
+    assert.equal(proofStepPayload.applied.active_work_item, null);
+    assert.equal(proofStepPayload.applied.next_action, "proof_step");
+    assert.equal(proofStepPayload.check.ok, true);
+    assert.match(readFileSync(join(proofStepRoot, "goal.yaml"), "utf8"), /^status: ready$/m);
+    assert.match(readFileSync(join(proofStepRoot, "progress.yaml"), "utf8"), /^status: ready$/m);
+
+    const continueRecord = implementationEvidence({ evidenceId: "E004", nextAction: "continue" });
+    const continued = run(["evidence", "add", continueRoot, "--stdin", "--apply", "--check"], { input: JSON.stringify(continueRecord) });
+    assert.equal(continued.status, 0, continued.stderr);
+    const continuePayload = JSON.parse(continued.stdout);
+    assert.equal(continuePayload.applied.status, "ready");
+    assert.equal(continuePayload.applied.active_work_item, null);
+    assert.equal(continuePayload.applied.next_action, "proof_step");
+    assert.equal(continuePayload.check.ok, true);
+    assert.match(continuePayload.applied.warnings.join("\n"), /no queued work item matches any/);
+  } finally {
+    rmSync(proofStepRoot, { recursive: true, force: true });
+    rmSync(continueRoot, { recursive: true, force: true });
+  }
+});
+
 test("evidence add dry-run previews append and apply without writing", () => {
   const root = makePack();
   const beforeProgress = readFileSync(join(root, "progress.yaml"), "utf8");

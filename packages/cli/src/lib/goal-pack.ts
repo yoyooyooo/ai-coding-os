@@ -577,6 +577,7 @@ export function applyGoalProgress(goalRoot, { dryRun = false, evidenceRecord = n
       checks: checkLines(recordChecks(latest)),
     };
     nextProgress.next_action = "blocked";
+    goalStatus = "blocked";
   } else if (latest.type === "review" && latest.decision === "complete" && latest.completion_satisfied === true) {
     workItem.status = "done";
     nextProgress.status = "done";
@@ -595,6 +596,7 @@ export function applyGoalProgress(goalRoot, { dryRun = false, evidenceRecord = n
     };
     const action = latest.next_action || "proof_step";
     applyNextAction(nextProgress, action, warnings);
+    goalStatus = nextProgress.status;
   }
 
   const progressPatch = patchProgressText(pack.texts.progress, pack.progress, nextProgress, latest);
@@ -1078,6 +1080,7 @@ function applyNextAction(progress, action, warnings) {
     return;
   }
   if (action === "needs_plan") {
+    progress.status = "ready";
     progress.active_work_item = null;
     progress.next_action = "needs_plan";
     return;
@@ -1090,6 +1093,7 @@ function applyNextAction(progress, action, warnings) {
     activateQueuedWorkItem(progress, warnings, { preferredType: null, fallbackAction: "proof_step" });
     return;
   }
+  progress.status = "ready";
   progress.active_work_item = null;
   progress.next_action = "proof_step";
 }
@@ -1103,6 +1107,7 @@ function activateQueuedWorkItem(progress, warnings, { preferredType, fallbackAct
     progress.next_action = queued[0].type === "review" ? "review" : "continue";
     return;
   }
+  progress.status = "ready";
   progress.active_work_item = null;
   progress.next_action = fallbackAction;
   if (queued.length > 1) warnings.push(`multiple queued work items match ${preferredType || "any"}; active_work_item not changed`);
