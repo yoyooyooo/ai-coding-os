@@ -42,7 +42,7 @@ current claim requires integration behavior.
 - Replay proves parser/normalizer/materialization behavior without launching the
   real external runtime.
 - Raw external traces should be sanitized before entering reusable fixtures.
-- Replay outputs must still use the same evidence envelope as normal smoke.
+- Replay outputs must still use the same headless command output envelope as normal smoke.
 
 ## Real Runtime Opt-In
 

@@ -23,6 +23,7 @@
 | `router/` | `ai-coding-os` | 用户默认入口，轻量路由和编排 |
 | `goal/` | `goal-proof`, `goal-contracts`, `finding-proof-step`, `proof-step-implementation`, `write-work-plans` | Goal Pack、目标授权、当前验证步、执行、证据记录和高风险实施计划 |
 | `governance/` | `docs-governance` | 文档分层、权威放置、cleanup、audit |
+| `architecture/` | `agentic-architecture`, `frontend-architecture`, `effect-best-practices` | 底层架构公理、前端架构、Effect runtime / Service / Layer doctrine |
 | `capability/` | `interface-capability-planning` | UI/IA、交互能力、前端状态/数据归属和 trace artifact |
 | `harness/` | `product-harness-system`, `ui-product-harness`, `headless-product-harness` | harness artifact、`claim_ceiling`、Harness Coverage Matrix、UI/headless proof |
 
@@ -51,7 +52,7 @@ plans/<work_id>.md
 | `docs/adr/**` | 已采纳取舍及后果 | 当前任务状态或完整标准 |
 | `docs/architecture/**` | 系统结构、模块关系、运行时视图 | 覆盖 SSoT 或隐藏任务 |
 | `docs/roadmap/**` | 顺序、状态、证据链接、迁移波次 | 逐步实施任务清单 |
-| `docs/review-plan/**` | `$plan-optimality-loop` 对结构化计划、SSoT contract、proposal 和叙事候选稿的评审 ledger | 产品事实、SSoT、ADR、Goal Pack 运行状态 |
+| `docs/review-plan/**` | `$plan-optimality-loop` 对结构化计划、SSoT contract、proposal 和叙事候选稿的评审 ledger | 产品事实、SSoT、standard、ADR、Goal Pack 运行状态、completion evidence |
 | `docs/interface-capabilities/**` | 项目级 InterfaceCapability / InterfaceSurface trace artifact，当项目选择集中管理 UI 能力追溯时使用 | 业务事实、测试代码、Goal Pack 运行状态 |
 | `docs/product-harness/**` | 项目级 HarnessScenario / HarnessFixture refs / HarnessRoute refs / evidence refs / `claim_ceiling` / Harness Coverage Matrix | 用户能力语义、产品事实、测试代码、Goal Pack 运行状态 |
 | `docs/goal-proof/**` | Goal Pack、inbox、sources、evidence records、Goal Relations | 项目级 docs 治理或产品权威 |

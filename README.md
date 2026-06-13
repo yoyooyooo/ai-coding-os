@@ -18,9 +18,9 @@ refactors, debugging campaigns, audits, research, documentation governance, and
 tooling.
 
 The default entry is `$ai-coding-os`. It owns no durable artifacts. It
-routes work to Goal Proof System, Docs Governance, Effect Best Practices,
-Interface Capability Planning, Product Harness System, UI Product Harness,
-Headless Product Harness, or inline execution.
+routes work to Agentic Architecture, Goal Proof System, Docs Governance, Effect
+Best Practices, Interface Capability Planning, Product Harness System, UI
+Product Harness, Headless Product Harness, or inline execution.
 
 ## Core Principles
 
@@ -47,12 +47,13 @@ completion claims.
 | `goal/` | `proof-step-implementation` | Execute, verify, add evidence, apply progress |
 | `goal/` | `write-work-plans` | Write `plans/<work_id>.md` for high-risk work items |
 | `governance/` | `docs-governance` | Docs layers, SSoT, standards, ADRs, roadmaps, cleanup, audit |
+| `architecture/` | `agentic-architecture` | AI-agent-era architecture doctrine: authority, Capability Ports / Adapters, composition roots, replaceability, and evidence gates |
 | `architecture/` | `frontend-architecture` | TypeScript frontend architecture, dependency direction, naming semantics, React/Effect/Query/Store split, and harness-ready boundaries |
 | `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime/error-channel/resource lifecycle guidance and v4/v3 migration gaps |
 | `capability/` | `interface-capability-planning` | UI/IA capability contracts, surfaces, state/data ownership, harness handoff |
 | `harness/` | `product-harness-system` | Harness artifact model, `claim_ceiling`, Harness Coverage Matrix, trace lifecycle |
 | `harness/` | `ui-product-harness` | Interface-headless, render wiring, browser-visible, production-near UI proof |
-| `harness/` | `headless-product-harness` | Proof commands, smoke checks, fixture/replay, evidence envelope |
+| `harness/` | `headless-product-harness` | Proof commands, smoke checks, fixture/replay, headless command JSON/JSONL output shape |
 
 Most users should name only `$ai-coding-os`. Advanced users may call a
 specific method or phase skill directly.
@@ -100,8 +101,8 @@ human intent
 ```
 
 A Goal Pack is ready when the goal contract is stable and the next
-`proof_step` can prove or falsify a meaningful movement. It is not ready merely
-because a work item list exists.
+`proof_step` is authorized to produce or inspect `completion.required_evidence`
+inside `claim_limit`. It is not ready merely because a work item list exists.
 
 Work items and checks are execution details, not required top-level concepts in
 the goal loop.
@@ -110,6 +111,9 @@ reviewed execution plan before implementation. It is not a second task system.
 
 Completion requires a review evidence record with `completion_satisfied: true`
 and `claim_evidence` mapping each completion claim to evidence.
+Cross-method Evidence Envelope Discipline is owned by SSoT / Goal Proof.
+`changed surfaces` and `not_proven` are narrative envelope concepts here, not
+formal v2 schema fields unless templates and checkers are explicitly upgraded.
 
 ## Goal Pack Files
 
@@ -229,8 +233,8 @@ Headless proof:
 
 ```text
 Use $headless-product-harness:
-Design the smallest proof command, fixture/replay path, evidence envelope, and
-not_claimed list for this capability.
+Design the smallest proof command, fixture/replay path, headless command output
+envelope, and not_claimed list for this capability.
 ```
 
 Docs governance:
@@ -244,6 +248,14 @@ and audit.
 This repository's docs layer rules live in `docs/standards/docs-governance.md`;
 public skill source layout and trigger-name rules live in
 `docs/standards/skill-source-layout.md`.
+
+Architecture baseline:
+
+```text
+Use $agentic-architecture:
+Review authority, Capability Ports / Adapters, composition roots,
+provider/runtime/memory/plugin boundaries, replaceability, and evidence gates.
+```
 
 ## CLI Quick Inspect
 
@@ -304,6 +316,7 @@ packages/cli/                         TypeScript CLI, built with Bun
 skills/router/                        OS entry and user intent routing
 skills/goal/                          Goal Pack method and execution phases
 skills/governance/                    Docs layer governance
+skills/architecture/                  Agentic / frontend / Effect architecture doctrine
 skills/capability/                    Interface capability planning
 skills/harness/                       Product, headless, and UI harness guidance
 skills/README.md                      Skill suite group index

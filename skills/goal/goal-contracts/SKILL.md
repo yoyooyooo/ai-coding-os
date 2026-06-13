@@ -57,6 +57,33 @@ Choose the minimum sufficient horizon for `objective`.
 Goal distance belongs in `goal.yaml`. The current executable movement belongs
 in `progress.yaml.proof_step`.
 
+## Triggered Claim Coverage Review
+
+Use Triggered Claim Coverage Review when the goal has semantic risk: broad or
+multi-stage work, mixed proof levels, public surfaces, schema/protocol/CLI or
+template changes, authority actions, product truth or quality judgments,
+permission/security/destructive/compliance boundaries, or completion that needs
+multiple evidence records or relation evidence.
+
+For triggered goals, author the contract around claim-bearing axes, not every
+word in the objective:
+
+```text
+stage / phase / layer / surface
+proof level / runtime mode
+authority side effect
+public API / schema / protocol / command / template / skill surface
+product truth or quality judgment
+safety / permission / destructive boundary
+lineage / relation / review gate
+```
+
+Before `status: ready`, make `completion.required_evidence` scoped enough that
+each claim slice can later be mapped to an evidence ref and proof level. Exclude
+adjacent axes that are not part of the goal with `claim_limit`, `non_goals`, or
+`constraints`. Do not add new coverage fields or encode semantic proof in token
+names; existing v2 surfaces carry the boundary.
+
 ## Quick Workflow
 
 1. Read project authority context: host instructions, docs router, SSoT,
@@ -90,8 +117,14 @@ evidence.jsonl stays empty until work runs
 
 Use `status: forming` or `next_action: needs_plan` while `goal.yaml` exists but
 the first honest proof step is missing. Use `status: ready` only when the protected
-goal fields are stable and `proof_step` identifies the next proof path that
-would prove or falsify the next movement.
+goal fields are stable and `proof_step` identifies an authorized path that can
+produce or inspect `completion.required_evidence` within `claim_limit`.
+
+Do not make the first proof step docs-only unless the target delta itself is a
+claim-bearing doc or review authority surface and the proof step can inspect
+diffs, cross references, authority conflicts, or static scans. For implementation
+goals, planning prose may be a preface, but the ready gate needs a runnable or
+inspectable movement.
 
 ## Goal Contract Rules
 
@@ -99,6 +132,9 @@ would prove or falsify the next movement.
 - `goal.yaml` does not precompute file-by-file implementation.
 - Completion tokens are not enough by themselves; the proof step must say how
   the first check will produce, inspect, or falsify those tokens.
+- If semantic risk trigger applies, completion tokens must name scoped
+  claim-bearing slices; broad tokens like `workflow_complete=true` are not
+  enough unless `claim_limit` excludes the adjacent surfaces.
 - `goal.yaml` links authority by path or URL; it does not copy authority content.
 - `goal.yaml` may reference source material, but consumed source belongs in
   `docs/goal-proof/sources/` or `notes/`.

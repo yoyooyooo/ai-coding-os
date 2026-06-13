@@ -33,20 +33,32 @@ standards 可以规定怎么执行；roadmap 可以说明何时迁移；Goal Pac
 ## 当前事实
 
 - 仓库定位是 AI Coding OS 方法套件仓：一组按 decision surface 分组的公开 skill、一个轻量入口 skill，以及仍以 `goal-proof` 发布的 Goal Pack CLI。
+- AI Coding OS 的第一准则是 `strong-agent optimistic workflow`：默认面向高智能 agent，方法系统提供边界、路由、proof path、evidence、claim discipline 和 stop signal，而不是弱模型防御式流程表。
+- Durable artifact 只有在帮助下一位 agent 执行、验证、审计、交接或降低 overclaim 风险时才应存在；不能用规划表面替代可运行或可检查的 proof path。
 - AI Coding OS 是方法论和 skill suite 品牌名；默认落地边界是 workspace/repo，不进入品牌名。
 - 默认用户入口是 `ai-coding-os`。它只路由和编排，不拥有持久 artifact。
 - 命名裁决由 [ADR: AI Coding OS 命名与边界](../adr/2026-05-28-ai-coding-os-naming-and-boundary.md) 固化。
 - `docs-governance` 独立公开，拥有文档分层、权威放置、cleanup 和 audit。
+- `agentic-architecture` 独立公开，拥有 AI agent 时代的底层架构公理、authority-first doctrine、Capability Port / Adapter、composition root、可替换性、agent freedom boundary 和 evidence gate。
+- `agentic-architecture` 是上游 architecture lens；它指导前端、Effect、harness、memory、provider / runtime 等具体方法的边界判断，但不拥有这些领域的实现细节。
 - `interface-capability-planning` 独立公开，拥有 UI/IA 交互能力合同、状态/数据归属、testability planning 和 harness handoff。
 - `product-harness-system` 独立公开，拥有通用 Harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范。
 - `ui-product-harness` 独立公开，拥有 interface-headless、render wiring、browser-visible 和 production-near UI proof 方法。
-- `headless-product-harness` 独立公开，拥有 headless proof command、smoke evidence、fixture/replay 和 evidence envelope。
+- `headless-product-harness` 独立公开，拥有 headless proof command、smoke evidence、
+  fixture/replay，以及 headless command JSON / JSONL output shape。
 - `goal-proof` 独立公开，拥有 Goal Pack 目标计划、滚动执行和跨会话延续。
 - CLI / npm package 暂保留 `goal-proof` 命名。
 - Goal Pack 核心产物是 `goal.yaml`、`progress.yaml`、`evidence.jsonl`、`plans/<work_id>.md`；涉及 UI/IA/interaction trace 时可带 optional companion `interface-capabilities.yaml`；涉及 harness proof trace 时可带 optional companion `product-harness.yaml`。
 - `goal.yaml` 表示目标授权和 agent 对人类意图的可执行压缩。
 - `plans/<work_id>.md` 只在 `needs_plan` 高风险 slice 中存在。
 - 默认证据模式面向强 agent，不要求每一步机器级证明。
+- Goal Pack ready 必须由稳定 goal contract 加上已授权的 `proof_step` 构成；该
+  `proof_step` 必须能在 `claim_limit` 内产出或检查 `completion.required_evidence`。
+- Evidence envelope 是跨方法 claim discipline，由 SSoT / Goal Proof canonical 口径拥有：
+  positive evidence 必须绑定执行或检查路径，`not_claimed` 用于结构性限制相邻 claim，
+  未检查的相邻面应以叙事性的 `not_proven` 或 `remaining_gaps` 表达。
+- 在未同步升级 schema、template 和 checker 前，`changed surfaces` 与 `not_proven`
+  不是 v2 Goal Pack completion review 的正式字段。
 - Completion review 必须回扣 `completion.required_evidence`，并说明 `not_claimed` 与 `remaining_gaps`。
 - 当前 CLI、templates、skills、checker、tests、README 和 dogfood Goal Pack 主路径使用 v2 schema 口径。
 

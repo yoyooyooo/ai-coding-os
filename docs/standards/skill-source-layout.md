@@ -48,6 +48,7 @@ finding-proof-step
 proof-step-implementation
 write-work-plans
 docs-governance
+agentic-architecture
 frontend-architecture
 effect-best-practices
 interface-capability-planning

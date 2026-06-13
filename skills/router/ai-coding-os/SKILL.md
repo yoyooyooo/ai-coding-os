@@ -22,8 +22,9 @@ Inputs: user intent, host instructions, authority signals, repo state, and
 available verification paths.
 Outputs: route decision, orchestration order, inline execution boundary, and
 claim / not_claimed summary.
-Handoff: durable plan -> goal flow; docs placement -> governance;
-interface trace -> interface capability workflow; harness model ->
+Handoff: architecture authority / port / adapter / composition-root boundary ->
+agentic architecture workflow; durable plan -> goal flow; docs placement ->
+governance; interface trace -> interface capability workflow; harness model ->
 harness system workflow; browser-visible proof -> UI harness workflow; command
 proof -> headless harness workflow; reusable frontend architecture doctrine ->
 frontend architecture workflow.
@@ -35,12 +36,16 @@ private-data, public API/schema/protocol, destructive, or claim_limit choice.
 
 ```text
 ai-coding-os      routes user intent and coordinates methods
+agentic-architecture  owns authority-first architecture doctrine, capability
+                           ports/adapters, composition-root boundaries,
+                           replaceability, and agent freedom constraints
 docs-governance           owns docs/* layer governance and cleanup
 goal-proof            owns Goal Pack planning and execution artifacts
 interface-capability-planning owns UI/IA interaction capability contracts
 product-harness-system    owns shared harness artifact model and lifecycle
-ui-product-harness        owns frontend/UI harness design and evidence
-headless-product-harness  owns proof command and evidence-envelope design
+ui-product-harness        owns frontend/UI harness design and local output shape
+headless-product-harness  owns proof command and headless command JSON / JSONL
+                           output shape
 frontend-architecture     owns frontend dependency direction, naming, package
                            boundaries, and React/Effect/Query/Store doctrine
 effect-best-practices     owns Effect Service/Layer/Scope/runtime/error channel,
@@ -51,6 +56,9 @@ Do not create OS-owned durable state. If something must be persisted, route it
 to the owning method:
 
 - target planning or durable continuation -> `$goal-proof`;
+- architecture authority, capability port/adapter split, provider/runtime/memory
+  boundary, plugin boundary, replaceability, composition root, or agent freedom
+  constraints -> `$agentic-architecture`;
 - docs layer, authority placement, cleanup, or audit -> `$docs-governance`;
 - UI/IA, app shell, navigation, route/page structure, interaction states,
   frontend handoff, headless-to-interface growth, or InterfaceCapability trace
@@ -60,8 +68,8 @@ to the owning method:
   `$product-harness-system`;
 - frontend state/data/cache/mutation/realtime/router testing, UI dogfood,
   browser-visible proof, Playwright/agent-browser harnesses,
-  interface-headless proof, or UI evidence envelopes -> `$ui-product-harness`;
-- command surface, smoke proof, fixture/replay, or evidence envelope ->
+  interface-headless proof, or UI evidence output shape -> `$ui-product-harness`;
+- command surface, smoke proof, fixture/replay, or headless command output shape ->
   `$headless-product-harness`;
 - reusable frontend architecture, feature-first layout, source-only shared /
   package boundaries, naming suffixes, React/Effect/Query/Zustand split, or
@@ -78,6 +86,10 @@ that skill.
 
 Otherwise route by intent:
 
+- asks for architecture authority, SSoT-level architecture principles,
+  fact/projection boundaries, capability ports/adapters, provider/runtime/memory
+  integration, plugin boundary, replaceability, composability, composition
+  roots, or AI-agent execution constraints -> `$agentic-architecture`;
 - asks for a Goal Plan, target plan, durable planning state, saved context,
   cross-session continuation, or explicitly says Goal Proof System / Goal Pack ->
   `$goal-proof`;
@@ -93,16 +105,17 @@ Otherwise route by intent:
   `$product-harness-system`;
 - asks for frontend state/data/cache/mutation/realtime/router testing, UI
   product proof, browser-visible acceptance, agent-browser/Playwright dogfood,
-  interface-headless tests, render wiring, or UI evidence envelopes ->
+  interface-headless tests, render wiring, or UI evidence output shape ->
   `$ui-product-harness`;
 - asks for xtask / just / pnpm command surfaces, smoke checks, headless proof,
-  fixture replay, boundary checks, evidence envelope, or not_claimed ->
+  fixture replay, boundary checks, headless command output shape, or not_claimed ->
   `$headless-product-harness`;
 - asks for reusable frontend architecture standards, feature-first directory
   rules, naming semantics, React/Effect/Query/Zustand boundaries,
   `packages/client`, `packages/ui`, source-only shared rules, or frontend
   architecture audit -> `$frontend-architecture`;
-- asks for Effect Service/Layer/runtime/Scope, typed error channels,
+- asks for Effect-first backend capability slices, API / CLI / worker handlers,
+  Effect `Context.Service` / `Layer` / runtime / Scope, typed error channels,
   `Effect.gen`, Promise integration, timeout/retry, ManagedRuntime,
   Stream/Queue/SubscriptionRef, or Effect v4/v3 API differences ->
   `$effect-best-practices`;
@@ -114,6 +127,53 @@ Otherwise route by intent:
 When several routes apply, orchestrate them in the order needed by the user's
 current intent. Do not stop at recommending another skill when the user asked
 for end-to-end work and the next method can continue safely.
+
+Use `$agentic-architecture` as a pre-lens only when the task touches authority,
+provider/runtime/memory/tool/plugin boundaries, replaceability, composability,
+composition roots, command/projection semantics, or claim/evidence gates. Do
+not force ordinary frontend layout, Effect API usage, docs cleanup, or harness
+implementation details through it when their owning skill can decide locally.
+
+## Route Envelope
+
+Before durable work, carry a compact route envelope. Keep it inline unless an
+owning method needs to persist it:
+
+```text
+intent:
+repo_maturity:
+authority_files:
+owning_method:
+artifacts_to_touch:
+verification_boundary:
+not_claimed:
+stop_conditions:
+```
+
+Use `repo_maturity` to size the route, not to create a new workflow:
+
+- `new`: no stable docs router or authority baseline exists yet;
+- `lightly-documented`: a few docs exist, but routing / authority / indexes are thin;
+- `mature-bloated`: many docs exist and may duplicate, drift, or over-own;
+- `legacy-migrating`: old names, old folders, or old method vocabulary are being retired;
+- `active-goal-repo`: a Goal Pack or equivalent execution method already owns progress facts.
+
+Examples:
+
+- `new` or `lightly-documented` docs baseline -> route to `$docs-governance`
+  governance convergence;
+- `mature-bloated` or `legacy-migrating` docs cleanup -> route to
+  `$docs-governance` migration / cleanup, with retention verdicts before edits;
+- `active-goal-repo` execution state -> route progress facts to `$goal-proof`,
+  and route only docs placement / indexes / lifecycle cleanup to
+  `$docs-governance`;
+- architecture authority, provider / runtime / memory / tool boundary, or
+  composition-root uncertainty -> route through `$agentic-architecture` before
+  implementation-specific methods.
+
+Do not encode private local tooling, local install paths, or a specific external
+retrieval provider in the envelope. Discovery aids can inform
+`authority_files`, but they are not authority by themselves.
 
 ## Authority Signals
 
@@ -131,6 +191,9 @@ it as candidate understanding or `not_claimed`.
 
 A gap is not automatically blocked. First classify the missing piece by owner:
 
+- missing architecture authority, fact owner, command/projection split,
+  capability port, adapter boundary, provider/runtime/memory/plugin
+  replaceability, or composition root -> `$agentic-architecture`;
 - missing durable plan, continuation state, leftover gap, or evidence chain ->
   `$goal-proof`;
 - missing docs placement, authority relation, cleanup verdict, or index ->
@@ -140,10 +203,10 @@ A gap is not automatically blocked. First classify the missing piece by owner:
 - missing shared harness artifact model, trace spine, Harness Coverage Matrix,
   lifecycle, placement, or claim_ceiling -> `$product-harness-system`;
 - missing frontend harness, interface-headless reducer/store/query proof,
-  render wiring test, browser-visible proof, or UI evidence envelope ->
+  render wiring test, browser-visible proof, or UI evidence output shape ->
   `$ui-product-harness`;
 - missing command wrapper, fixture, replay, boundary check, proof path, or
-  evidence envelope -> `$headless-product-harness`;
+  headless command output shape -> `$headless-product-harness`;
 - missing reusable frontend architecture rule, naming decision, source-only
   package boundary, or React/Effect/Query/Store split -> `$frontend-architecture`;
 - missing Effect runtime ownership, Service/Layer boundary, Scope/resource
@@ -162,11 +225,32 @@ path exists.
 ```text
 read host instructions
 -> classify user intent
+-> classify repo maturity
 -> identify authority and verification boundary
+-> form a compact route envelope
 -> route to inline work or an owning method
 -> execute until the current intent naturally closes, blocks, or needs a user decision
 -> report only proven claims and explicit not_claimed
 ```
+
+## Completion Report Contract
+
+When reporting back from routed or inline work, keep the claim narrow:
+
+```text
+claim:
+owning_method:
+changed_artifacts:
+verification:
+not_claimed:
+next_action:
+```
+
+`verification` must be something actually observed: command output, tests,
+audits, file scans, rendered evidence, or method-owned evidence records.
+`not_claimed` must name adjacent assumptions that were not proven, such as
+downstream runtime installation, external deployment, browser-visible behavior,
+full docs cleanup, or product correctness outside the touched scope.
 
 ## Rolling Goal Execution
 
@@ -186,7 +270,13 @@ objective.
 route to goal-proof
 -> run current proof_step
 -> append evidence and apply progress
--> if the goal contract is still valid and the next step is falsifiable:
+-> if the user or Goal Pack explicitly opted into plan-optimality review for
+   this wave / proof-step boundary, route the structured plan artifact through
+   plan-optimality-loop
+-> if that optional review finds gaps, synthesize an adopted correction plan and
+   route it back into Goal Proof state before implementation continues
+-> if the goal contract is still valid, any opted-in review gate is satisfied,
+   and the next step is falsifiable:
      sharpen next proof_step and continue
 -> otherwise review, block, or ask for a human decision
 ```
@@ -194,10 +284,20 @@ route to goal-proof
 Continue routing only while the owning method can stay inside the current
 authority and claim boundary.
 
+Plan-optimality review is an optional gate, not a default cost of rolling
+execution. Use `$plan-optimality-loop` only when the user explicitly asks for
+multi-reviewer / subagent plan challenge, or when the active Goal Pack / work
+plan explicitly requires it. When opted in, the review must converge on an
+adopted correction plan; unresolved findings keep the Goal Pack at
+`next_action: review` or `needs_plan` instead of continuing implementation.
+
 ## Non-Ownership Rules
 
 Do not own or rewrite:
 
+- architecture authority, capability ports/adapters, composition-root doctrine,
+  provider/runtime/memory/plugin replaceability rules, or agent execution
+  constraints that belong to `$agentic-architecture`;
 - Goal Pack `goal.yaml`, `progress.yaml`, `evidence.jsonl`, or
   `plans/<work_id>.md` lifecycle;
 - InterfaceCapability trace artifact ownership that belongs to
@@ -206,7 +306,7 @@ Do not own or rewrite:
   `$product-harness-system`;
 - UI harness command/evidence details that belong to `$ui-product-harness`;
 - docs layer lifecycle rules that belong to `$docs-governance`;
-- command/evidence schema details that belong to `$headless-product-harness`;
+- headless command output details that belong to `$headless-product-harness`;
 - frontend architecture doctrine that belongs to `$frontend-architecture`;
 - Effect Service/Layer/Scope/runtime or error-channel doctrine that belongs to
   `$effect-best-practices`;

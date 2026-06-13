@@ -14,9 +14,9 @@ agent 锁进防御式流程表格。它提供的是边界、路由、验证路�
 这套方法可用于 MVP、功能、迁移、重构、排障、审计、研究、文档治理和工具建设。
 
 默认入口是 `$ai-coding-os`。它不拥有持久 artifact，只负责把工作路由到
-Goal Proof System、Docs Governance、Effect Best Practices、Interface
-Capability Planning、Product Harness System、UI Product Harness、Headless
-Product Harness，或一轮内 inline 实施。
+Agentic Architecture、Goal Proof System、Docs Governance、Effect Best
+Practices、Interface Capability Planning、Product Harness System、UI Product
+Harness、Headless Product Harness，或一轮内 inline 实施。
 
 ## 核心原则
 
@@ -44,12 +44,13 @@ gap 显式留下
 | `goal/` | `proof-step-implementation` | 执行、验证、添加 evidence、apply progress |
 | `goal/` | `write-work-plans` | 为高风险 work item 写 `plans/<work_id>.md` |
 | `governance/` | `docs-governance` | docs layer、SSoT、standards、ADR、roadmap、cleanup、audit |
+| `architecture/` | `agentic-architecture` | AI agent 时代的底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate |
 | `architecture/` | `frontend-architecture` | TypeScript 前端架构、依赖方向、命名语义、React/Effect/Query/Store 分层和 harness-ready 边界 |
 | `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime、错误通道、资源生命周期和 v4/v3 迁移差异 |
 | `capability/` | `interface-capability-planning` | UI/IA、InterfaceCapability、surface、state/data ownership、harness handoff |
 | `harness/` | `product-harness-system` | harness artifact model、`claim_ceiling`、Harness Coverage Matrix、trace lifecycle |
 | `harness/` | `ui-product-harness` | interface-headless、render wiring、browser-visible、production-near UI proof |
-| `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、evidence envelope |
+| `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、headless command JSON/JSONL output shape |
 
 ## 状态变化模型
 
@@ -92,7 +93,8 @@ human intent
   -> next_action: proof_step | continue | needs_plan | blocked | review | done | needs_human
 ```
 
-Goal Pack ready 的条件是：goal contract 稳定，且当前 `proof_step` 能证明或证伪一次有意义推进。
+Goal Pack ready 的条件是：goal contract 稳定，且当前 `proof_step` 已被授权在
+`claim_limit` 内产出或检查 `completion.required_evidence`。
 不是因为列了 work item 就 ready。
 
 Work item 和 checks 是执行细节，不是顶层目标循环的必经概念。
@@ -100,6 +102,9 @@ Work item 和 checks 是执行细节，不是顶层目标循环的必经概念�
 
 完成必须有 review evidence record，包含 `completion_satisfied: true`，并用
 `claim_evidence` 把 completion claim 映射到 evidence。
+跨方法 Evidence Envelope Discipline 由 SSoT / Goal Proof 拥有。这里的
+`changed surfaces` 和 `not_proven` 是叙事 envelope 概念；除非同步升级
+templates / checker，不是 v2 schema 正式字段。
 
 ## Goal Pack 文件
 
@@ -214,7 +219,7 @@ Headless proof：
 
 ```text
 使用 $headless-product-harness：
-设计最小 proof command、fixture/replay、evidence envelope 和 not_claimed。
+设计最小 proof command、fixture/replay、headless command output envelope 和 not_claimed。
 ```
 
 Docs governance：
@@ -226,6 +231,13 @@ Docs governance：
 
 本仓文档层规则见 `docs/standards/docs-governance.md`；公开 skill 源码布局和触发名规则见
 `docs/standards/skill-source-layout.md`。
+
+Architecture baseline：
+
+```text
+使用 $agentic-architecture：
+检查 authority、Capability Port / Adapter、composition root、provider/runtime/memory/plugin 边界、可替换性和 evidence gate。
+```
 
 ## CLI 快速查看
 
@@ -277,6 +289,7 @@ packages/cli/                         TypeScript CLI，使用 Bun 构建
 skills/router/                        OS 入口和用户意图路由
 skills/goal/                          Goal Pack 方法和执行阶段
 skills/governance/                    文档层治理
+skills/architecture/                  Agentic / frontend / Effect architecture doctrine
 skills/capability/                    Interface capability planning
 skills/harness/                       Product、headless 和 UI harness guidance
 skills/README.md                      Skill suite 分组索引

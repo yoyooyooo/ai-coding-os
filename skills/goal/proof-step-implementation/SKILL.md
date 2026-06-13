@@ -86,11 +86,22 @@ After evidence is recorded and checks pass, reduce it to the next state:
 
 ```text
 same proof_step still has useful safe work -> continue
-current movement proved -> sharpen next proof_step and continue
+current movement proved and next wave does not depend on a new/changed
+structured plan -> sharpen next proof_step and continue
+current movement proved and next wave depends on a structured plan, contract,
+high-risk work plan, or broad proof-step rationale and plan-optimality review is
+explicitly opted in -> next_action: review or needs_plan, then run the rolling
+review gate before implementation continues
 required evidence satisfied -> completion review
 no honest next movement -> blocked
 protected field or claim boundary must change -> needs_human
 ```
+
+Do not imply `$plan-optimality-loop` is mandatory. When the next movement is
+plan-controlled, create or update the selected plan artifact and use the normal
+Goal Proof checks unless the user or Goal Pack explicitly opted into the rolling
+review gate. If opted in, synthesize the adopted correction plan and record
+review / planning evidence before setting `next_action: continue`.
 
 Before crossing to a stronger proof level, confirm the previous evidence names
 `positive_tokens`, preserves `not_claimed`, and satisfies the relevant
@@ -127,6 +138,18 @@ command such as `! rg ...` or evidence add an explicit allowlist of intentional
 matches. For schema or terminology migrations, include active surfaces in the
 evidence: templates, references, agents, evals, CLI help/flags, README
 examples, tests/fixtures, and active Goal Pack artifacts.
+
+For goals that hit the semantic risk trigger, implementation evidence must
+preserve the claim coverage review instead of flattening it into broad tokens:
+
+- `claims` names the completed claim slice and proof level.
+- `evidence` cites the command, check, inspected diff, trace, or observation
+  that proves that slice.
+- `not_claimed` records adjacent public surfaces, runtime modes, authority
+  actions, or safety boundaries not proved by this evidence.
+- Different proof levels use separate evidence records when crossing a
+  promotion gate; lower-level proof may support the next level but does not
+  become that level's claim.
 
 ## State Update
 

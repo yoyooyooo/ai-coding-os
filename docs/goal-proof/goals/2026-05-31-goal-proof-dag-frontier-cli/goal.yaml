@@ -1,0 +1,101 @@
+schema_version: 2
+id: "2026-05-31-goal-proof-dag-frontier-cli"
+status: ready
+
+intent:
+  source: "Current conversation: convert the converged DAG frontier proposal into a Goal Proof Pack."
+  interpreted_as: "Create a durable Goal Pack for implementing the schema-first read-only goal-proof dag frontier plan."
+  assumptions:
+    - "The plan in docs/goal-proof/sources/2026-05-31-goal-proof-dag-frontier-view-proposal.md is the adopted implementation input."
+    - "Implementation should start with structured blockers before adding the dag command."
+  open_questions: []
+
+objective: "Implement a schema-first, read-only Goal Proof DAG frontier CLI flow: structured blockers become machine-readable pending wait conditions, and goal-proof dag renders one thread's ready frontier without weakening Goal Relations evidence semantics."
+guiding_principle: "One fact has one owner: relations.links owns verified cross-pack relation evidence, progress.blockers owns pending wait conditions, and goal-proof dag is only a read-only projection."
+
+relations:
+  thread_id: goal-relations
+  links:
+    - goal_id: 2026-05-23-goal-relations-protocol
+      relation: related_to
+    - goal_id: 2026-05-23-goal-relations-cli-verification
+      relation: related_to
+    - goal_id: 2026-05-23-relations-thread-discovery-cli
+      relation: related_to
+    - goal_id: 2026-05-24-agent-first-output-control-cli
+      relation: related_to
+
+authority_refs:
+  - "docs/goal-proof/sources/2026-05-31-goal-proof-dag-frontier-view-proposal.md"
+  - "docs/review-plan/runs/2026-05-31-goal-proof-dag-frontier-plan-review.md"
+  - "skills/goal/goal-proof-system/references/goal-relations.md"
+  - "skills/goal/goal-proof-system/references/checker-rules.md"
+  - "skills/goal/goal-proof-system/references/cli.md"
+  - "skills/goal/goal-proof-system/templates/progress.yaml"
+  - "packages/cli/src/lib/goal-pack.ts"
+  - "packages/cli/src/render-goal-relations.ts"
+  - "packages/cli/src/goal-proof.ts"
+  - "packages/cli/test/check-goal-pack.test.ts"
+  - "packages/cli/test/goal-relations-cli.test.ts"
+
+engineering_guidance:
+  standards:
+    - "docs/standards/docs-governance.md"
+    - "docs/standards/skill-source-layout.md"
+  architecture_notes:
+    - "Do W1 before W2: progress.blockers must support structured goal_completion and decision blockers before any pending blocking edge is rendered."
+    - "Do not add stored DAG edge hints. MVP must not read relations.dag.predecessor_goal_ids or successor_goal_ids."
+    - "Do not put future evidence ids such as E999 into pending blockers. Successor relations may reference real predecessor evidence only after it exists."
+    - "Do not add unblocks.status or unblocks.next_action to blockers. State changes remain owned by evidence records and apply."
+    - "goal-proof dag must keep stored state fields separate from derived frontier_state."
+    - "relations check must keep failing on missing hard relation evidence."
+  quality_bar: "The implementation must preserve existing Goal Relations behavior, keep the new dag command read-only, and prove structured blockers survive parse, serialize, check, and apply paths."
+  preferred_proof_path: "Targeted CLI/checker tests first, then full bun run check, then a completion review mapping evidence to the adopted plan."
+
+constraints:
+  - "MVP command is goal-proof dag [target] --thread <id> [--json]; --thread is required."
+  - "goal-proof dag is read-only and must not write Goal Pack state."
+  - "Only successor_of, depends_on, and structured goal_completion blockers may become readiness edges."
+  - "related_to and supersedes remain relation metadata and do not become readiness edges."
+  - "String blockers remain compatible and opaque; do not parse free text as authority."
+  - "Do not change the meaning of relations.links or relations check."
+  - "Do not create a scheduler, queue, worklist, auto-run command, stored graph, thread lifecycle, or thread registry."
+
+non_goals:
+  - "No goal-proof dag run, thread run, relations queue, or relations worklist."
+  - "No automatic unblock when a predecessor completes."
+  - "No natural-language parsing of blockers."
+  - "No stored thread object or graph file."
+  - "No change to Goal Pack as the completion unit."
+
+completion:
+  signal: "The CLI supports structured progress.blockers and a read-only goal-proof dag frontier view over one thread; existing relations commands retain their evidence/discovery semantics; docs and skills describe the boundary."
+  required_evidence: "Passing tests cover structured blocker acceptance/rejection, string blocker compatibility, apply preservation, dag JSON/text output, --thread requirement, no-write behavior, missing/cycle error policy, relations regression behavior, and docs/help coverage; bun run check passes; completion review sets completion_satisfied=true and maps claims to evidence."
+
+claim_limit: "This Goal Pack may claim only the Goal Proof CLI/schema/docs/tests changes needed for structured blockers and read-only DAG frontier projection. It may not claim scheduler semantics, automatic execution, stored graph state, external project migration, UI, or general roadmap priority."
+
+stop_rules:
+  - "Stop if structured blockers require replacing the current Goal Pack YAML parser with a broad parser migration not covered by this claim."
+  - "Stop if preserving apply behavior would require changing evidence/apply ownership of state transitions."
+  - "Stop if dag output needs a scheduler, queue, or priority model to satisfy acceptance."
+  - "Stop if relations check would need to ignore missing hard predecessor evidence."
+  - "Stop if public CLI/schema/protocol meaning must change beyond the adopted plan."
+
+agent_authority:
+  continue_by_default: true
+  requires_human_decision:
+    - objective
+    - authority_refs
+    - engineering_guidance
+    - constraints
+    - completion
+    - claim_limit
+    - stop_rules
+  agent_may_revise:
+    - proof_step
+    - work_order
+    - proof_path
+    - implementation_shape
+    - documentation_shape
+
+evidence_mode: strict

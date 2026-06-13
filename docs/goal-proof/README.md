@@ -24,6 +24,27 @@ notes、relations、completion review 和 source material。它可以生成 comp
 候选稿，但不能长期替代 `docs/interface-capabilities/**`、`docs/product-harness/**`、
 SSoT、standards、ADR 或 roadmap。
 
+## Strong-Agent Ready Gate
+
+Goal Proof System 默认采用 `strong-agent optimistic workflow`。Goal Pack ready 不是因为
+计划够完整，而是因为目标合同稳定，且下一步已被授权在 claim limit 内产出或检查
+`completion.required_evidence`。
+
+```text
+ready = goal contract stable + authorized proof_step can produce/inspect completion.required_evidence within claim_limit
+```
+
+工作项列表、roadmap 段落、future command name 或 docs-only preface 都不能单独使 Goal
+Pack ready。first proof step 应是 runnable 或 inspectable movement；docs-only first
+proof step 只在目标 delta 本身就是承载 claim 的 doc / review authority surface，且
+proof step 能检查 diff、交叉引用、authority conflict 或 static scan 时成立。
+
+Completion review 应使用由 SSoT / Goal Proof 拥有的跨方法 Evidence Envelope
+Discipline：每个 claim 回扣实际 command / check / evidence record，列出叙事性的
+changed surfaces，并区分 `not_claimed`、叙事性的 `not_proven` 和 remaining gaps。
+除非同步升级 schema、template 和 checker，`changed surfaces` 与 `not_proven` 不表示
+v2 completion review 的正式字段。
+
 ## Promotion / Demotion
 
 - Goal Pack completion 后必须判断 companion artifact 和 notes 的 retention verdict。
@@ -65,7 +86,8 @@ goals/<goal-id>/
 
 ## Active Goal Packs
 
-当前没有 active Goal Pack。
+- `goals/2026-06-03-triggered-claim-coverage-review/` - ready Goal Pack for implementing Triggered Claim Coverage Review as first-wave Goal Proof skill/template/docs guidance with no CLI/schema behavior change.
+- `goals/2026-05-31-goal-proof-dag-frontier-cli/` - ready Goal Pack for implementing schema-first structured blockers and the read-only `goal-proof dag` frontier view.
 
 ## Completed Goal Packs
 
@@ -80,7 +102,8 @@ goals/<goal-id>/
 ## Goal Threads
 
 - `agent-first-cli` - CLI command and output surfaces optimized for agent routing and bounded context.
-- `goal-relations` - completed protocol and CLI verification packs.
+- `goal-proof-method` - Goal Proof method, schema, template, completion review, and skill guidance changes.
+- `goal-relations` - relation metadata, thread discovery, relations CLI, and DAG/frontier work.
 - `evidence-cli` - evidence record command-surface improvements for agent-first read/write workflows.
 
 Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation graph 是派生视图，不作为存储规划状态。
@@ -89,11 +112,16 @@ Goal Thread 只是共享标签。Goal Pack 仍然是完成单位；relation grap
 
 弱信号、开放候选和未准备进入 Goal Pack 的输入放这里。Inbox 不是 backlog。
 
+当前无开放 inbox item。
+
 ## Sources
 
 已被消费但需要保留追溯的材料放这里。Sources 不是开放候选。
 
 - `sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md` - 已消费的顶层叙事 delta source：公共主线采用 intent-to-evidence state transition，compiler 仅保留为辅助隐喻，不新增公共 Check、schema 或 CLI。
+- `sources/2026-06-03-product-capability-coverage-axis-proposal.md` - 已评审实施计划：收敛为 standalone `product-capability-coverage` 薄 skill，第一波放入 `skills/capability/` 并同步 public docs、router、handoff consumers 和 evals；不新增 `coverage/` group、CLI/schema 或 Harness Matrix 替代物。
+- `sources/2026-06-03-goal-contract-claim-coverage-review-proposal.md` - 已消费的 Triggered Claim Coverage Review proposal：第一波采用现有 v2 surface 的 E999 claim coverage review，不新增 schema 或 CLI parser 行为。
+- `sources/2026-05-31-goal-proof-dag-frontier-view-proposal.md` - 已收敛的 CLI delta implementation plan：采用 schema-first 的只读 `goal-proof dag` frontier view，并保持 `relations` 为 discovery / relation evidence surface。
 - `sources/2026-05-24-goal-proof-v2-dogfood-migration-handoff.md` - v2 Goal Pack schema dogfood migration 的历史 handoff 来源。
 
 ## Read Next

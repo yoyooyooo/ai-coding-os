@@ -21,6 +21,12 @@
 
 `docs/<layer>` 必须表示文档类型，不表示阶段、个人习惯、临时计划、某个当前任务或工具偏好。
 
+文档治理服从 strong-agent optimistic workflow。新增或保留 durable 文档时，应说明它如何帮助
+agent 更快完成 authority lookup、proof path、evidence review、handoff 或 overclaim 防护。
+文档本身不能成为实现前置障碍；docs-only first proof step 只在目标 delta 本身是
+承载 claim 的 doc / review authority surface，且 proof step 能检查 diff、交叉引用、
+authority conflict 或 static scan 时成立。
+
 每个长期存在的 layer README 必须至少包含：
 
 - `Owns`
@@ -71,6 +77,10 @@ docs/ssot/**
 | InterfaceCapability 语义和 surface trace | `docs/interface-capabilities/**`，但不得覆盖 SSoT / standards / ADR |
 | HarnessScenario、`claim_ceiling`、Harness Coverage Matrix、evidence refs | `docs/product-harness/**`，但不得重定义 InterfaceCapability 或产品事实 |
 | 迁移顺序、当前 gate、证据链接 | `docs/roadmap/**` |
+
+`docs/review-plan/**` 只拥有结构化计划 / proposal / SSoT contract 的 review ledger。
+它可以挑战计划并冻结 adopted candidate，但不拥有 implementation status、completion
+evidence、product truth、SSoT、standard 或 ADR。
 
 代码和测试能证明“实际行为”，但不能静默重定义 SSoT、standard 或 ADR。发生冲突时，
 要么更新更高权威层，要么把差异记录为 gap。

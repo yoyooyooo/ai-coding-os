@@ -67,9 +67,18 @@ Use [REFERENCE.md](REFERENCE.md#plan-template) for the full template and
 [EXAMPLES.md](EXAMPLES.md) for an example. The plan must include verification,
 evidence record requirements, and handoff back to the run phase.
 
+After writing or materially changing a high-risk work plan, route the plan
+through `$plan-optimality-loop` only when multi-reviewer / subagent review is
+explicitly requested by the user or required by the active Goal Pack / work
+plan. The output is not a loose comment list: the main agent must synthesize an
+adopted correction plan, apply accepted changes to `plans/<work_id>.md` and any
+bound proof-step text, and record review / planning evidence. Keep
+`ready_for_run: false` while unresolved findings remain.
+
 `ready_for_run: true` requires a falsifiable next proof step in `proof_step`. If the plan clarifies
 the missing evidence path, update or request an update to `progress.yaml.proof_step`
-before handing back to implementation.
+before handing back to implementation. It also requires the rolling review gate
+to be passed when that optional gate has been explicitly enabled.
 
 ## Output
 

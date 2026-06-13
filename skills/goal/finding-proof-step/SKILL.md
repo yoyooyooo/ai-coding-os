@@ -65,12 +65,34 @@ Before calling a proof step ready, check that it answers these questions in
 - What positive evidence tokens, assertions, or observations must appear?
 - What `not_claimed` entries must be recorded?
 - What is the claim limit of this proof level?
+- How can the step produce or inspect `completion.required_evidence` within
+  `claim_limit`?
 - Where should the next agent inspect first if the proof step fails?
 
+For goals that hit the semantic risk trigger, apply Triggered Claim Coverage
+Review at the proof-step boundary:
+
+- Name the current claim slice in `target_delta`; do not restate the whole
+  objective as the proof step.
+- Name the proof level or runtime mode in existing language, such as
+  static/boundary check, fixture, replay, adapter/projection smoke, DB-backed
+  smoke, real runtime, browser-visible, or production-near.
+- Put adjacent unclaimed surfaces in the proof path's `not_claimed` expectation
+  or in the next evidence record's `not_claimed`.
+- If a still-open adjacent claim remains relevant to completion, preserve it as
+  `remaining_gaps` for the completion review rather than hiding it behind a
+  broad success token.
+
 If the only verification is a future command name, sharpen the proof step by defining
-the command contract and evidence envelope. If the command itself is the
+the command contract and expected evidence observations. If the command itself is the
 missing product work, make command creation the proof-step target and still specify
 the tokens or observations it must emit.
+
+If the candidate first step is docs-only, check whether the target delta itself
+is the claim-bearing doc or review authority surface and whether the proof step
+can inspect diffs, cross references, authority conflicts, or static scans. If
+not, treat the doc as a preface and find the first runnable or inspectable proof
+path instead.
 
 ## Rolling Proof Step
 

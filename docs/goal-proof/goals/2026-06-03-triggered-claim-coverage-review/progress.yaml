@@ -1,0 +1,89 @@
+schema_version: 2
+goal_id: 2026-06-03-triggered-claim-coverage-review
+status: done
+
+proof_step:
+  from: "The reviewed proposal and ledger define Triggered Claim Coverage Review, but active Goal Proof skills, templates, and checker-rules do not yet teach agents to apply it."
+  target_delta: "Goal Proof phase skills, E999 template, checker-rules note, and docs index encode Triggered Claim Coverage Review as first-wave existing-surface guidance with explicit no-CLI/schema-change boundary."
+  proof_path:
+    - "Update goal-contracts guidance so semantic-risk goals scope completion.required_evidence and exclude unclaimed claim-bearing axes in claim_limit, non_goals, or constraints."
+    - "Update finding-proof-step guidance so proof_step names current claim slice, proof level, not_claimed / remaining_gaps, and failure inspection without claiming the whole objective."
+    - "Update proof-step-implementation guidance so implementation evidence preserves proof level and adjacent unclaimed surfaces rather than relying on broad tokens."
+    - "Update goal-proof-system completion guidance and E999 template so triggered goals carry claim coverage review through claim_evidence / not_claimed / remaining_gaps."
+    - "Update checker-rules to state first wave does not parse semantic coverage and future checker work is structural opt-in only."
+    - "Update docs/goal-proof README to route the active Goal Pack and consumed source."
+  checks:
+    - "rg -n \\\\\\\"Triggered Claim Coverage Review|claim coverage review|semantic risk trigger|claim-bearing\\\\\\\" skills/goal/goal-contracts/SKILL.md skills/goal/finding-proof-step/SKILL.md skills/goal/proof-step-implementation/SKILL.md skills/goal/goal-proof-system/SKILL.md skills/goal/goal-proof-system/templates/evidence.jsonl skills/goal/goal-proof-system/references/checker-rules.md docs/goal-proof/README.md"
+    - "rg -n \\\\\\\"semantic_coverage_notes|proof_modality_by_path|not_in_scope\\\\\\\" docs skills packages | cat"
+    - "git diff -- packages/cli/src/lib/goal-pack.ts"
+    - "bun run check"
+    - "python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo ."
+    - "bun packages/cli/src/goal-proof.ts check docs/goal-proof/goals/2026-06-03-triggered-claim-coverage-review"
+    - "git diff --check"
+  failure_inspection:
+    - docs/goal-proof/sources/2026-06-03-goal-contract-claim-coverage-review-proposal.md
+    - docs/review-plan/runs/2026-06-03-goal-contract-semantic-coverage-gate-proposal-review.md
+    - skills/goal/goal-contracts/SKILL.md
+    - skills/goal/finding-proof-step/SKILL.md
+    - skills/goal/proof-step-implementation/SKILL.md
+    - skills/goal/goal-proof-system/SKILL.md
+    - skills/goal/goal-proof-system/templates/evidence.jsonl
+    - skills/goal/goal-proof-system/references/checker-rules.md
+    - packages/cli/src/lib/goal-pack.ts
+
+active_work_item: null
+
+work_items:
+  - id: W001
+    type: implementation
+    status: done
+    objective: "Implement first-wave Triggered Claim Coverage Review guidance, template, checker-rules note, and docs routing without CLI/schema behavior changes."
+    plan: plans/W001.md
+    allowed_scope:
+      - skills/goal/goal-contracts/SKILL.md
+      - skills/goal/finding-proof-step/SKILL.md
+      - skills/goal/proof-step-implementation/SKILL.md
+      - skills/goal/goal-proof-system/SKILL.md
+      - skills/goal/goal-proof-system/templates/evidence.jsonl
+      - skills/goal/goal-proof-system/references/checker-rules.md
+      - docs/goal-proof/README.md
+      - docs/goal-proof/goals/2026-06-03-triggered-claim-coverage-review/**
+    checks:
+      - "rg -n \\\\\\\"Triggered Claim Coverage Review|claim coverage review|semantic risk trigger|claim-bearing\\\\\\\" skills/goal/goal-contracts/SKILL.md skills/goal/finding-proof-step/SKILL.md skills/goal/proof-step-implementation/SKILL.md skills/goal/goal-proof-system/SKILL.md skills/goal/goal-proof-system/templates/evidence.jsonl skills/goal/goal-proof-system/references/checker-rules.md docs/goal-proof/README.md"
+      - "git diff -- packages/cli/src/lib/goal-pack.ts"
+      - "bun run check"
+      - "python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo ."
+      - "bun packages/cli/src/goal-proof.ts check docs/goal-proof/goals/2026-06-03-triggered-claim-coverage-review"
+      - "git diff --check"
+    stop_if:
+      - "W001 would require changing packages/cli/src/lib/goal-pack.ts or any CLI behavior."
+      - "W001 would require adding semantic_coverage_notes, proof_modality_by_path, not_in_scope, or another active schema field."
+      - "W001 would imply natural-language objective parsing or token naming enforcement."
+      - "W001 would route the rule to a second authority instead of skills/templates/docs."
+  - id: W999
+    type: review
+    status: done
+    objective: "Complete review: map W001 evidence to completion.required_evidence using claim coverage review."
+    allowed_scope:
+      - docs/goal-proof/goals/2026-06-03-triggered-claim-coverage-review/**
+    checks:
+      - "bun run check"
+      - "python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo ."
+      - "bun packages/cli/src/goal-proof.ts check docs/goal-proof/goals/2026-06-03-triggered-claim-coverage-review"
+      - "git diff --check"
+    stop_if:
+      - "Any completion claim lacks evidence-backed proof."
+      - "Completion would claim CLI/parser/schema behavior change."
+      - "E999 lacks claim coverage review for this semantic-risk method change."
+
+blockers:
+
+last_check:
+  result: pass
+  checks:
+    - "bun run check [pass]"
+    - "python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo . [pass]"
+    - "bun packages/cli/src/goal-proof.ts check docs/goal-proof/goals/2026-06-03-triggered-claim-coverage-review [pass]"
+    - "git diff --check [pass]"
+
+next_action: done
