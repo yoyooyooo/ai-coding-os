@@ -12,8 +12,9 @@ export function checkLines(checks) {
   if (!Array.isArray(checks)) return [];
   return checks.map((check) => {
     if (typeof check === "string") return check;
-    if (!check || !check.cmd) return null;
-    return `${check.cmd} [${check.status || "unknown"}]`;
+    const command = check?.cmd || check?.command;
+    if (!check || !command) return null;
+    return `${command} [${check.status || "unknown"}]`;
   }).filter(Boolean);
 }
 

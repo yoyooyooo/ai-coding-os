@@ -191,6 +191,7 @@ function relationScalar(lines, key) {
 
 export function parseProgress(text) {
   const lastCheck = blockText(text, "last_check", 0);
+  const lastVerification = blockText(text, "last_verification", 0);
   return {
     schema_version: topScalar(text, "schema_version"),
     goal_id: topScalar(text, "goal_id"),
@@ -207,8 +208,19 @@ export function parseProgress(text) {
     blockers: listScalar(text, "blockers", 0),
     last_check: {
       result: pathScalar(text, ["last_check"], "result") || "unknown",
+      command: pathScalar(text, ["last_check"], "command"),
+      evidence_reference: pathScalar(text, ["last_check"], "evidence_reference"),
+      timestamp: pathScalar(text, ["last_check"], "timestamp"),
       checks: listScalar(lastCheck, "checks", 2),
     },
+    last_verification: lastVerification
+      ? {
+        command: pathScalar(text, ["last_verification"], "command"),
+        status: pathScalar(text, ["last_verification"], "status"),
+        evidence_reference: pathScalar(text, ["last_verification"], "evidence_reference"),
+        timestamp: pathScalar(text, ["last_verification"], "timestamp"),
+      }
+      : null,
     next_action: topScalar(text, "next_action"),
   };
 }
@@ -358,6 +370,7 @@ export function validateGoalPack(pack) {
     validateWorkItem(item, errors);
   }
   validateProgressActionHints(progress, warnings);
+  validateProgressAuditPointers(progress, evidenceRecords, warnings);
 
   for (const record of evidenceRecords) {
     for (const error of validateEvidenceRecord(pack, record)) {
@@ -459,6 +472,60 @@ function validateProgressActionHints(progress, warnings) {
   warnings.push(`first queued work item ${firstQueued.id} is planning but next_action is ${progress.next_action || "<missing>"}; consider next_action: needs_plan`);
 }
 
+function validateProgressAuditPointers(progress, evidenceRecords, warnings) {
+  if (!Array.isArray(evidenceRecords) || evidenceRecords.length === 0) return;
+  const latestByWork = new Map();
+  for (const record of evidenceRecords) {
+    if (record?.work_id && record?.evidence_id) latestByWork.set(record.work_id, record);
+  }
+
+  for (const item of progress.work_items) {
+    if (!["done", "blocked"].includes(String(item.status))) continue;
+    const record = latestByWork.get(item.id);
+    if (!record) continue;
+    const expected = evidenceReference(record);
+    if (!item.evidence_reference) {
+      warnings.push(`work item ${item.id} is ${item.status} but missing evidence_reference ${expected}`);
+    } else if (item.evidence_reference !== expected) {
+      warnings.push(`work item ${item.id} evidence_reference ${item.evidence_reference} differs from latest evidence ${expected}`);
+    }
+  }
+
+  const latest = evidenceRecords.at(-1);
+  if (!latest?.evidence_id) return;
+  const latestRef = evidenceReference(latest);
+  const latestChecks = recordChecks(latest);
+  if (!progress.last_check?.evidence_reference) {
+    warnings.push(`last_check missing evidence_reference ${latestRef}`);
+  } else if (progress.last_check.evidence_reference !== latestRef) {
+    warnings.push(`last_check evidence_reference ${progress.last_check.evidence_reference} differs from latest evidence ${latestRef}`);
+  }
+  if (latest.recorded_at && !progress.last_check?.timestamp) {
+    warnings.push(`last_check missing timestamp ${latest.recorded_at}`);
+  } else if (latest.recorded_at && progress.last_check.timestamp !== latest.recorded_at) {
+    warnings.push(`last_check timestamp ${progress.last_check.timestamp} differs from latest evidence recorded_at ${latest.recorded_at}`);
+  }
+  if (latestChecks.length > 0 && progress.last_check?.checks?.length === 0) {
+    warnings.push(`last_check checks are empty but latest evidence ${latestRef} has ${latestChecks.length} checks`);
+  }
+
+  if (latestChecks.length === 0) return;
+  if (!progress.last_verification) {
+    warnings.push(`last_verification missing for latest evidence ${latestRef}`);
+    return;
+  }
+  if (progress.last_verification.evidence_reference !== latestRef) {
+    warnings.push(`last_verification evidence_reference ${progress.last_verification.evidence_reference || "<missing>"} differs from latest evidence ${latestRef}`);
+  }
+  if (latest.recorded_at && progress.last_verification.timestamp !== latest.recorded_at) {
+    warnings.push(`last_verification timestamp ${progress.last_verification.timestamp || "<missing>"} differs from latest evidence recorded_at ${latest.recorded_at}`);
+  }
+}
+
+function evidenceReference(record) {
+  return `evidence.jsonl:${record.evidence_id}`;
+}
+
 export function appendEvidenceRecord(goalRoot, record, { dryRun = false } = {}) {
   const pack = loadGoalPack(goalRoot);
   const errors = validateEvidenceRecord(pack, record);
@@ -550,7 +617,7 @@ export function activateGoalWork(goalRoot, { workId, dryRun = false }: ActivateG
   };
 }
 
-export function applyGoalProgress(goalRoot, { dryRun = false, evidenceRecord = null } = {}) {
+export function applyGoalProgress(goalRoot, { dryRun = false, evidenceRecord = null, lastCheckCommand = null } = {}) {
   const pack = loadGoalPack(goalRoot);
   const latest = evidenceRecord || pack.evidence_records.at(-1);
   if (!latest) throw new Error("evidence.jsonl has no evidence records to apply from");
@@ -566,34 +633,37 @@ export function applyGoalProgress(goalRoot, { dryRun = false, evidenceRecord = n
   const workItem = findWorkItem(nextProgress, latest.work_id);
   const warnings = [];
   let goalStatus = pack.goal.status;
+  const evidenceRef = latest?.evidence_id ? `evidence.jsonl:${latest.evidence_id}` : null;
+  const buildLastCheck = (result) => ({
+    result,
+    command: lastCheckCommand || null,
+    evidence_reference: evidenceRef,
+    timestamp: latest.recorded_at || null,
+    checks: checkLines(recordChecks(latest)),
+  });
+  if (evidenceRef) workItem.evidence_reference = evidenceRef;
 
   if (latest.result === "blocked") {
     workItem.status = "blocked";
     nextProgress.status = "blocked";
     nextProgress.active_work_item = null;
     nextProgress.blockers = unique([...nextProgress.blockers, ...latest.blocked_by]);
-    nextProgress.last_check = {
-      result: "blocked",
-      checks: checkLines(recordChecks(latest)),
-    };
+    nextProgress.last_check = buildLastCheck("blocked");
+    nextProgress.last_verification = lastVerificationFromEvidence(latest, evidenceRef);
     nextProgress.next_action = "blocked";
     goalStatus = "blocked";
   } else if (latest.type === "review" && latest.decision === "complete" && latest.completion_satisfied === true) {
     workItem.status = "done";
     nextProgress.status = "done";
     nextProgress.active_work_item = null;
-    nextProgress.last_check = {
-      result: "pass",
-      checks: checkLines(recordChecks(latest)),
-    };
+    nextProgress.last_check = buildLastCheck("pass");
+    nextProgress.last_verification = lastVerificationFromEvidence(latest, evidenceRef);
     nextProgress.next_action = "done";
     goalStatus = "done";
   } else if (latest.result === "done") {
     workItem.status = "done";
-    nextProgress.last_check = {
-      result: allChecksPass(recordChecks(latest)) ? "pass" : "unknown",
-      checks: checkLines(recordChecks(latest)),
-    };
+    nextProgress.last_check = buildLastCheck(allChecksPass(recordChecks(latest)) ? "pass" : "unknown");
+    nextProgress.last_verification = lastVerificationFromEvidence(latest, evidenceRef);
     const action = latest.next_action || "proof_step";
     applyNextAction(nextProgress, action, warnings);
     goalStatus = nextProgress.status;
@@ -639,6 +709,26 @@ export function validateGoalPackPreview(goalRoot, { progressText = null, evidenc
     progress: progressText ? parseProgress(progressText) : pack.progress,
     evidence_records: evidenceRecord ? [...pack.evidence_records, evidenceRecord] : pack.evidence_records,
   });
+}
+
+function lastVerificationFromEvidence(record, evidenceRef) {
+  const checks = recordChecks(record);
+  const lastCheck = checks
+    .map((check) => {
+      if (typeof check === "string") return { command: check, status: "unknown" };
+      const command = check?.cmd || check?.command;
+      if (!command) return null;
+      return { command, status: check.status || "unknown" };
+    })
+    .filter(Boolean)
+    .at(-1);
+  if (!lastCheck) return null;
+  return {
+    command: lastCheck.command,
+    status: lastCheck.status,
+    evidence_reference: evidenceRef,
+    timestamp: record.recorded_at || null,
+  };
 }
 
 function patchProgressText(originalText, currentProgress, nextProgress, latest, { updateLastCheck = true } = {}) {
@@ -688,13 +778,19 @@ function patchProgressText(originalText, currentProgress, nextProgress, latest, 
   const evidenceRef = latest?.evidence_id ? `evidence.jsonl:${latest.evidence_id}` : null;
   if (latest?.work_id && evidenceRef) {
     apply(`progress.work_items.${latest.work_id}.evidence_reference`, (value) =>
-      setWorkItemScalarText(value, latest.work_id, "evidence_reference", evidenceRef, { onlyIfPresent: true }),
+      setWorkItemScalarText(value, latest.work_id, "evidence_reference", evidenceRef, { onlyIfPresent: false }),
     );
   }
 
   if (updateLastCheck) {
     apply("progress.last_check", (value) =>
       setLastCheckText(value, nextProgress.last_check || { result: "unknown", checks: [] }, evidenceRef),
+    );
+  }
+
+  if (updateLastCheck && nextProgress.last_verification) {
+    apply("progress.last_verification", (value) =>
+      setLastVerificationText(value, nextProgress.last_verification),
     );
   }
 
@@ -736,26 +832,45 @@ function setTopListText(text, key, values) {
 function setLastCheckText(text, lastCheck, evidenceRef) {
   return mutateYamlLines(text, (lines) => {
     let parent = findKeyLine(lines, "last_check", 0);
+    const block = [
+      "last_check:",
+      `  result: ${yamlScalar(lastCheck.result || "unknown")}`,
+      ...(lastCheck.command ? [`  command: ${yamlScalar(lastCheck.command)}`] : []),
+      ...(evidenceRef ? [`  evidence_reference: ${yamlScalar(evidenceRef)}`] : []),
+      ...(lastCheck.timestamp ? [`  timestamp: ${yamlScalar(lastCheck.timestamp)}`] : []),
+      ...yamlListLines("checks", lastCheck.checks || [], 2),
+    ];
     if (parent === -1) {
       const insertAt = findKeyLine(lines, "next_action", 0);
-      const block = [
-        "last_check:",
-        `  result: ${yamlScalar(lastCheck.result || "unknown")}`,
-        ...yamlListLines("checks", lastCheck.checks || [], 2),
-        ...(evidenceRef ? [`  evidence_reference: ${yamlScalar(evidenceRef)}`] : []),
-        "",
-      ];
-      if (insertAt === -1) lines.push("", ...block);
-      else lines.splice(insertAt, 0, ...block);
+      if (insertAt === -1) lines.push("", ...block, "");
+      else lines.splice(insertAt, 0, ...block, "");
       return;
     }
-    setBlockChildScalarLines(lines, parent, 0, "result", lastCheck.result || "unknown");
-    parent = findKeyLine(lines, "last_check", 0);
-    setBlockChildListLines(lines, parent, 0, "checks", lastCheck.checks || []);
-    if (evidenceRef) {
-      parent = findKeyLine(lines, "last_check", 0);
-      setBlockChildScalarLines(lines, parent, 0, "evidence_reference", evidenceRef);
+    const end = blockEnd(lines, parent, 0);
+    lines.splice(parent, end - parent, ...block);
+  });
+}
+
+function setLastVerificationText(text, lastVerification) {
+  return mutateYamlLines(text, (lines) => {
+    let parent = findKeyLine(lines, "last_verification", 0);
+    const block = [
+      "last_verification:",
+      `  command: ${yamlScalar(lastVerification.command || "unknown")}`,
+      `  status: ${yamlScalar(lastVerification.status || "unknown")}`,
+      ...(lastVerification.evidence_reference ? [`  evidence_reference: ${yamlScalar(lastVerification.evidence_reference)}`] : []),
+      ...(lastVerification.timestamp ? [`  timestamp: ${yamlScalar(lastVerification.timestamp)}`] : []),
+    ];
+    if (parent === -1) {
+      const insertAt = findKeyLine(lines, "evidence_cursor", 0);
+      const fallbackAt = findKeyLine(lines, "next_action", 0);
+      if (insertAt !== -1) lines.splice(insertAt, 0, ...block, "");
+      else if (fallbackAt !== -1) lines.splice(fallbackAt, 0, ...block, "");
+      else lines.push("", ...block, "");
+      return;
     }
+    const end = blockEnd(lines, parent, 0);
+    lines.splice(parent, end - parent, ...block);
   });
 }
 
@@ -880,14 +995,30 @@ export function serializeProgress(progress) {
     if (item.allowed_scope.length > 0) appendList(lines, "    allowed_scope:", item.allowed_scope, 6);
     if (item.checks.length > 0) appendList(lines, "    checks:", item.checks, 6);
     if (item.stop_if.length > 0) appendList(lines, "    stop_if:", item.stop_if, 6);
+    if (item.evidence_reference) lines.push(`    evidence_reference: ${yamlScalar(item.evidence_reference)}`);
   }
   lines.push("");
   appendList(lines, "blockers:", progress.blockers, 2);
   lines.push("");
   lines.push("last_check:");
   lines.push(`  result: ${progress.last_check.result || "unknown"}`);
+  if (progress.last_check.command) lines.push(`  command: ${yamlScalar(progress.last_check.command)}`);
+  if (progress.last_check.evidence_reference) lines.push(`  evidence_reference: ${yamlScalar(progress.last_check.evidence_reference)}`);
+  if (progress.last_check.timestamp) lines.push(`  timestamp: ${yamlScalar(progress.last_check.timestamp)}`);
   appendList(lines, "  checks:", progress.last_check.checks || [], 4);
   lines.push("");
+  if (progress.last_verification) {
+    lines.push("last_verification:");
+    lines.push(`  command: ${yamlScalar(progress.last_verification.command || "unknown")}`);
+    lines.push(`  status: ${yamlScalar(progress.last_verification.status || "unknown")}`);
+    if (progress.last_verification.evidence_reference) {
+      lines.push(`  evidence_reference: ${yamlScalar(progress.last_verification.evidence_reference)}`);
+    }
+    if (progress.last_verification.timestamp) {
+      lines.push(`  timestamp: ${yamlScalar(progress.last_verification.timestamp)}`);
+    }
+    lines.push("");
+  }
   lines.push(`next_action: ${progress.next_action || "proof_step"}`);
   return `${lines.join("\n")}\n`;
 }
@@ -989,6 +1120,7 @@ function parseWorkItems(text) {
       allowed_scope: workItemList(currentLines, "allowed_scope"),
       checks: workItemList(currentLines, "checks"),
       stop_if: workItemList(currentLines, "stop_if"),
+      evidence_reference: workItemScalar(currentLines, "evidence_reference"),
     });
   };
   for (const line of lines) {

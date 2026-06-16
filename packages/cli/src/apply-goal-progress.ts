@@ -1,5 +1,8 @@
 import { applyGoalProgress } from "./lib/goal-pack.ts";
 
 export function runApply(goalRoot, { dryRun = false } = {}) {
-  return applyGoalProgress(goalRoot, { dryRun });
+  return applyGoalProgress(goalRoot, {
+    dryRun,
+    lastCheckCommand: `goal-proof apply ${goalRoot}${dryRun ? " --dry-run" : ""}`,
+  });
 }

@@ -149,6 +149,12 @@ test("summary defaults to bounded thread groups and omits default-noise fields",
     assert.equal("goals_root" in payload, false);
     assert.equal("warnings" in payload, false);
     assert.equal("errors" in payload, false);
+
+    const diagnostics = run(["summary", project, "--include", "warnings,errors", "--json"]);
+    assert.equal(diagnostics.status, 0, diagnostics.stderr);
+    const diagnosticsPayload = JSON.parse(diagnostics.stdout);
+    assert.equal(Array.isArray(diagnosticsPayload.warnings), true);
+    assert.equal(Array.isArray(diagnosticsPayload.errors), true);
   } finally {
     rmSync(project, { recursive: true, force: true });
   }

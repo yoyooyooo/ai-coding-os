@@ -8,7 +8,15 @@ export function runAppendEvidence(goalRoot, { file = null, json = null, stdin = 
   const input = file ? readFileSync(file, "utf8") : stdin ? readStdin() : json;
   const evidenceRecord = JSON.parse(input);
   const recorded = appendEvidenceRecord(goalRoot, evidenceRecord, { dryRun });
-  const applied = apply ? applyGoalProgress(goalRoot, { dryRun, evidenceRecord: dryRun ? evidenceRecord : null }) : null;
+  const inputArg = file ? `--file ${file}` : stdin ? "--stdin" : "--json <json>";
+  const applyCommand = `goal-proof evidence add ${goalRoot} ${inputArg}${apply ? " --apply" : ""}${check ? " --check" : ""}${dryRun ? " --dry-run" : ""}`;
+  const applied = apply
+    ? applyGoalProgress(goalRoot, {
+      dryRun,
+      evidenceRecord: dryRun ? evidenceRecord : null,
+      lastCheckCommand: applyCommand,
+    })
+    : null;
   const validation = check
     ? dryRun
       ? validateGoalPackPreview(goalRoot, {

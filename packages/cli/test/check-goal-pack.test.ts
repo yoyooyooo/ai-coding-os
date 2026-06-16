@@ -215,6 +215,40 @@ test("rejects invalid implementation evidence records", () => {
   }
 });
 
+test("warns when progress audit pointers are missing or stale after evidence", () => {
+  const evidence = `${JSON.stringify({
+    schema_version: 2,
+    evidence_id: "E001",
+    work_id: "W001",
+    type: "implementation",
+    result: "done",
+    recorded_at: "2026-05-28T00:00:00Z",
+    changed_files: ["packages/cli/src/goal-proof.ts"],
+    checks: [{ kind: "command", command: "bun test packages/cli/test/check-goal-pack.test.ts", status: "pass" }],
+    evidence: ["audit pointer fixture"],
+    claims: ["checker reports stale audit pointers"],
+    summary: "done",
+    next_action: "proof_step",
+  })}\n`;
+  const root = makePack({
+    goal: goalYaml({ status: "ready" }),
+    progress: progressYaml({ status: "ready", active: null, workStatus: "done", nextAction: "proof_step" }),
+    evidence,
+  });
+  try {
+    const result = runChecker(root);
+    assert.equal(result.status, 0, result.stderr || JSON.stringify(result.stdout));
+    const warnings = result.stdout.warnings.join("\n");
+    assert.match(warnings, /work item W001 is done but missing evidence_reference evidence\.jsonl:E001/);
+    assert.match(warnings, /last_check missing evidence_reference evidence\.jsonl:E001/);
+    assert.match(warnings, /last_check missing timestamp 2026-05-28T00:00:00Z/);
+    assert.match(warnings, /last_check checks are empty but latest evidence evidence\.jsonl:E001 has 1 checks/);
+    assert.match(warnings, /last_verification missing for latest evidence evidence\.jsonl:E001/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("accepts done packs only with completion review evidence", () => {
   const progress = `
 schema_version: 2

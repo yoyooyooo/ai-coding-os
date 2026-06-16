@@ -56,8 +56,8 @@ export function summarizeGoalPacks(target = ".", filterOptions = {}) {
   };
 
   setIncluded(result, "goals_root", goalsRoot, controls, ["path", "goals_root"]);
-  maybeSet(result, "warnings", totals.warnings, controls);
-  maybeSet(result, "errors", totals.errors, controls);
+  setDiagnosticField(result, "warnings", totals.warnings, controls);
+  setDiagnosticField(result, "errors", totals.errors, controls);
 
   if (controls.depth === "repo") {
     result.threads = threadTotals(grouped.threads, controls);
@@ -324,8 +324,8 @@ function aggregateSummaries(items, controls, { compact = false } = {}) {
   const warnings = problemPacks.flatMap((item) => item.warnings.map((warning) => `${item.goal_id}: ${warning}`));
   const errors = problemPacks.flatMap((item) => item.errors.map((error) => `${item.goal_id}: ${error}`));
   if (compact) {
-    maybeSet(result, "warnings", warnings, controls);
-    maybeSet(result, "errors", errors, controls);
+    setDiagnosticField(result, "warnings", warnings, controls);
+    setDiagnosticField(result, "errors", errors, controls);
   } else {
     result.warnings = warnings;
     result.errors = errors;
@@ -349,9 +349,15 @@ function compactGoalItem(item, controls) {
   maybeSet(result, "thread_id", item.thread_id, controls);
   setIncluded(result, "path", item.path, controls);
   setIncluded(result, "objective", item.objective, controls);
-  maybeSet(result, "warnings", item.warnings, controls);
-  maybeSet(result, "errors", item.errors, controls);
+  setDiagnosticField(result, "warnings", item.warnings, controls);
+  setDiagnosticField(result, "errors", item.errors, controls);
   return result;
+}
+
+function setDiagnosticField(target, key, value, controls) {
+  if (controls.show_empty || wantsField(controls, key)) {
+    target[key] = value;
+  }
 }
 
 function emptyCounts(keys) {

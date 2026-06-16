@@ -374,7 +374,7 @@ test("evidence list/show/add and apply update progress", () => {
     assert.equal(JSON.parse(show.stdout).evidence_record.evidence_id, "E001");
 
     const addRoot = makePack();
-    const record = implementationEvidence({ evidenceId: "E003", nextAction: "review" });
+    const record: any = implementationEvidence({ evidenceId: "E003", nextAction: "review" });
     const add = run(["evidence", "add", addRoot, "--stdin", "--apply", "--check"], { input: JSON.stringify(record) });
     assert.equal(add.status, 0, add.stderr);
     const payload = JSON.parse(add.stdout);
@@ -382,7 +382,9 @@ test("evidence list/show/add and apply update progress", () => {
     assert.equal(payload.applied.active_work_item, "W002");
     assert.equal(payload.applied.next_action, "review");
     assert.match(readFileSync(join(addRoot, "progress.yaml"), "utf8"), /id: W001[\s\S]*?status: done/);
+    assert.match(readFileSync(join(addRoot, "progress.yaml"), "utf8"), /id: W001[\s\S]*?evidence_reference: evidence\.jsonl:E003/);
     assert.match(readFileSync(join(addRoot, "progress.yaml"), "utf8"), /id: W002[\s\S]*?status: active/);
+    assert.match(readFileSync(join(addRoot, "progress.yaml"), "utf8"), /last_verification:\n  command: "bun test packages\/cli\/test\/goal-pack-cli\.test\.ts"\n  status: pass\n  evidence_reference: evidence\.jsonl:E003\n  timestamp: 2026-05-28T00:00:00Z/);
     rmSync(addRoot, { recursive: true, force: true });
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -392,7 +394,8 @@ test("evidence list/show/add and apply update progress", () => {
 test("evidence add apply preserves progress audit fields and YAML shapes", () => {
   const root = makePack({ progress: progressYamlWithAuditFields() });
   try {
-    const record = implementationEvidence({ evidenceId: "E003", nextAction: "review" });
+    const record: any = implementationEvidence({ evidenceId: "E003", nextAction: "review" });
+    record.checks = [{ kind: "command", command: "bun test packages/cli/test/goal-pack-cli.test.ts", status: "pass" }];
     const add = run(["evidence", "add", root, "--stdin", "--apply", "--check"], { input: JSON.stringify(record) });
     assert.equal(add.status, 0, add.stderr);
     const payload = JSON.parse(add.stdout);
@@ -405,8 +408,8 @@ test("evidence add apply preserves progress audit fields and YAML shapes", () =>
     assert.match(progress, /proof_step_claim_limit:\n[\s\S]*must_not_claim:/);
     assert.match(progress, /id: W001[\s\S]*status: done[\s\S]*evidence_reference: evidence\.jsonl:E003[\s\S]*claim_ceiling: "bounded implementation only"/);
     assert.match(progress, /id: W002[\s\S]*status: active[\s\S]*claim_ceiling: "review only"/);
-    assert.match(progress, /last_check:\n  result: pass\n  checks:\n    - "bun test packages\/cli\/test\/goal-pack-cli\.test\.ts \[pass\]"\n  evidence_reference: evidence\.jsonl:E003/);
-    assert.match(progress, /last_verification:\n  command: "previous command"/);
+    assert.match(progress, /last_check:\n  result: pass\n  command: "goal-proof evidence add .* --stdin --apply --check"\n  evidence_reference: evidence\.jsonl:E003\n  timestamp: 2026-05-28T00:00:00Z\n  checks:\n    - "bun test packages\/cli\/test\/goal-pack-cli\.test\.ts \[pass\]"/);
+    assert.match(progress, /last_verification:\n  command: "bun test packages\/cli\/test\/goal-pack-cli\.test\.ts"\n  status: pass\n  evidence_reference: evidence\.jsonl:E003\n  timestamp: 2026-05-28T00:00:00Z/);
     assert.match(progress, /evidence_cursor: evidence\.jsonl:E003/);
   } finally {
     rmSync(root, { recursive: true, force: true });
