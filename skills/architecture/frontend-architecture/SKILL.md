@@ -13,13 +13,13 @@ description: >-
 
 ## Quick Start
 
-1. Classify the task: `new-app`, `feature-slice`, `react-effect`, `realtime-capability`, `harness-readiness`, or `audit`.
+1. Classify the task: `new-app`, `feature-slice`, `react-effect`, `realtime-capability`, `harness-readiness`, `audit`, or `single-component-audit`.
 2. Read the minimum needed reference:
    - Dependency/package rules: [Core Doctrine](references/core-doctrine.md).
    - Naming and suffixes: [Naming Semantics](references/naming-semantics.md).
    - React, Effect, Query, Store: [React Adapter](references/react-adapter.md).
    - WebSocket, SSE, subscriptions, streams, cursor/gap/backfill: [Realtime Capability](references/realtime-capability.md).
-   - Existing repo review: [Audit Checklist](references/audit-checklist.md).
+   - Existing repo review or single React component audit overlay: [Audit Checklist](references/audit-checklist.md).
 3. Use project `AGENTS.md`, SSoT, standards, ADRs, and package scripts for repo-specific adapters. This skill owns generic doctrine, not project facts.
 4. If the repo uses Effect, also use `effect-best-practices` for Service/Layer/runtime/error/Scope details.
 

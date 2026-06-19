@@ -76,6 +76,39 @@ Use this checklist when reviewing an existing frontend repo or planning a migrat
 - Boundary check is automated with a semantic import/path script or equivalent.
 - CI/test commands cover typecheck, lint, unit/headless/surface/layout, and e2e when claimed.
 
+## Single React Component Audit Overlay
+
+Use this overlay when the user points at one React component, component directory, or `.tsx` file and asks about component design quality, props/API design, dataflow, testability, rerenders, effects, or whether it should be refactored.
+
+This overlay absorbs the useful part of the retired `react-component-diagnosis` path. It is not a separate default skill. If the scope grows into app/module boundaries, return to the main frontend architecture audit.
+
+Score only from code actually read. Do not give directory-scan praise or generic React advice.
+
+### Dimensions
+
+| Dimension | Core question | Check signals |
+| --- | --- | --- |
+| Consumer API | Can callers do the right thing with low cognitive load? | required props count, defaults, prop naming, controlled/uncontrolled pattern, callback semantics |
+| Data flow | Is data transformed in a clear one-way chain? | props -> derived data -> render, no props-to-state sync unless justified, pure transforms separated from effects |
+| Testability | Can core behavior be verified without a full browser? | pure functions, fakeable dependencies, existing tests, stable public boundary |
+| Extensibility | Can one new variant be added without touching unrelated paths? | discriminated unions, slot/strategy points, avoiding scattered switch/if chains |
+| Performance | Are render-time and effect costs bounded? | stable dependencies, memoization only where useful, cleanup, high-frequency update behavior |
+| Mental model | Can a new reader predict where behavior lives? | file names, concept naming, no utils/helper bins, no surprising ownership |
+| Boundary contract | Is the outside-world contact surface small and strict? | validation boundary, third-party adapters, type assertions, error boundary, replaceable dependencies |
+
+### Output Add-On
+
+```text
+component_scope:
+responsibility:
+code_read:
+scorecard:
+findings_by_dimension:
+patterns_to_keep:
+refactor_recommendations:
+verification_needed:
+```
+
 ## Output Template
 
 ```text
