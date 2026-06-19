@@ -13,7 +13,12 @@ description: >-
 This is an internal phase module for `$goal-proof`.
 
 It writes an implementation plan for a selected high-risk work item. It is not the
-normal path for rolling execution.
+normal path for rolling execution and not a second goal-planning workflow.
+
+Use this phase to make a selected work item reviewable before execution, not to
+create a prose goal document outside the Goal Pack. "Goal before go" means the
+Goal Pack contract and current proof step are stable before broad execution;
+"plan before risky work" applies only to selected high-risk work items.
 
 Default output:
 
@@ -22,10 +27,10 @@ docs/goal-proof/goals/<goal-id>/plans/<work_id>.md
 ```
 
 The plan lives inside the Goal Pack by design. It is not a product spec, schema
-authority, goal contract replacement, or parallel workflow. The corresponding
-`progress.yaml` should set `next_action: needs_plan`, keep the selected work
-item as `status: active` or `blocked`, and reference `plan: plans/<work_id>.md`
-when the schema needs an explicit plan pointer.
+authority, goal contract replacement, phase authority, roadmap, or parallel
+workflow. The corresponding `progress.yaml` should set `next_action: needs_plan`,
+keep the selected work item as `status: active` or `blocked`, and reference
+`plan: plans/<work_id>.md` when the schema needs an explicit plan pointer.
 For related Goal Packs, the plan may cite `relations` as predecessor
 evidence, but it must not create a thread-owned lifecycle, stored graph, nested
 work item tree, or cross-pack state ownership.

@@ -21,6 +21,31 @@ authority refs
 
 Do not start from folder shape. Start from the accepted fact, command, or projection the capability owns.
 
+## Topology Rule
+
+Prefer a hybrid topology when a repository has multiple durable architectural packages:
+
+```text
+horizontal package = dependency boundary and architectural responsibility
+vertical folder    = domain / capability locality inside that package
+```
+
+Good shape:
+
+```text
+packages/api-contract/src/<capability>/...
+packages/domain/src/<domain-or-capability>/...
+packages/ports/src/<capability>/...
+packages/application/src/<capability>/...
+packages/adapters-*/src/<capability>/...
+packages/runtime/src/<capability>/...
+apps/<surface>/src/<capability>/...
+tools/<proof>/src/...
+```
+
+Do not collapse architectural responsibilities into one app-local module just to keep files nearby. Also do not spread a tiny capability across every package for symmetry. A layer exists only when the current claim gives it an independent responsibility.
+
+
 ## When To Use
 
 Use this for:
@@ -166,23 +191,37 @@ Do not report UI, DB, provider, production, or realtime claims from an offline f
 
 ## File Naming Guidance
 
-Use project conventions first. When absent, prefer semantic suffixes:
+Use project conventions first. When absent, group by capability folder and keep filenames semantic enough to be searchable in editor tabs:
 
 ```text
-<subject>.contract.ts
-<subject>.schema.ts
-<subject>.model.ts
-<subject>.repo.ts
-<subject>.repo.memory.ts
-<subject>.repo.live.ts
-<subject>.flow.ts
-<subject>.runtime.ts
-<subject>.http.ts
-<subject>.worker.ts
-<subject>.smoke.ts
+packages/<layer>/src/<capability>/<capability>.contract.ts
+packages/<layer>/src/<capability>/<capability>.model.ts
+packages/<layer>/src/<capability>/<capability>.repo.ts
+packages/<layer>/src/<capability>/<capability>.repo.memory.ts
+packages/<layer>/src/<capability>/<capability>.repo.live.ts
+packages/<layer>/src/<capability>/<capability>.flow.ts
+packages/<layer>/src/<capability>/<capability>.runtime.ts
+apps/<surface>/src/<capability>/<capability>.http.ts
+apps/<surface>/src/<capability>/<capability>.worker.ts
+tools/<proof>/src/<capability>.smoke.ts
 ```
 
-Do not mechanically create every file. Create only the files required by the slice and current claim.
+This is a promotion ladder, not a file-generation checklist. Create only layers required by the slice and current claim.
+
+### Collapse Rule
+
+| Situation | Minimum home |
+|---|---|
+| health/readiness/debug route | app surface, optionally contract |
+| pure calculation / validation / value object | domain |
+| wire-only DTO / route literal | contract |
+| app-private transport glue | app surface |
+| DB / provider / external IO | port + adapter |
+| workflow / policy / typed error orchestration | application |
+| long-lived Layer profile | runtime |
+| proof claim | smoke / nearest test |
+
+When a slice touches a layer, the report should name that layer's independent responsibility. If it cannot, the layer should not exist.
 
 ## Review Checklist
 

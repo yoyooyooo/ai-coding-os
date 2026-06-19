@@ -34,10 +34,13 @@ Goal Proof System 默认采用 `strong-agent optimistic workflow`。Goal Pack re
 ready = goal contract stable + authorized proof_step can produce/inspect completion.required_evidence within claim_limit
 ```
 
-工作项列表、roadmap 段落、future command name 或 docs-only preface 都不能单独使 Goal
-Pack ready。first proof step 应是 runnable 或 inspectable movement；docs-only first
-proof step 只在目标 delta 本身就是承载 claim 的 doc / review authority surface，且
-proof step 能检查 diff、交叉引用、authority conflict 或 static scan 时成立。
+工作项列表、roadmap 段落、future command name、独立 prose goal document 或 docs-only
+preface 都不能单独使 Goal Pack ready。first proof step 应是 runnable 或 inspectable
+movement；docs-only first proof step 只在目标 delta 本身就是承载 claim 的 doc /
+review authority surface，且 proof step 能检查 diff、交叉引用、authority conflict 或
+static scan 时成立。
+
+`Goal Plan` 是创建或更新 Goal Pack 的自然语言入口，不是另起一套目标文档。只有选中的高风险 work item 需要预审结构时，才在 Goal Pack 内写 `plans/<work_id>.md`。
 
 Completion review 应使用由 SSoT / Goal Proof 拥有的跨方法 Evidence Envelope
 Discipline：每个 claim 回扣实际 command / check / evidence record，列出叙事性的

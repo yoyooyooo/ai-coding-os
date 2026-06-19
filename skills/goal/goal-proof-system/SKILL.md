@@ -108,7 +108,9 @@ destructive, compliance, product-truth, or claim_limit authority.
 ## User Phrase Mapping
 
 When a user says "Goal Plan", treat it as a natural-language request to create
-or update a Goal Pack. Do not create a separate prose plan file by default.
+or update a Goal Pack. Do not create a separate prose goal document by default,
+and do not route to a parallel goal-planning skill that owns phases outside the
+Goal Pack.
 
 Compile the discussed goal into:
 
@@ -118,9 +120,15 @@ progress.yaml
 evidence.jsonl
 ```
 
+Goal before go is expressed as Goal Pack before broad execution. Phase exits are
+proved through `progress.yaml.proof_step`, checks, evidence records, and
+completion review — not through a separate prose plan lifecycle.
+
 Add `plans/<work_id>.md` only when a selected work item has `next_action:
 needs_plan` or the work is high-risk enough to need a reviewed plan before
-implementation.
+implementation. A plan file must stay inside the Goal Pack and hand back to the
+current proof step; it must not become a second work-item tree, roadmap, or
+parallel execution authority.
 
 ## Use Or Stay Inline
 
