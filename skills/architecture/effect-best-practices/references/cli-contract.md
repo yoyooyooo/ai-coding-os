@@ -1,13 +1,19 @@
-# Effect CLI 最佳实践（A/B/C）
+# Effect CLI Contract（A/B/C）
 
-适用范围：TypeScript（Node.js）+ Effect v3 + `@effect/cli` 的命令行工具。
+This reference defines a stable CLI public contract. Check the installed Effect
+and `@effect/cli` versions before using implementation snippets; behavior rules
+such as stdout/stderr, exit codes, termination, and tests are version-independent.
 
-目标：
-- A 类：把“与业务需求无关、任何 CLI 都应满足”的外部行为固化成可执行规范（并可用 contract tests 自动验证）。
-- B 类：把“仍然需求无关、但更偏工程模板”的结构性因子展开（建议固化为通用 CLI 基建）。
-- C 类：把“只有在特定场景才需要”的情境因子展开（按需启用，但启用后要形成子契约与测试）。
+- A: external invariants suitable for contract tests.
+- B: reusable engineering templates.
+- C: scenario-specific policies that become explicit subcontracts when enabled.
 
-约定：本文用 MUST/SHOULD/Conditional MUST 表达强制程度；除非明确说明，否则都以 `--json` 机器模式为主线。
+## Contents
+
+- 0 Scope and non-goals
+- A: output, JSON envelope, exit codes, error normalization, input, config, termination, thin CLI, tests
+- B: runtime/runner, Console, unknown command, help, module gates
+- C: dry-run/confirmation, daemon lifecycle, large output, idempotency, multi-context
 
 ## 0) 范围与非目标
 
@@ -377,13 +383,3 @@ C 类不是“每个 CLI 都必须有”，但一旦你的需求触发了对应�
 - flags/env/default 的优先级可被验证；冲突参数报 exit code 2。
 
 ---
-
-## 落地证据：agent-remnote（remnote-mcp）
-
-可作为“真实工程可运行样例”对照本文件的 A/B/C：
-
-- A 类（`--json` 严格协议 + stderr 为空 + strict argv 预检）：`packages/agent-remnote/src/main.ts`；对应门禁：`packages/agent-remnote/tests/contract/invalid-options.contract.test.ts`、`packages/agent-remnote/tests/contract/invalid-command.contract.test.ts`
-- 配置与路径解析（flags/env/default 优先级、`~` 展开/normalize、禁止 env 注入）：`packages/agent-remnote/src/services/CliConfigProvider.ts`、`packages/agent-remnote/src/services/Config.ts`
-- file spec 统一解析（`@file` / `-` / `~`）：`packages/agent-remnote/src/services/FileInput.ts`；单测：`packages/agent-remnote/tests/unit/file-input.unit.test.ts`
-- 架构边界静态门禁（分层/portable kernel/禁止 primitive usage）：`packages/agent-remnote/tests/gates/**`
-- 多上下文可观测（`config print` 输出最终解析值）：`packages/agent-remnote/src/commands/config/print.ts`

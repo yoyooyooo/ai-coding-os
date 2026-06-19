@@ -1,190 +1,79 @@
 # Realtime Capability
 
-Use this reference when a frontend task mentions WebSocket, SSE, subscriptions,
-streams, live updates, cursor, gap recovery, realtime events, or projection
-notifications.
+Realtime is a delivery and continuity mechanism for projections. It is not an
+alternate business authority.
 
-## Core Principles
-
-```text
-Fact authority != realtime delivery
-Realtime transport != React hook
-Runtime lifecycle != feature logic
-Feature adapter != business fact owner
-```
-
-Realtime delivery wakes or updates the frontend. It does not create product
-truth. Business facts belong to the authority layer named by the host project:
-domain/application, durable store, accepted projection, or a backfill endpoint.
-
-## Decision Tree
-
-1. Is this a business fact or durable truth?
-   - Yes: put it in the authority/backend/projection/backfill source.
-   - No: continue.
-2. Is this realtime delivery or subscription capability?
-   - Yes: put the contract, live/fake implementation, transport, decode, error,
-     retry, cancellation, and close semantics in `packages/client`.
-   - No: continue.
-3. Does the transport have resource lifecycle?
-   - Yes: default to Effect runtime/service/Layer/Scope or the repo's equivalent
-     runtime boundary. Do not hide it in React.
-   - If the repo is Effect-first, callback-only transport is a bridge; live/fake
-     subscription implementations should move toward Effect-managed Service /
-     Layer / Scope / Stream / Queue behind a runtime-bound facade.
-4. Is this feature-level event consumption?
-   - Yes: put envelope -> reducer/cache/store adapter logic in
-     `<feature>.realtime.ts`.
-5. Is this React lifecycle glue?
-   - Yes: the hook may subscribe/unsubscribe with an injected client contract.
-     It must not create WebSocket/EventSource, live client, config, or runtime.
-6. Is this user-visible state?
-   - Yes: derive it through Query cache, local interaction store, view-model, and
-     surface boundaries. Do not treat realtime events as facts.
-
-## Ownership Map
+## Pipeline
 
 ```text
-authority layer
-  owns business facts, durable projection, and HTTP/backfill source
-
-contract/generated layer
-  owns typed realtime envelope, event DTO, cursor, gap and error shape
-
-packages/client
-  owns realtime capability contract, transport live/fake, decode/assert,
-  retry/timeout/cancel/close, normalized errors, and host variants
-
-app
-  owns config, runtime, live client construction, and dependency injection
-
-features/<feature>/<feature>.realtime.ts
-  owns event -> reducer/cache/store adapter and pure reduction rules
-
-React hook
-  owns mount/unmount glue only
-
-Query / local store / view-model / surface
-  own server projection cache, local interaction state, derived display model,
-  and visible controls
+committed fact
+  -> projection event/envelope
+  -> client decode and continuity check
+  -> feature reducer/patch/invalidation
+  -> query cache or local resource state
+  -> view model
 ```
 
-## Standard Subscription Shape
+## Contract
 
-Use capability-specific names in real code. This shape shows the boundary:
+A useful subscription contract exposes:
 
-```ts
-export type Subscription = {
-  close: () => void;
-};
-
-export type RealtimeHandlers<TEnvelope> = {
-  onEnvelope: (envelope: TEnvelope) => void;
-  onDecodeError?: (error: unknown) => void;
-  onClose?: () => void;
-};
-
-export type ChannelClient = {
-  fetchProjection(channelId: string): Promise<ChannelProjectionDto>;
-  sendMessage(input: SendMessageInput): Promise<SendMessageResult>;
-  subscribeProjection(
-    input: { channelId: string; cursor?: string | null },
-    handlers: RealtimeHandlers<ProductRealtimeEnvelopeDto>
-  ): Subscription;
-};
+```text
+identity or stream key
+cursor/version/sequence when available
+event id for dedupe
+typed envelope or decode error
+close/unsubscribe
+connection/retry diagnostics
+gap/requires-backfill signal
 ```
 
-React lifecycle glue should look like this:
-
-```ts
-useEffect(() => {
-  const subscription = client.subscribeProjection({ channelId, cursor }, handlers);
-  return () => subscription.close();
-}, [client, channelId, cursor, handlers]);
-```
-
-The hook may choose when to subscribe and when to close. It must not own the
-transport or live implementation.
-
-`handlers` must be stable. Use `useMemo` / `useCallback`, or keep the latest
-handler implementation in refs while the subscription dependency list stays tied
-to the subscription identity. Do not reconnect on every render just because a
-handler object was recreated.
+Transport, auth, backoff, timeout, cancellation, and raw decoding belong in the
+client/host capability. Feature realtime code consumes typed envelopes and owns
+only projection reduction.
 
 ## Reduction Rules
 
-Feature realtime adapters should reduce typed envelopes, not transport frames.
-
 ```text
-envelope + current cache/local snapshot
-  -> decode/assert already completed or failed
-  -> dedupe by event id when available
-  -> cursor/requiresBackfill/gap check
-  -> small patch or invalidate/backfill
-  -> local connection UI state update
+duplicate id -> ignore
+known contiguous event -> small deterministic patch or invalidate
+unknown event/shape -> diagnostic + invalidate/backfill
+cursor gap or stale version -> backfill
+permission/visibility change -> discard unsafe local data and refetch
+connection state -> local resource status, not business status
 ```
 
-On decode failure, cursor gap, permission mismatch, unknown event type, or shape
-drift, prefer invalidate/backfill over local invention.
+Patching is worthwhile only when it is simpler and equally safe as refetching.
+Prefer invalidation/backfill when an event lacks enough context.
 
-## Forbidden Patterns
+## Lifecycle
 
-- React component creates `new WebSocket()` or `new EventSource()`.
-- Hook creates live client, Effect Layer, runtime, or reads env/config.
-- Hook reconnects on every render because handlers are not stable.
-- Feature `.realtime.ts` imports transport or creates a module-level live
-  singleton.
-- Store keeps server truth, DTO mirrors, or canonical domain facts.
-- Realtime event, WebSocket frame, relay frame, daemon ack, or runtime stdout is
-  reported as business fact.
-- Fake client is used as a production fallback.
-- Missing events are reconstructed locally instead of backfilled from authority.
-- Operation helpers tunnel `config`, `WebSocketImpl`, auth, base URL, or request
-  id factories through every subscribe input instead of binding them at the
-  client factory / Layer boundary.
+Choose and document lifetime: component, route, feature, tab, app, worker, or
+process. The host/client owns transport resources; React hooks may attach and
+release subscriptions through an injected capability.
 
-## Testing Requirements
+Handle reconnect with cursor/version handoff. A successful socket reconnect does
+not prove projection continuity until gap/backfill rules pass.
 
-Prefer fake subscription tests before browser-level transport tests.
+## Testing
 
-Minimum cases for a realtime capability:
+Minimum contract cases:
 
 ```text
-fake stream emits event -> cache/store reduction happens
-duplicate event id -> no duplicate visible item
-requiresBackfill / gap -> invalidate or backfill, no invented facts
-decode failure -> diagnostic/recoverable state only
-close/unmount -> subscription closes
-fake client covers success/error/gap/close paths
+happy event updates or invalidates projection
+duplicate does not duplicate visible state
+gap triggers backfill
+unknown/decode failure does not invent facts
+close/unmount releases resource
+reconnect resumes or explicitly refetches
+permission change removes stale visibility
 ```
 
-Browser-visible and production-near proof belong to UI/product harness workflows.
-This reference only fixes architecture boundaries.
+Add browser and real transport tests only for claims that require them.
 
-## Effect-First Adapter
+## Effect Mapping
 
-For an Effect-first repo, the preferred realtime implementation is:
-
-```text
-Effect Service / Layer
-  owns live/fake transport, decode, typed errors, retry/backoff, timeout,
-  cancellation, resource close, and test harness seams
-
-runtime-bound facade
-  exposes subscribe(input, handlers): { close(): void }
-
-feature realtime adapter
-  consumes typed envelope and writes Query / local UI state through explicit
-  callbacks or actions
-
-React hook
-  calls subscribe on mount and close on unmount
-```
-
-The facade may be callback-shaped for React ergonomics. That does not mean the
-live implementation should be callback-only when Scope, retry, timeout, or fake
-Layer would materially improve testability.
-
-Host dependencies such as `WebSocketImpl`, base URLs, auth builders, and request
-id factories are not subscription input. Normalize them once at the package
-factory / Layer boundary.
+When Effect is selected, the live client may use Service/Layer/Scope/Stream/Queue
+for resources, retry, cancellation, and fakes. Expose a runtime-bound
+subscription facade to ordinary feature code unless the feature is explicitly
+Effect-native. Load `effect-best-practices` for version-specific APIs.

@@ -1,123 +1,72 @@
 # Audit Checklist
 
-Use this checklist when reviewing an existing frontend repo or planning a migration.
+Use this for an existing frontend repo or one component/surface.
 
-## 1. Dependency Direction
+## System Trace
 
-- `app` only composes and wires runtime.
-- `routes` own route adapter duties, not feature logic.
-- features do not import each other.
-- `shared` does not import app/routes/features/other shared.
-- generated files do not import hand-written source.
-- packages do not import apps or app-local shared.
+- Trace one intent through optimistic proposal, command receipt, committed
+  projection, realtime/query reconciliation, and render.
+- Identify which layer owns each state concept and resource lifecycle.
+- Record gaps between claimed and exercised evidence.
 
-## 2. Naming
+## State
 
-- Feature-first layout exists or has a migration path.
-- Dot filenames use stable suffix semantics.
-- No generic buckets: `lib`, `utils`, `common`, `core`, `base`, `helpers`, `services`, `manager`, `components`, `containers`, `internal`.
-- New suffixes are documented or marked provisional.
-- No default `index.ts` barrels outside package public exports.
+- Every state item is classified: authoritative projection, URL, interaction,
+  optimistic proposal, resource, durable client fact, or derived render state.
+- No unexplained server-state mirror exists in component/store/cache.
+- Optimistic state has mutation identity and accept/reject reconciliation.
+- Durable local state has schema, migration, and sync/recovery policy.
 
-## 3. Shared And Packages
+## Topology
 
-- `shared/<name>` can be lifted to a package.
-- `shared/config`, `shared/lib`, `shared/layout`, and `shared/effect` are not treated as long-term defaults.
-- `packages/ui` is business-neutral and source-only.
-- `packages/client` is a typed capability gateway and does not import React/Query/Zustand/UI.
-- `packages/api-contract` stays generated/contract-only.
+- Host roots construct live clients/runtimes/config/resources.
+- Routes translate framework concerns without absorbing feature logic.
+- Features expose coherent product capabilities and do not deep-import another
+  feature's private files.
+- Packages do not import apps; public APIs prevent deep imports.
+- Generated contracts remain distinct from view models.
 
-## 4. React / Query / Store / Realtime
+## React and Libraries
 
-- Components do not create transport or run Effect directly.
-- Query options consume client contracts.
-- Query keys are centralized.
-- Store holds only local interaction state.
-- Realtime feature adapters consume client subscription and update Query/store through pure reducers where possible.
-- WebSocket/EventSource/SSE/IPC/polling transport mechanics live in `packages/client` transport/live files, not features or hooks.
-- Hooks only subscribe/unsubscribe through an injected client contract.
-- Realtime handlers are stable enough to avoid reconnecting on ordinary renders.
-- Realtime events are projection notifications, not business facts.
-- Gaps and decode failures invalidate/backfill rather than inventing frontend truth.
-- Fake subscriptions cover success, error, gap/backfill, and close paths.
+- Components render/dispatch rather than construct live dependencies.
+- Effects synchronize genuine external systems, not derived state.
+- External stores use stable concurrency-safe subscriptions.
+- Query/cache owns remote projections; local store owns interaction only.
+- Each selected library has a distinct capability slot and test strategy.
 
-## 5. Effect
+## Realtime
 
-- Effect services/layers live in client/runtime boundaries.
-- App wires runtime/config/live implementations.
-- Feature code does not import app runtime.
-- Pure mappers/view-models are ordinary functions.
-- Fake Layer/client replacement exists or is planned for tests/harnesses.
+- Raw frames are decoded before feature reduction.
+- Dedupe, cursor/version, gap, reconnect, and backfill are explicit.
+- Resource status is not presented as business completion.
+- Close/unmount and StrictMode-like lifecycle behavior are tested.
 
-## 6. Harness And Tests
+## Naming and Imports
 
-- `.fixture.ts` is static data only.
-- `.client.fake.ts` owns fake behavior.
-- Production code does not import fixture/fake/test.
-- `.headless.test.ts` covers view-model and command trace where UI is not final.
-- `.surface.test.tsx` covers harnessable surface behavior.
-- `.layout.test.tsx` covers structural layout only.
-- Harness Coverage Matrix and claim ceilings are routed to `product-harness-system`, not invented inside this skill.
-- Browser-visible proof is delegated to UI harness tooling.
+- Names communicate subject and responsibility.
+- Generic buckets have narrow scope or a migration plan.
+- Aliases/barrels preserve public boundaries rather than hide deep imports.
+- Boundary checks automate important dependency rules.
 
-## 7. CSS And Tokens
+## Component Overlay
 
-- App owns global style and token injection.
-- UI package consumes tokens for primitives.
-- `app/layout/*` owns app shell/workspace layout; `shared/ui` and `packages/ui` do not own app shell.
-- Features do not define root tokens or body styles.
-- Business-specific colors and semantic states are tokenized or isolated.
-- Cross-app primitive theme data is promoted to `packages/design-tokens`; product semantics stay out of token packages.
-
-## 8. Tooling
-
-- `tsc --noEmit` is the TypeScript authority.
-- Oxc or equivalent covers format/lint.
-- Boundary check is automated with a semantic import/path script or equivalent.
-- CI/test commands cover typecheck, lint, unit/headless/surface/layout, and e2e when claimed.
-
-## Single React Component Audit Overlay
-
-Use this overlay when the user points at one React component, component directory, or `.tsx` file and asks about component design quality, props/API design, dataflow, testability, rerenders, effects, or whether it should be refactored.
-
-This overlay absorbs the useful part of the retired `react-component-diagnosis` path. It is not a separate default skill. If the scope grows into app/module boundaries, return to the main frontend architecture audit.
-
-Score only from code actually read. Do not give directory-scan praise or generic React advice.
-
-### Dimensions
-
-| Dimension | Core question | Check signals |
-| --- | --- | --- |
-| Consumer API | Can callers do the right thing with low cognitive load? | required props count, defaults, prop naming, controlled/uncontrolled pattern, callback semantics |
-| Data flow | Is data transformed in a clear one-way chain? | props -> derived data -> render, no props-to-state sync unless justified, pure transforms separated from effects |
-| Testability | Can core behavior be verified without a full browser? | pure functions, fakeable dependencies, existing tests, stable public boundary |
-| Extensibility | Can one new variant be added without touching unrelated paths? | discriminated unions, slot/strategy points, avoiding scattered switch/if chains |
-| Performance | Are render-time and effect costs bounded? | stable dependencies, memoization only where useful, cleanup, high-frequency update behavior |
-| Mental model | Can a new reader predict where behavior lives? | file names, concept naming, no utils/helper bins, no surprising ownership |
-| Boundary contract | Is the outside-world contact surface small and strict? | validation boundary, third-party adapters, type assertions, error boundary, replaceable dependencies |
-
-### Output Add-On
+For a single component, assess only code read:
 
 ```text
-component_scope:
-responsibility:
-code_read:
-scorecard:
-findings_by_dimension:
-patterns_to_keep:
-refactor_recommendations:
-verification_needed:
+consumer API
+data flow and derivation
+effect/resource lifecycle
+external boundary size
+testability
+extension points
+render/update cost
+mental model
 ```
 
-## Output Template
+## Output
 
 ```text
-classification:
-references_read:
-fits:
-drift:
-blockers:
-auto_fix_candidates:
-human_decisions:
-verification:
+classification; code_read; intent_projection_trace; state_map; dependency_map;
+patterns_to_keep; findings_by_severity; refactor_steps; verification_needed;
+not_claimed.
 ```

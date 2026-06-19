@@ -1,12 +1,13 @@
 {
-  "name": "effect-best-practices-skill",
+  "name": "effect-best-practices-skill-fixtures",
   "private": true,
   "type": "module",
   "scripts": {
     "typecheck:examples": "tsc -p examples/tsconfig.json"
   },
   "devDependencies": {
-    "effect": "4.0.0-beta.59",
+    "effect-v3": "npm:effect@3.21.4",
+    "effect-v4": "npm:effect@4.0.0-beta.84",
     "typescript": "^5.9.3"
   }
 }

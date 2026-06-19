@@ -71,11 +71,3 @@ runtime（Actor interpreter）是唯一允许：
 - 允许“显式例外”必须写入 allowlist（避免暗中漂移）
 
 提示：门禁尽量快（纯静态扫描），让它成为日常开发的“结构回归测试”。
-
-## 落地证据：agent-remnote（remnote-mcp）
-
-- kernel/runtime 分层：`packages/agent-remnote/src/kernel/**` 与 `packages/agent-remnote/src/runtime/**`
-- 典型 Actor：WS bridge runtime（事件驱动 + state file snapshot）：`packages/agent-remnote/src/kernel/ws-bridge/**` + `packages/agent-remnote/src/runtime/ws-bridge/**`
-- supervisor：kernel（restart plan）+ runtime（Queue loop）：`packages/agent-remnote/src/kernel/supervisor/**` + `packages/agent-remnote/src/runtime/supervisor/**`
-- 静态门禁：`packages/agent-remnote/tests/gates/kernel-portability.contract.test.ts`、`packages/agent-remnote/tests/gates/module-boundaries.contract.test.ts`、`packages/agent-remnote/tests/gates/primitive-usage.contract.test.ts`
-

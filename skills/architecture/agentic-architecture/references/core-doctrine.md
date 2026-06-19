@@ -1,96 +1,108 @@
 # Core Doctrine
 
-Agentic architecture starts from a stricter version of ports and adapters:
-external actors can influence the system, but accepted product facts remain
-owned by the core.
-
 ## Primary Thesis
 
+Agentic architecture is hexagonal architecture strengthened for systems where
+non-deterministic and externally operated components can influence behavior.
+
 ```text
-Authority first
-Capability ports before integrations
-Adapters return candidates
-Application services accept facts
-Composition roots wire profiles
-Evidence gates bound claims
-Agents operate freely inside typed constraints
+Authority defines truth.
+Use cases govern change.
+Capability ports isolate external powers.
+Composition profiles select implementations.
+Evidence bounds claims.
+Forward migration preserves durable facts without preserving every old API.
 ```
 
-The goal is not to prevent agents from being useful. The goal is to give them a
-large search and action space without letting provider output, runtime state,
-transport messages, plugin hooks, caches, or logs become hidden authority.
+A hexagon is not a folder diagram. The meaningful boundaries are:
 
-## Principles
+1. **Authority boundary** — who may define an accepted fact.
+2. **Use-case boundary** — which operation may change that fact and under which
+   policy, idempotency, and transaction.
+3. **Capability boundary** — which replaceable external power the core needs.
+4. **Deployment boundary** — which profile selects adapters and resource
+   lifetimes.
 
-### Authority Before Integration
+## System Model
 
-Before adding an integration, identify the fact it can affect and the current
-authority for that fact.
+```text
+External actor / UI / agent / transport
+  -> input adapter
+  -> typed command or candidate
+  -> application use case
+  -> authority-cell invariant and policy
+  -> typed change set
+  -> atomic commit + event/outbox
+  -> projection/query/realtime carrier
 
-If no authority exists, create or select one before accepting external output.
-If an authority already exists, the integration must feed that authority rather
-than bypass it.
+Application use case
+  -> capability port
+  -> output adapter
+  -> external observation/candidate/handle
+  -> application validation and materialization
+```
 
-### Capability Ports Over Plugin-first
+Dependency direction points toward product authority. Runtime SDKs, database
+clients, UI frameworks, queues, model providers, vector stores, and plugin APIs
+must not become the language of the core.
 
-A capability port is a narrow typed contract defined by the core or application
-layer. A plugin, provider SDK, runtime, transport, memory engine, or tool is an
-adapter behind that port.
+## Business Modules Are Not Adapters
 
-Do not build a broad plugin platform when the real pressure point is one
-capability. Promote capabilities into ports only when repeated use, risk,
-replaceability, or testing pressure justifies the boundary.
+A business module such as Orders, Results, Issues, Accounts, or Governance owns
+product semantics. It is an **authority cell**, not a replaceable adapter.
 
-### Adapters Return Candidates
+Create capability ports for genuine outer-boundary powers such as payment,
+model inference, runtime execution, object storage, email delivery, external
+search, or third-party ingress. Do not trait- or interface-wrap every business
+service merely to make a diagram look hexagonal.
 
-External adapters return candidate facts, diagnostics, opaque handles, manifest
-snapshots, or bounded projection inputs. Accepted business facts require an
-application-service path with validation, permission, idempotency, persistence,
-audit, and projection.
+## Stable Kernel, Evolvable Product Semantics
 
-### Commands vs Projections
+When product positioning is still changing, stabilize the mechanism by which
+facts are accepted rather than freezing every fact type. A common evolution
+kernel often includes:
 
-Commands represent intent. Projections represent accepted or observed state.
-Realtime transports, notifications, logs, and UI caches are projection carriers,
-not a second command model.
+```text
+ActorRef / FactRef / SourceRef
+CommandContext
+Authorization and visibility
+Idempotency and request identity
+Causal or expected-version boundary
+Candidate and DecisionRecord
+Typed ChangeSet
+CommitReceipt
+Event / outbox / audit / provenance
+```
 
-### One Core Across Profiles
+Objects, workflows, classifications, and projections may evolve behind this
+kernel.
 
-Local, cloud, desktop, fake, relay, server, worker, CLI, and real-runtime
-profiles should share one domain/application core. Profile variation belongs in
-adapter selection, policy, configuration, deployment wiring, and composition
-roots.
+## Abstraction Restraint
 
-### Composition Root Owns Wiring
+Add a boundary when at least one pressure is real:
 
-The composition root assembles dependencies, runtime resources, config,
-observability, and adapter implementations. It must not become a business-rule
-layer.
+- more than one implementation must coexist or be replaceable;
+- a process, machine, trust, or deployment boundary exists;
+- a dependency carries security, reliability, or vendor risk;
+- a test/replay/fake needs a stable seam;
+- a module owns distinct invariants or change cadence;
+- a transaction or consistency boundary must be explicit.
 
-### Evidence Gates Are Architecture
+Do not add a boundary merely because a future system might need it. Start with
+private modules in one process; promote to packages, ports, or services only
+when evidence justifies the cost.
 
-If a boundary matters, there should be a way to prove it did not collapse.
-Tests, smoke commands, fixture/replay, browser-visible proof, diagnostics,
-positive tokens, `not_claimed`, and `not_proven` define what the system may
-honestly claim.
+## Forbidden Defaults
 
-### Agent Freedom Under Typed Constraints
-
-Agents may plan, search, call tools, combine capabilities, write proposals, and
-request actions. They may not create accepted business facts except through
-bounded commands or policy-approved materialization paths.
-
-## Relationship To Hexagonal Architecture
-
-This doctrine is compatible with hexagonal architecture, but it adds AI-era
-constraints:
-
-- authority: which object owns the fact;
-- evidence: what proves the claim;
-- agent boundary: why model/runtime output is not automatically product truth;
-- replaceability: why a provider or plugin cannot define core semantics;
-- composition: how multiple deployment profiles share one core.
-
-Use hexagonal language when it helps, but do not reduce this skill to directory
-shape. The durable object is the authority and dependency direction, not the
-diagram.
+```text
+one public global state object as the whole domain
+one application god object owning every module and adapter
+whole-state snapshot persistence as the long-term storage contract
+one universal outcome containing optional fields for every use case
+transport or realtime state treated as accepted product truth
+provider/runtime/plugin output persisted without application materialization
+core libraries enumerating every vendor implementation
+test harnesses creating facts through a privileged alternate path
+permanent dual-write or compatibility bridges with no deletion gate
+microservices used to simulate module boundaries that do not exist in code
+```

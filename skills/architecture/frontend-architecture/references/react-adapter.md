@@ -1,338 +1,95 @@
 # React Adapter
 
-## Default Capability Slots
+React owns rendering, component lifecycle, and event adaptation. It does not
+determine backend authority or construct every external capability.
 
-The default stack is:
+## Component Boundary
+
+Components should primarily:
 
 ```text
-React + TanStack Router/Start + TanStack Query + Zustand + Effect + Oxc
+read props/hooks/selectors
+render derived state
+emit user intent through callbacks/actions
+synchronize with genuine external systems through focused hooks
 ```
 
-These are default implementations of capability slots, not permanent laws. Replacements need an ADR or repo adapter that proves equivalent capability.
+Avoid live client/runtime/credential construction, raw transport decoding,
+manual server-cache mirrors, and derived-state Effects inside components.
 
-| Slot | Default | Replacement must prove |
-| --- | --- | --- |
-| Route adapter | TanStack Router/Start | params/search ownership, loader/action/prefetch, route context, error boundary |
-| Server-state cache | TanStack Query | query key, invalidation, mutation lifecycle, SSR/dehydrate strategy when relevant |
-| Local interaction state | Zustand | feature ownership, reset/isolation, testability, no server truth |
-| Effect/runtime boundary | Effect | DI, fake replacement, typed errors, timeout/retry/cancel, resource lifecycle |
-| Typed gateway | `packages/client` | cross-host use, DTO decode/assert, normalized errors, no React/UI |
-| UI primitives | `packages/ui` or `shared/ui` | business-neutral primitives, token use, source-only package boundary |
-| Format/lint | Oxc | formatter/linter coverage and speed |
-| Typecheck | `tsc --noEmit` | TypeScript authority |
-| Tests | Vitest default, Bun test allowed by adapter | unit, headless, surface, layout, e2e where needed |
-| Boundary check | custom semantic script first | import graph, forbidden names, production/test split |
+A component may call a runtime-bound facade or a dedicated hook that executes an
+Effect. The important rule is that components do not create/provide live Layers
+or own the global runtime. Do not ban Effect values merely by file extension;
+keep execution and lifecycle centralized and testable.
 
-## React Ownership
+## Query Adapter
 
-React owns component tree, render lifecycle, and event handlers. It does not own backend capabilities or runtime dependency assembly.
-
-Do not put these in React components:
-
-- `Effect.runPromise`;
-- `new WebSocket` / `new EventSource`;
-- live client construction;
-- config/env reads;
-- DTO decode policy;
-- Query key string literals;
-- server truth mirrors in local state.
-
-React hooks should be adapter-only. Prefer stable deps/actions from app runtime,
-Zustand actions for local UI transitions, and Effect services/programs for async
-orchestration. Components should call actions and render derived state, not own
-capability logic.
-
-## Query
-
-Feature `.query.ts` owns TanStack Query options and optional hooks.
-
-Preferred shape:
+When using TanStack Query or an equivalent, feature query option factories own
+query keys, fetch/mutation mapping, cache invalidation, and optimistic proposal
+coordination. They consume a client contract.
 
 ```ts
-export function channelProjectionQueryOptions(
-  client: ChannelClient,
+export const channelProjectionOptions = (
+  client: ChannelQueryClient,
   channelId: string
-) {
-  return queryOptions({
-    queryKey: channelKeys.projection(channelId),
-    queryFn: () => client.fetchProjection(channelId)
-  });
-}
-
-export function useChannelProjectionQuery(client: ChannelClient, channelId: string) {
-  return useQuery(channelProjectionQueryOptions(client, channelId));
-}
+) => queryOptions({
+  queryKey: ["channel", channelId, "projection"],
+  queryFn: () => client.fetchProjection(channelId)
+})
 ```
 
-This lets routes prefetch and headless harnesses call the same query semantics without rendering the final UI.
+Option factories make route prefetch, SSR, and headless tests reuse the same
+semantics. Do not create a live client or runtime inside `queryFn`.
 
-## Mutation / Command
+## Local State
 
-Feature `.query.ts` also owns mutation options for async commands. Mutation
-options should consume client contracts and receive local interaction callbacks
-as explicit dependencies. They must not create live clients, read config, or run
-Effect directly.
+Start with component state. Promote to context or an external store when the
+state outlives a subtree, needs independent subscriptions, crosses non-React
+boundaries, or has high-frequency updates. Keep remote projections out of the
+local store unless a deliberate snapshot/offline authority is being built.
 
-Preferred shape:
+## External Stores
 
-```ts
-export function sendChannelMessageMutationOptions(deps: {
-  client: ChannelClient;
-  channelId: string;
-  addPendingEcho: (echo: PendingEcho) => void;
-  reconcilePendingEcho: (clientMutationId: string) => void;
-  failPendingEcho: (clientMutationId: string) => void;
-  invalidateProjection: () => void | Promise<void>;
-}) {
-  return {
-    mutationFn: (command: ComposerCommand) => deps.client.sendMessage(command),
-    onMutate: (command: ComposerCommand) => {
-      deps.addPendingEcho(commandToPendingEcho(command));
-    },
-    onSuccess: (accepted: SendMessageAccepted) => {
-      deps.reconcilePendingEcho(accepted.clientMutationId);
-      void deps.invalidateProjection();
-    },
-    onError: (_error: unknown, command: ComposerCommand) => {
-      deps.failPendingEcho(command.clientMutationId);
-    }
-  };
-}
-```
+Use `useSyncExternalStore` directly or through a library binding for external
+mutable stores. The subscribe function and snapshot identity must be stable.
+Avoid reading mutable singletons during render and hoping an Effect keeps them
+in sync.
 
-The React hook is a thin adapter:
+## Effects
 
-```ts
-export function useSendChannelMessageMutation(client: ChannelClient, channelId: string) {
-  const queryClient = useQueryClient();
-  const addPendingEcho = useChannelStore((state) => state.addPendingEcho);
-  const reconcilePendingEcho = useChannelStore((state) => state.reconcilePendingEcho);
-  const failPendingEcho = useChannelStore((state) => state.failPendingEcho);
+Use React Effects to synchronize with external systems such as subscriptions,
+browser APIs, or third-party widgets. Do not use them to calculate render data,
+mirror props into state, or orchestrate state transitions that belong in event
+handlers/reducers.
 
-  return useMutation(
-    sendChannelMessageMutationOptions({
-      client,
-      channelId,
-      addPendingEcho,
-      reconcilePendingEcho,
-      failPendingEcho,
-      invalidateProjection: () =>
-        queryClient.invalidateQueries({ queryKey: channelKeys.projection(channelId) })
-    })
-  );
-}
-```
-
-Headless harnesses can call the options factory with a fake client and fake
-callbacks to verify command trace without rendering the final UI.
-
-## Store
-
-Zustand stores only local interaction state.
-
-Allowed:
-
-- draft;
-- drawer target;
-- local selected panel/filter/tab;
-- pending echo;
-- local connection UI state;
-- viewport/scroll interaction state.
-
-Forbidden:
-
-- server projection truth;
-- DTO mirror;
-- canonical domain facts;
-- fetch/mutation side effects;
-- realtime connection ownership.
-- Effect runtime, live Layer, or transport construction.
-
-If state can be derived from server projection and local interaction state, derive it in a mapper or view-model.
-
-## Realtime
-
-`packages/client` owns realtime transport and subscription capability.
-
-Feature `.realtime.ts` adapts subscription events into Query cache, reducer state, and local interaction state. It does not construct WebSocket or live clients.
-
-Keep reducers pure where possible:
-
-```text
-envelope + current projection/cache snapshot -> reduction
-reduction -> cache patch or invalidate + local UI state update
-```
-
-On cursor gap, decode failure, permission mismatch, or shape drift, prefer backfill/invalidate over complex manual patching.
-
-React hooks are lifecycle adapters only. A hook may subscribe through an injected
-client contract and close the subscription on unmount. It must not create
-WebSocket/EventSource, Effect runtime, live client, config, or transport.
-
-Recommended shape:
-
-```ts
-export type Subscription = {
-  close: () => void;
-};
-
-export type RealtimeHandlers<TEnvelope> = {
-  onEnvelope: (envelope: TEnvelope) => void;
-  onDecodeError?: (error: unknown) => void;
-  onClose?: () => void;
-};
-
-export type ChannelClient = {
-  fetchProjection(channelId: string): Promise<ChannelProjectionDto>;
-  sendMessage(input: SendMessageInput): Promise<SendMessageResult>;
-  subscribeProjection(
-    input: { channelId: string; cursor?: string | null },
-    handlers: RealtimeHandlers<ProductRealtimeEnvelopeDto>
-  ): Subscription;
-};
-```
+Subscription glue:
 
 ```ts
 useEffect(() => {
-  const subscription = client.subscribeProjection({ channelId, cursor }, handlers);
-  return () => subscription.close();
-}, [client, channelId, cursor, handlers]);
+  const subscription = client.subscribeProjection(input, handlers)
+  return () => subscription.close()
+}, [client, inputKey, handlers])
 ```
 
-`handlers` must be referentially stable. Build them with `useMemo` /
-`useCallback`, or use a stable-ref adapter inside the hook so ordinary renders
-do not reconnect the subscription.
+Keep handlers stable or route events through a stable adapter to avoid reconnect
+loops. Cleanup must be idempotent because development StrictMode and host
+transitions can mount/unmount more than once.
 
-For detailed decision rules, read [Realtime Capability](realtime-capability.md).
+## Host and SSR
 
-## Effect Integration
+The browser entry/provider owns live clients, Query client, external stores, and
+optional Effect runtime. Server-render hosts own their own request-safe
+composition. Explicitly define dehydrate/hydrate and client revalidation; never
+share request-specific mutable state through process globals.
 
-Effect belongs at the boundary:
+## Surface Design
 
-- `packages/client`: service, Tag, Layer, live/fake, request/realtime, errors, timeout/retry/cancel;
-- `app`: runtime wiring, provider/context injection, config selection;
-- `features`: consume client contracts through props/context/query options.
-
-In Effect-first repos, use Effect DI beyond classic "client" objects whenever a
-capability boundary needs fake replacement, resource lifecycle, retry/timeout,
-cancellation, typed errors, or harness isolation. The app should expose a
-runtime-bound deps object; features should not know whether a dependency is
-implemented by Effect internally.
-
-Package boundary pattern:
+Prefer a container/surface split when it materially improves harnessability:
 
 ```text
-package internal
-  Effect Service / Layer / Scope
-
-package factory
-  create closed runtime
-  bind config / fetch / WebSocket once
-
-package public API
-  Promise-returning methods
-  subscription facade
+page/container  reads query/store/realtime and maps actions
+surface         receives view model + callbacks and renders
 ```
 
-Do not tunnel host dependencies through operation inputs just to keep Effect out
-of React. `fetchImpl`, `WebSocketImpl`, base URLs, request id factories, and auth
-header builders belong at the factory / Layer boundary.
-
-Feature code should not import `app/runtime`. The app creates the live client and route/provider context passes the contract downward.
-
-Bad:
-
-```ts
-import { appConfig } from "../../app/env";
-import { runAppEffect } from "../../app/runtime";
-
-queryFn: () => runAppEffect(fetchProjectionEffect(appConfig, channelId));
-```
-
-Good:
-
-```tsx
-function ChannelRoute() {
-  const { client } = Route.useRouteContext();
-  const { channelId } = Route.useParams();
-  return <ChannelPage channelId={channelId} client={client.channel} />;
-}
-```
-
-Thin bridge pattern:
-
-```text
-app runtime creates deps/actions/subscription facades
-  -> React provider exposes deps object
-  -> feature page consumes deps/actions
-  -> components call stable callbacks
-```
-
-Do not expose a raw Runtime through React context or create generic hooks that
-encourage arbitrary component-level `Effect.runPromise` calls.
-
-## Page And Surface
-
-`.page.tsx` is the feature container. It can connect query/store/realtime, build view-model, and create event glue.
-
-`.surface.tsx` is the harnessable surface. It consumes view-model and callbacks. It can import same-feature child surfaces and `shared/ui`, but it should not import query/store/client/realtime.
-
-This split lets teams build headless proof and surface tests before final UI/UX settles.
-
-## Route Adapters Across Frameworks
-
-Keep the rule framework-neutral:
-
-```text
-route adapter owns URL boundary
-feature owns capability UI logic
-client owns backend/runtime capability access
-```
-
-TanStack Router/Start:
-
-- route loader/beforeLoad parses params/search;
-- route context carries queryClient/client;
-- loader uses feature query options for prefetch.
-
-Next.js App Router:
-
-- route segment/page/layout parses params/searchParams;
-- server component may fetch, but feature view-model logic should not be buried in route files;
-- client components receive stable props, dehydrated data, or client contracts through an adapter;
-- server actions still map to capability clients rather than ad hoc fetch code.
-
-Remix/React Router:
-
-- loader/action owns params/search/form boundary;
-- route module calls feature query/action adapters.
-
-## Harness Readiness
-
-Before final UI/UX, the minimum headless UI harness object is:
-
-```text
-view-model + command trace
-```
-
-A headless proof can validate:
-
-- fixture/fake client input;
-- query options and mutation command;
-- local store transition;
-- realtime reducer/cache effect;
-- view-model state and available actions;
-- command trace and invalidation.
-
-Browser-visible proof and screenshot/viewport matrix belong to UI harness skills. This skill ensures the code structure can support those proofs.
-
-Route harness work by owner:
-
-- frontend structure, suffixes, imports, client/query/store/realtime/surface
-  split -> this skill;
-- interface-headless, render-wiring, browser-visible evidence envelope ->
-  `ui-product-harness`;
-- Harness Scenario / Fixture / Coverage Matrix / lifecycle / claim ceiling ->
-  `product-harness-system`;
-- command/smoke/evidence envelope for product facts ->
-  `headless-product-harness`.
+Do not split every component mechanically. Keep pure derivation in view-model or
+mapper functions when it can be tested without React.

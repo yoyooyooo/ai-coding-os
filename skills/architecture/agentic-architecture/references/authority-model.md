@@ -1,97 +1,123 @@
 # Authority Model
 
-Authority is the right to define an accepted fact. Many layers can observe,
-transport, cache, index, summarize, or display a fact without owning it.
+Authority is the right to define an accepted fact. Observation, transport,
+rendering, caching, ranking, and execution do not imply authority.
 
 ## Authority Map
 
-For every important object, write:
+For every important fact, record:
 
 ```text
 fact:
-owner:
-allowed commands:
-allowed projections:
-candidate sources:
-materialization path:
-forbidden owners:
+authority_cell:
+accepted_commands:
+queries_and_projections:
+candidate_sources:
+materialization_path:
+transaction_boundary:
+forbidden_writers:
 evidence:
 not_claimed:
 ```
 
-If this cannot be written, the architecture is not ready for broad agentic
-automation.
+If an important durable fact has multiple silent writers or no named owner, the
+architecture is not ready for broad automation.
 
-## Common Fact Boundaries
+## Authority Cell
 
-### Domain Facts
-
-Domain facts are owned by domain/application objects and accepted only through
-application services, policy decisions, transactions, and audit paths.
-
-Adapters, routes, UI state, runtime stdout, provider responses, memory search
-results, logs, and caches are not domain fact authority.
-
-### Memory Facts
-
-Long-term memory should split at least these roles:
+An authority cell is the smallest product module that can defend its own
+invariants. It owns:
 
 ```text
-source fact
--> memory candidate
--> policy decision
--> accepted memory entry
--> memory use / retrieval evidence
--> run context snapshot or equivalent resolved-input proof
+commands / use cases
+private state or aggregates
+invariants and transition policy
+typed changes or domain events
+queries or projection inputs
+module-specific error semantics
 ```
 
-External memory engines, vector stores, graph stores, search indexes, provider
-native memory, file projections, and summaries may provide candidates or
-retrieval evidence. They must not own accepted memory body unless the project
-explicitly declares them as authority and accepts the security/replay cost.
+An authority cell does not require a process, service, package, crate, or
+interface. Begin as a private module when that is sufficient. The boundary is
+real when callers cannot mutate its internal state directly.
 
-### Runtime Facts
+Cross-cell interaction should use stable references, commands, queries, or
+explicit orchestration. Avoid giving one cell another cell's mutable maps,
+ORM entities, or repository internals.
 
-Agentic runtimes own opaque execution handles and protocol observations. They
-do not own product completion, message truth, memory truth, permission grants,
-or artifact provenance.
+## Global State Smell
 
-Runtime output should flow through:
+A global state container is acceptable as a prototype implementation detail,
+but it becomes an evolvability bottleneck when:
+
+- its maps or collections are public;
+- tests and adapters mutate it directly;
+- every use case receives full mutable access;
+- projections scan unrelated modules' internals;
+- persistence serializes the entire state graph;
+- adding one fact type changes every storage adapter;
+- module invariants exist only by developer convention.
+
+The first remediation is usually privacy and module APIs, not microservices.
+Partition state into authority-cell-owned state and close direct mutation
+escape hatches before changing deployment topology.
+
+## Candidate-to-Fact Boundary
 
 ```text
-runtime event
--> normalized candidate
--> application materialization
--> event/audit/projection path
+source observation
+  -> normalized candidate
+  -> authorization / policy / freshness / dedupe decision
+  -> typed materialization plan
+  -> atomic commit
+  -> projection and evidence
 ```
 
-### Provider Facts
+Candidates may come from humans, agents, models, plugins, transports, importers,
+search engines, or runtimes. Candidate origin affects validation and trust; it
+does not change who owns the accepted fact.
 
-LLM providers can produce structured candidates, summaries, rankings, plans,
-and usage diagnostics. They do not own domain facts merely because the response
-is well-structured.
+## Common Authority Separations
 
-### Transport Facts
+### Runtime
 
-Transport owns delivery mechanics: pairing, signing, ack, reconnect, retry,
-dedupe, cursor, or frame verification. It does not own business completion.
+Runtime owns opaque execution handles and protocol observations. Application
+owns product lifecycle, completion, accepted outputs, provenance, and recovery
+state.
 
-### Harness Facts
+### Model Provider
 
-Harnesses prove claims under a stated ceiling. A harness command can prove a
-slice of behavior; it does not become the product authority it tests.
+Provider owns response transport and usage diagnostics. Application owns whether
+structured output becomes a routing decision, summary, classification, or fact.
+
+### Memory
+
+Separate source fact, memory candidate, acceptance decision, accepted memory,
+retrieval evidence, and run-context use. A vector or graph engine is normally a
+retrieval adapter, not memory authority.
+
+### Transport
+
+Transport owns delivery, signing, ack, reconnect, cursor, retry, and frame
+diagnostics. It does not own business completion.
+
+### Frontend
+
+Frontend owns local interaction state and optimistic proposals. Server or local
+application authority owns accepted product state. Reconciliation uses
+projections rather than allowing UI stores to become an alternate domain.
+
+### Harness
+
+A harness owns proof orchestration and evidence files. It must not become a
+privileged production-bypass materialization path.
 
 ## Stop Lines
 
-Stop and ask, or require a higher-authority decision, when continuing would
-change:
+Require a higher-authority decision before changing:
 
-- product truth;
-- public API, schema, protocol, or compatibility posture;
-- security, permission, private-data, or retention posture;
-- destructive or irreversible behavior;
-- claim ceiling or completion standard;
-- accepted authority for facts that currently have no owner.
-
-Missing implementation detail is not automatically a stop line when a safe,
-falsifiable proof path exists.
+- fact ownership or permission authority;
+- security, privacy, retention, or redaction posture;
+- irreversible or destructive data behavior;
+- public protocol/API compatibility promises;
+- the claim ceiling or definition of completion.

@@ -1,45 +1,92 @@
 ---
 name: effect-best-practices
 description: >-
-  Effect TypeScript best practices for Effect-first backend/frontend code. Use when writing or
-  reviewing Effect.gen, Service/Layer, backend capability slices, API/CLI/worker handlers,
-  repo/adapters, runtime composition, error channels, Promise integration, timeout/retry,
-  ManagedRuntime, Cache, SubscriptionRef, Config/Schema, Scope, resources, or tests.
+  Implements reliable TypeScript systems with Effect using an explicit adoption
+  level, version gate, typed failures, Service/Layer composition, Scope-managed
+  resources, structured concurrency, Stream/Queue, runtime ownership, and
+  testable adapters. Use when Effect is already present, explicitly selected,
+  being evaluated for a concrete pressure, or producing API/type errors. Use
+  agentic-architecture for authority, transactions, and module boundaries,
+  frontend-architecture for React topology and state ownership, and
+  effect-api-app-kit for generating or verifying version-isolated Node HttpApi
+  applications.
 ---
 
-# Effect 最佳实践
+# Effect Best Practices
 
-## 快速使用
+Use Effect as an execution and resource model, not as a substitute for product
+architecture. Choose the lowest adoption level that solves a real pressure and
+keep pure domain logic ordinary TypeScript.
 
-- 写/改 Effect 代码时，先对照 `references/cheatsheet.md` 的「核心不变量」与「禁止模式」。
-- 采用 Effect v4 或需要从 v3 迁移时，先读 `references/effect-v4-gap.md`；本 skill 默认以当前项目本地 v4 类型为准。
-- 设计内部模块组织、命名语义，或需要和项目级架构规范配合时，先读 `references/module-organization-coordination.md`。
-- 当项目已经明确采用 Effect 作为总体运行时骨架时，优先遵守“外层骨架默认 Effect、内层纯逻辑保持普通函数”的分层规则；具体边界见 `references/module-organization-coordination.md` 与 `references/cheatsheet.md`。
-- 当项目标记为 Effect-first 时，复杂异步、资源生命周期、可替换依赖和测试 harness 默认优先用 Effect Service / Layer / Scope / Stream / Queue 建模；具体场景模板先读 `references/async-scenario-templates.md`。
-- 新增或评审后端 capability slice（API / CLI / worker / internal use case）时，先读 `references/backend-capability-slice.md`，再按需进入 HttpApi、repo/db、资源和测试参考。
-- 写/评审 Effect CLI 时，先读 `references/cli-contract.md`（A/B/C：对外契约 + 工程模板 + 情境因子）。
-- 写/改涉及资源的代码（server/daemon/db/ws/child_process）时，读 `references/scope-resources.md`。
-- 写测试（vitest/@effect/vitest/contract/integration）时，读 `references/testing-effect.md`。
-- 写/评审 React / 前端中的 Effect 集成时，读 `references/frontend-react-integration.md`；前端目录、命名、Query / Store / UI harness 归 `$frontend-architecture`。
-- 写 HttpApi（@effect/platform）时，读 `references/httpapi.md`。
-- 设计 repo 与 DB 可选策略时，读 `references/repo-and-db-optional.md`。
-- 需要观测性/并发背压/配置进阶/构建发布等主题时，从 `references/advanced-index.md` 进入。
-- 遇到“看起来对但 TS 报错”，按 `references/cheatsheet.md` 的「冲突处理」：以本地 d.ts/TS 提示为准，再查官方源码/文档。
-- 需要具体范式时，按 `references/cheatsheet.md` 的分节逐个加载。
-- 维护本 skill 的 Effect v4 示例时，在本目录运行 `bun install` 后用 `bun run typecheck:examples` 校验。
+## Ownership Contract
 
-## 包含内容
+```text
+Owns: Effect API idioms, version separation, Service/Layer/Runtime mapping,
+typed failures, Scope/resource ownership, structured concurrency, Stream/Queue,
+Effect tests, and runtime-bound facades.
+Delegates: authority/ports/transactions/migrations -> agentic-architecture;
+frontend topology/state/query/store/realtime -> frontend-architecture; managed
+v3/v4 Node HttpApi scaffolding and verification -> effect-api-app-kit.
+Does not decide that every module, helper, repository, or frontend needs Effect.
+```
 
-- `references/cheatsheet.md`：Effect 最佳实践速查（含错误语义、R/Service/Layer、timeout/retry、Promise、ManagedRuntime、Cache、SubscriptionRef、Schema/Config/HTTP 等）。
-- `references/effect-v4-gap.md`：Effect v4 默认口径与 v3 迁移差异（Service、Layer.effect、Scope、ManagedRuntime、React 集成）。
-- `references/module-organization-coordination.md`：与 `$meta-project-architecture` 的协同规则，以及 `repo / live / runtime` 的 Effect 映射、骨架与纯函数边界。
-- `references/backend-capability-slice.md`：Effect-first 后端 capability 切片模板（authority → contract → domain → port → flow → adapter → runtime → surface → proof）。
-- `references/async-scenario-templates.md`：Effect-first 场景模板（WebSocket / SSE、HTTP client、polling、daemon / child_process、Queue / Stream、React bridge、TDD harness）。
-- `references/cli-contract.md`：Effect CLI 最佳实践（A/B/C：对外契约、工程模板因子、情境固化因子）。
-- `references/scope-resources.md`：资源与生命周期（Scope/Layer.effect/acquireRelease、取消/超时、避免泄漏）。
-- `references/testing-effect.md`：测试范式（unit/contract/integration、timeout、FiberFailure 解包、HttpApi/CLI 黑盒测试）。
-- `references/frontend-react-integration.md`：React / 前端场景中的 Effect 边界、runtime wiring、Query 集成和 fake 替换口径。
-- `references/httpapi.md`：HttpApi 分层与错误策略（contract-first、handler 编排、错误映射、可测试结构）。
-- `references/repo-and-db-optional.md`：Repo 抽象与 DB 可选（Service 接口、db/memory 双实现、行为一致性、集成测试门控）。
-- `references/advanced-index.md`：高级进阶索引（观测性、并发背压、Config/Schema 进阶、构建发布等）。
-- `examples/effect-v4-runtime-client.example.ts`：Effect v4 runtime-bound client 最小示例。
+Read [Skill Family Coordination](references/skill-family-coordination.md) when
+architecture, frontend, and executable-profile concerns overlap.
+
+## Workflow
+
+1. Inspect `package.json`, lockfile, installed `effect` types, runtime host, and
+   existing project architecture. Never mix v3 and v4 examples.
+2. Identify the pressure: typed failure, capability replacement, resource
+   lifetime, cancellation, concurrency/backpressure, retries/timeouts,
+   observability, or deterministic tests.
+3. Choose an adoption level from [Adoption Ladder](references/adoption-ladder.md).
+4. Keep pure calculation and domain decisions outside Effect unless composition
+   materially benefits from lifting them.
+5. Define Services only for genuine capabilities; construct them with Layers at
+   a composition root; run programs at host boundaries or runtime-bound facades.
+6. Model expected errors, defects, interruption, deadlines, and cleanup
+   explicitly. Verify finalizers and termination paths.
+7. State installed-version evidence and `not_claimed`; beta APIs require an
+   exact pinned fixture or local typecheck. For executable Node HttpApi project
+   generation, hand off to `effect-api-app-kit` after the design is settled.
+
+## Core Invariants
+
+```text
+Effect describes execution; running belongs at an owned boundary
+pure function stays pure; Service represents a capability, not every file
+Layer constructs dependencies; it does not define product authority
+resource acquisition and release share one Scope
+child work follows structured lifetime unless explicitly daemonized
+expected failures are typed; defects and interruption remain distinguishable
+version-specific syntax follows installed d.ts, not memory
+```
+
+## Progressive Disclosure
+
+| Need | Read |
+|---|---|
+| Philosophy and non-goals | [Core Doctrine](references/core-doctrine.md) |
+| Decide how much Effect to use | [Adoption Ladder](references/adoption-ladder.md) |
+| Service, Layer, Runtime, facade | [Service Layer Runtime](references/service-layer-runtime.md) |
+| Error channels and boundary mapping | [Errors and Boundaries](references/errors-and-boundaries.md) |
+| Quick API checklist | [Cheatsheet](references/cheatsheet.md) |
+| Stable v3 project | [Version v3 Stable](references/version-v3-stable.md) |
+| Explicit v4 beta project | [Version v4 Beta](references/version-v4-beta.md) |
+| Backend mapping | [Backend Integration](references/backend-capability-slice.md) |
+| React/frontend mapping | [Frontend Integration](references/frontend-react-integration.md) |
+| Scope and resources | [Scope Resources](references/scope-resources.md) |
+| Stream/Queue/concurrency | [Stream Queue Concurrency](references/stream-queue-concurrency.md) |
+| Tests and harnesses | [Testing Effect](references/testing-effect.md) |
+| CLI | [CLI Contract](references/cli-contract.md) |
+| HttpApi | [HttpApi](references/httpapi.md) |
+| Optional advanced topics | [Advanced Index](references/advanced-index.md) |
+
+## Output
+
+```text
+installed_version; adoption_level; pressure; pure_core; capability_services;
+layer_graph; runtime_and_scope_owner; error_model; cancellation_and_backpressure;
+frontend_or_backend_mapping; tests; migration_steps; not_claimed.
+```

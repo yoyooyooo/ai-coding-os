@@ -1,96 +1,105 @@
 # Capability Ports
 
-A capability port is a typed boundary defined by the core or application layer.
-It describes what capability the system needs, not which vendor, SDK, plugin,
-runtime, or framework currently implements it.
+A capability port is a narrow contract defined by the application side for a
+replaceable power outside product authority.
+
+## Port Qualification Test
+
+Create a port when the dependency crosses a vendor, process, machine, trust,
+storage technology, deployment profile, or realistic fake/replay boundary.
+
+Do not create a capability port for an internal business module merely because
+it may be refactored later. Internal modules expose use-case APIs; adapters
+implement outer capabilities.
 
 ## Port Shape
 
-Good ports are narrow:
+A useful port names:
 
 ```text
-capability name
+capability, not vendor
 input contract
-output contract
-error model
-idempotency / retry behavior
-permission / policy inputs
-diagnostic shape
-redaction boundary
-claim ceiling
-adapter-private data boundary
+candidate / observation / handle output
+stable error taxonomy
+idempotency and retry semantics
+deadline / cancellation behavior
+privacy and redaction boundary
+capability or manifest snapshot
+diagnostics and claim ceiling
+adapter-private data that must not escape
 ```
 
-Avoid ports that expose a provider's full object model. That makes the provider
-the real architecture.
+Avoid exposing a provider SDK's full object graph. Normalize at the adapter
+edge.
 
 ## Adapter Output
 
 Adapters may return:
 
-- candidate facts;
-- diagnostics;
+- normalized candidates;
+- diagnostics and usage samples;
 - opaque external handles;
-- manifest or capability snapshots;
-- bounded projection inputs;
-- usage/cost/latency samples.
+- capability/manifest snapshots;
+- bounded retrieval or projection inputs;
+- delivery acknowledgements.
 
-Adapters should not return accepted business facts, grant permissions, write the
-event spine, own memory entries, or define lifecycle state.
+They normally may not:
 
-## Provider vs Runtime vs Memory Ports
+- create accepted domain facts;
+- grant permissions;
+- write the event spine or outbox;
+- own object lifecycle or completion;
+- define product routing, memory, or visibility truth.
 
-Keep these boundaries separate unless the project has a deliberate reason to
-merge them:
+## Common Port Families
+
+Keep these conceptually separate even when one vendor implements several:
 
 ```text
-ModelProvider
-  ordinary model calls, structured generation, extraction, rerank, query planning
-
+StructuredInferencePort
 RuntimeExecutionPort
-  agentic runtime start/resume/steer/interrupt, continuation handles, runtime events
-
 MemoryRetrievalPort
-  accepted-memory search, candidate ranking, retrieval evidence, fallback behavior
-
 ExternalIngressPort
-  external human/system ingress verification, dedupe, mapping, diagnostics
+Blob/ObjectStoragePort
+NotificationDeliveryPort
+Search/IndexPort
+ExternalParticipantPort
 ```
 
-One vendor may implement multiple ports, but the core should not see one vendor
-object as the common abstraction for all of them.
+## Extension Classes, Not a Universal Plugin Runtime
 
-## Plugin Boundary
-
-Plugin is a packaging and distribution mechanism. It is not authority.
-
-For a plugin system, state:
+Define a finite list of extension classes before building a generic plugin
+platform. For each class state:
 
 ```text
-which ports can plugins implement
-which facts plugins may only propose
-which commands plugins may request
-which policies can reject plugin output
-which diagnostics are persisted
-which plugin-private state is opaque
-which claims plugin tests can prove
+which port it implements
+which candidate types it may return
+which commands it may request
+which permissions/policies apply
+which private state is opaque
+which conformance suite it must pass
+which product claims it cannot make
 ```
 
-Do not allow plugin-owned domain facts, event writes, permission grants, object
-lifecycle, scheduler authority, route authority, or memory authority unless the
-system explicitly makes the plugin the product authority.
+A plugin is packaging and distribution. It is not authority.
 
 ## Replaceability Test
 
-A port is replaceable when:
+A capability is genuinely replaceable when:
 
-- adapter-private terms do not leak into domain objects;
-- output is narrow and normalized;
-- error semantics are stable;
-- fallback or migration behavior is defined;
-- diagnostics are enough to compare adapters;
-- tests or harnesses prove at least one fake and one real or replay adapter path;
-- removing the adapter does not require changing product truth.
+- domain language contains no adapter-private terms;
+- two adapters can pass the same contract/conformance suite;
+- unknown capabilities fail explicitly rather than silently changing meaning;
+- error and retry semantics are stable;
+- fallback or migration behavior is deliberate;
+- diagnostics support side-by-side comparison;
+- removal does not require changing product truth.
 
-If replacing an adapter requires changing domain language, the port is too
-wide or in the wrong layer.
+An interface alone proves none of these.
+
+## Strict Placement and Fallback
+
+For capabilities whose semantics differ, prefer explicit selection and explicit
+failure. A default adapter may be acceptable for an optional capability, but a
+requested runtime, provider, storage class, or security profile should not
+silently fall back to a semantically different implementation.

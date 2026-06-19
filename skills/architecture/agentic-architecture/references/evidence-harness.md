@@ -1,87 +1,87 @@
 # Evidence Harness
 
-Evidence gates are part of architecture. They define which claims the system can
-honestly make and where external output stops.
+Architecture claims need evidence at the boundary they describe.
 
-## Claim Ladder
+## Evidence Ladder
 
 Use the smallest honest level:
 
 ```text
-static boundary check
-unit / pure behavior
+static dependency / visibility check
+unit or pure invariant test
 offline fixture
-replay
-adapter fake
-db-backed / durable store
-transport / projection
-browser-visible / interface proof
-real runtime opt-in
+strict replay
+fake adapter conformance
+durable-store / restart proof
+transport and projection proof
+browser or interface proof
+real provider/runtime opt-in
 production-near smoke
 ```
 
-A lower level can support a higher-level path, but it does not prove that higher
-claim.
+A lower level supports but does not prove a higher-level claim.
 
 ## Evidence Envelope
 
-For meaningful architecture claims, capture:
+Capture:
 
 ```text
-claim:
-proof_path:
-commands_run:
-positive_tokens:
-authority_checked:
-boundary_checked:
-fixtures_or_replay:
-adapter_profile:
-not_claimed:
-not_proven:
-diagnostics:
-next_gap:
+claim
+proof_path
+commands_or_scenarios
+positive assertions or tokens
+authority checked
+boundary checked
+adapter/profile
+restart/replay/idempotency result
+redaction/privacy result
+not_claimed
+not_proven
+next_gap
 ```
 
-## Diagnostics
+Use `not_claimed` for adjacent capabilities outside the intended scope. Use
+`not_proven` when the property should hold but was not checked.
 
-Diagnostics should answer:
+## Boundary Checks
 
-- what happened;
-- which authority accepted or rejected it;
-- which candidate source produced it;
-- which policy/version was used;
-- which projection was updated;
-- how to replay, invalidate, backfill, or recover;
-- what sensitive data was excluded.
+Mechanically enforce high-value rules where possible:
 
-Do not store secrets, complete private prompts, full raw provider payloads, or
-private reasoning as durable diagnostics unless a project explicitly requires
-and secures that data.
+- forbidden imports/dependencies;
+- public mutable state access;
+- adapter dependence on infrastructure internals;
+- transport access to domain persistence;
+- core dependence on vendor SDKs;
+- composition-root fact writes;
+- direct UI mutation of product authority;
+- test-only APIs exported in production.
+
+## Conformance Suites
+
+Each replaceable capability should have contract tests covering normalized
+output, error taxonomy, cancellation/deadline, idempotency, capability
+reporting, redaction, and fallback/rejection semantics.
+
+Run at least fake/replay plus one realistic adapter path before claiming
+replaceability.
 
 ## Harness Boundary
 
-Harnesses can orchestrate checks, seed data, replay events, drive browsers, and
-record evidence. They should not become an alternate materialization path for
-business facts.
+Harnesses may seed through supported fixture/setup paths, drive interfaces,
+replay traces, and collect evidence. They should not create accepted facts
+through an alternate privileged path when the claim concerns production
+materialization.
 
-When harness support code needs privileged setup, state that it is setup only.
-The proof path should still exercise the same application or product boundary
-that production uses, unless the claim is explicitly lower.
+Move smoke-only builders, proof report construction, and test fixtures out of
+production application APIs when they begin to define a second architecture.
 
-## Not Claimed
+## Deletion Proof
 
-Always state adjacent claims that a reader may over-infer.
+A migration is incomplete until evidence shows:
 
-Examples:
-
-```text
-real_runtime_claim=false
-browser_ui_claim=false
-production_auth_claim=false
-provider_replaceability_claim=false
-accepted_memory_write_claim=false
-public_api_compatibility_claim=false
-```
-
-Use `not_proven` rather than `not_claimed` for boundaries that should be true
-but were not checked.
+- all intended callers use the new path;
+- old writes are impossible;
+- restart and idempotency pass on the new path;
+- projections/backfill agree within the stated ceiling;
+- bridge dependencies are zero;
+- old code and schema paths are deleted or explicitly retained.

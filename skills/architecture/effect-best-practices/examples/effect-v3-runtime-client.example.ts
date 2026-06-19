@@ -1,4 +1,4 @@
-import { Context, Effect, Layer, ManagedRuntime } from "effect-v4";
+import { Context, Effect, Layer, ManagedRuntime } from "effect-v3";
 
 export type Projection = {
   readonly id: string;
@@ -16,14 +16,14 @@ export type Transport = {
   readonly fetchProjection: (id: string) => Promise<unknown>;
 };
 
-export class ProjectionGateway extends Context.Service<
+export class ProjectionGateway extends Context.Tag("ProjectionGateway")<
   ProjectionGateway,
   {
     readonly fetch: (
       id: string
     ) => Effect.Effect<Projection, ClientError>;
   }
->()("ProjectionGateway") {}
+>() {}
 
 const decodeProjection = (value: unknown): Projection => value as Projection;
 
@@ -42,7 +42,7 @@ const fetchProjection = (id: string) =>
     return yield* gateway.fetch(id);
   });
 
-export function createV4Client(transport: Transport) {
+export function createV3Client(transport: Transport) {
   const runtime = ManagedRuntime.make(makeProjectionGatewayLive(transport));
   return {
     fetchProjection: (id: string) => runtime.runPromise(fetchProjection(id)),

@@ -8,5 +8,8 @@
     "strict": true,
     "target": "ES2022"
   },
-  "files": ["effect-v4-runtime-client.example.ts"]
+  "files": [
+    "effect-v3-runtime-client.example.ts",
+    "effect-v4-runtime-client.example.ts"
+  ]
 }

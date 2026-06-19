@@ -1,4 +1,22 @@
-# @effect/platform HttpApi 分层与错误策略（需求无关）
+# HttpApi Architecture and Version Handoff
+
+This reference owns HttpApi design and Effect implementation judgment. It does
+not own project generation. When the user asks to initialize, add a managed
+resource, or verify a Node HttpApi application, use the separate
+`effect-api-app-kit` after selecting the architecture and Effect major.
+
+```text
+Effect v3 -> @effect/platform HttpApi profile
+Effect v4 -> effect/unstable/httpapi beta profile
+never mix imports, builders, or Service syntax across profiles
+installed package declarations and compiler output arbitrate concrete syntax
+```
+
+The generator must keep migrations outside request execution, normalize
+infrastructure errors at adapter boundaries, provide memory adapters as fakes
+rather than production-equivalence claims, and report real database evidence
+separately.
+
 
 目标：把 HttpApi 代码写成“可组合、可测试、可演进”的结构，而不是把 HTTP/DB/业务揉成一团。
 
@@ -26,7 +44,7 @@
 
 ### A3) Repo/Service 走 DIP：依赖抽象，不依赖 HTTP
 
-- 用 `Context.Service` 暴露最小能力接口（ISP）。
+- 用当前版本的 Service key 暴露最小能力接口（v3/v4 写法见对应 version adapter）。
 - repo/service 不引入 HttpApi 相关类型，避免把“传输层语义”向下渗透。
 
 ### A4) 错误语义分层：infra → domain → transport
@@ -46,7 +64,7 @@
 
 ### B2) 可测试结构：可替身 Layer + 黑盒 HTTP 测试
 
-- repo/service 必须能被替换为 mock/memory Layer（测试不应依赖真实 DB/网络）。
+- 对真实外部能力，repo/service 应能通过 fake/memory Layer 做应用级测试；真实 DB/网络行为仍由集成测试证明。
 - HTTP 测试优先黑盒（`Request → Response`），而不是直接调用内部 handler 函数。
 
 ### B3) 入口组装（main）只做 wiring

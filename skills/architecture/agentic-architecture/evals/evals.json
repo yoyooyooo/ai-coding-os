@@ -1,0 +1,89 @@
+{
+  "skill_name": "agentic-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this Rust service. One public App struct owns a public global State, runtime registry, caches, and a Store trait that loads and persists the entire state. I want forward-only evolution and do not mind breaking internal APIs. Give me a staged refactor, not a rewrite.",
+      "expected_output": "Identifies authority/global-state and snapshot-store pressure, uses the Rust adapter, proposes private authority cells, a thin facade, typed use-case transactions and outcomes, composition-root cleanup, proof-backed waves, and deletion gates without defaulting to microservices.",
+      "files": [],
+      "expectations": [
+        "Separates business authority cells from capability adapters.",
+        "Recommends private state and use-case APIs before service extraction.",
+        "Replaces whole-state persistence incrementally with a typed transaction seam.",
+        "Includes forward migration and old-path deletion criteria."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We have a Bun/TypeScript backend where Prisma, an LLM SDK, and a global event emitter are imported everywhere. Design a hexagonal architecture that can switch database and model providers without inventing interfaces for every class.",
+      "expected_output": "Uses the TypeScript backend adapter, runtime validation, application-owned ports, explicit transaction context, post-commit events, bootstrap composition, import guards, and abstraction restraint.",
+      "files": [],
+      "expectations": [
+        "Keeps SDK and ORM types outside the core.",
+        "Distinguishes genuine capability ports from internal business modules.",
+        "Places concrete provider construction in a composition root.",
+        "Addresses atomic facts plus event/outbox behavior."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review the end-to-end architecture of a React app that mutates business status from websocket frames while the backend commits facts later. Include authority, frontend reconciliation, and migration of the old path.",
+      "expected_output": "Leads with system authority and commit semantics, delegates detailed frontend topology, and proposes a vertical migration with backfill, evidence, and deletion gates.",
+      "files": [],
+      "expectations": [
+        "States that the backend/application remains business fact authority.",
+        "Defines committed projection delivery and frontend reconciliation.",
+        "Uses frontend-architecture for detailed state/topology recommendations.",
+        "Includes migration and old-path deletion evidence."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Design a plugin marketplace for tools, memory engines, agent runtimes, and renderers. Plugins should be powerful, but I do not want them to corrupt product state or permissions.",
+      "expected_output": "Defines finite extension classes and application-owned capability ports, candidate-only outputs, policy and permission gates, opaque private state, explicit conformance, and no plugin-owned product facts.",
+      "files": [],
+      "expectations": [
+        "Rejects a universal plugin runtime as the first abstraction.",
+        "Names allowed and forbidden plugin responsibilities.",
+        "Requires capability-specific conformance evidence.",
+        "Preserves application materialization authority."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "We are replacing an internal workflow model and public API. I prefer forward compatibility over keeping old code alive. How should we migrate stored data, clients, and external integrations?",
+      "expected_output": "Classifies internal API, durable facts, product API, and external protocol compatibility separately; proposes one-way migrations, short API epochs, explicit negotiation/rejection, bridge metadata, proof and deletion gates, and no indefinite dual writes.",
+      "files": [],
+      "expectations": [
+        "Distinguishes breaking internal APIs from preserving durable facts.",
+        "Defines temporary bridge ownership and deletion conditions.",
+        "Avoids silent protocol fallback.",
+        "Stops for destructive data or security changes."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I am starting a small CRUD product with one developer. Should I create domain, application, ports, adapters, event bus, plugin framework, and six services now so it will scale later?",
+      "expected_output": "Applies abstraction restraint, recommends a private modular core and explicit use cases first, introduces ports only for real external pressures, and avoids microservices, generic buses, and plugin frameworks without evidence.",
+      "files": [],
+      "expectations": [
+        "Does not prescribe maximal architecture by default.",
+        "Names concrete promotion pressures for new boundaries.",
+        "Keeps dependency direction and authority clear in a simple deployment.",
+        "Provides an evolution path rather than future-proofing theater."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Design a React + Effect full-stack capability where the backend owns transactions, the browser owns local interaction, and a scoped subscription carries committed projections.",
+      "expected_output": "Uses agentic architecture as lead, assigns frontend and Effect responsibilities explicitly, and avoids letting Layer, Query, or websocket transport own business facts.",
+      "files": [],
+      "expectations": [
+        "Produces a clear doctrine-skill ownership split with any generator subordinate.",
+        "Keeps transaction and fact authority in the application.",
+        "Keeps frontend state and Effect resource concerns separate.",
+        "Defines cross-boundary evidence."
+      ]
+    }
+  ]
+}
