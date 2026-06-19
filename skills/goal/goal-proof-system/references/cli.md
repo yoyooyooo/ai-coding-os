@@ -30,7 +30,7 @@ State commands:
 
 ```bash
 goal-proof work activate <goal-pack> --work <id> [--dry-run]
-goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check] [--dry-run]
+goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check]
 goal-proof apply <goal-pack> [--dry-run]
 goal-proof check <goal-pack>
 ```
@@ -67,9 +67,8 @@ leaves only unthreaded goals in top-level `items`.
 
 For `evidence add`, choose exactly one input source. Use `--stdin` for heredoc
 JSON. Use `--apply --check` for the common append, deterministic apply, and
-validation path. Add `--dry-run` to preview append/apply/check without writing
-files; JSON output includes `changed_paths`. `work activate` and `apply` are
-state-transition commands, not payload input commands.
+validation path. `work activate` and `apply` are state-transition commands, not
+payload input commands.
 
 Local development:
 
