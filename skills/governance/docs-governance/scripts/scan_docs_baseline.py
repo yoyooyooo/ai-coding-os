@@ -80,7 +80,7 @@ GOAL_PROOF_DOCS = [
 
 LAYER_README_OPTIONAL_SECTIONS = {
     "boundary": ("## Boundary", "## Conflict", "## Priority", "## 冲突", "## 边界"),
-    "promotion": ("## Promotion", "## Demotion", "## Promotion / Demotion", "## 提升", "## 生命周期"),
+    "promotion": ("## Promotion", "## Demotion", "## Promotion / Demotion", "## Lifecycle", "## 提升", "## 生命周期"),
 }
 
 
@@ -327,6 +327,25 @@ def scan(repo: Path) -> dict:
                 "fixHint": "add architecture guidance for shared deployable host or server boundary",
             }
         )
+
+    adr_root = root / "docs" / "adr"
+    if adr_root.is_dir():
+        prefixes: dict[str, list[Path]] = {}
+        for path in sorted(adr_root.glob("[0-9][0-9][0-9][0-9]-*.md")):
+            prefixes.setdefault(path.name[:4], []).append(path)
+        for prefix, paths in prefixes.items():
+            if len(paths) > 1:
+                findings.append(
+                    {
+                        "id": f"DOCS_ADR_NUMBER::{prefix}",
+                        "severity": "blocker",
+                        "ruleId": "DOCS_ADR_NUMBER_DUPLICATE",
+                        "path": str(adr_root),
+                        "summary": f"duplicate ADR number {prefix}",
+                        "evidence": [str(path.relative_to(root)) for path in paths],
+                        "fixHint": "renumber the conflicting ADR and update inbound links/indexes",
+                    }
+                )
 
     ssot_root = root / "docs" / "ssot" / "README.md"
     if ssot_root.is_file() and "docs/standards" not in ssot_root.read_text(encoding="utf-8", errors="ignore"):

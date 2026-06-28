@@ -51,10 +51,16 @@ def main() -> None:
     baseline = _load_module(script_dir / "scan_docs_baseline.py", "scan_docs_baseline")
     readability = _load_module(script_dir / "scan_docs_agent_readability.py", "scan_docs_agent_readability")
     artifact_graph = _load_module(script_dir / "artifact_graph.py", "artifact_graph")
+    future_capsules = _load_module(script_dir / "scan_future_capsules.py", "scan_future_capsules")
+    docs_links = _load_module(script_dir / "scan_docs_links.py", "scan_docs_links")
+    source_anchors = _load_module(script_dir / "scan_source_doc_anchors.py", "scan_source_doc_anchors")
 
     reports = {
         "docsBaseline": baseline.scan(repo),
         "docsAgentReadability": readability.scan(repo),
+        "futureCapsules": future_capsules.scan(repo),
+        "docsLinks": docs_links.scan(repo),
+        "sourceDocAnchors": source_anchors.scan(repo),
         "artifactGraph": artifact_graph.command_audit(
             argparse.Namespace(repo=repo, roots=list(artifact_graph.DEFAULT_ROOTS))
         ),

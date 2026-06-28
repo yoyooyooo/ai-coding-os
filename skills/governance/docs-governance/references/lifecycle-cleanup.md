@@ -22,8 +22,9 @@ and authority conflicts.
 |---|---|---|
 | `missing-baseline` | A needed routing or authority index does not exist yet | Create the thinnest host-appropriate README / template |
 | `active-authority` | Current truth or executable rule | Keep in SSoT / standards / protocol / ADR |
-| `active-route` | Current sequence, gate, coverage, or status route | Keep in roadmap or goal index |
-| `candidate-material` | Still under evaluation | Keep in the project's candidate layer, such as Goal Proof System inbox or `docs/proposals/**` |
+| `active-route` | Current or long-horizon sequence, gate, coverage, or referenced future capability route | Keep in roadmap/future or goal index while it retains route/gate value |
+| `future-capability` | Long-horizon capability with prerequisites, first falsifier and promotion targets, but no current authority | Keep as `docs/roadmap/future/<capability>/README.md` and prevent shadow layers |
+| `candidate-material` | Still under evaluation and not yet a durable future route | Keep in the project's candidate layer, such as Goal Proof System inbox or `docs/proposals/**` |
 | `decision-needed` | Conflict, authority question, or missing bridge that truly requires human / higher-authority choice | Record in decision queue or closest proposal |
 | `bridge-needed` | Two docs-layer states need a routing or authority bridge | Create the thinnest routing bridge or hand off to `$goal-proof` when it is a first proof path question |
 | `converted-source` | Already consumed by authority, Goal Pack, roadmap, report, or spec but useful for traceability | Move to the method/source layer or backlink from target artifact |
@@ -80,6 +81,8 @@ Assign one explicit verdict before moving or deleting old material.
 Default bias: delete or demote stale planning prose unless it carries current
 authority, active routing value, or evidence that is linked from a live artifact.
 
+Do not apply this deletion bias mechanically to long-horizon Roadmaps. A product evolution sequence or future capability capsule remains an `active-route` when it still constrains ordering, prevents premature implementation, or defines a falsifiable promotion gate. “Not implemented yet” is not a deletion reason.
+
 ## Staleness Triggers
 
 Treat a document as stale until proven otherwise when it:
@@ -116,7 +119,8 @@ Treat a document as stale until proven otherwise when it:
    `$goal-proof` artifact routing for the method-internal role.
 4. Update the closest README / index in the same change.
 5. Do not leave two current homes for the same artifact type.
-6. Preserve or repair the host narrative language policy while migrating. When
+6. Promotion from a future capsule moves accepted authority into formal layers and removes duplicate promoted text from the capsule.
+7. Preserve or repair the host narrative language policy while migrating. When
    touching a planning artifact in a path where `AGENTS.md` requires a specific
    prose language, convert newly written or substantially rewritten narrative
    text to that language while keeping machine fields, commands, schemas, code

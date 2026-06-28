@@ -395,3 +395,8 @@ Use implementation-plan or spec-kit skills for:
 
 The handoff boundary is artifact-based. Do not rely on conversation memory as
 the only carrier of scope.
+## Current/Future Classification Pass
+
+Before restructuring mature docs, classify each claim as current-fact, current-binding, future-candidate, active-proof, or historical-evidence. Current layers must stay aligned with source/accepted contracts; future complete models go to capability capsules. Preserve Product Evolution Sequence and promotion gates even when their implementation has not started. See [Current vs Future](current-vs-future.md), [Roadmap and Future Capsules](roadmap-and-future-capsules.md), and [Source-Code Alignment](source-code-alignment.md).
+
+When a future capability becomes active work, create or link the Goal Proof slice rather than copying progress into Roadmap. When proof/adoption succeeds, move authority into formal layers and shrink the capsule in the same change.

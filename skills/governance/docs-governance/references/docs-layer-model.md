@@ -95,12 +95,14 @@ method-specific source/evidence layer.
 | `docs/standards/**` | Executable rules, commands, quality gates, naming, review gates, SOPs | Product vision or unaccepted proposals |
 | `docs/adr/**` | Adopted decisions, rejected alternatives, reasons and consequences | Current work item status or full standards |
 | `docs/architecture/**` | System maps, module relationships, runtime views, dependency direction | Overriding SSoT or hidden implementation work_items |
-| `docs/roadmap/**` | Sequencing, milestones, gates, coverage matrices, status and evidence links | Step-by-step implementation checklists |
+| `docs/roadmap/**` | Long-horizon sequencing, current launch/promotion gates, coverage matrices, evidence links, and future capability capsules | Step-by-step implementation checklists, current object authority, or duplicated Goal progress |
 
 When a project uses Goal Proof System, roadmap status should remain a route,
 coverage, or evidence index. Goal Pack ready / running / done state, active
 work item, evidence records, relations, and completion review stay owned by Goal Proof System
 artifacts and CLI output even when roadmap documents link to them.
+
+Future capability planning belongs under `docs/roadmap/future/<capability>/README.md`, organized by capability rather than replicated layers. Do not create `future/ssot`, `future/standards`, `future/adr`, `future/architecture`, `future/product`, or `future/protocols`; those names create a shadow authority chain. See [Roadmap and Future Capsules](roadmap-and-future-capsules.md).
 
 `docs/product/**` may be thin, but it should exist for long-term AI coding.
 Libraries, CLIs, infrastructure repositories, and internal tools still have a
@@ -259,3 +261,6 @@ external quoted source
 Do not treat an English reusable template as permission to write host artifacts
 in English when the host explicitly requires another narrative language. The
 template may keep its field labels; the artifact prose should follow the host.
+## Current/Future and Source Alignment
+
+Current Product, SSoT, Standards, ADR, Architecture and Protocol docs should be bidirectionally aligned with source and accepted contracts. Future complete models stay in capability capsules until promotion. Use [Current vs Future](current-vs-future.md) and [Source-Code Alignment](source-code-alignment.md) during convergence.

@@ -289,3 +289,6 @@ the artifact text when needed.
 
 The script may write only mechanically certain metadata supplied explicitly by
 the caller. It must not cascade status changes or promote artifacts by itself.
+## Future Capability Nodes
+
+A capability capsule may be an artifact-graph `roadmap` node with `status: open-candidate`, `authority_scope: future-candidate`, prerequisites/dependencies, `claim_limit`, `evidence_contract` and `next_action`. These relations express navigation and promotion gates, not scheduling or current authority. A capsule must not claim implementation completion or override SSoT/Standards/ADR/Protocols.

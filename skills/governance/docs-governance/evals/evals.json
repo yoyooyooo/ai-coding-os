@@ -4,17 +4,37 @@
     {
       "id": 1,
       "prompt": "I am starting a new TypeScript SaaS repo for long-term AI coding. Design the docs/* top-level folders and explain where roadmap, ADRs, proposals, implementation specs, API docs, and evidence should live.",
-      "expected_output": "Defines project-agnostic docs layers, keeps implementation specs outside docs/*, and gives clear owns/must-not-own boundaries."
+      "expected_output": "Defines project-agnostic layers, keeps implementation specs outside docs/*, and gives clear owns/must-not-own, conflict and lifecycle boundaries."
     },
     {
       "id": 2,
       "prompt": "This repo has docs/next, docs/review-plan, docs/superpowers/results, docs/specs, and specs/. Decide what should be migrated, deleted, or kept so agents stop using old planning paths.",
-      "expected_output": "Audits old folders by semantic lifecycle, preserves evidence when needed, and avoids keeping duplicate current homes."
+      "expected_output": "Classifies lifecycle and retention, preserves linked evidence, migrates by semantic role, updates indexes and avoids duplicate current homes."
     },
     {
       "id": 3,
       "prompt": "We have a wire protocol with JSON Schema and canonical examples. Should it live under docs/specs, docs/protocols, standards, or root specs?",
-      "expected_output": "Routes wire contracts to docs/protocols, executable implementation specs to root specs, and standards to command/rule discipline."
+      "expected_output": "Routes adopted wire contracts to docs/protocols, executable implementation plans to root specs, and enforceable command/rule discipline to standards."
+    },
+    {
+      "id": 4,
+      "prompt": "A recent cleanup deleted product-evolution-sequence.md because none of its stages are implemented. Should it stay deleted?",
+      "expected_output": "Rejects mechanical deletion: a long-horizon sequence remains an active Roadmap route when it constrains ordering or promotion gates, while Goal Proof owns implementation progress."
+    },
+    {
+      "id": 5,
+      "prompt": "We want docs/roadmap/future/ssot, future/standards, future/adr and future/architecture so future design can be rigorous. Design the structure.",
+      "expected_output": "Rejects shadow authority layers and proposes capability-oriented future/<capability>/README.md capsules with product hypothesis, candidate authority/architecture, prerequisites, falsifier and promotion targets."
+    },
+    {
+      "id": 6,
+      "prompt": "Audit our current SSoT and Architecture after a major source refactor. Some docs describe objects that no longer exist; code also has a new public authority object with no docs owner.",
+      "expected_output": "Performs bidirectional source/docs alignment, demotes future claims, repairs current authority owners and code anchors, and reports unverified implementation claims without inventing product truth."
+    },
+    {
+      "id": 7,
+      "prompt": "An Interaction Kernel design is useful long term, but current code only has CoordinationContract, TurnGrant and A2A candidate validation. Where should each part live?",
+      "expected_output": "Keeps current binding constraints and implemented seams in SSoT/Architecture/Standards/Protocols, moves the complete InteractionRun/private-view engine to a future capability capsule, and preserves a falsifiable promotion gate."
     }
   ]
 }
