@@ -90,7 +90,7 @@ skills/README.md
 | `skills/governance/**` | docs layer、authority placement、cleanup、audit | product truth、Goal Pack evidence |
 | `skills/architecture/**` | 可复用工程架构 doctrine 和审计 | 单个产品事实、任务状态 |
 | `skills/capability/**` | UI/IA、surface、state/data ownership、trace planning | harness 生命周期和具体测试命令 |
-| `skills/harness/**` | harness artifact、claim ceiling、UI/headless proof 方法 | 业务语义和 Goal Pack lifecycle |
+| `skills/harness/**` | harness artifact、claim ceiling、UI/headless proof 方法、frontend test proof routing | 业务语义和 Goal Pack lifecycle |
 
 当前滚动实施规则：
 

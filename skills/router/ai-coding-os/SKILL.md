@@ -36,7 +36,7 @@ private-data, public API/schema/protocol, destructive, or claim_limit choice.
 
 ```text
 ai-coding-os      routes user intent and coordinates methods
-agentic-architecture  owns authority-first architecture doctrine, capability
+evolvable-application-architecture  owns authority-first architecture doctrine, capability
                            ports/adapters, composition-root boundaries,
                            replaceability, and agent freedom constraints
 docs-governance           owns docs/* layer governance and cleanup
@@ -58,7 +58,7 @@ to the owning method:
 - target planning or durable continuation -> `$goal-proof`;
 - architecture authority, capability port/adapter split, provider/runtime/memory
   boundary, plugin boundary, replaceability, composition root, or agent freedom
-  constraints -> `$agentic-architecture`;
+  constraints -> `$evolvable-application-architecture`;
 - docs layer, authority placement, cleanup, or audit -> `$docs-governance`;
 - UI/IA, app shell, navigation, route/page structure, interaction states,
   frontend handoff, headless-to-interface growth, or InterfaceCapability trace
@@ -89,7 +89,7 @@ Otherwise route by intent:
 - asks for architecture authority, SSoT-level architecture principles,
   fact/projection boundaries, capability ports/adapters, provider/runtime/memory
   integration, plugin boundary, replaceability, composability, composition
-  roots, or AI-agent execution constraints -> `$agentic-architecture`;
+  roots, or AI-agent execution constraints -> `$evolvable-application-architecture`;
 - asks for a Goal Plan, target plan, durable planning state, saved context,
   cross-session continuation, or explicitly says Goal Proof System / Goal Pack ->
   `$goal-proof`;
@@ -128,7 +128,7 @@ When several routes apply, orchestrate them in the order needed by the user's
 current intent. Do not stop at recommending another skill when the user asked
 for end-to-end work and the next method can continue safely.
 
-Use `$agentic-architecture` as a pre-lens only when the task touches authority,
+Use `$evolvable-application-architecture` as a pre-lens only when the task touches authority,
 provider/runtime/memory/tool/plugin boundaries, replaceability, composability,
 composition roots, command/projection semantics, or claim/evidence gates. Do
 not force ordinary frontend layout, Effect API usage, docs cleanup, or harness
@@ -168,7 +168,7 @@ Examples:
   and route only docs placement / indexes / lifecycle cleanup to
   `$docs-governance`;
 - architecture authority, provider / runtime / memory / tool boundary, or
-  composition-root uncertainty -> route through `$agentic-architecture` before
+  composition-root uncertainty -> route through `$evolvable-application-architecture` before
   implementation-specific methods.
 
 Do not encode private local tooling, local install paths, or a specific external
@@ -193,7 +193,7 @@ A gap is not automatically blocked. First classify the missing piece by owner:
 
 - missing architecture authority, fact owner, command/projection split,
   capability port, adapter boundary, provider/runtime/memory/plugin
-  replaceability, or composition root -> `$agentic-architecture`;
+  replaceability, or composition root -> `$evolvable-application-architecture`;
 - missing durable plan, continuation state, leftover gap, or evidence chain ->
   `$goal-proof`;
 - missing docs placement, authority relation, cleanup verdict, or index ->
@@ -297,7 +297,7 @@ Do not own or rewrite:
 
 - architecture authority, capability ports/adapters, composition-root doctrine,
   provider/runtime/memory/plugin replaceability rules, or agent execution
-  constraints that belong to `$agentic-architecture`;
+  constraints that belong to `$evolvable-application-architecture`;
 - Goal Pack `goal.yaml`, `progress.yaml`, `evidence.jsonl`, or
   `plans/<work_id>.md` lifecycle;
 - InterfaceCapability trace artifact ownership that belongs to

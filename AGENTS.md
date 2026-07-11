@@ -23,6 +23,7 @@ AI Coding OS 面向高智能 agent，不面向弱模型防御式流程。默认�
 - `$interface-capability-planning`：UI/IA、surface、route、交互状态、前端状态/数据归属和 InterfaceCapability trace 规划。
 - `$product-harness-system`：通用 Harness artifact、claim ceiling、coverage matrix、生命周期和 trace 规范。
 - `$ui-product-harness`：interface-headless、render wiring、browser-visible 和 production-near UI proof。
+- `$frontend-test-system`：frontend testing claim discovery、最小 proof lane、Playwright / agent-browser / Vitest / MSW / contract 证据包和 claim ceiling。
 - `$headless-product-harness`：headless proof command、smoke evidence、fixture/replay、headless command JSON / JSONL output shape。
 - inline work：一轮内可完成且有明确验证路径的小改动。
 

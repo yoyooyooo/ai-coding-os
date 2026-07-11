@@ -41,7 +41,7 @@ roadmap 视为过期索引。修正链接和 gate 摘要，不复制 evidence �
 - v2 Goal Pack schema 迁移：`goal.yaml`、`progress.yaml`、`evidence.jsonl`、`proof_step`、`work_items`、`evidence_id`、`work_id`、`next_action`、`claim_limit`、`claim_evidence`。
 - CLI / checker / renderer / tests / README / skills / templates / dogfood Goal Pack 主路径同步到 v2 口径。
 - 仓库定位升级为 AI Coding OS 方法套件仓。
-- skill suite 已扩展为 interface capability / product harness system / UI harness / headless harness 四层：新增 `interface-capability-planning`、`product-harness-system` 与 `ui-product-harness`。
+- skill suite 已扩展为 interface capability / product harness system / UI harness / frontend test system / headless harness：新增 `interface-capability-planning`、`product-harness-system`、`ui-product-harness`，并将 `frontend-test-system` 纳入 `skills/harness/` 维护。
 - Repo shell 已收敛：GitHub repo / remote URL 为 `github.com/yoyooyooo/ai-coding-os`。
 - 公开 skill suite 源码布局已收敛：canonical suite 使用本仓 `skills/**` grouped layout，公开触发名由 `SKILL.md` frontmatter `name` 决定，旧入口不保留 active alias。
 - 顶层叙事 delta proposal 已收敛并完成首轮采纳：公共主线采用 `intent-to-evidence state transition`，`compiler` 只作 README / product 辅助隐喻，README 已将 `Diffusion` 并入该 loop。

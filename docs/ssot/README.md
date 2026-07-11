@@ -43,7 +43,8 @@ standards 可以规定怎么执行；roadmap 可以说明何时迁移；Goal Pac
 - `agentic-architecture` 是上游 architecture lens；它指导前端、Effect、harness、memory、provider / runtime 等具体方法的边界判断，但不拥有这些领域的实现细节。
 - `interface-capability-planning` 独立公开，拥有 UI/IA 交互能力合同、状态/数据归属、testability planning 和 harness handoff。
 - `product-harness-system` 独立公开，拥有通用 Harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范。
-- `ui-product-harness` 独立公开，拥有 interface-headless、render wiring、browser-visible 和 production-near UI proof 方法。
+- `ui-product-harness` 独立公开，拥有 interface-headless、render wiring、browser-visible 和 production-near UI proof 方法的架构和 durable output 边界。
+- `frontend-test-system` 独立公开，拥有 frontend testing claim discovery、最小 proof lane、Playwright / agent-browser / Vitest / MSW / contract evidence packet 和 claim ceiling。
 - `headless-product-harness` 独立公开，拥有 headless proof command、smoke evidence、
   fixture/replay，以及 headless command JSON / JSONL output shape。
 - `goal-proof` 独立公开，拥有 Goal Pack 目标计划、滚动执行和跨会话延续。

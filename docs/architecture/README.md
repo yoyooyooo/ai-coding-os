@@ -38,7 +38,7 @@ skills/goal/                          目标治理：Goal Pack 方法、阶段 s
 skills/governance/                    文档治理：docs 层、权威、cleanup、audit
 skills/architecture/                  架构 doctrine：agentic、frontend、Effect 边界和审计
 skills/capability/                    界面能力规划：IA、交互合同、状态/数据归属、testability
-skills/harness/                       Harness 总纲、headless proof、UI proof 与本地 evidence output shape
+skills/harness/                       Harness 总纲、headless proof、UI proof、frontend test proof 与本地 evidence output shape
 packages/cli/**                       goal-proof CLI
 docs/**                               项目文档层和 Goal Pack 记录
 README*.md                            对外入口

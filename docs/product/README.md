@@ -55,7 +55,8 @@ strong-agent optimistic workflow
 | `agentic-architecture` | 底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate |
 | `interface-capability-planning` | UI/IA 交互能力、状态/数据归属和 testability contract 的规划 |
 | `product-harness-system` | 通用 harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范 |
-| `ui-product-harness` | 界面能力的 interface-headless、render wiring、browser-visible 和 production-near proof |
+| `ui-product-harness` | 界面能力的 interface-headless、render wiring、browser-visible 和 production-near proof 架构 |
+| `frontend-test-system` | 前端测试 claim discovery、最小 proof lane、Playwright / agent-browser / Vitest / MSW / contract 证据包 |
 | `headless-product-harness` | proof command、smoke check、fixture/replay、headless command JSON / JSONL output shape |
 
 Goal Proof System 的上限是长期目标执行，但不限于长期目标。只要用户明确要生成目标计划、Goal Pack 或使用 Goal Proof System，就由它承载规划；一轮内可完成的小改动直接 inline 实施。

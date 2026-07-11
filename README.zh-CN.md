@@ -16,7 +16,7 @@ agent 锁进防御式流程表格。它提供的是边界、路由、验证路�
 默认入口是 `$ai-coding-os`。它不拥有持久 artifact，只负责把工作路由到
 Agentic Architecture、Goal Proof System、Docs Governance、Effect Best
 Practices、Interface Capability Planning、Product Harness System、UI Product
-Harness、Headless Product Harness，或一轮内 inline 实施。
+Harness、Frontend Test System、Headless Product Harness，或一轮内 inline 实施。
 
 ## 核心原则
 
@@ -50,6 +50,7 @@ gap 显式留下
 | `capability/` | `interface-capability-planning` | UI/IA、InterfaceCapability、surface、state/data ownership、harness handoff |
 | `harness/` | `product-harness-system` | harness artifact model、`claim_ceiling`、Harness Coverage Matrix、trace lifecycle |
 | `harness/` | `ui-product-harness` | interface-headless、render wiring、browser-visible、production-near UI proof |
+| `harness/` | `frontend-test-system` | frontend claim discovery、最小 test lane、Playwright / agent-browser / Vitest / MSW / contract 证据包 |
 | `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、headless command JSON/JSONL output shape |
 
 ## 状态变化模型

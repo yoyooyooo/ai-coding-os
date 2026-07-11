@@ -55,6 +55,7 @@ interface-capability-planning
 product-harness-system
 ui-product-harness
 headless-product-harness
+frontend-test-system
 ```
 
 旧名称不保留兼容 alias：

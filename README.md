@@ -20,7 +20,8 @@ tooling.
 The default entry is `$ai-coding-os`. It owns no durable artifacts. It
 routes work to Agentic Architecture, Goal Proof System, Docs Governance, Effect
 Best Practices, Interface Capability Planning, Product Harness System, UI
-Product Harness, Headless Product Harness, or inline execution.
+Product Harness, Frontend Test System, Headless Product Harness, or inline
+execution.
 
 ## Core Principles
 
@@ -53,6 +54,7 @@ completion claims.
 | `capability/` | `interface-capability-planning` | UI/IA capability contracts, surfaces, state/data ownership, harness handoff |
 | `harness/` | `product-harness-system` | Harness artifact model, `claim_ceiling`, Harness Coverage Matrix, trace lifecycle |
 | `harness/` | `ui-product-harness` | Interface-headless, render wiring, browser-visible, production-near UI proof |
+| `harness/` | `frontend-test-system` | Frontend claim discovery, smallest test lane, Playwright/agent-browser/Vitest/MSW/contract evidence packets |
 | `harness/` | `headless-product-harness` | Proof commands, smoke checks, fixture/replay, headless command JSON/JSONL output shape |
 
 Most users should name only `$ai-coding-os`. Advanced users may call a

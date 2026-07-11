@@ -11,7 +11,7 @@
 | `governance/` | docs layer、authority placement、cleanup、audit | `docs-governance` |
 | `architecture/` | 可复用工程架构 doctrine、依赖方向、命名语义和边界审计 | `agentic-architecture`, `frontend-architecture`, `effect-best-practices` |
 | `capability/` | interface capability、surface、state/data ownership、trace planning | `interface-capability-planning` |
-| `harness/` | harness contract、headless proof、UI harness proof | `product-harness-system`, `headless-product-harness`, `ui-product-harness` |
+| `harness/` | harness contract、headless proof、UI harness proof、frontend test proof | `product-harness-system`, `headless-product-harness`, `ui-product-harness`, `frontend-test-system` |
 
 ## Common Vocabulary
 
