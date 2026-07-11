@@ -2,7 +2,7 @@
 
 ## Ownership
 
-`agentic-architecture` decides authority, module/port boundaries, transactions,
+`evolvable-application-architecture` decides authority, module/port boundaries, transactions,
 composition profiles, migrations, and evidence ceilings.
 
 `frontend-architecture` decides frontend state ownership, route/feature topology,

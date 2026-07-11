@@ -19,7 +19,7 @@
     {
       "id": 4,
       "prompt": "A recent cleanup deleted product-evolution-sequence.md because none of its stages are implemented. Should it stay deleted?",
-      "expected_output": "Rejects mechanical deletion: a long-horizon sequence remains an active Roadmap route when it constrains ordering or promotion gates, while Goal Proof owns implementation progress."
+      "expected_output": "Rejects mechanical deletion: a long-horizon sequence remains an active Roadmap route when it constrains ordering or promotion gates, while the repository's selected tracker/spec/execution method owns implementation progress."
     },
     {
       "id": 5,

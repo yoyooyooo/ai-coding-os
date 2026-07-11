@@ -26,7 +26,7 @@ a transaction authority
 a requirement for every async function
 ```
 
-Use `agentic-architecture` to decide where authority, ports, transactions, and
+Use `evolvable-application-architecture` to decide where authority, ports, transactions, and
 composition boundaries exist. Then map real capability boundaries into Effect.
 
 ## Pure Core, Effectful Shell
@@ -88,7 +88,7 @@ it when the host ends.
 ## Architecture Family
 
 ```text
-agentic-architecture       decides authority and consistency
+evolvable-application-architecture       decides authority and consistency
 frontend-architecture      decides browser/UI state and topology
 effect-best-practices      implements chosen boundaries with Effect
 ```

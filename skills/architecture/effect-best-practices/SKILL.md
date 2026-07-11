@@ -6,7 +6,7 @@ description: >-
   resources, structured concurrency, Stream/Queue, runtime ownership, and
   testable adapters. Use when Effect is already present, explicitly selected,
   being evaluated for a concrete pressure, or producing API/type errors. Use
-  agentic-architecture for authority, transactions, and module boundaries,
+  evolvable-application-architecture for authority, transactions, and module boundaries,
   frontend-architecture for React topology and state ownership, and
   effect-api-app-kit for generating or verifying version-isolated Node HttpApi
   applications.
@@ -24,7 +24,7 @@ keep pure domain logic ordinary TypeScript.
 Owns: Effect API idioms, version separation, Service/Layer/Runtime mapping,
 typed failures, Scope/resource ownership, structured concurrency, Stream/Queue,
 Effect tests, and runtime-bound facades.
-Delegates: authority/ports/transactions/migrations -> agentic-architecture;
+Delegates: authority/ports/transactions/migrations -> evolvable-application-architecture;
 frontend topology/state/query/store/realtime -> frontend-architecture; managed
 v3/v4 Node HttpApi scaffolding and verification -> effect-api-app-kit.
 Does not decide that every module, helper, repository, or frontend needs Effect.

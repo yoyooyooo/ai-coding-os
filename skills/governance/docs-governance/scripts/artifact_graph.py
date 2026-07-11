@@ -1009,7 +1009,7 @@ def main() -> None:
     unblock_review = subparsers.add_parser("unblock-review")
     add_common(unblock_review)
     unblock_review.add_argument("node_id")
-    unblock_review.add_argument("--queue", default=QUEUE_DEFAULT, help="optional queue markdown path; omitted by default because Goal Proof System state is owned by $goal-proof")
+    unblock_review.add_argument("--queue", default=QUEUE_DEFAULT, help="optional queue markdown path; omitted by default because queue state is owned by the repository's selected tracker/execution method")
 
     queue_consistency = subparsers.add_parser("queue-consistency")
     add_common(queue_consistency)

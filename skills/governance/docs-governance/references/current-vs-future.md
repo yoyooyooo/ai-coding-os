@@ -44,7 +44,11 @@ Place it in a Roadmap capability capsule. Do not use future language to imply cu
 
 ### Active Proof
 
-A selected slice currently being implemented or validated. Goal Proof owns objective, progress, evidence, claim ceiling and completion review. Roadmap links to it but does not copy status.
+A selected slice currently being implemented or validated. The repository's
+selected tracker/spec/execution method owns objective, progress, evidence,
+claim ceiling and completion review. Roadmap links to that owner but does not
+copy status. When a repository explicitly adopts Goal Proof System for the
+slice, its Goal Pack is that owner.
 
 ### Historical Evidence
 

@@ -5,7 +5,7 @@ description: >-
   interaction system. Use for React or TypeScript app topology, route/feature
   boundaries, server versus local state, optimistic updates, client/query/store
   responsibilities, realtime/WebSocket/SSE consistency, host composition,
-  frontend packages, naming, or UI harnessability. Use with agentic-architecture
+  frontend packages, naming, or UI harnessability. Use with evolvable-application-architecture
   when backend authority, transactions, or migrations are in scope, and with
   effect-best-practices only when Effect is already selected or present. Treat
   effect-api-app-kit as a backend generator, not a frontend topology authority.
@@ -24,7 +24,7 @@ architecture.
 Owns: frontend state taxonomy, route/feature topology, client/query/store/
 realtime boundaries, host composition, React adapters, naming semantics, and
 frontend proof strategy.
-Delegates: backend fact authority/transactions/migrations -> agentic-architecture;
+Delegates: backend fact authority/transactions/migrations -> evolvable-application-architecture;
 Effect Service/Layer/Scope/API details -> effect-best-practices; generated backend
 HttpApi profile mechanics -> effect-api-app-kit.
 Does not prescribe: one mandatory framework, state library, router, package

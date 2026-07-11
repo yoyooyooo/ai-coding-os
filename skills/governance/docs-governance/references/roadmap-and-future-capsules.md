@@ -7,7 +7,7 @@ long-horizon product evolution sequence
 capability prerequisites and promotion gates
 current launch/coverage gates
 future capability routes
-links to Goal Proof and evidence
+links to owning execution and evidence artifacts
 ```
 
 Roadmap does not own step-by-step implementation, current object authority or duplicated Goal progress.
@@ -85,7 +85,7 @@ next_action: ...
 
 ```text
 Future capsule
-  -> smallest falsifiable proof / Goal Pack
+  -> smallest falsifiable proof in the configured tracker/spec/evidence workflow
   -> accepted ADR, when a tradeoff becomes binding
   -> Product / SSoT / Architecture / Standard / Protocol
   -> update capability matrix and indexes
@@ -93,6 +93,10 @@ Future capsule
 ```
 
 Promotion is a move, not a copy. After promotion, retain only remaining future delta, unmet gates and source/evidence backlinks.
+
+Goal Proof System may own that proof lifecycle when the repository explicitly
+adopts it. It is not a prerequisite for promotion; the selected workflow must
+still provide an executable scope, a claim ceiling and reviewable evidence.
 
 ## Delete or Merge
 

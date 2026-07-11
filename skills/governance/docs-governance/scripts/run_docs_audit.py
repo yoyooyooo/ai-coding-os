@@ -77,7 +77,7 @@ def main() -> None:
                 "summary": {"blocker": 0, "warn": 0, "info": 0, "total": 0},
                 "findings": [],
                 "skipped": True,
-                "reason": "queue checks require explicit --queue; Goal Proof System state is owned by $goal-proof",
+                "reason": "queue checks require explicit --queue; queue state is owned by the repository's selected tracker/execution method",
             }
         ),
     }

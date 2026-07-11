@@ -6,7 +6,7 @@ three are doctrine skills; `effect-api-app-kit` is an executable profile.
 ## Ownership
 
 ```text
-agentic-architecture
+evolvable-application-architecture
   authority, ports, transactions, module/process boundaries, composition,
   forward migration, replaceability, and evidence
 

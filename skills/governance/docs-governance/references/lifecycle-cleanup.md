@@ -26,7 +26,7 @@ and authority conflicts.
 | `future-capability` | Long-horizon capability with prerequisites, first falsifier and promotion targets, but no current authority | Keep as `docs/roadmap/future/<capability>/README.md` and prevent shadow layers |
 | `candidate-material` | Still under evaluation and not yet a durable future route | Keep in the project's candidate layer, such as Goal Proof System inbox or `docs/proposals/**` |
 | `decision-needed` | Conflict, authority question, or missing bridge that truly requires human / higher-authority choice | Record in decision queue or closest proposal |
-| `bridge-needed` | Two docs-layer states need a routing or authority bridge | Create the thinnest routing bridge or hand off to `$goal-proof` when it is a first proof path question |
+| `bridge-needed` | Two docs-layer states need a routing or authority bridge | Create the thinnest routing bridge or hand off to the repository's configured planning/execution method when it is a first proof path question |
 | `converted-source` | Already consumed by authority, Goal Pack, roadmap, report, or spec but useful for traceability | Move to the method/source layer or backlink from target artifact |
 | `evidence-record` | Past verified result or audit summary | Keep in reports, spec evidence, or linked handoff |
 | `obsolete` | Superseded and no longer useful | Delete after reference check |
@@ -73,7 +73,7 @@ Assign one explicit verdict before moving or deleting old material.
 | `migrate` | The document is valid but lives in the wrong layer | Move by semantic role and update inbound links |
 | `split` | One document contains multiple candidates, decisions, or goal tracks | Split by docs-layer role; use `$goal-proof` for Goal Pack / inbox / source internals |
 | `merge` | Multiple artifacts duplicate the same candidate or decision | Merge into one live artifact and retire the rest |
-| `bridge` | A docs route or authority relation lacks an explicit bridge | Create a thin routing bridge; use `$goal-proof` for first proof path bridge work |
+| `bridge` | A docs route or authority relation lacks an explicit bridge | Create a thin routing bridge; use the repository's configured planning/execution method for first proof path bridge work |
 | `block` | Human or higher-authority decision is required; no honest falsifiable path exists within current authority | Add a decision item; do not promote or implement yet |
 | `archive-as-source` | The document is no longer active but explains where accepted work came from | Move to a source/evidence layer and backlink from the promoted artifact |
 | `delete` | The document is obsolete, misleading, duplicate, or no longer referenced | Delete after reference and evidence checks |

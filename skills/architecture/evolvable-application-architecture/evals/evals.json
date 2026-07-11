@@ -1,0 +1,149 @@
+{
+  "skill_name": "evolvable-application-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit this Rust service. One public App struct owns public global state, runtime registries, caches, and a Store trait that loads and persists the entire state. I want forward-only evolution and a staged refactor, not a rewrite.",
+      "expected_output": "Selects an appropriate pressure profile, identifies authority/global-state and snapshot-store pressure, proposes private authority cells, a thin facade, typed use-case transactions, composition-root cleanup, proof-backed vertical waves, and deletion gates without defaulting to microservices.",
+      "files": [],
+      "expectations": [
+        "Separates business authority cells from capability adapters.",
+        "Recommends privacy and use-case APIs before process extraction.",
+        "Replaces whole-state persistence incrementally with typed transaction seams.",
+        "Includes evidence and old-path deletion criteria."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I am starting a one-developer CRUD product. Should I create domain, application, ports, adapters, event sourcing, an event bus, a plugin framework, and six services now so it can scale later?",
+      "expected_output": "Uses P0/P1 abstraction restraint, recommends private modules, explicit use cases and transactions where facts are durable, introduces ports only for real outer capabilities, and names promotion signals instead of future-proofing theater.",
+      "files": [],
+      "expectations": [
+        "Does not prescribe maximal architecture by default.",
+        "States what machinery is deliberately not needed.",
+        "Keeps authority and dependency direction clear in one process.",
+        "Provides observable promotion pressures for future boundaries."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design the order/payment boundary for a marketplace. The browser sends checkout, the payment gateway calls a webhook, refunds can time out after the provider may already have processed them, and finance needs an audit trail.",
+      "expected_output": "Distinguishes checkout/refund Commands from gateway Observations/Candidates, names local order/payment authorities and provider source authority, keeps external calls outside transactions, models unknown outcomes and reconciliation, and applies P4 evidence and audit rules.",
+      "files": [],
+      "expectations": [
+        "Does not treat the webhook or provider acknowledgement as local settlement truth.",
+        "Uses durable intent, attempt/receipt, idempotency, and reconciliation semantics.",
+        "Commits accepted facts and audit/outbox atomically.",
+        "Identifies financial and destructive stop lines."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Architect an IoT control plane where devices send telemetry, operators issue commands, devices reconnect and replay acknowledgements, and some actuations are safety-critical.",
+      "expected_output": "Separates telemetry Observation from canonical device state and control Command from physical outcome, defines device gateway ports, authority epochs/capability versions, durable effect intent, duplicate/late receipt handling, reconciliation, and P4 safety evidence.",
+      "files": [],
+      "expectations": [
+        "Treats device acknowledgement as a receipt rather than proof of physical success.",
+        "Defines idempotency, timeout, unknown outcome, and replay behavior.",
+        "Keeps device protocol types outside authority logic.",
+        "Requires failure-injection and safety claim ceilings."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review a realtime collaborative editor that uses CRDT operations for text but also has a non-commutative document approval status and server-enforced permissions. The team says 'every client is authoritative'.",
+      "expected_output": "Explains logical authority for CRDT admission/merge under membership and schema epochs, keeps approval and permissions in separate authority cells, treats websocket data as projection/transport, and avoids diagnosing all replicas as invalid multiple writers.",
+      "files": [],
+      "expectations": [
+        "Names the CRDT merge/admission rule and membership epoch as the convergence authority.",
+        "Separates commutative text state from approval and permission facts.",
+        "Requires stale-member fencing and replay/compaction proof.",
+        "Does not force one global transaction or server writer for all collaborative state."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "We have a Bun/TypeScript backend where Prisma, a payment SDK, an LLM SDK, and a global event emitter are imported everywhere. Design a hexagonal modular monolith without inventing interfaces for every class.",
+      "expected_output": "Uses runtime validation, private authority modules, application-owned capability ports only for genuine external powers, explicit transaction context, post-commit events/outbox, bootstrap composition, import guards, and separate agentic guidance for LLM candidates.",
+      "files": [],
+      "expectations": [
+        "Keeps SDK and ORM types outside the core.",
+        "Distinguishes internal typed collaboration from capability ports.",
+        "Places concrete clients and credentials in composition roots.",
+        "Avoids IThingService/DI-token proliferation."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Design a platform for LLM agents, tools, memory engines, remote runtimes, and A2A participants. Extensions should be powerful but must not corrupt product state, permissions, or completion semantics.",
+      "expected_output": "Loads the agentic profile, defines finite capability classes and application-owned ports, candidate-only external outputs, governed action/materialization, external-effect receipts, private runtime continuity, explicit conformance, and no plugin-owned product facts.",
+      "files": [],
+      "expectations": [
+        "Separates runtime/provider observations from invocation and product authority.",
+        "Separates accepted memory from retrieval/session adapters.",
+        "Rejects a universal plugin runtime or generic JSON authority bus.",
+        "Requires replay, race, visibility, and real-adapter evidence."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Design a multi-stage approval system with submitters, reviewers, an automatic risk scorer, deadlines, and an external executor. Reviewer recommendations can conflict and the executor may time out after starting work.",
+      "expected_output": "Separates Commands, scorer Candidates, ReviewCase authority, deadline trigger, final approval, downstream effect intent, and receipt/reconciliation. It assigns local facts to cells rather than making the scheduler or executor the workflow authority.",
+      "files": [],
+      "expectations": [
+        "Separates proposal, recommendation, final decision, and execution.",
+        "Treats scheduler wake-ups and executor callbacks as non-authoritative inputs.",
+        "Models version/conflict and unknown external outcomes.",
+        "Defines typed internal obligations instead of a universal bus."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Architect a data platform where distributed jobs compute candidate datasets, validators approve them, object storage holds blobs, and only promoted versions may be served to customers. Jobs and validators can restart.",
+      "expected_output": "Separates computation success from dataset publication authority, uses storage/compute capability ports, versioned Candidates and Decisions, durable checkpoints/idempotency, atomic promotion plus event/outbox, and replay/rebuild evidence.",
+      "files": [],
+      "expectations": [
+        "Does not equate successful computation or blob upload with publication.",
+        "Names dataset version and promotion authority.",
+        "Defines restart-safe candidate identity and validation evidence.",
+        "Keeps object-store SDK semantics outside the core."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "We are replacing an internal workflow model and public API. I prefer forward evolution over keeping old code alive. Plan migration of stored data, long-lived clients, external integrations, and an old dual-write path.",
+      "expected_output": "Classifies internal API, durable facts, product API, external protocol, and authority-epoch compatibility separately; proposes one-way migrations, short negotiated overlap, a bridge ledger, fencing, evidence, and deletion gates without indefinite dual writes.",
+      "files": [],
+      "expectations": [
+        "Distinguishes breaking internal APIs from preserving accepted facts.",
+        "Defines source of truth and divergence handling during any overlap.",
+        "Avoids silent protocol fallback.",
+        "Stops for destructive data, privacy, permission, or public-contract changes."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Review a React application that changes business status directly from websocket frames while the backend commits later. Include authority, optimistic UI, gap recovery, and migration of the old path.",
+      "expected_output": "Leads with application fact authority and commit semantics, keeps local interaction/optimism in the frontend, treats realtime as a projection carrier with cursor/dedupe/backfill, delegates detailed frontend topology, and migrates the direct-mutation path vertically.",
+      "files": [],
+      "expectations": [
+        "States that websocket frames are not accepted business facts.",
+        "Defines mutation identity and authoritative reconciliation.",
+        "Includes gap detection and backfill.",
+        "Includes old-path fencing and deletion proof."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "I maintain a pure deterministic compression library with no database, network, users, durable product state, plugins, or deployment profiles. Apply your application architecture method and tell me how to restructure it.",
+      "expected_output": "Recognizes limited applicability, avoids inventing authority cells, ports, transactions, outbox, or composition profiles, and narrows useful advice to module/API boundaries and tests while marking application-specific branches not applicable.",
+      "files": [],
+      "expectations": [
+        "Does not force application architecture onto a pure library.",
+        "Uses not_applicable and an explicit low claim ceiling.",
+        "Avoids fabricated external capability or persistence boundaries.",
+        "Suggests only proportionate modularity and evidence improvements."
+      ]
+    }
+  ]
+}

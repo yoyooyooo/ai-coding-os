@@ -262,7 +262,8 @@ After decision:
 
 ```text
 decided
-  -> promote to SSoT / standard / ADR / roadmap / Goal Pack when it is authority
+  -> promote semantic authority to SSoT / standard / ADR / roadmap
+  -> route chosen work to the owning tracker/spec/execution artifact
   -> backlink from the source material
   -> convert stale candidate material to source or delete it
 ```
@@ -378,20 +379,19 @@ Use this governance skill for:
 - cleanup and migration of old docs structures;
 - deciding how project-local skills should be replaced or simplified.
 
-Use `goal-proof` for:
+Use the repository's configured planning, tracker, spec and execution skills
+for:
 
-- distant ideas;
-- goal contracts;
-- first proof paths;
-- detailed plans for chosen slices;
-- rolling verified implementation.
+- candidate shaping and first proof paths;
+- objective and acceptance contracts;
+- exact file-level work_items and blocking edges;
+- test commands, local checklists and handoff-ready sequencing;
+- rolling progress, evidence and completion review.
 
-Use implementation-plan or spec-kit skills for:
-
-- exact file-level work_items;
-- test commands;
-- local checklists;
-- handoff-ready implementation sequencing.
+When a repository explicitly adopts Goal Proof System for a candidate stream,
+use `$goal-proof` for its method-internal Goal Pack, progress, evidence and
+completion lifecycle. That choice is optional and must not be inferred merely
+because `docs-governance` is in use.
 
 The handoff boundary is artifact-based. Do not rely on conversation memory as
 the only carrier of scope.
@@ -399,4 +399,7 @@ the only carrier of scope.
 
 Before restructuring mature docs, classify each claim as current-fact, current-binding, future-candidate, active-proof, or historical-evidence. Current layers must stay aligned with source/accepted contracts; future complete models go to capability capsules. Preserve Product Evolution Sequence and promotion gates even when their implementation has not started. See [Current vs Future](current-vs-future.md), [Roadmap and Future Capsules](roadmap-and-future-capsules.md), and [Source-Code Alignment](source-code-alignment.md).
 
-When a future capability becomes active work, create or link the Goal Proof slice rather than copying progress into Roadmap. When proof/adoption succeeds, move authority into formal layers and shrink the capsule in the same change.
+When a future capability becomes active work, create or link its owning
+tracker/spec/execution artifact rather than copying progress into Roadmap. When
+proof/adoption succeeds, move authority into formal layers and shrink the
+capsule in the same change.

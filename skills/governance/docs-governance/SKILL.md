@@ -6,7 +6,7 @@ description: >-
 
 # Docs Governance
 
-Converge documentation toward one current authority chain and one explicit future route. Do not own product truth, Goal Pack progress, implementation completion, or public protocol/security decisions.
+Converge documentation toward one current authority chain and one explicit future route. Do not own product truth, tracker/spec/execution progress, implementation completion, or public protocol/security decisions.
 
 ## Operating Contract
 
@@ -16,7 +16,8 @@ Owns:
   retention, indexes, source-code alignment audit and docs cleanup.
 
 Does not own:
-  product semantics, Goal Proof state/evidence, implementation status,
+  product semantics, tracker/spec/execution lifecycle or evidence state,
+  implementation status,
   legal/security retention or public API/protocol decisions.
 
 Stop when:
@@ -31,7 +32,7 @@ Stop when:
    - `current-fact` — exists in product/code/schema/tests/runtime path;
    - `current-binding` — adopted constraint that already governs current work;
    - `future-candidate` — not current authority;
-   - `active-proof` — Goal Proof owns progress/evidence;
+   - `active-proof` — the repository's selected tracker/spec/evidence method owns progress and evidence;
    - `historical-evidence` — report/source/evidence only.
 3. Place by semantic owner; never keep two current homes.
 4. For future work, preserve sequence/gates in Roadmap capability capsules rather than copying `future/ssot`, `future/standards`, or other shadow layers.
@@ -50,9 +51,9 @@ current topology / accepted seam        -> docs/architecture/**
 wire schema/profile/media type          -> docs/protocols/**
 UI/UX/visual behavior                   -> docs/design/**
 future sequence/gate/capability capsule -> docs/roadmap/**
-active goal/progress/evidence            -> docs/goal-proof/**
+active work/progress/evidence            -> configured tracker/spec/evidence method
 past audit/delivery/validation           -> docs/reports/**
-implementation checklist                -> root specs/** or Goal work item
+implementation checklist                -> root specs/** or owning execution artifact
 ```
 
 ## Future Rule
