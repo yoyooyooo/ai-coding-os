@@ -1,24 +1,23 @@
 ---
 name: goal-contracts
 description: >-
-  Authors or repairs Goal Proof System goal.yaml for a Goal Pack: objective,
-  authority, engineering guidance, completion, claim_limit, stop rules, and
-  agent_authority policy. Use through $goal-proof when the user asks to turn a
-  discussed plan/solution into a Goal Plan, or when only the goal contract needs
-  compilation or repair.
+  Goal contract authoring for $goal-proof. Use when a selected Goal Pack needs
+  goal.yaml created or repaired, or when a discussed solution must become a
+  Goal Plan with protected objective, authority, completion, claim limit, and
+  stop rules.
 ---
 
 # Goal Contract Phase
 
-This is an internal phase module for `$goal-proof`.
-
-It compiles or repairs the human-owned goal node:
+This phase writes the protected human-intent contract at:
 
 ```text
 docs/goal-proof/goals/<goal-id>/goal.yaml
 ```
 
-## Goal Contract Owns
+Use it through `$goal-proof`.
+
+## Owned Fields
 
 ```text
 id
@@ -40,74 +39,27 @@ conditional
 strict
 ```
 
-The goal contract is the protected surface. Agents may not silently change objective,
-authority, completion, claim_limit, stop rules, or explicitly protected
-fields while running.
+The contract authorizes the goal. `progress.yaml.proof_step` owns the current
+executable movement; `evidence.jsonl` owns observed transitions.
 
-## Goal Distance
+## Contract Pass
 
-Choose the minimum sufficient horizon for `objective`.
+| Step | Completion criterion |
+| --- | --- |
+| Ground | Host instructions, docs router, SSoT, Standards, ADRs, Architecture, Roadmap, source, tests, and existing evidence relevant to the objective are identified. |
+| Horizon | `objective` is wider than the first proof step and narrow enough for completion evidence, claim limit, and stop rules to close. |
+| Authority | Current authority refs and protected human decisions are linked rather than copied. |
+| Completion | `completion.signal` and scoped `completion.required_evidence` cover every claim-bearing axis included in the objective. |
+| Exclusions | Adjacent surfaces excluded from the goal are explicit in `claim_limit`, `non_goals`, or constraints. |
+| Permission | `agent_authority` states revisable fields and fields requiring a human decision. |
+| Handoff | `$finding-proof-step` can name an authorized falsifiable path; otherwise status remains `forming` or blocked. |
 
-- It must be wider than the first `proof_step`, so natural follow-up work can
-  continue without asking the user to restate the obvious next movement.
-- It must be narrow enough for `completion.required_evidence`, `claim_limit`,
-  and `stop_rules` to close the claim.
-- If either side fails, repair the goal contract or ask for a human decision.
+For public API/schema/protocol/CLI/template/skill changes, authority changes,
+security or destructive boundaries, mixed proof surfaces, or multi-evidence
+completion, scope completion evidence by claim-bearing slice. Existing v2 fields
+carry this coverage; no parallel coverage schema is needed.
 
-Goal distance belongs in `goal.yaml`. The current executable movement belongs
-in `progress.yaml.proof_step`.
-
-## Triggered Claim Coverage Review
-
-Use Triggered Claim Coverage Review when the goal has semantic risk: broad or
-multi-stage work, mixed proof levels, public surfaces, schema/protocol/CLI or
-template changes, authority actions, product truth or quality judgments,
-permission/security/destructive/compliance boundaries, or completion that needs
-multiple evidence records or relation evidence.
-
-For triggered goals, author the contract around claim-bearing axes, not every
-word in the objective:
-
-```text
-stage / phase / layer / surface
-proof level / runtime mode
-authority side effect
-public API / schema / protocol / command / template / skill surface
-product truth or quality judgment
-safety / permission / destructive boundary
-lineage / relation / review gate
-```
-
-Before `status: ready`, make `completion.required_evidence` scoped enough that
-each claim slice can later be mapped to an evidence ref and proof level. Exclude
-adjacent axes that are not part of the goal with `claim_limit`, `non_goals`, or
-`constraints`. Do not add new coverage fields or encode semantic proof in token
-names; existing v2 surfaces carry the boundary.
-
-## Quick Workflow
-
-1. Read project authority context: host instructions, docs router, SSoT,
-   standards, ADR, architecture, roadmap, code/tests/evidence.
-2. Decide whether the work stays inline or needs a Goal Pack. If completion
-   needs more than one verified evidence record, create or repair the Goal Pack.
-   When selecting from existing work, use Goal Pack state, evidence records, and CLI
-   output for ready / running / done facts. Roadmap anchors constrain strategy
-   and gates but are not sufficient progress facts.
-3. Set `objective` to the minimum sufficient horizon.
-4. Write or update `goal.yaml`.
-5. Define `completion.signal` and `completion.required_evidence`.
-6. Define `claim_limit`: what the evidence chain may and may not claim.
-7. Define `agent_authority`: what agents may revise and which fields cannot change
-   silently.
-8. Route to the proof-step phase to discover the first falsifiable proof step.
-
-## Contract-To-Proof-Step Contract
-
-A Goal Plan is not ready because `goal.yaml` is written or work items are listed.
-The goal contract authorizes the goal; `proof_step` makes the next movement falsifiable.
-
-When the user asks to create a Goal Plan, do both unless they explicitly ask for
-only a `goal.yaml` draft:
+## Ready Contract
 
 ```text
 goal.yaml protects intent and boundaries
@@ -115,51 +67,34 @@ progress.yaml.proof_step proves the next movement can be tested
 evidence.jsonl stays empty until work runs
 ```
 
-Use `status: forming` or `next_action: needs_plan` while `goal.yaml` exists but
-the first honest proof step is missing. Use `status: ready` only when the protected
-goal fields are stable and `proof_step` identifies an authorized path that can
-produce or inspect `completion.required_evidence` within `claim_limit`.
+`status: ready` requires stable protected fields plus an authorized proof step
+that can produce or inspect required evidence inside the claim limit. A docs-only
+proof step is valid when the target itself is a claim-bearing documentation or
+review authority surface with inspectable diffs, links, conflicts, or scans.
 
-Do not make the first proof step docs-only unless the target delta itself is a
-claim-bearing doc or review authority surface and the proof step can inspect
-diffs, cross references, authority conflicts, or static scans. For implementation
-goals, planning prose may be a preface, but the ready gate needs a runnable or
-inspectable movement.
+## Rules
 
-## Goal Contract Rules
-
-- `goal.yaml` is not a work item tree.
-- `goal.yaml` does not precompute file-by-file implementation.
-- Completion tokens are not enough by themselves; the proof step must say how
-  the first check will produce, inspect, or falsify those tokens.
-- If semantic risk trigger applies, completion tokens must name scoped
-  claim-bearing slices; broad tokens like `workflow_complete=true` are not
-  enough unless `claim_limit` excludes the adjacent surfaces.
-- `goal.yaml` links authority by path or URL; it does not copy authority content.
-- `goal.yaml` may reference source material, but consumed source belongs in
+- Keep `goal.yaml` as a goal contract rather than a work-item tree.
+- Link authority and retained source material; store consumed source under
   `docs/goal-proof/sources/` or `notes/`.
-- `goal.yaml` may declare `relations.thread_id` and `relations.links`;
-  these are metadata only, not a supervising plan, thread lifecycle, work item tree,
-  or nested Goal Pack state.
-- If a new Goal Pack continues a done Goal Pack, prefer `successor_of` with
-  `evidence_ref` and required evidence tokens from the predecessor evidence record.
-- If objective or authority is unclear and no honest proof step can be named, stop
-  before execution.
-- If the goal changes schema fields, method terminology, or command language,
-  include public surfaces in `claim_limit`: CLI flags/help, JSON fields,
-  README examples, package docs, templates, agents, evals, tests, fixtures, and
-  active Goal Pack artifacts. `goal.yaml` should make clear whether public names
-  are renamed, kept as documented aliases, or excluded from the claim.
+- Use relation metadata as lineage, not as a second scheduler or nested state
+  system.
+- A successor Goal Pack cites predecessor evidence without reopening history.
+- Public naming migrations state whether each surface is renamed, retained as a
+  documented alias, or excluded from the claim.
+- When objective or authority cannot be settled, keep the pack unready and name
+  the required decision.
 
 ## Output
 
-Return:
-
 ```text
-goal_pack:
-goal_contract:
+goal_pack
+goal_contract
 status: forming | ready | running | blocked | done | retired
-completion:
-claim_limit:
-next_phase: proof_step | blocked | inline
+completion
+claim_limit
+next_phase: proof_step | blocked
 ```
+
+Read [Reference](REFERENCE.md) when authoring field details or using the current
+template.

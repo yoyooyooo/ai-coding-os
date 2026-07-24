@@ -1,0 +1,10 @@
+id: effect
+version: 1
+requires:
+  - typescript-node
+provides:
+  - live/fake/layer/runtime/scope vocabulary mapping
+  - per-host runtime and Layer ownership
+rules:
+  - Layer graph does not define product authority or package boundaries
+  - exact installed declarations arbitrate syntax

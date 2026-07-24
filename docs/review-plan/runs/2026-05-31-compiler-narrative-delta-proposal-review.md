@@ -80,7 +80,7 @@ review_object_manifest:
     - intent-to-evidence compiler model
     - Goal Proof artifact semantics
     - skill pass ownership
-    - high-capability agent freedom boundary
+    - execution-strategy ownership boundary
     - Goal Horizon Check
     - Continuation Check
     - docs layer placement

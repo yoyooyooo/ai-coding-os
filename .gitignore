@@ -8,3 +8,4 @@ coverage/
 .memdex
 skills/.skillshare-manifest.json
 __pycache__
+.pi-subagents/

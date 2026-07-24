@@ -56,10 +56,11 @@ bun run check
 
 - 详细规则见 [Skill Source Layout](skill-source-layout.md)。
 - AI Coding OS 是对外开源源码仓；本仓只定义 `skills/**` grouped source layout、公开触发名和本仓验证口径。
-- 当前公开 skill suite 入口见 [skills/README.md](../../skills/README.md)。
+- 当前公开 Skill Suite 入口见 [skills/README.md](../../skills/README.md)；跨 Skill 合同、共享词汇和 Harness schemas 由 `$ai-coding-os-suite-contracts` 提供。
 - Skill 运行时触发名由 `SKILL.md` frontmatter `name` 决定，不由目录名决定。
 - 下游用户或维护者如何安装、复制、镜像或分发 skill，属于 downstream distribution，不写入本仓公开叙事。
-- 旧 skill 名不保留兼容 alias；历史 evidence/source 可保留追溯旧词，但不能定义当前口径。
+- 退役 Skill 不保留兼容 alias；历史 evidence/source 可保留追溯材料，但不能定义当前口径。
+- 本仓只维护 grouped source，不生成 Flat 版本。
 - 改 suite 收口策略时，默认先改本仓 `skills/**` 和公开 docs，再运行本仓验证；不得把下游 runtime 或同步工具状态说成本仓事实。
 
 ## 文档标准
@@ -74,9 +75,9 @@ bun run check
 
 ## Goal Proof System 标准
 
-- 默认采用 strong-agent optimistic workflow。
-- Strong-agent optimistic workflow 要求 proof path 优先；文档、计划、work item list 只有在缩短执行、验证、审计或交接路径时才应保留。
-- Goal Proof System 是当前唯一规划载体：用户明确要求目标计划、Goal Pack 或使用 `$goal-proof` 时由它生成规划。
+- `$goal-proof` 是显式选择的可选执行方法；任务复杂度本身不触发 Goal Pack。
+- Proof path 优先；文档、计划和 work item list 只有在缩短执行、验证、审计或交接路径时才保留。
+- 用户明确要求目标计划、Goal Pack 或使用 `$goal-proof` 时，由 Goal Pack 承载该 workstream 的 durable planning state。
 - 随口小需求不创建 Goal Pack；直接 inline 实施并验证。
 - 简单工作不引入 strict proof。
 - 高风险工作使用 `evidence_mode: strict`。
@@ -93,6 +94,16 @@ bun run check
   changed surfaces、`not_claimed`、叙事性的 `not_proven` 或 remaining gaps，不能只堆散 token。
   除非同步升级 schema、template 和 checker，`changed surfaces` 与 `not_proven` 不表示
   v2 completion review 的正式字段。
+
+## Skill Suite 验证
+
+```bash
+python3 skills/tooling/suite_audit.py --suite skills
+```
+
+该检查覆盖 frontmatter/cross-Skill reference closure、共享 Schema、`$skill-name` handoff、
+Skill-local link containment、Preset isolated-install/golden render、退役入口、
+capability-tier 叙事、Flat source 和 Kit 原子性。
 
 ## Read Next
 

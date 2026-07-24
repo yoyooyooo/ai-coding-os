@@ -33,7 +33,7 @@ Automated a11y is a gate, not a full audit.
 - Scan the page or scoped region after the UI is in the target state.
 - Include dynamic states: menus, dialogs, validation errors, loaded/empty/error states.
 - Pair axe-style scans with keyboard traversal and focus checks for interactive UI.
-- Record excluded elements/rules as `not_proven`, not as silent passes.
+- Record excluded elements/rules in `not_proven`, not as silent passes.
 
 Minimum interactive checks:
 
@@ -77,8 +77,8 @@ console_findings:
 network_findings:
 a11y_findings:
 visual_findings:
-positive_tokens:
-not_claimed:
+observed:
+supports:
 not_proven:
 ```
 

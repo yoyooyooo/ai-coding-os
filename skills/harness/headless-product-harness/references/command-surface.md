@@ -4,57 +4,72 @@ Use this reference when naming or auditing a headless product command surface.
 
 ## Naming
 
-Prefer capability names:
+Prefer bounded capability names:
 
 ```text
-pnpm xtask boundary
-pnpm xtask source inventory
-pnpm xtask smoke offline-import
-cargo run -p xtask -- boundary-check
-just smoke-channel-realtime
+pnpm verify boundary.imports
+pnpm verify source.inventory
+pnpm verify order.offline-import
+cargo run -p xtask -- verify order.checkout.replay
+just verify-channel-realtime-gap-recovery
 ```
 
-Avoid progress labels as primary names:
+Avoid progress labels or vague proof labels as primary names:
 
 ```text
 smoke-mvp-0-1
 phase-2-complete
 current-status
+smoke-all
 ```
 
-Compatibility aliases may remain when they call the durable semantic command.
+A compatibility alias may remain when it delegates to a durable semantic
+command and does not widen the reported conclusion.
 
-## Command Contract
+## Command contract
 
-For each command, define:
+For each stable command, make these properties discoverable in code, help text,
+or a Harness Descriptor:
 
 ```text
 name:
 capability:
-authority_used:
+formal_entry_or_authority_used:
 input:
 output_format:
-evidence_tokens:
-not_claimed:
-not_proven:
+can_observe:
+does_not_cover:
 failure_codes:
 default_ci:
-opt_in_env:
+opt_in_environment:
 ```
 
-## Parameter Rules
+A run result should use:
+
+```text
+observed:
+supports:
+not_proven:
+```
+
+## Parameter rules
 
 - Name parameters by semantic role, not internal type.
-- Keep common names stable: `--source`, `--source-unit`, `--profile`, `--out`,
-  `--format`, `--limit`.
-- `--out` writes artifacts; stdout still emits the summary envelope.
-- `--limit` may affect samples, not final smoke truth.
-- Commands must not depend on hidden global state for common agent paths.
+- Keep established names stable: `--source`, `--profile`, `--out`, `--format`,
+  and `--limit` when those roles really exist.
+- `--out` may write artifacts; stdout should still preserve the machine result
+  when it is a command contract.
+- A sampling `--limit` must not silently change a complete claim into a sampled
+  claim.
+- Common Agent paths must not depend on hidden process-global state.
+- Failure uses a non-zero exit code and names the first useful boundary.
 
-## Review Questions
+## Review questions
 
-- Can a new agent infer what this command proves from its name?
-- Does this command prove exactly one capability?
-- Does passing this command avoid implying server, web, DB, or real runtime
-  proof unless those are explicitly in scope?
-- Is there a structured failure path with next action?
+- Can a new Agent infer the capability and exercised surface from the name?
+- Does the command drive the same formal path as production rather than a
+  privileged Harness writer?
+- Are fixture, fake, replay, real-local, and real-external dependencies clear?
+- Does a pass avoid implying server, browser, DB, or external-runtime behavior
+  that was not exercised?
+- Is failure structured enough for the Agent to inspect and continue?

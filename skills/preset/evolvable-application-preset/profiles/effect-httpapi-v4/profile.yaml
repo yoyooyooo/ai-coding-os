@@ -1,0 +1,12 @@
+id: effect-httpapi-v4
+version: 1
+requires:
+  - effect
+conflicts:
+  - effect-httpapi-v3
+provides:
+  - Effect v4 HttpApi profile selection policy
+version_policy: inspect-installed-declarations-and-pin-exact
+rules:
+  - never mix v3 syntax or imports
+  - beta or evolving APIs require exact pin and compile fixture

@@ -144,6 +144,30 @@
         "Avoids fabricated external capability or persistence boundaries.",
         "Suggests only proportionate modularity and evidence improvements."
       ]
+    },
+    {
+      "id": 101,
+      "prompt": "Choose a source topology for a medium Orders module. The team wants order.payment.* semantic filenames but is unsure when to create payment/, a workspace package, or a service.",
+      "expected_output": "Uses Bounded Semantic Flatness inside the Orders owner, treats order.payment.* as a lexical cluster, creates a submodule only for real ownership/dependency/lifecycle pressure, promotes to package for compile/reuse pressure, and to deployable for deployment/fault/trust pressure.",
+      "files": [],
+      "expectations": [
+        "States that dots are semantic compression, not isolation.",
+        "Separates module/package/deployable/authority boundaries.",
+        "Keeps files subject-qualified and avoids one-file directory chains.",
+        "Does not grant fact-writing authority through package extraction."
+      ]
+    },
+    {
+      "id": 102,
+      "prompt": "Different Agents have created order-service.ts, order-manager.ts, order-processor.ts, and order.use-case.ts for the same responsibility. Normalize the naming without mechanically splitting every type into a file.",
+      "expected_output": "Uses the canonical vocabulary registry, identifies use-case as the controlled acceptance path, marks vague synonyms as guarded/deprecated, updates the project naming vocabulary, and keeps simple command/input/outcome types colocated until real reuse or boundary pressure appears.",
+      "files": [],
+      "expectations": [
+        "Uses canonical terms rather than personal synonyms.",
+        "Updates project vocabulary aliases/deprecations.",
+        "Avoids a full suffix/file set.",
+        "Links filename roles to import boundaries."
+      ]
     }
   ]
 }

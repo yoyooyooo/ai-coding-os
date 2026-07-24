@@ -4,67 +4,59 @@
 
 # AI Coding OS
 
-AI Coding OS is a methodology and skill suite for highly capable coding agents.
-It assumes models will keep improving, so the system should give agents clear
-boundaries, routing, verification paths, and claim standards instead of locking
-them into defensive process tables.
-It turns human intent into evidence-backed workspace state transitions: form a
-goal contract, find the current `proof_step`, append evidence, and reduce that
-evidence into the next state.
+AI Coding OS is a grouped methodology and Skill Suite for repository/workspace
+work. It provides a thin user router, project documentation authority,
+evolvable application architecture, interface capability planning, Product
+Harnesses, an optional Goal Pack method, reusable Presets, and deterministic
+generation tools.
 
-The default application boundary is a workspace: a repo, product surface, docs
-set, and goal flow. The method applies to MVPs, features, migrations,
-refactors, debugging campaigns, audits, research, documentation governance, and
-tooling.
-
-The default entry is `$ai-coding-os`. It owns no durable artifacts. It
-routes work to Agentic Architecture, Goal Proof System, Docs Governance, Effect
-Best Practices, Interface Capability Planning, Product Harness System, UI
-Product Harness, Frontend Test System, Headless Product Harness, or inline
-execution.
+Use the user-invoked `$ai-coding-os` for ambiguous or cross-cutting work. Clear
+requests go directly to the specialist that owns the decision surface.
 
 ## Core Principles
 
 ```text
-high-capability agent first
-goal and boundary explicit
-proof path runnable
-evidence supports claim
-gaps remain visible
+project authority first
+one primary owner per decision surface
+proof surface matches the claim
+observed / supports / not_proven stay distinct
+Preset produces a resolved snapshot
+cross-Skill dependencies use `$skill-name`, not install paths
+structured artifacts earn their lifetime
 ```
 
-This is not a formal proof system. It is an optimistic workflow for strong
-agents, with strict honesty around evidence, `not_claimed`, stop signals, and
-completion claims.
+This is not a formal proof system and does not prescribe one execution flow.
+Architecture and governance constrain durable semantics; each task selects its
+implementation strategy from project authority, risk, and available evidence.
 
 ## Skill Suite
 
 | Group | Skill | Role |
 | --- | --- | --- |
-| `router/` | `ai-coding-os` | Default user entry; routes intent and chooses inline vs durable method |
-| `goal/` | `goal-proof` | Goal Packs, goal contracts, proof steps, evidence chain, completion review |
-| `goal/` | `goal-contracts` | Create or repair `goal.yaml` |
-| `goal/` | `finding-proof-step` | Find the next falsifiable `proof_step` |
-| `goal/` | `proof-step-implementation` | Execute, verify, add evidence, apply progress |
-| `goal/` | `write-work-plans` | Write `plans/<work_id>.md` for high-risk work items |
-| `governance/` | `docs-governance` | Docs layers, SSoT, standards, ADRs, roadmaps, cleanup, audit |
-| `architecture/` | `agentic-architecture` | AI-agent-era architecture doctrine: authority, Capability Ports / Adapters, composition roots, replaceability, and evidence gates |
-| `architecture/` | `frontend-architecture` | TypeScript frontend architecture, dependency direction, naming semantics, React/Effect/Query/Store split, and harness-ready boundaries |
-| `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime/error-channel/resource lifecycle guidance and v4/v3 migration gaps |
-| `capability/` | `interface-capability-planning` | UI/IA capability contracts, surfaces, state/data ownership, harness handoff |
-| `harness/` | `product-harness-system` | Harness artifact model, `claim_ceiling`, Harness Coverage Matrix, trace lifecycle |
-| `harness/` | `ui-product-harness` | Interface-headless, render wiring, browser-visible, production-near UI proof |
-| `harness/` | `frontend-test-system` | Frontend claim discovery, smallest test lane, Playwright/agent-browser/Vitest/MSW/contract evidence packets |
-| `harness/` | `headless-product-harness` | Proof commands, smoke checks, fixture/replay, headless command JSON/JSONL output shape |
+| `router/` | `$ai-coding-os` | User-invoked router selecting Lead and Supporting Skills |
+| `contracts/` | `$ai-coding-os-suite-contracts` | Independently installable cross-Skill coordination, shared vocabulary, and Harness schemas |
+| `goal/` | `$goal-proof` | Explicitly selected Goal Pack, proof-step, evidence, and completion method |
+| `goal/` | `$goal-contracts` | Create or repair `goal.yaml` |
+| `goal/` | `$finding-proof-step` | Find the next falsifiable `proof_step` |
+| `goal/` | `$proof-step-implementation` | Execute, verify, append evidence, reduce progress |
+| `goal/` | `$write-work-plans` | Write `plans/<work_id>.md` for selected high-risk work |
+| `governance/` | `$docs-governance` | Docs layers, AGENTS.md, authority placement, cleanup, audit |
+| `architecture/` | `$evolvable-application-architecture` | Authority, transactions, ports, composition, Monorepo/source topology, migration |
+| `architecture/` | `$frontend-architecture` | Frontend state authority, feature topology, host composition, realtime reconciliation |
+| `architecture/` | `$effect-best-practices` | Effect Service/Layer/Scope/runtime, failures, resources, version mapping |
+| `capability/` | `$interface-capability-planning` | UI/IA capability, surfaces, state/data ownership, proof handoff |
+| `harness/` | `$product-harness-system` | Shared Harness vocabulary, descriptors/results, coverage, claim ceilings, lifecycle |
+| `harness/` | `$headless-product-harness` | Capability commands, fixture/replay, DB/restart, boundary proof |
+| `harness/` | `$ui-product-harness` | Interface-headless, render-wiring, browser-visible proof |
+| `harness/` | `$frontend-test-system` | Concrete frontend test-lane and runner selection |
+| `preset/` | `$evolvable-application-preset` | Agent-guided discovery and selective adoption of project-owned AGENTS/docs/check defaults |
+| `tooling/` | `$effect-api-app-kit` | Atomically generate an Effect API capability slice from a settled Change Spec |
 
-Most users should name only `$ai-coding-os`. Advanced users may call a
-specific method or phase skill directly.
+## Goal Proof State Transition
 
-## State Transition Model
-
-The public mainline is intent-to-evidence state transition. Goal Diffusion
-remains only a metaphor for that loop: a coarse target becomes sharper through
-smaller verified states.
+`$goal-proof` is an optional durable execution method selected explicitly by
+the user or repository. Once selected, it advances through intent-to-evidence
+state transitions:
 
 ```text
 human intent -> goal contract -> proof_step -> evidence -> next_action
@@ -91,7 +83,7 @@ The formal method name is Goal Proof System. The formal CLI is `goal-proof`.
 
 ## Goal Proof System
 
-Goal Proof System is the long-running goal carrier for AI Coding OS.
+Goal Proof System is the Suite's optional long-running goal carrier.
 
 ```text
 human intent
@@ -190,7 +182,10 @@ npx skills add https://github.com/yoyooyooo/ai-coding-os -g --agent codex --skil
 ```
 
 The repository and skill suite name is AI Coding OS. The CLI and npm package
-remain `goal-proof`.
+remain `goal-proof`. Installers may flatten or rearrange Skill directories:
+relative links stay inside each Skill, while cross-Skill dependencies resolve by
+`$skill-name`. The independently discoverable shared-contract entry is
+`$ai-coding-os-suite-contracts`, not a grouped repository path.
 
 ## Use
 
@@ -236,7 +231,7 @@ Headless proof:
 ```text
 Use $headless-product-harness:
 Design the smallest proof command, fixture/replay path, headless command output
-envelope, and not_claimed list for this capability.
+envelope, and the `not_proven` gaps for this capability.
 ```
 
 Docs governance:
@@ -254,9 +249,23 @@ public skill source layout and trigger-name rules live in
 Architecture baseline:
 
 ```text
-Use $agentic-architecture:
-Review authority, Capability Ports / Adapters, composition roots,
-provider/runtime/memory/plugin boundaries, replaceability, and evidence gates.
+Use $evolvable-application-architecture:
+Review authority, transactions, Capability Ports / Adapters, composition roots,
+source topology, migrations, replaceability, and claim ceilings.
+```
+
+Project Preset:
+
+```text
+Use $evolvable-application-preset:
+Start from settled technical choices and existing project authority, discover the smallest profile closure, and incrementally adopt compatible AGENTS/docs/check surfaces; rendering is optional.
+```
+
+Effect API scaffold:
+
+```text
+Use $effect-api-app-kit:
+Plan, apply, and verify one atomic capability slice from a settled Change Spec.
 ```
 
 ## CLI Quick Inspect
@@ -318,10 +327,14 @@ packages/cli/                         TypeScript CLI, built with Bun
 skills/router/                        OS entry and user intent routing
 skills/goal/                          Goal Pack method and execution phases
 skills/governance/                    Docs layer governance
-skills/architecture/                  Agentic / frontend / Effect architecture doctrine
+skills/architecture/                  application / frontend / Effect doctrine
 skills/capability/                    Interface capability planning
-skills/harness/                       Product, headless, and UI harness guidance
-skills/README.md                      Skill suite group index
+skills/harness/                       shared, headless, UI, frontend-test guidance
+skills/preset/                        resolved project defaults
+skills/tooling/                       executable profiles and source audit
+skills/contracts/                     independently installable AI Coding OS Suite contracts
+skills/examples/                      owner-local examples index
+skills/README.md                      grouped source index
 docs/                                 Workspace documentation and Goal Pack examples
 assets/                               README media
 ```
@@ -351,10 +364,13 @@ The npm tarball contains only `dist/`, `README.md`, `README.zh-CN.md`,
 
 ```bash
 bun install
+python3 -m pip install -r requirements-dev.txt
 bun run build
 bun run typecheck
 bun run test
 bun run check
+python3 skills/tooling/suite_audit.py --suite skills
+python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
 ```
 
 The CLI source is TypeScript. `bun build` emits npm package artifacts under

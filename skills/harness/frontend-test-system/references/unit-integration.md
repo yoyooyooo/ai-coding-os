@@ -71,8 +71,8 @@ command:
 mock_boundary:
 assertions:
 msw_cases:
-positive_tokens:
-not_claimed:
+observed:
+supports:
 not_proven:
 ```
 

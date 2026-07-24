@@ -1,0 +1,25 @@
+{
+  "skill_name": "ai-coding-os-suite-contracts",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I installed hundreds of Skills into one flat directory. Load the AI Coding OS shared naming vocabulary and tell me which Skill owns frontend state terms.",
+      "expected_output": "Uses $ai-coding-os-suite-contracts, reads only its local references, identifies $frontend-architecture as the semantic owner, and does not assume a grouped sibling path."
+    },
+    {
+      "id": 2,
+      "prompt": "Use the AI Coding OS Harness Result contract to explain observed, supports, and not_proven.",
+      "expected_output": "Loads the local Harness vocabulary/schema, preserves the claim boundary, and names $product-harness-system as the owning doctrine when semantic judgment is needed."
+    },
+    {
+      "id": 3,
+      "prompt": "Define this project's customer, workspace, and billing terminology inside the Suite contract registry.",
+      "expected_output": "Declines to make project product language a Suite default and places adopted terms in project-owned SSoT/Standards instead."
+    },
+    {
+      "id": 4,
+      "prompt": "List every AI Coding OS Skill installed on this machine from the contracts package.",
+      "expected_output": "Uses runtime discovery for the actual installed set and does not treat the contracts package as a static Skill roster."
+    }
+  ]
+}

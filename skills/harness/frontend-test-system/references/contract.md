@@ -60,8 +60,8 @@ backend_or_schema_command:
 mock_cases:
 real_backend_used:
 base_url_or_env:
-positive_tokens:
-not_claimed:
+observed:
+supports:
 not_proven:
 ```
 

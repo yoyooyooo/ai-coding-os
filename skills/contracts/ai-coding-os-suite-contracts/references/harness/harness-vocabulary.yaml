@@ -1,0 +1,18 @@
+schema_version: 1
+terms:
+  scenario: bounded semantic proof story
+  fixture: static deterministic input or seed
+  fake: deterministic behavioral replacement
+  replay: recorded normalized input sequence
+  driver: action issuer through a formal boundary
+  probe: read-only observer
+  harness: runnable observable verification surface
+  observed: direct result from the executed path
+  supports: bounded interpretation justified by observations and repository authority
+  not_proven: property that may matter but was not exercised
+  claim_ceiling: descriptive maximum supported by the exercised surface, not an Agent permission gate
+principles:
+- harness does not become product authority
+- agent chooses proof depth
+- fake/replay/real are explicit
+- observations and conclusions remain distinguishable

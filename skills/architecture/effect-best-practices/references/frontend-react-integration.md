@@ -1,6 +1,6 @@
 # Frontend Integration
 
-Use `frontend-architecture` for state ownership, route/feature topology, Query,
+Use `$frontend-architecture` for state ownership, route/feature topology, Query,
 store, realtime reconciliation, and React component boundaries. This reference
 only maps a chosen frontend capability to Effect.
 

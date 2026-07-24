@@ -1,0 +1,11 @@
+id: agent-entry
+version: 1
+provides:
+  - thin AGENTS.md operational entry
+  - managed Evolvable Application section
+  - Read First links
+  - resolved command slots
+  - language policy slot
+rules:
+  - AGENTS.md is an entry, not a shadow SSoT or standards corpus
+  - nested AGENTS.md files describe real local deltas only

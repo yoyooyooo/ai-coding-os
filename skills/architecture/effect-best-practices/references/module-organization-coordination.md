@@ -1,55 +1,54 @@
-# Architecture Skill Coordination
+# Effect Module Organization Coordination
 
-## Ownership
-
-`evolvable-application-architecture` decides authority, module/port boundaries, transactions,
-composition profiles, migrations, and evidence ceilings.
-
-`frontend-architecture` decides frontend state ownership, route/feature topology,
-client/query/store/realtime boundaries, React adapters, and UI harnesses.
-
-`effect-best-practices` maps selected capabilities and workflows into Effect
-Service, Layer, Runtime, Scope, Stream, Queue, typed error, and test idioms.
-
-## Mapping Rule
-
-Do not infer architecture from Effect syntax:
+Establish semantic ownership before selecting Effect syntax.
 
 ```text
 Context.Service does not automatically mean domain boundary
 Layer does not automatically mean composition root
-Stream does not automatically mean business event authority
+Stream does not automatically mean business-event authority
 Queue does not automatically mean durable work queue
 ManagedRuntime does not automatically mean application singleton
 ```
 
-Establish the semantic owner first, then choose the Effect primitive.
+## Shared source doctrine
 
-## Recommended Module Shape
+Inherit Bounded Semantic Flatness, module/package/deployable promotion, and core
+vocabulary from `$evolvable-application-architecture`; load the machine-readable
+portable vocabulary from `$ai-coding-os-suite-contracts` only when needed.
+
+Recommended mapping:
 
 ```text
-<capability>.contract.ts       ordinary public types when cross-boundary
-<capability>.service.ts        Service key and Effect-native contract
-<capability>.live.ts           live Layer/adapter
-<capability>.fake.ts           deterministic replacement when justified
-<use-case>.flow.ts             Effect orchestration
-<subject>.domain.ts            pure decisions and data
-<profile>.runtime.ts           closed Layer / Runtime assembly
+<capability>.port.ts                    ordinary application-owned contract
+<capability>.service.ts                 Effect Service key only when genuinely useful
+<capability>.<provider>.live.ts         live Layer/adapter implementation
+<capability>.memory.fake.ts             Effect-specific deterministic implementation of the shared fake boundary
+<subject>.<operation>.use-case.ts       application operation, Effect or ordinary TS
+<host>.composition.ts                   Layer graph selection and host assembly
+<host>.runtime.ts                       owned runtime facade when needed
+<subject>.model.ts                      pure decisions and data
 ```
 
-These suffixes are examples, not mandatory directory law. Follow project naming
-and avoid mechanically creating empty layers.
+These are semantic patterns, not a requirement to create every file.
 
-## Package Boundary
+## Package boundary
 
-A package that uses Effect internally should normally export:
+A package using Effect internally normally exports:
 
 ```text
 ordinary capability contract/factory
 normalized public errors
-subscription/resource close contract
-optional explicit Effect-native entry point
+explicit close/subscription contract when relevant
+optional Effect-native entrypoint when the package intentionally exposes Effect
 ```
 
-Keep internal Service keys, Layers, and transports private unless the package is
-intentionally an Effect-native library.
+Keep internal Service keys, Layers, runtime construction, and transports private
+unless the package is deliberately Effect-native.
+
+## Host ownership
+
+Each deployable host constructs and closes its own live Layer/runtime graph.
+Packages may export Layer factories, not hidden process-global runtimes.
+
+An Effect Layer graph is an execution dependency graph. It does not grant fact
+authority and does not dictate module/package/process extraction.

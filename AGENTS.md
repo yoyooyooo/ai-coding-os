@@ -11,15 +11,18 @@
 
 ## 当前顶层口径
 
-AI Coding OS 面向高智能 agent，不面向弱模型防御式流程。默认落地边界是 workspace/repo，不进入方法论品牌名。
+AI Coding OS 通过明确的 authority、proof surface 与 claim boundary 支持 agent 自主推进。默认落地边界是 workspace/repo，不进入方法论品牌名。
 
 默认用户入口是 `$ai-coding-os`。它是轻量路由 skill，不拥有持久 artifact；按用户意图路由到：
 
+- `$ai-coding-os-suite-contracts`：AI Coding OS 跨 Skill precedence/handoff、共享词汇、文件模式与 Harness schemas。
 - `$goal-proof`：目标计划、Goal Pack、跨会话延续、长期执行。
 - `$docs-governance`：docs 分层、权威放置、文档清理和审计。
-- `$agentic-architecture`：AI agent 时代的底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate。
+- `$evolvable-application-architecture`：authority-first 应用架构、事务、Capability Port / Adapter、composition root、Monorepo/source topology、迁移和可替换性。
 - `$frontend-architecture`：TypeScript 前端架构、依赖方向、命名语义、React / Effect / Query / Store 分层和 source-only package 边界。
 - `$effect-best-practices`：Effect Service / Layer / Scope / runtime、错误通道、资源生命周期和 v4/v3 差异口径。
+- `$evolvable-application-preset`：Agent 发现并选择性采用通用架构默认值，增量形成项目拥有的 AGENTS/docs/checks snapshot。
+- `$effect-api-app-kit`：在架构与 Effect 版本决策明确后，原子生成和校验 Effect API capability slice。
 - `$interface-capability-planning`：UI/IA、surface、route、交互状态、前端状态/数据归属和 InterfaceCapability trace 规划。
 - `$product-harness-system`：通用 Harness artifact、claim ceiling、coverage matrix、生命周期和 trace 规范。
 - `$ui-product-harness`：interface-headless、render wiring、browser-visible 和 production-near UI proof。
@@ -29,7 +32,7 @@ AI Coding OS 面向高智能 agent，不面向弱模型防御式流程。默认�
 
 Goal Proof System 是本套件的目标计划和滚动执行载体。只要用户要求“生成目标计划 / Goal Plan / Goal Pack / 使用 Goal Proof System”，就进入 Goal Proof System；随口小改动不创建 Goal Pack，直接实施并验证。
 
-默认工作流是：
+明确采用 `$goal-proof` 后，其工作流是：
 
 ```text
 human intent
@@ -58,12 +61,13 @@ notes/                   长材料，不承载当前状态
 
 持续优化 skill、schema、artifact 或字段时，默认按这些原则裁决：
 
-- 面向高智能 agent：提供边界、claim、proof path、gap 和 stop rule，不设计弱模型防御式重流程。
+- 约束系统语义：提供 authority、claim、proof path、gap 和 stop rule，不固化单一推理或执行流程。
 - 非必要不结构化：只有当结构化 artifact 能帮助下一个 agent 执行、验证、审计或交接时才创建。
 - 浅到够用：使用能支撑当前 claim 的最小分解深度；只有权限、状态归属、异步、realtime、可见性或 handoff 会含糊时才加深。
 - DSL 要薄：能从源码、测试、路由、命令输出或现有 authority 推导的内容，不写进长期合同；除非它本身就是 contract。
 - 字段按 claim 触发：不要为了“完整”添加字段；新增字段必须能约束 claim、暴露 gap、避免 overclaim，或改善 agent 执行。
 - ownership 要硬：一个概念只能有一个主 owner；如果像两个 skill 都该管，先收敛边界，不新增混合层。
+- 安装拓扑不可假设：每个 Skill 必须能独立或扁平安装；相对链接只指向本 Skill，跨 Skill 关系使用 `$skill-name`。
 - 跨方法 Evidence Envelope Discipline 归 SSoT / Goal Proof；headless harness 只拥有本地命令输出 shape。
 - proof level 不是 checklist：按 claim 选择最低诚实 proof level；不要默认跑满所有 harness 层级。
 - 记录不声称的内容：会被误读的相邻 surface 要写 `not_claimed`；没有检查过的用叙事性 `not_proven` 或 `remaining_gaps` 表达，不要伪装成已证明。
@@ -74,7 +78,7 @@ notes/                   长材料，不承载当前状态
 - `packages/cli/src/`：CLI 命令和库代码。
 - `packages/cli/test/`：CLI 行为测试。
 - `scripts/`：发布脚本和脚本级测试。
-- `skills/`：AI Coding OS suite 的 agent skill 源码视图，按 router / goal / governance / architecture / capability / harness 分组。
+- `skills/`：AI Coding OS Suite 的 grouped source，包含 router / contracts / goal / governance / architecture / capability / harness / preset / tooling；`$ai-coding-os-suite-contracts` 是可独立安装 Skill。
 - `docs/`：项目文档分层入口。先读 `docs/README.md`。
 - `docs/standards/docs-governance.md`：本仓 docs layer、authority、promotion / demotion 和 audit 标准。
 - `docs/standards/skill-source-layout.md`：公开 skill source layout、触发名和旧名退役标准。
@@ -83,7 +87,7 @@ notes/                   长材料，不承载当前状态
 
 ## Docs 治理
 
-遵循 `docs-governance` 口径：
+遵循 `$docs-governance` 口径：
 
 - `docs/README.md` 是文档路由入口，不承载领域真相。
 - `docs/product/**` 放产品/方法论定位和用户价值。
@@ -106,20 +110,26 @@ notes/                   长材料，不承载当前状态
 
 ## 开发命令
 
-使用 Bun。
+使用 Bun；Suite/Docs audit 还需要锁定的 Python 开发依赖。
 
 ```bash
 bun install
+python3 -m pip install -r requirements-dev.txt
 bun run build
 bun run typecheck
 bun run test
 bun run check
+python3 skills/tooling/suite_audit.py --suite skills
+python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
 ```
 
 - `bun run build` 构建 CLI 到 `dist/`。
 - `bun run typecheck` 运行 TypeScript 检查。
 - `bun run test` 运行 Bun 测试。
-- `bun run check` 运行 build、typecheck、test；提交前使用。
+- `bun run check` 运行 build、typecheck、test、Suite audit 和 Docs audit；提交前使用。
+- `requirements-dev.txt` 固定 Suite/Docs audit 所需的 PyYAML/jsonschema。
+- Suite audit 校验 grouped source、frontmatter/cross-Skill references、Schema、Preset golden output 与 Kit atomicity。
+- Docs audit 校验文档层、链接、入口和源码锚点。
 - `bun run pack:dry` 检查 npm 包内容。
 
 ## 代码规范
@@ -132,7 +142,7 @@ bun run check
 ## Agent 实施规则
 
 - 不重写真实 Goal Pack 的历史 `evidence.jsonl`；需要修正解释时追加新 evidence record。
-- 默认继续推进：只要目标、边界、证据路径和风险仍在 `goal.yaml` 内，就继续执行。
+- 在已采用 Goal Pack 的 workstream 内，只要目标、边界、证据路径和风险仍在 `goal.yaml` 内，就继续执行。
 - 不把普通目标膨胀成完整任务树；只找当前 `proof_step`，执行最大安全有用 slice。
 - 只有 public API / schema / protocol、安全、权限、私有数据、破坏性迁移、release/compliance、多 agent 严格协作等场景才升级到 strict。
 - `plans/<work_id>.md` 只用于 `needs_plan` 高风险 slice；它不是第二套任务系统。

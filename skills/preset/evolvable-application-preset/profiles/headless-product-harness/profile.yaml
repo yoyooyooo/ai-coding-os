@@ -1,0 +1,10 @@
+id: headless-product-harness
+version: 1
+requires:
+  - verification-core
+provides:
+  - headless capability command convention
+  - fixture replay database restart examples
+rules:
+  - drive formal command/use-case path
+  - real external runtime remains explicit opt-in

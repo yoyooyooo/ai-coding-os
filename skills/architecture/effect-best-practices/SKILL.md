@@ -1,92 +1,128 @@
 ---
 name: effect-best-practices
 description: >-
-  Implements reliable TypeScript systems with Effect using an explicit adoption
-  level, version gate, typed failures, Service/Layer composition, Scope-managed
-  resources, structured concurrency, Stream/Queue, runtime ownership, and
-  testable adapters. Use when Effect is already present, explicitly selected,
-  being evaluated for a concrete pressure, or producing API/type errors. Use
-  evolvable-application-architecture for authority, transactions, and module boundaries,
-  frontend-architecture for React topology and state ownership, and
-  effect-api-app-kit for generating or verifying version-isolated Node HttpApi
-  applications.
+  Effect execution architecture for TypeScript Services, Layers, runtimes,
+  Scope, typed failures, structured concurrency, Stream, and Queue. Use when
+  Effect is present or selected, when deciding its adoption depth, or when
+  resolving version-specific API and type failures.
 ---
 
 # Effect Best Practices
 
-Use Effect as an execution and resource model, not as a substitute for product
-architecture. Choose the lowest adoption level that solves a real pressure and
-keep pure domain logic ordinary TypeScript.
+Use Effect as an execution and resource model. Product authority and source
+boundaries remain upstream decisions. Choose the lowest adoption level that
+solves real pressure; keep pure domain calculation ordinary TypeScript.
 
-## Ownership Contract
+## Ownership
 
 ```text
-Owns: Effect API idioms, version separation, Service/Layer/Runtime mapping,
-typed failures, Scope/resource ownership, structured concurrency, Stream/Queue,
-Effect tests, and runtime-bound facades.
-Delegates: authority/ports/transactions/migrations -> evolvable-application-architecture;
-frontend topology/state/query/store/realtime -> frontend-architecture; managed
-v3/v4 Node HttpApi scaffolding and verification -> effect-api-app-kit.
-Does not decide that every module, helper, repository, or frontend needs Effect.
+Owns:
+  exact-version Effect API idioms
+  Service/Layer/Runtime mapping
+  typed failures, defects, interruption, cancellation, deadlines
+  Scope and resource ownership
+  structured concurrency, Stream, Queue
+  Effect tests and runtime-bound facades
+  Effect-specific mapping of live/fake implementations to Layers, runtimes, and scopes
+
+Adjacent owners:
+  authority/ports/transactions/modules/source topology -> $evolvable-application-architecture
+  frontend topology/state/query/store/realtime -> $frontend-architecture
+  managed HttpApi scaffold -> $effect-api-app-kit
+  docs placement -> $docs-governance
 ```
 
-Read [Skill Family Coordination](references/skill-family-coordination.md) when
-architecture, frontend, and executable-profile concerns overlap.
+## Effect Pass
 
-## Workflow
+| Step | Completion criterion |
+| --- | --- |
+| Version gate | `package.json`, lockfile, installed `effect` declarations, and host runtime establish the exact API surface. |
+| Pressure | Typed failure, replacement, lifetime, cancellation, concurrency/backpressure, retry/timeout, observability, or deterministic-test pressure is named. |
+| Adoption | One level from [Adoption Ladder](references/adoption-ladder.md) is selected and every Effect abstraction serves the named pressure. |
+| Capabilities | Services represent genuine capabilities; pure calculations remain pure; expected errors are typed at the right boundary. |
+| Composition | Layers are built at named host roots; programs run only at owned boundaries or explicit facades. |
+| Lifetime | Acquisition, child work, interruption, deadlines, finalizers, and termination share a coherent Scope. |
+| Proof | Tests exercise the claimed error, cancellation, resource, concurrency, or version behavior; adjacent behavior is `not_proven`. |
 
-1. Inspect `package.json`, lockfile, installed `effect` types, runtime host, and
-   existing project architecture. Never mix v3 and v4 examples.
-2. Identify the pressure: typed failure, capability replacement, resource
-   lifetime, cancellation, concurrency/backpressure, retries/timeouts,
-   observability, or deterministic tests.
-3. Choose an adoption level from [Adoption Ladder](references/adoption-ladder.md).
-4. Keep pure calculation and domain decisions outside Effect unless composition
-   materially benefits from lifting them.
-5. Define Services only for genuine capabilities; construct them with Layers at
-   a composition root; run programs at host boundaries or runtime-bound facades.
-6. Model expected errors, defects, interruption, deadlines, and cleanup
-   explicitly. Verify finalizers and termination paths.
-7. State installed-version evidence and `not_claimed`; beta APIs require an
-   exact pinned fixture or local typecheck. For executable Node HttpApi project
-   generation, hand off to `effect-api-app-kit` after the design is settled.
+Use `$effect-api-app-kit` only after architecture, source topology, and Effect
+major-version choices are settled.
 
-## Core Invariants
+## Invariants
 
 ```text
 Effect describes execution; running belongs at an owned boundary
-pure function stays pure; Service represents a capability, not every file
+pure function stays pure; Service represents a capability
 Layer constructs dependencies; it does not define product authority
+Layer graph != authority graph != package graph
 resource acquisition and release share one Scope
 child work follows structured lifetime unless explicitly daemonized
-expected failures are typed; defects and interruption remain distinguishable
-version-specific syntax follows installed d.ts, not memory
+expected failures, defects, and interruption remain distinguishable
+version-specific syntax follows installed declarations
 ```
 
-## Progressive Disclosure
+## Topology and Naming
 
-| Need | Read |
-|---|---|
-| Philosophy and non-goals | [Core Doctrine](references/core-doctrine.md) |
-| Decide how much Effect to use | [Adoption Ladder](references/adoption-ladder.md) |
-| Service, Layer, Runtime, facade | [Service Layer Runtime](references/service-layer-runtime.md) |
-| Error channels and boundary mapping | [Errors and Boundaries](references/errors-and-boundaries.md) |
-| Quick API checklist | [Cheatsheet](references/cheatsheet.md) |
-| Stable v3 project | [Version v3 Stable](references/version-v3-stable.md) |
-| Explicit v4 beta project | [Version v4 Beta](references/version-v4-beta.md) |
-| Backend mapping | [Backend Integration](references/backend-capability-slice.md) |
-| React/frontend mapping | [Frontend Integration](references/frontend-react-integration.md) |
-| Scope and resources | [Scope Resources](references/scope-resources.md) |
-| Stream/Queue/concurrency | [Stream Queue Concurrency](references/stream-queue-concurrency.md) |
-| Tests and harnesses | [Testing Effect](references/testing-effect.md) |
-| CLI | [CLI Contract](references/cli-contract.md) |
-| HttpApi | [HttpApi](references/httpapi.md) |
-| Optional advanced topics | [Advanced Index](references/advanced-index.md) |
+Application naming comes from `$evolvable-application-architecture`:
+
+```text
+<subject>.<operation>.use-case.ts
+<subject>.<capability>.port.ts
+<subject>.public.ts
+<subject>.wiring.ts
+<host>.composition.ts
+```
+
+Effect adds qualifiers only where they carry runtime meaning:
+
+```text
+<subject>.<capability>.<provider>.live.ts
+<subject>.<capability>.memory.fake.ts
+<host>.runtime.ts
+<subject>.<purpose>.stream.ts
+```
+
+A genuine Effect-native library may use `.service.ts` for a Service key;
+`service` remains guarded elsewhere. Each deployable host owns its runtime and
+live Layer graph. Reusable packages export contracts, normalized errors,
+programs, or Layer factories rather than an unowned global runtime.
+
+## Read When Needed
+
+| Condition | Reference |
+| --- | --- |
+| Establishing philosophy and boundaries | [Core Doctrine](references/core-doctrine.md) |
+| Choosing adoption depth | [Adoption Ladder](references/adoption-ladder.md) |
+| Designing Service, Layer, Runtime, or facade | [Service Layer Runtime](references/service-layer-runtime.md) |
+| Modeling errors | [Errors and Boundaries](references/errors-and-boundaries.md) |
+| Checking common APIs | [Cheatsheet](references/cheatsheet.md) |
+| Working in stable v3 | [Version v3 Stable](references/version-v3-stable.md) |
+| Working in explicit v4 beta | [Version v4 Beta](references/version-v4-beta.md) |
+| Mapping a backend slice | [Backend Integration](references/backend-capability-slice.md) |
+| Mapping React/frontend use | [Frontend Integration](references/frontend-react-integration.md) |
+| Owning resources | [Scope Resources](references/scope-resources.md) |
+| Handling Stream/Queue/concurrency | [Stream Queue Concurrency](references/stream-queue-concurrency.md) |
+| Testing Effect code | [Testing Effect](references/testing-effect.md) |
+| Building a CLI | [CLI Contract](references/cli-contract.md) |
+| Building HttpApi | [HttpApi](references/httpapi.md) |
+| Mapping modules and filenames | [Module Organization Coordination](references/module-organization-coordination.md) |
+| Reaching advanced branches | [Advanced Index](references/advanced-index.md) |
 
 ## Output
 
 ```text
-installed_version; adoption_level; pressure; pure_core; capability_services;
-layer_graph; runtime_and_scope_owner; error_model; cancellation_and_backpressure;
-frontend_or_backend_mapping; tests; migration_steps; not_claimed.
+installed_version
+adoption_level
+pressure
+pure_core
+capability_services
+layer_graph
+runtime_and_scope_owner
+error_model
+cancellation_and_backpressure
+source_naming_mapping
+frontend_or_backend_mapping
+tests_and_harnesses
+migration_steps
+not_proven
+not_claimed
 ```

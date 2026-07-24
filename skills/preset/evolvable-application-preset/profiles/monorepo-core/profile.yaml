@@ -1,0 +1,12 @@
+id: monorepo-core
+version: 1
+provides:
+  - apps/packages/tooling/docs/specs topology
+  - private capability module first
+  - host-first capability-local backend reference
+  - bounded semantic flatness
+  - module to package to deployable promotion ladder
+rules:
+  - repository package deployable authority and data boundaries are distinct
+  - package sharing does not grant fact authority
+  - one root docs authority chain for a workspace monorepo

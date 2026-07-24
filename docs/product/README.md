@@ -1,65 +1,69 @@
 # Product
 
-本层描述 AI Coding OS 的产品/方法论定位。
+本层描述 AI Coding OS 的产品与方法论定位。
 
 ## Owns
 
-- AI Coding OS 服务谁。
-- 适用场景和非目标。
-- 面向高智能 agent 的默认姿态。
-- 用户为什么需要统一入口、底层架构公理、目标计划、文档治理、界面能力规划、Product Harness System、UI harness、证据 harness 和滚动实施。
+- AI Coding OS 服务的工作场景与用户价值。
+- grouped Skill Suite、薄 Router、项目权威、Preset 和可执行验证面的关系。
+- 适用边界与非目标。
 
 ## Must Not Own
 
 - CLI 具体实现。
 - Goal Pack 当前状态。
 - checker 规则细节。
-- 未采纳的迁移计划。
+- 未采纳迁移计划。
 
 ## Boundary
 
-本层回答 AI Coding OS 面向谁、解决什么问题、默认相信怎样的 agent 能力，
-以及哪些方向不是目标。它不定义 schema、命令、分发状态或当前执行结果。
+本层回答 AI Coding OS 解决什么问题、各方法为何存在，以及默认落地边界。
+Schema、命令、源码布局规则和执行结果分别属于 Standards、实现和证据。
 
 ## Promotion / Demotion
 
-- 稳定的产品/方法论定位、目标用户、非目标和用户价值，可以从 README、ADR、
-  Goal Pack completion 或讨论 source promote 到本层。
-- 具体实现规则 demote 到 standards；结构关系 demote 到 architecture；
-  当前状态或 gate demote 到 roadmap。
-
-## Conflict
-
-本层低于 SSoT、standards 和 ADR。若产品定位与当前事实或已采纳决策冲突，
-先更新更高权威层，再调整本层叙事。
+- 稳定定位、用户价值和非目标可从 README、ADR 或完成证据 promote 到本层。
+- 可执行规则 demote 到 Standards；结构关系 demote 到 Architecture；状态和 gate
+  demote 到 Roadmap 或所选执行方法。
 
 ## 当前定位
 
-AI Coding OS 是面向高智能 agent 的长期 AI coding 方法论和 skill suite。它默认相信 agent 能自主实施，但要求入口路由、目标授权、文档权威、验证路径、证据检查点和完成收口足够清楚。
-
-默认落地边界是 workspace/repo，不进入方法论品牌名。多数场景仍以一个 repo、一个产品工作区、一组 docs 和一个目标流为工作边界。
-
-默认不是弱模型防御式流程，而是：
+AI Coding OS 是面向 repository/workspace 工作的 AI coding 方法与 Skill Suite。
+它提供：
 
 ```text
-strong-agent optimistic workflow
+薄用户路由
+项目文档权威与生命周期治理
+可演进的应用、前端和 Effect 架构 doctrine
+界面能力与 Product Harness 规划
+可选的 Goal Pack 长期执行方法
+可复用 Preset 与确定性生成工具
 ```
+
+核心原则是约束 durable system semantics，并让实际执行策略由当前任务、项目权威和
+可用验证面决定。结构化 artifact 只在改善执行、验证、审计、交接或 claim 诚实时存在。
 
 ## 套件构成
 
-| 方法 | 作用 |
+| Skill | 作用 |
 | --- | --- |
-| `ai-coding-os` | 默认用户入口；薄路由，不拥有持久 artifact |
-| `goal-proof` | 目标计划和滚动执行；Goal Pack 是规划与延续载体 |
-| `docs-governance` | 文档层、SSoT、standards、ADR、roadmap 的治理 |
-| `agentic-architecture` | 底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate |
-| `interface-capability-planning` | UI/IA 交互能力、状态/数据归属和 testability contract 的规划 |
-| `product-harness-system` | 通用 harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范 |
-| `ui-product-harness` | 界面能力的 interface-headless、render wiring、browser-visible 和 production-near proof 架构 |
-| `frontend-test-system` | 前端测试 claim discovery、最小 proof lane、Playwright / agent-browser / Vitest / MSW / contract 证据包 |
-| `headless-product-harness` | proof command、smoke check、fixture/replay、headless command JSON / JSONL output shape |
+| `$ai-coding-os` | 用户显式入口；为跨域或不明确工作选择 Lead/Supporting Skill |
+| `$ai-coding-os-suite-contracts` | 可独立安装的跨 Skill precedence/handoff、共享词汇和 Harness schemas |
+| `$docs-governance` | 文档层、AGENTS.md、SSoT、Standards、ADR、Roadmap 的治理 |
+| `$evolvable-application-architecture` | 事实权威、事务、模块、端口、组合根、源码拓扑与演进 |
+| `$frontend-architecture` | 前端状态权威、feature topology、host composition 与 realtime reconciliation |
+| `$effect-best-practices` | Effect Service/Layer/Scope/runtime 与版本映射 |
+| `$interface-capability-planning` | UI/IA 能力、surface、交互状态和 testability handoff |
+| `$product-harness-system` | 跨 Headless/UI 的 Harness 共享语言、coverage 与 lifecycle |
+| `$headless-product-harness` | capability command、fixture/replay、DB/restart 与 boundary proof |
+| `$ui-product-harness` | interface-headless、render wiring 与 browser-visible proof |
+| `$frontend-test-system` | 具体前端 test lane 和 runner 选择 |
+| `$evolvable-application-preset` | 发现现有权威并选择性采用可复用默认值，形成项目拥有的 snapshot |
+| `$effect-api-app-kit` | 从已确定 Change Spec 原子生成 Effect API capability slice |
+| `$goal-proof` | 显式采用时的 Goal Pack 目标、证据和跨会话延续方法 |
 
-Goal Proof System 的上限是长期目标执行，但不限于长期目标。只要用户明确要生成目标计划、Goal Pack 或使用 Goal Proof System，就由它承载规划；一轮内可完成的小改动直接 inline 实施。
+一轮内可完成且有明确证据路径的工作直接实施。只有用户明确选择 Goal Proof/Goal
+Pack，或仓库将其声明为当前 workstream 方法时，才进入 `$goal-proof`。
 
 ## Read Next
 

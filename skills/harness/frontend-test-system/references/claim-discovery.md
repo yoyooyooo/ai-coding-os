@@ -12,7 +12,7 @@ priority: P0_must_prove | P1_should_prove | P2_optional
 observable:
 candidate_lane:
 assumptions:
-not_claimed:
+does_not_cover:
 not_proven_if_skipped:
 ```
 
@@ -76,4 +76,4 @@ Frontend order client accepts the current Orders response schema.
 
 ## Completion
 
-Claim discovery is complete when every selected P0 behavior has a candidate lane, observable token, explicit assumptions, and skipped adjacent risks listed as `not_claimed` or `not_proven`.
+Claim discovery is complete when every selected P0 behavior has a candidate lane, observable token, explicit assumptions, and adjacent scope listed under `does_not_cover` and skipped desired behavior under `not_proven_if_skipped`.

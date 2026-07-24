@@ -2,7 +2,7 @@
 
 本目录存放 Goal Proof System 方法产物：inbox、sources、Goal Pack、evidence records 和需要保留的长上下文。
 
-项目级 docs 治理规则不放在这里；先读 `../README.md`。
+Goal Proof 是显式选择的方法：只有用户要求 Goal Proof/Goal Pack，或仓库将其声明为当前 workstream 方法时，才创建或更新本层运行态。项目级 docs 治理规则不放在这里；先读 `../README.md`。
 
 ## Owns
 
@@ -24,9 +24,9 @@ notes、relations、completion review 和 source material。它可以生成 comp
 候选稿，但不能长期替代 `docs/interface-capabilities/**`、`docs/product-harness/**`、
 SSoT、standards、ADR 或 roadmap。
 
-## Strong-Agent Ready Gate
+## Proof-Path Ready Gate
 
-Goal Proof System 默认采用 `strong-agent optimistic workflow`。Goal Pack ready 不是因为
+Goal Proof System 采用 proof-path-first 的 ready gate。Goal Pack ready 不是因为
 计划够完整，而是因为目标合同稳定，且下一步已被授权在 claim limit 内产出或检查
 `completion.required_evidence`。
 

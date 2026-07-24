@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resolved Project Naming Vocabulary",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "preset_snapshot",
+    "syntax",
+    "canonical_terms",
+    "canonical_qualifiers",
+    "filename_patterns",
+    "guarded_terms",
+    "project_terms"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "preset_snapshot": {
+      "type": "object"
+    },
+    "syntax": {
+      "type": "object"
+    },
+    "canonical_terms": {
+      "type": "object"
+    },
+    "filename_patterns": {
+      "type": "array"
+    },
+    "directory_admission": {
+      "type": "array"
+    },
+    "promotion_ladder": {
+      "type": "array"
+    },
+    "guarded_terms": {
+      "type": "object"
+    },
+    "project_terms": {
+      "type": "object"
+    },
+    "implementation_qualifiers": {
+      "type": "object"
+    },
+    "deprecated_terms": {
+      "type": "object"
+    },
+    "canonical_qualifiers": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

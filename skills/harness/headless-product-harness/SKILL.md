@@ -1,130 +1,134 @@
 ---
 name: headless-product-harness
 description: >-
-  Designs and audits headless-product-first harnesses: xtask/just/pnpm command
-  surfaces, smoke evidence gates, fixture/replay ladders, boundary checks, and
-  claim ceilings. Use when a repo needs to prove product capability before
-  server/web UI, or when the user mentions headless first, agent-first commands,
-  xtask, smoke, harness, headless command output shape, fixture replay, or
-  boundary checks.
+  Headless product proof through capability commands, structured output,
+  fixture/fake/replay, adapter/database/restart paths, and boundary checks. Use
+  when a product property should be runnable without a browser or headless
+  execution is the smallest honest proof surface.
 ---
 
 # Headless Product Harness
 
-Use this skill to turn product intent into a runnable, machine-readable proof
-path before server or web UI becomes the completion gate.
+Turn one product property into a runnable, machine-readable observation path
+through the formal product boundary. Shared vocabulary and cross-surface trace
+belong to `$product-harness-system`.
 
-Use `product-harness-system` for shared Harness Scenario / Fixture / Evidence
-vocabulary, lifecycle, placement, trace, and claim ceilings. This skill applies
-those rules to headless command, smoke, fixture/replay, and boundary proof.
-
-## Collaboration Contract
+## Ownership
 
 ```text
-Owns: command surface, smoke proof, fixture/replay ladder, boundary check,
-headless command JSON / JSONL output shape, claim_ceiling, not_claimed, and
-not_proven for headless proof.
-Does not own: UI/browser-visible proof, final interface semantics, shared
-harness lifecycle policy, product truth, cross-method Evidence Envelope
-Discipline, Goal Pack evidence records, or docs placement.
-Inputs: product authority, capability/claim, schema/contract boundaries,
-harness scenario if present, fixture/replay material, and prior evidence.
-Outputs: runnable command contract, command output contract, fixture/replay plan,
-boundary check, positive tokens, not_claimed, not_proven, and gaps.
-Handoff: user-visible interface path -> interface capability workflow;
-render/browser proof -> UI harness workflow; shared coverage / placement ->
-harness system or governance workflow; multi-step execution -> goal flow.
-Stop: no honest falsifiable path exists, or continuing would change
-product truth, claim_ceiling, public API/schema/protocol, security/private-data,
-or destructive behavior.
+Owns:
+  headless command surface
+  structured JSON/JSONL output
+  fixture/fake/replay selection
+  adapter and persistence proof
+  restart and recovery paths
+  architecture boundary checks
+  headless claim ceiling
+
+Adjacent owners:
+  product authority -> $evolvable-application-architecture
+  shared harness architecture -> $product-harness-system
+  UI/browser proof -> $ui-product-harness
+  docs placement -> $docs-governance
 ```
 
-## Quick Start
+## Headless Pass
 
-1. Identify product authority: core, contract/schema, harness, transport/API,
-   UI, storage, and external runtime.
-2. Classify the headless sublevel: `boundary`, `offline_fixture`, `replay`,
-   `adapter`, `projection`, `db_backed`, or `real_runtime_opt_in`.
-3. State `claim_ceiling` for that proof level before implementation.
-4. Design the smallest stable command that proves one capability.
-5. Define headless command output, positive tokens, `not_claimed`, and `not_proven`.
-6. Place tests near the authority; keep the harness as orchestration.
-7. Report only what the command proves and what it explicitly does not prove.
+| Step | Completion criterion |
+| --- | --- |
+| Ground | Repository authority, existing commands/tests/descriptors, and the production entrypoint are identified. |
+| Name | One capability and one observable property determine the command name and result contract. |
+| Select | The lowest sufficient surface—boundary, fixture, replay, adapter conformance, projection, real DB, restart/recovery, or real external runtime—is chosen. |
+| Drive | The harness enters through the same command/use-case/materialization path as production; dependency reality is explicit. |
+| Observe | Failure returns non-zero; stdout follows the machine contract; diagnostics locate the failed boundary. |
+| Bound | `observed`, `supports`, `not_proven`, and `claim_ceiling` match the executed surface. |
 
-## Authority
+Select any level directly when the property requires it. Real external paths
+remain explicit because credentials, cost, privacy, and irreversible effects
+are environment risks.
 
-`xtask`, `just`, `pnpm xtask`, or any equivalent harness may orchestrate a proof.
-It must not become the business fact source. Product core owns business rules;
-contract/schema owns DTOs and wire-safe evidence; server/API owns transport; UI
-owns consumption; external runtime proof is opt-in.
+## Command Contract
 
-Headless proof proves facts and projections. If the capability must become a
-user-visible interface path, hand off to an interface or UI harness workflow to
-prove projection consumption, render wiring, browser-visible behavior, reload,
-focus, layout-critical behavior, and frontend state orchestration. Do not report
-`browser_ui_claim=true` from a headless proof alone.
+Prefer capability names:
 
-## Workflow
+```text
+pnpm verify order.checkout.retry
+just verify-order-checkout-restart
+cargo xtask verify order-checkout-replay
+```
 
-1. Name the capability in durable terms. Avoid phase, MVP, sprint, or current
-   roadmap labels in command names.
-2. Pick one headless sublevel: `boundary`, `offline_fixture`, `replay`,
-   `adapter`, `projection`, `db_backed`, or `real_runtime_opt_in`.
-3. State the maximum claim that this level can prove. A lower level may support
-   later work, but it must not be reported as proof of a higher-level surface.
-4. Write the command contract. See
-   [command-surface.md](references/command-surface.md).
-5. Write the headless command output contract with
-   `claim_ceiling.level: headless_product` and the selected `headless_sublevel`. See
-   [evidence-envelope.md](references/evidence-envelope.md).
-6. Add or update the boundary check when structure can drift. See
-   [boundary-check.md](references/boundary-check.md).
-7. Add fixture/replay material only when deterministic reproduction needs it.
-   See [fixture-replay-ladder.md](references/fixture-replay-ladder.md).
+Progress labels such as `phase-2-done` or generic `smoke-all` are replaced by
+the capability and property they actually exercise. One command covers one
+bounded slice and emits actionable diagnostics.
 
-## Gap Policy
+```json
+{
+  "schema_version": 1,
+  "harness": "order.checkout.retry",
+  "status": "pass",
+  "observed": {
+    "order_version_before": 7,
+    "order_version_after": 8,
+    "duplicate_version_after": 8
+  },
+  "supports": [
+    "duplicate retry produced no second committed transition"
+  ],
+  "not_proven": [
+    "multi-process contention",
+    "real provider behavior"
+  ]
+}
+```
 
-Missing harness detail is implementation scope when product authority, allowed
-write scope, claim_ceiling, forbidden claims, and falsifiable evidence intent
-are clear. Create the minimum command, fixture, replay, boundary check, or
-command output envelope needed to prove or falsify the current capability.
+Use JSONL for observation streams. Keep machine stdout clean and send
+human-oriented diagnostics to stderr.
 
-Stop only when no honest falsifiable path exists, or when continuing would
-require changing product truth, claim_ceiling, public API/schema/protocol
-posture, security policy, private-data handling, or destructive behavior.
+## Dependency Reality
 
-## Rolling Handoff
+```text
+fixture       static deterministic data
+fake          deterministic capability implementation
+replay        recorded normalized sequence
+real-local    actual DB/queue/runtime in local or test environment
+real-external credentialed provider/device/runtime
+```
 
-During rolling Goal execution, headless proof can unlock UI or
-production-near gates, but it does not own those claims. Emit the product-fact
-tokens, `not_claimed`, and `not_proven` needed by the next Goal Proof step, then
-hand browser/render claims to `ui-product-harness` and shared cell promotion to
-`product-harness-system`.
+## Boundary Checks
 
-## Command Rules
+High-value checks include:
 
-- Command names prove capabilities, not progress labels.
-- One command proves one capability slice.
-- Default output is JSON or JSONL. Text output must be explicit.
-- Failures return non-zero and still emit structured error output.
-- Include `not_claimed` tokens such as `browser_ui_claim=false` or
-  `real_runtime_claim=false` when those paths are not proven.
-- Do not emit a `not_claimed` token for a boundary the command did not check;
-  report that boundary as `not_proven` instead.
-- Do not hardcode progress tokens without executing the underlying check.
-- Use `not_claimed` tokens such as `browser_ui_claim=false`,
-  `render_wiring_claim=false`, or `interface_headless_claim=false` unless those
-  UI harness levels were explicitly exercised by their owning method.
+```text
+use-case cannot import live adapter
+policy cannot import DB, SDK, or HTTP
+HTTP handler cannot write repository directly
+cross-module callers use public surface
+business modules cannot import wiring surface
+fake cannot enter production composition
+tooling/harness cannot materialize facts directly
+old writer stays fenced during migration
+```
 
-## Report Shape
+Use the isolation required by the claim: a restart claim needs a restart; a
+pure policy claim does not need a fresh database.
 
-When designing or reviewing a harness, report `authority_map`, `capability`,
-`command`, `command_output_contract`, `claim_ceiling`, `not_claimed`,
-`tests_near_authority`, `fixtures_or_replay`, `boundary_rules`, `not_proven`,
-and `docs_to_update`.
+## Output
 
-## Placement With Governance
+```text
+capability
+formal_entrypoint
+command_contract
+dependency_reality
+observed
+supports
+not_proven
+claim_ceiling
+new_or_reused_harness_files
+```
 
-If the work item is about where harness docs live, lifecycle, retained evidence,
-or docs layer authority, hand off to `docs-governance`. This skill owns the
-concrete command/output design.
+## Read When Needed
+
+- Designing commands: [Command Surface](references/command-surface.md)
+- Choosing fixture, fake, replay, or real: [Fixture and Replay Ladder](references/fixture-replay-ladder.md)
+- Defining output: [Evidence Output](references/evidence-envelope.md)
+- Enforcing architecture boundaries: [Boundary Check](references/boundary-check.md)

@@ -1,7 +1,7 @@
 # Docs Governance
 
 本标准规定 AI Coding OS 仓库的文档分层、权威顺序、生命周期和审计门。
-通用方法论由 `docs-governance` skill 拥有；本文是本仓落地适配层。
+通用方法论由 `$docs-governance` 拥有；本文是本仓落地适配层。
 
 ## Owns
 
@@ -21,7 +21,7 @@
 
 `docs/<layer>` 必须表示文档类型，不表示阶段、个人习惯、临时计划、某个当前任务或工具偏好。
 
-文档治理服从 strong-agent optimistic workflow。新增或保留 durable 文档时，应说明它如何帮助
+文档治理采用 proof-path-first 原则。新增或保留 durable 文档时，应说明它如何帮助
 agent 更快完成 authority lookup、proof path、evidence review、handoff 或 overclaim 防护。
 文档本身不能成为实现前置障碍；docs-only first proof step 只在目标 delta 本身是
 承载 claim 的 doc / review authority surface，且 proof step 能检查 diff、交叉引用、

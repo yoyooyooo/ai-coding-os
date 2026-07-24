@@ -1,6 +1,6 @@
 # Backend Integration
 
-Use this after `evolvable-application-architecture` has established authority, use cases,
+Use this after `$evolvable-application-architecture` has established authority, use cases,
 transactions, and capability ports. This reference only maps those decisions to
 Effect.
 

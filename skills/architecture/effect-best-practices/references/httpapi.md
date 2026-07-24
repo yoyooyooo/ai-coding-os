@@ -3,7 +3,7 @@
 This reference owns HttpApi design and Effect implementation judgment. It does
 not own project generation. When the user asks to initialize, add a managed
 resource, or verify a Node HttpApi application, use the separate
-`effect-api-app-kit` after selecting the architecture and Effect major.
+`$effect-api-app-kit` after selecting the architecture and Effect major.
 
 ```text
 Effect v3 -> @effect/platform HttpApi profile

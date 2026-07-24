@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "pathItem": {
+      "oneOf": [
+        {"type": "string", "minLength": 1},
+        {
+          "type": "object",
+          "required": ["path"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "id": {"type": "string", "minLength": 1},
+            "role": {"type": "string"},
+            "description": {"type": "string"}
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "required": ["fact"],
+      "properties": {
+        "fact": {"type": "string", "minLength": 1},
+        "authority_module": {"type": "string"},
+        "writer_host": {"type": "string"},
+        "allowed_entry": {"type": "string"},
+        "forbidden_path": {"type": "string"},
+        "transaction": {"type": "string"},
+        "consistency": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "exception": {
+      "type": "object",
+      "required": ["id", "adr"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "scope": {"type": "string"},
+        "reason": {"type": "string"},
+        "adr": {"type": "string", "minLength": 1},
+        "date": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": true
+    },
+    "domainTerm": {
+      "oneOf": [
+        {"type": "string"},
+        {
+          "type": "object",
+          "properties": {
+            "product_term": {"type": "string"},
+            "source_token": {"type": "string"},
+            "kind": {"type": "string"},
+            "meaning": {"type": "string"},
+            "not_the_same_as": {"type": "array", "items": {"type": "string"}},
+            "aliases": {"type": "object"},
+            "status": {"type": "string"}
+          },
+          "additionalProperties": true
+        }
+      ]
+    }
+  },
+  "title": "Evolvable Application Project Overlay",
+  "type": "object",
+  "required": ["schema_version", "project"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "project": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "narrative_language": {"type": "string"},
+        "repository_mode": {"enum": ["single-project", "monorepo", "aggregate-root"]}
+      },
+      "additionalProperties": true
+    },
+    "adoption_date": {"type": "string", "format": "date"},
+    "commands": {"type": "object", "additionalProperties": {"type": "string"}},
+    "enforcement": {"type": "object", "additionalProperties": {"type": "string"}},
+    "deployables": {"type": "array", "items": {"$ref": "#/$defs/pathItem"}},
+    "packages": {"type": "array", "items": {"$ref": "#/$defs/pathItem"}},
+    "modules": {"type": "array", "items": {"$ref": "#/$defs/pathItem"}},
+    "workflows": {"type": "array", "items": {"$ref": "#/$defs/pathItem"}},
+    "domain_terms": {"type": "object", "additionalProperties": {"$ref": "#/$defs/domainTerm"}},
+    "authorities": {"type": "array", "items": {"$ref": "#/$defs/authority"}},
+    "exceptions": {"type": "array", "items": {"$ref": "#/$defs/exception"}},
+    "topology_notes": {"type": "array", "items": {"type": "string"}},
+    "implementation_qualifiers": {"type": "object"},
+    "deprecated_terms": {"type": "object"},
+    "harness_coverage": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": true
+}

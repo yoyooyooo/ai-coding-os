@@ -1,231 +1,53 @@
 ---
 name: goal-proof
 description: >-
-  Runs Goal Proof System as the Goal Pack operating method for long-running AI
-  coding: goal.yaml, progress.yaml, evidence.jsonl, proof steps, work items,
-  rolling execution, and completion review. Use when work is broad, ambiguous,
-  evidence-sensitive, likely to span multiple evidence records or sessions,
-  involves Goal Pack or method migration, or when the user asks for a Goal Plan
-  / Goal Pack.
+  Goal Pack method for durable objectives tracked through goal.yaml,
+  progress.yaml, evidence.jsonl, proof_step, and completion review. Use only
+  when the user explicitly selects Goal Proof or Goal Pack, or the repository
+  declares $goal-proof as the active execution method for the workstream.
 ---
 
 # Goal Proof System
 
-Goal Proof System turns human intent into evidence-backed Goal Pack state
-transitions.
+Goal Proof turns an explicitly selected durable objective into evidence-backed
+state transitions:
 
 ```text
 human intent -> goal contract -> proof_step -> evidence -> next_action
 ```
 
-Controller invariant:
+> **Roll past the current plan, not past the goal contract.**
+
+Task size alone does not activate this method. Work with one same-turn evidence
+path stays inline unless the user or repository selects a Goal Pack.
+
+## Ownership
 
 ```text
-Roll past the current plan, not past the goal contract.
+Owns:
+  Goal Pack lifecycle
+  goal contract and protected authority
+  current proof_step and work-item state
+  append-only evidence records
+  Goal relations metadata
+  completion review
+
+Adjacent owners:
+  goal contract authoring -> $goal-contracts
+  runnable proof-step discovery -> $finding-proof-step
+  implementation and evidence reduction -> $proof-step-implementation
+  selected high-risk work plan -> $write-work-plans
+  docs placement -> $docs-governance
+  interface trace -> $interface-capability-planning
+  shared harness architecture -> $product-harness-system
+  command proof -> $headless-product-harness
+  browser-visible proof -> $ui-product-harness
 ```
 
-`goal.yaml` protects the goal contract, `progress.yaml` carries rolling state,
-and `evidence.jsonl` records append-only transition evidence.
+Product truth, docs-layer doctrine, interface semantics, and harness
+implementation remain with their owners.
 
-Invariant:
-
-```text
-Goals are connected by proof paths and evidence records, not by speculative work item trees.
-```
-
-Ready gate:
-
-```text
-Goal Pack ready = stable goal contract + authorized proof_step can produce/inspect completion.required_evidence within claim_limit
-```
-
-A work item list, roadmap paragraph, or future command name does not make a
-Goal Pack ready. If `goal.yaml` exists but `progress.yaml.proof_step` cannot
-produce or inspect evidence for `completion.required_evidence` within
-`claim_limit`, route to `finding-proof-step` before implementation.
-
-Strong-agent rule:
-
-```text
-proof path before plan surface
-```
-
-Goal Proof System is for strong agents, not defensive process tables. Durable
-plans, notes, ledgers, and companions are useful only when they shorten
-execution, verification, audit, handoff, or overclaim control. A docs-only first
-proof step is valid only when the target delta itself is the claim-bearing doc
-or review authority surface and the proof step can inspect diffs, cross
-references, authority conflicts, or static scans.
-
-## Triggered Claim Coverage Review
-
-Use Triggered Claim Coverage Review when the goal has semantic risk: broad or
-multi-stage scope, mixed proof levels, public surface or schema/protocol/CLI/
-template/skill changes, authority actions, product truth or quality judgments,
-permission/security/destructive/compliance boundaries, multiple evidence
-records, or relation-backed completion.
-
-The ready gate stays unchanged:
-
-```text
-stable goal contract + authorized proof_step can produce/inspect
-completion.required_evidence within claim_limit
-```
-
-When triggered, existing v2 surfaces must carry claim coverage:
-
-```text
-goal.yaml completion.required_evidence -> scoped claim slices
-goal.yaml claim_limit / non_goals / constraints -> excluded adjacent axes
-progress.yaml proof_step -> current slice + proof level + claim ceiling
-implementation evidence claims / not_claimed -> proved slice + exclusions
-E999 claim_evidence / not_claimed / remaining_gaps -> completion mapping
-```
-
-Do not add semantic coverage fields, a proof-level enum, token naming rules, or
-CLI natural-language parsing to satisfy this review.
-
-## Collaboration Contract
-
-```text
-Owns: Goal Pack lifecycle, goal contract, progress state, proof step, work item
-selection, evidence records, relations metadata, and completion review.
-Does not own: docs layer placement, product truth, interface trace semantics,
-shared harness lifecycle, concrete UI/browser proof, or concrete command proof.
-Inputs: objective, authority refs, constraints, claim_limit, proof_step,
-proof_path refs, evidence refs, relation refs, and gaps from prior work.
-Outputs: goal.yaml, progress.yaml, evidence.jsonl, completion review evidence,
-and optional companion refs for interface or harness traces.
-Handoff: docs placement -> docs-governance; missing interface trace ->
-interface-capability-planning; shared coverage / claim_ceiling ->
-product-harness-system; concrete command proof -> headless-product-harness;
-browser-visible proof -> ui-product-harness.
-Stop: protected goal field must change, no honest falsifiable proof path
-exists, or work crosses security, private-data, public API/schema/protocol,
-destructive, compliance, product-truth, or claim_limit authority.
-```
-
-## User Phrase Mapping
-
-When a user says "Goal Plan", treat it as a natural-language request to create
-or update a Goal Pack. Do not create a separate prose goal document by default,
-and do not route to a parallel goal-planning skill that owns phases outside the
-Goal Pack.
-
-Compile the discussed goal into:
-
-```text
-goal.yaml
-progress.yaml
-evidence.jsonl
-```
-
-Goal before go is expressed as Goal Pack before broad execution. Phase exits are
-proved through `progress.yaml.proof_step`, checks, evidence records, and
-completion review — not through a separate prose plan lifecycle.
-
-Add `plans/<work_id>.md` only when a selected work item has `next_action:
-needs_plan` or the work is high-risk enough to need a reviewed plan before
-implementation. A plan file must stay inside the Goal Pack and hand back to the
-current proof step; it must not become a second work-item tree, roadmap, or
-parallel execution authority.
-
-## Use Or Stay Inline
-
-Stay inline when one evidence path in the current turn can prove completion.
-
-Create or update a Goal Pack when completion needs multiple evidence records,
-durable state, transition continuity, disjoint write scopes, cross-session
-resume, or explicit user request.
-
-## Core Loop
-
-```text
-check -> inspect -> work brief -> work -> evidence add -> apply -> check
-```
-
-Read or create the Goal Pack, keep the goal contract stable, run the current
-proof path, append one evidence record, apply progress, and continue by default
-while the goal contract remains valid.
-
-Use `goal-proof evidence add --apply --check` when an evidence record should
-immediately drive deterministic progress and validation.
-
-Before implementation, check that `progress.yaml.proof_step` names:
-
-```text
-from
-target_delta
-proof_path
-checks
-failure_inspection
-```
-
-If any item is only a slogan or future command name, sharpen the proof step
-before editing production code.
-
-## Rolling Execution
-
-For broad goals, the current `proof_step` is the current falsifiable movement,
-not the whole work ceiling. Completing one proof step does not require stopping
-when the goal contract remains valid and another honest falsifiable step is
-visible.
-
-After each evidence record:
-
-```text
-apply progress
--> check the Goal Pack
--> preserve not_claimed and claim_limit
--> if the user or Goal Pack explicitly opted into plan-optimality review for the
-   current wave / proof-step boundary:
-     route that artifact through plan-optimality-loop
-     synthesize the adopted correction plan
-     record review / planning evidence
-     keep next_action as review or needs_plan until unresolved findings are gone
--> if next step is clear, update proof_step and continue
--> if completion evidence is satisfied, write completion review
--> otherwise block or ask only for protected human decisions
-```
-
-Do not merge multiple proof levels into one evidence record. Use separate
-records when moving through levels such as `interface_headless`,
-`render_wiring`, `browser_visible`, `headless_product`, `production_near`, or a
-project-specific equivalent.
-
-## Rolling Review Gate
-
-Plan-optimality review is an opt-in planning gate for wave / proof-step
-boundaries. Goal Proof should not treat it as a default step, even for broad or
-high-risk work. Route the plan object through `$plan-optimality-loop` only when
-the user has explicitly authorized multi-reviewer / subagent challenge for this
-boundary, or when the active Goal Pack / work plan explicitly requires that
-gate.
-
-When opted in, the review gate may apply to:
-
-- `plans/<work_id>.md`;
-- a changed `goal.yaml` contract proposal before it becomes authority;
-- a changed `progress.yaml.proof_step` rationale when it controls a broad next
-  wave;
-- SSoT contracts or implementation plans referenced by the Goal Pack;
-- completion reviews that would claim a broad migration, public surface, or
-  multi-evidence outcome.
-
-When active, the gate passes only when the plan-optimality loop reaches an
-adopted candidate with no unresolved findings, or the residual risks are
-explicitly moved to `not_claimed`, `remaining_gaps`, `blockers`, or a human
-decision. Reviewer findings do not directly edit implementation. The main agent
-synthesizes an adopted correction plan, records the adoption as review /
-planning evidence, updates the active plan or proof step, and only then resumes
-implementation.
-
-If the review changes protected goal fields, stop for goal-contract repair or a
-human decision. If it only changes work order, proof path, implementation shape,
-or harness strength, update `progress.yaml` and continue inside the same Goal
-Pack.
-
-## Goal Pack Shape
+## Goal Pack
 
 ```text
 docs/goal-proof/
@@ -236,87 +58,108 @@ docs/goal-proof/
     goal.yaml
     progress.yaml
     evidence.jsonl
-    plans/<work_id>.md  # only when needs_plan
-    interface-capabilities.yaml  # optional UI/interface trace companion
-    product-harness.yaml  # optional harness proof companion
+    plans/<work_id>.md             # only when needs_plan
+    interface-capabilities.yaml    # optional reference companion
+    product-harness.yaml           # optional reference companion
     notes/
 ```
 
-Read [references/artifact-routing.md](references/artifact-routing.md) before
-placing artifacts. Read [references/bootstrap.md](references/bootstrap.md)
-before initializing a project.
+```text
+goal.yaml       protected objective, authority, completion, claim_limit, stops
+progress.yaml   current proof_step, work items, blockers, last check, next_action
+evidence.jsonl  append-only transition evidence
+plans/**        pre-reviewed structure for selected high-risk work only
+notes/**        long context that does not own current state
+```
 
-For UI, IA, interaction, frontend state, harness, or browser-visible work, a
-Goal Pack may reference optional companions such as `interface-capabilities.yaml`
-and `product-harness.yaml`. Keep those trace contracts outside `goal.yaml` and
-reference them by IDs. Evidence records may cite verified evidence from those
-companions, but Goal Proof System owns only Goal Pack lifecycle and evidence
-chain.
+A “Goal Plan” request compiles to this Goal Pack rather than a parallel prose
+plan.
 
-## Boundary
+## Ready Gate
 
-Humans own `objective`, `engineering_guidance`, `authority_refs`,
-`constraints`, `completion`, `claim_limit`, and `stop_rules`.
+```text
+stable goal contract
++ authorized proof_step can produce or inspect completion.required_evidence
+  within claim_limit
+= ready Goal Pack
+```
 
-Agents own authority reading, Goal Pack creation/repair, proof step discovery,
-implementation, verification, evidence record append, progress update, and
-continuation while the next step remains inside the goal contract.
+A roadmap paragraph, work-item list, future command name, or planning preface is
+not a ready proof path.
 
-Stop only when fields listed in `agent_authority.requires_human_decision` must
-change, no honest falsifiable proof path exists, or work crosses security,
-permission, credential, private-data, public API/schema/protocol, destructive,
-or compliance authority.
+## Operating Loop
 
-## Governance Routing
+| Step | Completion criterion |
+| --- | --- |
+| Activate | Explicit user selection or repository adoption is confirmed; inline work is not inflated into a Goal Pack. |
+| Contract | `goal.yaml` has stable objective, authority refs, constraints, completion evidence, claim limit, stop rules, and agent authority. |
+| Calibrate | `progress.yaml.proof_step` names `from`, `target_delta`, runnable/inspectable `proof_path`, checks, and first failure inspection. |
+| Execute | The largest safe useful slice inside the proof step runs and its checks produce observations. |
+| Record | One append-only evidence record maps the completed or blocked slice to checks, claims, `not_claimed`, and `next_action`. |
+| Reduce | Evidence updates progress deterministically; the next falsifiable movement is selected while protected fields remain stable. |
+| Complete | A review evidence record maps the evidence chain to every `completion.required_evidence` item and sets `completion_satisfied: true`. |
 
-Goal Proof System owns inbox/source/Goal Pack/evidence record lifecycle. Read
-[references/artifact-routing.md](references/artifact-routing.md) before placing
-weak signals, consumed sources, successor Goal Packs, leftover gaps, or retained
-evidence. Do not duplicate this lifecycle in project-level docs.
+Canonical CLI loop:
 
-## Progress Queries
+```text
+check -> inspect -> work brief -> work -> evidence add -> apply -> check
+```
 
-When asked for current progress, next ready work, active work item, thread
-status, or completion, treat `goal.yaml`, `progress.yaml`, `evidence.jsonl`,
-relation metadata, and CLI output as progress facts. Roadmaps may constrain
-product strategy, sequencing, launch gates, and evidence links, but they do not
-prove ready / running / done state.
+Use `goal-proof evidence add --apply --check` when append, state reduction, and
+validation can occur atomically.
 
-## Phases
+## Rolling Rule
 
-Use phase skills through this controller unless the user targets a phase:
+One proof step is the current falsifiable movement, not the goal horizon. After
+evidence succeeds:
 
-- `skills/goal/goal-contracts/`: create or repair `goal.yaml`.
-- `skills/goal/finding-proof-step/`: write `progress.yaml.proof_step`.
-- `skills/goal/proof-step-implementation/`: run, verify, add evidence, apply, continue.
-- `skills/goal/write-work-plans/`: write `plans/<work_id>.md` only for high-risk selected work.
+```text
+same movement still has useful work -> continue
+next movement is clear -> write next proof_step and continue
+selected high-risk movement needs reviewed structure -> needs_plan
+required evidence is satisfied -> completion review
+no honest path -> blocked
+protected goal field must change -> needs_human or contract repair
+```
 
-## Completion
+Separate evidence records when claims move across distinct proof surfaces such
+as interface-headless, render, browser, headless product, real database, or
+production-near execution.
 
-Completion requires a review evidence record that maps the evidence chain to
-`completion.required_evidence` and sets `completion_satisfied: true`.
+## Claim Coverage
 
-Use cross-method Evidence Envelope Discipline for nontrivial completion claims:
-map claims to executed commands or checks, positive evidence, narrative changed
-surfaces, and explicit `not_claimed`, narrative `not_proven`, or remaining
-gaps. Positive tokens require an executed or inspected path; unverified adjacent
-surfaces are gaps, not decorative negative tokens. Unless schema, templates, and
-checkers are explicitly upgraded, `changed surfaces` and `not_proven` are
-narrative concepts, not formal v2 completion review fields.
+For public surfaces, schema/protocol/CLI/template/skill changes, authority
+changes, security/destructive boundaries, mixed proof surfaces, or broad
+completion, use existing v2 fields to keep claim slices explicit:
 
-For triggered claim coverage review, E999 must map each completed claim slice to
-the required evidence, evidence ref or command/check, proof level, and explicit
-`not_claimed` / `remaining_gaps`. A broad completion token is not enough when
-the objective carries claim-bearing axes that were not proved or excluded.
+```text
+completion.required_evidence  scoped required slices
+claim_limit / non_goals       excluded adjacent claims
+proof_step                    current slice and proof surface
+evidence claims/not_claimed   proven slice and exclusions
+completion review             claim-to-evidence mapping and remaining gaps
+```
 
-If the Goal Pack is a successor, completion review should include relation
-evidence tokens proving predecessor evidence records and required evidence were
-checked.
+A successful command supports only the assertion it actually checked.
+`not_proven` and changed surfaces remain narrative unless the schema, templates,
+and checker explicitly add them.
 
-## References
+## Stop Boundary
 
-CLI commands: [references/cli.md](references/cli.md). Goal Relations:
-[references/goal-relations.md](references/goal-relations.md). Checker rules:
-[references/checker-rules.md](references/checker-rules.md). Schema migration:
-[references/schema-terminology-migration.md](references/schema-terminology-migration.md).
-Examples: [EXAMPLES.md](EXAMPLES.md).
+Continue inside the protected contract. Stop or repair the contract when the
+work requires changing objective, completion, claim limit, authority refs, stop
+rules, or another field listed in `agent_authority.requires_human_decision`; or
+when no honest path exists; or when permission, private data, security,
+destructive action, compliance, or public compatibility needs a new decision.
+
+Historical `evidence.jsonl` records remain append-only.
+
+## Read When Needed
+
+- Placing inbox, source, Goal Pack, companions, or successor relations: [Artifact Routing](references/artifact-routing.md)
+- Initializing Goal Proof in a repository: [Bootstrap](references/bootstrap.md)
+- Running CLI commands: [CLI](references/cli.md)
+- Inspecting cross-pack relations: [Goal Relations](references/goal-relations.md)
+- Understanding checker behavior: [Checker Rules](references/checker-rules.md)
+- Migrating schema terminology: [Schema Terminology Migration](references/schema-terminology-migration.md)
+- Seeing complete examples: [Examples](EXAMPLES.md)

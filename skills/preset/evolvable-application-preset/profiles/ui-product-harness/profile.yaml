@@ -1,0 +1,10 @@
+id: ui-product-harness
+version: 1
+requires:
+  - verification-core
+provides:
+  - interface-headless render browser surface conventions
+  - harness route/component discovery guidance
+rules:
+  - UI harness does not create backend product truth
+  - browser evidence states fake/live backend reality

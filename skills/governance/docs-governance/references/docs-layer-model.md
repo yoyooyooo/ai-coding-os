@@ -134,16 +134,17 @@ Choose one documented home or map the relationship in `docs/README.md`.
 | `docs/features/**` | Requirements, user stories, capability tracking, acceptance scope | Current architecture authority or work item execution status |
 | `docs/design/**` | UX, UI, visual system, interaction model, asset index | Product facts, engineering gates, or roadmap status |
 | `docs/interface-capabilities/**` | Project-level InterfaceCapability and InterfaceSurface contracts: user work item, entrypoint, interaction contract, state/data ownership, coverage intent | Harness scenarios, fixtures, routes, test steps, evidence results, product facts, or Goal Pack runtime state |
-| `docs/product-harness/**` | Project-level HarnessScenario, HarnessFixture refs, HarnessRoute/Component refs, HarnessEvidence refs, claim_ceiling, not_claimed, Harness Coverage Matrix, lifecycle | InterfaceCapability semantics, product truth, final design, executable tests, raw evidence records, or Goal Pack runtime state |
+| `docs/product-harness/**` | Project-level Harness descriptors, fixture/replay references, route/component/command references, claim ceilings, coverage matrix, and durable result links across headless/UI/runtime surfaces | InterfaceCapability semantics, product truth, final design, executable tests, raw run logs, or execution-method runtime state |
 
 `docs/features/**` and `docs/design/**` are useful for product-heavy projects.
 Library, infrastructure, or research projects may omit them.
 
-`docs/interface-capabilities/**` and `docs/product-harness/**` are optional
-trace layers for projects that need durable agent-readable UI capability and
-proof contracts. Goal Pack companion artifacts may start as candidate working
-drafts, but completion review should give a retention verdict: `promote`,
-`keep-in-goal`, `split`, `retire`, or `block`.
+`docs/interface-capabilities/**` is an optional user-interface capability layer.
+`docs/product-harness/**` is an optional cross-surface Harness discovery and
+coverage layer for headless, UI, database, realtime, and runtime proof. Any
+tracker/spec/Goal Pack may reference these records, but its lifecycle remains
+owned by the repository-selected execution method. Retention still requires an
+explicit keep, promote, split, retire, or block decision.
 
 In this model, `docs/design/**` means interface design: UX, UI, interaction
 model, information architecture, visual system, and design assets. It does not

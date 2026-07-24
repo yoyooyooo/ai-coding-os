@@ -41,12 +41,13 @@ roadmap 视为过期索引。修正链接和 gate 摘要，不复制 evidence �
 - v2 Goal Pack schema 迁移：`goal.yaml`、`progress.yaml`、`evidence.jsonl`、`proof_step`、`work_items`、`evidence_id`、`work_id`、`next_action`、`claim_limit`、`claim_evidence`。
 - CLI / checker / renderer / tests / README / skills / templates / dogfood Goal Pack 主路径同步到 v2 口径。
 - 仓库定位升级为 AI Coding OS 方法套件仓。
-- skill suite 已扩展为 interface capability / product harness system / UI harness / frontend test system / headless harness：新增 `interface-capability-planning`、`product-harness-system`、`ui-product-harness`，并将 `frontend-test-system` 纳入 `skills/harness/` 维护。
+- Skill Suite 已扩展为 interface capability、shared product harness、UI/headless harness 和 frontend test lane：由 `$interface-capability-planning`、`$product-harness-system`、`$ui-product-harness`、`$headless-product-harness` 与 `$frontend-test-system` 分别拥有。
 - Repo shell 已收敛：GitHub repo / remote URL 为 `github.com/yoyooyooo/ai-coding-os`。
 - 公开 skill suite 源码布局已收敛：canonical suite 使用本仓 `skills/**` grouped layout，公开触发名由 `SKILL.md` frontmatter `name` 决定，旧入口不保留 active alias。
-- 顶层叙事 delta proposal 已收敛并完成首轮采纳：公共主线采用 `intent-to-evidence state transition`，`compiler` 只作 README / product 辅助隐喻，README 已将 `Diffusion` 并入该 loop。
-- Goal Proof owner-local skill delta 已落地：`goal-contracts` 承载 `minimum sufficient horizon` 准则，`proof-step-implementation` 承载 evidence-to-progress 归约 guard，`ai-coding-os` 仅保留轻路由。
+- 顶层叙事已收敛为 authority-and-concern routing；`intent-to-evidence state transition` 仅属于显式采用的 `$goal-proof` 方法，不再作为整个 Suite 的默认控制流。
+- Goal Proof owner-local Skill delta 已落地：`$goal-contracts` 承载 `minimum sufficient horizon`，`$proof-step-implementation` 承载 evidence-to-progress 归约，`$ai-coding-os` 仅保留轻路由。
 - 整仓 architecture view 已补齐：`docs/architecture/repository-layer-breakdown.md` 描述 public shell、method source、execution engine、authority docs、long-running artifacts、verification / release support 的分层边界。
+- 应用架构主 doctrine 已收敛到 `$evolvable-application-architecture`；源码新增 `$ai-coding-os-suite-contracts`、`$evolvable-application-preset`、`$effect-api-app-kit` 与 grouped source audit，不保留兼容入口或 Flat source。
 
 已完成 Goal Pack 状态由 `../goal-proof/goals/` 下 evidence records 保留。当前没有 active Goal Pack。
 

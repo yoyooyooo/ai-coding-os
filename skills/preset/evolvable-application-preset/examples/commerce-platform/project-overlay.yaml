@@ -1,0 +1,108 @@
+schema_version: 1
+adoption_date: "2026-07-23"
+project:
+  id: commerce-platform
+  name: Commerce Platform
+  narrative_language: zh-CN
+  repository_mode: monorepo
+commands:
+  install: pnpm install --frozen-lockfile
+  typecheck: pnpm typecheck
+  test: pnpm test
+  architecture_check: pnpm architecture:check
+  verify_affected: pnpm verify:affected
+  verify: pnpm verify
+deployables:
+  - path: apps/web
+    role: 浏览器产品 host
+  - path: apps/api
+    role: accepted business facts 的主要 writer host
+  - path: apps/worker
+    role: reconciliation 与异步工作 host；通过公开 command 写入
+packages:
+  - path: packages/contracts
+    role: wire schemas 与生成合同
+  - path: packages/testkit
+    role: 业务中立测试原语
+modules:
+  - path: apps/api/src/modules/orders
+    role: Order authority cell
+  - path: apps/api/src/modules/billing
+    role: PaymentAttempt authority cell
+workflows:
+  - path: apps/api/src/workflows/checkout
+    role: 跨 Orders/Billing 的应用编排，不拥有两者事实
+  - path: apps/worker/src/workflows/payment-reconciliation
+    role: 处理 provider observation 并发出正式 materialization command
+domain_terms:
+  order:
+    product_term: Order
+    source_token: order
+    kind: authority
+    meaning: 已被系统接受的购买流程事实
+    not_the_same_as:
+      - Checkout draft
+    aliases:
+      purchase:
+        status: forbidden
+        reason: Order 是当前 canonical product term
+  checkout:
+    product_term: Checkout
+    source_token: checkout
+    kind: workflow
+    meaning: 用户跨 Orders/Billing 完成购买的交互与应用流程
+    not_the_same_as:
+      - authority module
+  payment-attempt:
+    product_term: PaymentAttempt
+    source_token: payment-attempt
+    kind: authority
+    meaning: 一次具有稳定 identity 的 provider 支付尝试
+    not_the_same_as:
+      - database transaction
+    aliases:
+      transaction:
+        status: forbidden
+        reason: transaction 保留给数据库事务语义
+authorities:
+  - fact: Order.status
+    authority_module: Orders
+    writer_host: apps/api
+    allowed_entry: order.*.use-case.ts
+    forbidden_path: apps/worker direct DB write
+    transaction: order consistency domain
+  - fact: PaymentAttempt.status
+    authority_module: Billing
+    writer_host: apps/api
+    allowed_entry: payment-attempt.materialize.use-case.ts
+    forbidden_path: provider webhook direct table update
+    transaction: payment-attempt consistency domain
+  - fact: UI checkout draft
+    authority_module: Web checkout feature
+    writer_host: apps/web
+    allowed_entry: checkout.store.ts
+    forbidden_path: backend projection cache
+    transaction: tab-local interaction lifetime
+implementation_qualifiers:
+  stripe:
+    kind: provider
+    capability: payment-gateway
+deprecated_terms:
+  repo:
+    replacement: repository
+    status: forbidden-new-use
+exceptions:
+  - id: next-app-router-files
+    scope: apps/web/src/app/**
+    reason: Next.js-controlled filenames
+    adr: ../adr/0002-next-app-router.md
+topology_notes:
+  - Checkout 是 workflow，不是 authority module。
+  - Worker 可以发出 Orders/Billing command，但不能直接写 authority tables。
+  - packages/contracts 是 wire compatibility boundary，不是共享 domain authority。
+harness_coverage:
+  - capability: order.checkout
+    headless: accepted
+    interface_headless: accepted
+    browser: candidate
+    external_runtime: gap

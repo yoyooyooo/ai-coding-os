@@ -1,54 +1,51 @@
 # Skill Source Layout
 
-本标准规定 AI Coding OS 公开 skill suite 的源码布局、触发名、旧入口退役和本仓验证口径。
-本仓是对外开源源码仓，不承载下游 runtime、安装器或同步流程叙事。
+本标准规定 AI Coding OS 公开 Skill Suite 的 grouped source、触发名、可移植共享合同和本仓验证口径。grouped layout 只服务源码维护；运行时不得依赖该目录层级。
 
 ## Owns
 
 - `skills/**` grouped source layout。
-- `SKILL.md` frontmatter `name` 和公开触发名。
-- 何时可以声明“本仓源码已更新 / 本仓验证已通过”。
-- 旧 skill 名、旧目录和历史 evidence 的保留边界。
+- `SKILL.md` frontmatter `name`、`description` 和必要的 `disable-model-invocation`。
+- `$ai-coding-os-suite-contracts`、Preset/tooling source placement 与扁平安装兼容约束。
+- 本仓 source-updated 与 repo-verified claim。
 
 ## Must Not Own
 
-- 单个 skill 的方法论内容。
+- 单个 Skill 的方法论内容。
 - Goal Pack 当前执行状态。
-- npm publish、GitHub release 或 CLI 版本策略。
-- 下游 runtime、安装器或同步流程。
-- 下游用户如何安装、复制、镜像或分发这些 skill。
+- 下游安装、镜像、同步或 runtime 状态。
+- npm/GitHub release 策略。
 
-## Source Layers
+## Source Groups
 
-| Layer | Path | Authority |
-| --- | --- | --- |
-| Public source | `skills/**` | AI Coding OS 公开 skill suite 的源码 |
-| Skill trigger names | each `SKILL.md` frontmatter `name` | 运行时触发名的公开约定 |
-| Public docs | `README*.md`, `docs/**`, `AGENTS.md` | 源码布局、旧名退役和验证口径 |
-| Historical evidence | `docs/goal-proof/goals/**/evidence.jsonl`, `docs/goal-proof/sources/**` | 追溯材料，不定义当前口径 |
+| Group | Source role |
+| --- | --- |
+| `skills/router/**` | user-invoked Suite entry |
+| `skills/goal/**` | optional Goal Pack method and phases |
+| `skills/governance/**` | docs governance |
+| `skills/architecture/**` | application, frontend, and Effect doctrine |
+| `skills/capability/**` | interface capability planning |
+| `skills/harness/**` | shared, headless, UI, and frontend-test proof |
+| `skills/preset/**` | reusable resolved project defaults |
+| `skills/tooling/**` | executable profiles and source audit |
+| `skills/contracts/ai-coding-os-suite-contracts/**` | independently installable coordination, vocabulary, patterns, Harness schemas |
+| `skills/examples/**` | index to owner-local examples |
 
-修改 AI Coding OS suite 时，只能对本仓公开 claim 做如下声明：
+本仓只维护 grouped source，不生成、提交或发布一份并行 Flat source tree；但每个
+Skill 必须能在下游被打平、重排或单独安装，不能把 grouped path 当成运行时合同。
 
-```text
-source_updated: true|false
-repo_verified: true|false
-downstream_distribution_claimed: false
-```
-
-下游用户或维护者可以在自己的安装器或 runtime 中镜像这些 skill，但那是
-downstream distribution，不是本仓公开 authority。本仓文档不得写入下游路径、同步脚本或本机策略。
-
-## Current Canonical Skill Names
+## Canonical Trigger Names
 
 ```text
 ai-coding-os
+ai-coding-os-suite-contracts
 goal-proof
 goal-contracts
 finding-proof-step
 proof-step-implementation
 write-work-plans
 docs-governance
-agentic-architecture
+evolvable-application-architecture
 frontend-architecture
 effect-best-practices
 interface-capability-planning
@@ -56,84 +53,79 @@ product-harness-system
 ui-product-harness
 headless-product-harness
 frontend-test-system
+evolvable-application-preset
+effect-api-app-kit
 ```
 
-旧名称不保留兼容 alias：
+触发和人类可读的跨 Skill handoff 使用 `$skill-name`。目录名只服务源码组织；
+共享 vocabulary/pattern 中的 `owner` 使用不带 `$` 的 canonical Skill ID。
 
-```text
-ai-coding-project-os
-goal-diffusion
-goal-plans
-finding-harnessed-path
-diffusion-implementation
-write-implementation-plans
-interface-design-planning
-ai-coding-project-governance
-```
+## Invocation
 
-旧名称只能出现在以下位置：
+- `$ai-coding-os` 是 user-invoked Router，frontmatter 使用
+  `disable-model-invocation: true`。
+- 需要自动发现或被相邻 Skill handoff 的专业 Skill 保留 model invocation。
+- Frontmatter 保持最小：`name`、`description`，以及必要时的
+  `disable-model-invocation`。
+- 描述只承担触发分支和必要 reach clause，不复制 Skill body。
 
-- 本标准的 retired vocabulary registry。
-- 已采纳 ADR 的 context / alternatives / consequences。
-- roadmap 的 migration gate 或 gap 描述。
-- 历史 evidence 或 source handoff。
-- 负向测试，证明旧命令或旧入口不会回流。
+## Portable Suite Contracts
 
-除此之外，活跃 docs、skills、templates、README 和 package metadata 不应出现旧名称。
+- `$ai-coding-os-suite-contracts` 是独立可安装 Skill，名称必须显式标识其服务于 AI Coding OS Suite。
+- 安装集合由 runtime 实际发现；Contract Skill 不保存静态 Skill 清单、role taxonomy、invocation 副本或 routing 副本。
+- 路由分支只在 `$ai-coding-os` 维护；共享 precedence、handoff、词汇、filename patterns、guarded terms 和 Harness schemas 由 `$ai-coding-os-suite-contracts` 提供。
+- Skill 内相对链接只能落在本 Skill 目录内；跨 Skill 关系一律使用 `$skill-name`，不保留 sibling pointer。
+- 可执行 Skill 不得在运行时读取其他 Skill 的相对路径。必须自包含的数据采用本 Skill 内固定快照，并由 Suite audit 校验与来源同步。
 
 ## Change Protocol
 
-改 skill 名、入口、分组、schema、trigger 或公开路由时，必须完成同一变更波次：
+改 Skill 名、分组、触发、Schema、共享词汇或公开路由时，同一波次必须：
 
-1. 更新本仓 `skills/**` grouped SSoT 目录和 `SKILL.md` frontmatter `name`。
-2. 更新 `docs/ssot/**`、`docs/standards/**`、必要 ADR、README 和 AGENTS。
-3. 更新相关 template、CLI checker / renderer、测试或示例。
-4. 运行验证和复扫。
-5. 如存在下游安装或镜像需求，把它作为外部 follow-up 记录在对应下游系统中，不写入本仓公开叙事。
-
-如果某一步暂不执行，roadmap 必须记录为 explicit gap，不得隐式留下旧口径。
+1. 更新 `skills/**` grouped source 与 frontmatter。
+2. 更新 `$ai-coding-os-suite-contracts`、owner 字段和 owner-local `$skill-name` handoff。
+3. 更新 `README*.md`、`AGENTS.md`、`docs/ssot/**`、本标准和必要 ADR。
+4. 更新 templates、evals、checker、golden examples 和测试。
+5. 运行 suite、repo 和 docs 验证并复扫 active surface。
+6. 仅声明本仓实际证明的 source/repo 状态；下游分发保持 `not_claimed`。
 
 ## Public Claim Levels
 
 | Claim | Required evidence |
 | --- | --- |
-| `source-updated` | 本仓 `skills/**`、公开 docs 和必要测试已更新 |
-| `repo-verified` | 本仓验证命令通过 |
-| `old-entry-retired` | 活跃面复扫无旧名；历史 evidence/source 仅作为追溯材料保留 |
+| `source-updated` | grouped source、公开 docs、必要 templates/evals/checkers 已同步 |
+| `repo-verified` | 本仓 build/typecheck/test、Suite audit 和 Docs audit 通过 |
+| `retired-entry-absent` | active source/docs/templates/evals/registry 无退役入口 |
+| `flatten-install-portable` | Skill 内链接不越界、Contract Skill 无静态 roster/path taxonomy、可执行 Skill 的隔离运行验证通过 |
 | `downstream-distribution-not-claimed` | 未声明任何下游 runtime 或安装状态 |
-
-对用户汇报时必须使用最窄成立 claim。不能用 `source-updated` 代替
-`repo-verified`，也不能把本仓验证说成下游 runtime 已安装。
 
 ## Required Verification
 
-AI Coding OS repo 至少运行：
-
 ```bash
 bun run check
+python3 skills/tooling/suite_audit.py --suite skills
 python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
 ```
 
-Goal Pack 记录存在时，逐个运行：
+存在真实 Goal Pack 时逐个运行：
 
 ```bash
 goal-proof check docs/goal-proof/goals/<goal-id>
 ```
 
-旧口径复扫必须分两层：
+复扫至少覆盖：
 
 ```text
-active scan: 排除 **/evidence.jsonl、docs/goal-proof/sources/**、retired vocabulary registry、ADR context、roadmap gate 和负向测试
-historical scan: 包含全部路径，只确认旧词只存在于 retired vocabulary registry、ADR context、roadmap gate、evidence/source 或负向测试
+frontmatter parse and invocation
+cross-Skill reference closure and owner resolution
+$skill-name handoff syntax
+Skill-local relative-link containment
+Preset isolated-install render and contract snapshot parity
+capability-tier wording in Skill doctrine
+retired trigger names
+Flat source directories
+relative Markdown links
+Preset golden render
+Effect API Kit atomicity and repair
 ```
 
-## Repo Shell
-
-仓库外壳属于发布和协作入口，不是方法论事实。当前正式 repo URL：
-`github.com/yoyooyooo/ai-coding-os`。
-
-在远端实际 rename 完成前，roadmap 必须保留 repo shell gap。完成后同步：
-
-- GitHub repo name / remote URL。
-- package metadata。
-- README install URLs。
+历史 `evidence.jsonl` 与 retained source 保持原样；它们不定义当前 trigger 口径。

@@ -26,13 +26,13 @@ public shell
   -> verification / release support
 ```
 
-核心状态流保持一条：
+仓库同时承载多种 decision surface。显式采用 `$goal-proof` 时，其状态流是：
 
 ```text
 human intent -> goal contract -> proof_step -> evidence -> next_action
 ```
 
-仓库分层不是新 workflow。它只是说明这条状态流在源码仓里的物理落点。
+仓库分层不是新 workflow，而是说明各类 authority、方法与工具的物理落点。
 
 ## 1. Public Shell
 
@@ -49,8 +49,8 @@ bun.lock
 
 职责：
 
-- 说明 AI Coding OS 是面向高智能 agent 的方法论和 skill suite。
-- 说明公共主线是 intent-to-evidence state transition。
+- 说明 AI Coding OS 是按 decision surface 分组的方法论和 Skill Suite。
+- 说明 grouped Suite、项目 authority、验证表面与可选 Goal Pack 方法的关系。
 - 保留 `goal-proof` 作为当前 CLI / npm 包名。
 - 给用户安装和启动入口。
 - 给维护 agent 本仓语言、命令、同步更新和验证规则。
@@ -78,6 +78,10 @@ skills/governance/**
 skills/architecture/**
 skills/capability/**
 skills/harness/**
+skills/preset/**
+skills/tooling/**
+skills/contracts/ai-coding-os-suite-contracts/**
+skills/examples/**
 skills/README.md
 ```
 
@@ -85,19 +89,23 @@ skills/README.md
 
 | Layer | Owns | Must Not Own |
 | --- | --- | --- |
-| `skills/router/**` | 默认入口、意图路由、inline-vs-durable 判断 | 持久 artifact、Goal Pack state、docs lifecycle |
-| `skills/goal/**` | Goal Pack 生命周期、goal contract、proof_step、evidence、completion review | docs layer placement、UI/harness 具体证明细节 |
+| `skills/router/**` | user-invoked 薄路由、Lead/Supporting Skill 选择 | 持久 artifact、执行控制、Goal Pack state、docs lifecycle |
+| `skills/goal/**` | 显式采用的 Goal Pack 生命周期、goal contract、proof_step、evidence、completion review | docs layer placement、UI/harness 具体证明细节 |
 | `skills/governance/**` | docs layer、authority placement、cleanup、audit | product truth、Goal Pack evidence |
 | `skills/architecture/**` | 可复用工程架构 doctrine 和审计 | 单个产品事实、任务状态 |
 | `skills/capability/**` | UI/IA、surface、state/data ownership、trace planning | harness 生命周期和具体测试命令 |
-| `skills/harness/**` | harness artifact、claim ceiling、UI/headless proof 方法、frontend test proof routing | 业务语义和 Goal Pack lifecycle |
+| `skills/harness/**` | Harness product-proof doctrine、claim ceiling、UI/headless proof、frontend test lane | 业务语义、共享 contract serialization 和 Goal Pack lifecycle |
+| `skills/preset/**` | Agent-guided 默认值发现、增量采用、resolved snapshot、golden example | 项目事实、全量机械初始化和动态 authority |
+| `skills/tooling/**` | 已确定决策的生成器与 grouped source audit | 产品架构决策 |
+| `skills/contracts/ai-coding-os-suite-contracts/**` | 可独立安装的跨 Skill 合同、共享词汇和 Harness schema | 静态 Skill 清单、项目领域词汇、路由分支、安装路径 |
+| `skills/examples/**` | owner-local example index | 第二份 golden source |
 
 当前滚动实施规则：
 
-- `goal-contracts` 校准 `objective` 的 minimum sufficient horizon。
-- `finding-proof-step` 只选择当前 falsifiable movement。
-- `proof-step-implementation` 把 fresh evidence 归约回现有 progress state。
-- `ai-coding-os` 只识别并路由，不保存状态。
+- `$goal-contracts` 校准 `objective` 的 minimum sufficient horizon。
+- `$finding-proof-step` 只选择当前 falsifiable movement。
+- `$proof-step-implementation` 把 fresh evidence 归约回现有 progress state。
+- `$ai-coding-os` 只识别并路由，不保存状态。
 
 改动传播：
 
@@ -156,7 +164,7 @@ docs/README.md
 
 | Layer | Owns | Example |
 | --- | --- | --- |
-| `docs/product/**` | 产品 / 方法论定位 | 高智能 agent、workspace 边界、用户价值 |
+| `docs/product/**` | 产品 / 方法论定位 | workspace 边界、用户价值、Suite 构成 |
 | `docs/ssot/**` | 当前事实、术语、不变量 | skill 分组事实、Goal Pack artifact ownership |
 | `docs/standards/**` | 可执行规则、命令、SOP | skill source layout、docs governance |
 | `docs/adr/**` | 已采纳取舍 | 命名与边界决策 |
@@ -210,6 +218,9 @@ docs/goal-proof/goals/**
 
 ```text
 scripts/**
+skills/tooling/suite_audit.py
+skills/preset/**/scripts/**
+skills/tooling/effect-api-app-kit/scripts/**
 tsconfig.json
 package.json
 bun.lock
@@ -218,6 +229,7 @@ bun.lock
 职责：
 
 - `bun run build`、`bun run typecheck`、`bun run test`、`bun run check`。
+- grouped Skill source、Preset golden output 和 Kit atomicity audit。
 - release precheck / no-push dry run 行为。
 - npm package 内容和发布前检查。
 
@@ -241,6 +253,7 @@ bun.lock
 提交前至少检查：
 
 ```text
+python3 skills/tooling/suite_audit.py --suite skills
 docs audit
 bun run check
 ```

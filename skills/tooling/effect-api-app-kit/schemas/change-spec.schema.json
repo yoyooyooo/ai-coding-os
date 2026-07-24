@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Effect API App Kit Change Spec",
+  "type": "object",
+  "required": ["schema_version", "change", "host", "slice"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "change": {
+      "type": "object",
+      "required": ["id", "operation"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "operation": {"enum": ["add-slice"]}
+      }
+    },
+    "host": {
+      "type": "object",
+      "required": ["path", "name"],
+      "properties": {
+        "path": {"type": "string"},
+        "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"}
+      }
+    },
+    "slice": {
+      "type": "object",
+      "required": ["module", "subject", "operation", "pressure", "persistence", "effect_profile"],
+      "properties": {
+        "module": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "subject": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "operation": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+        "pressure": {"enum": ["P0", "P1", "P2", "P3"]},
+        "persistence": {"enum": ["none", "memory", "postgres"]},
+        "effect_profile": {"enum": ["installed", "v3", "v4"]}
+      }
+    },
+    "http": {
+      "type": ["object", "null"],
+      "properties": {"enabled": {"type": "boolean"}, "route": {"type": "string"}}
+    },
+    "external_capability": {
+      "type": ["object", "null"],
+      "properties": {
+        "name": {"type": "string"},
+        "provider": {"type": "string"}
+      }
+    },
+    "verification": {
+      "type": "object",
+      "properties": {"commands": {"type": "array", "items": {"type": "string"}}}
+    }
+  },
+  "additionalProperties": true
+}

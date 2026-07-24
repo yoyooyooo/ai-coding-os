@@ -1,0 +1,30 @@
+{
+  "skill_name": "ai-coding-os",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add an order status button that changes a durable backend fact, updates optimistic UI, and requires a database migration.",
+      "expected_output": "Routes $evolvable-application-architecture as Lead because fact authority/transaction/migration are the highest semantic authority, with $frontend-architecture and relevant Harness/Docs specialists supporting."
+    },
+    {
+      "id": 2,
+      "prompt": "Fix an Effect Scope finalizer leak in a clearly identified module.",
+      "expected_output": "Allows direct routing to $effect-best-practices without loading the full Suite or forcing the router into the implementation path."
+    },
+    {
+      "id": 3,
+      "prompt": "This task is large and may take many iterations. Automatically create a Goal Pack and choose worker/reviewer models.",
+      "expected_output": "Does not infer Goal Proof or model orchestration from complexity. Goal Proof is routed only when explicitly selected or declared by repository authority."
+    },
+    {
+      "id": 4,
+      "prompt": "A generic Preset default conflicts with this repository's accepted ADR and Standards.",
+      "expected_output": "Reads and follows repository-local authority, reports the deviation, and treats the Preset and router recommendation as lower-priority sources."
+    },
+    {
+      "id": 5,
+      "prompt": "Which AI Coding OS Skill provides the cross-Skill handoff shape and Harness Result schema? My installed Skill folders are flat.",
+      "expected_output": "Routes to $ai-coding-os-suite-contracts by canonical Skill name and does not construct a repository-relative sibling path."
+    }
+  ]
+}

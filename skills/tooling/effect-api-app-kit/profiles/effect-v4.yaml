@@ -1,0 +1,5 @@
+id: effect-v4
+version_policy: exact-pin-and-inspect-installed-declarations
+service_key: Context.Service or project-established v4 idiom
+httpapi: project-profile-adapter-required
+claim_ceiling: structural scaffold until project typecheck/HTTP commands run

@@ -79,4 +79,4 @@ Do not register this skill as tracked upstream. Do not reintroduce deleted leaf 
 
 ## Done State
 
-The canonical catalog should contain one governed `frontend-test-system`, and projected router/docs indexes should point frontend test-proof work to it.
+The canonical catalog should contain one governed `$frontend-test-system`, and projected router/docs indexes should point frontend test-proof work to it.

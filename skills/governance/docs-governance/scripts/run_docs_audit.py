@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import ModuleType
 
+sys.dont_write_bytecode = True
+
 
 def _load_module(path: Path, name: str) -> ModuleType:
     spec = importlib.util.spec_from_file_location(name, path)
@@ -54,6 +56,7 @@ def main() -> None:
     future_capsules = _load_module(script_dir / "scan_future_capsules.py", "scan_future_capsules")
     docs_links = _load_module(script_dir / "scan_docs_links.py", "scan_docs_links")
     source_anchors = _load_module(script_dir / "scan_source_doc_anchors.py", "scan_source_doc_anchors")
+    agent_entry = _load_module(script_dir / "scan_agent_entry.py", "scan_agent_entry")
 
     reports = {
         "docsBaseline": baseline.scan(repo),
@@ -61,6 +64,7 @@ def main() -> None:
         "futureCapsules": future_capsules.scan(repo),
         "docsLinks": docs_links.scan(repo),
         "sourceDocAnchors": source_anchors.scan(repo),
+        "agentEntry": agent_entry.scan(repo),
         "artifactGraph": artifact_graph.command_audit(
             argparse.Namespace(repo=repo, roots=list(artifact_graph.DEFAULT_ROOTS))
         ),

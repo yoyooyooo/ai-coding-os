@@ -1,31 +1,42 @@
 # Skills
 
-本目录保存 AI Coding OS 公开 skill suite。物理目录按维护者阅读时的决策面分组；运行时触发名仍由每个 `SKILL.md` frontmatter 的 `name` 字段决定。
+本目录是 AI Coding OS 公开 Skill Suite 的 grouped source。目录按决策面服务维护者；
+运行时触发名只取各 `SKILL.md` frontmatter 的 `name`。
 
 ## Groups
 
 | Group | Owns | Skills |
 | --- | --- | --- |
-| `router/` | 用户意图入口和方法编排 | `ai-coding-os` |
-| `goal/` | Goal Pack、长期目标流转、evidence-backed execution | `goal-proof`, `goal-contracts`, `finding-proof-step`, `proof-step-implementation`, `write-work-plans` |
-| `governance/` | docs layer、authority placement、cleanup、audit | `docs-governance` |
-| `architecture/` | 可复用工程架构 doctrine、依赖方向、命名语义和边界审计 | `agentic-architecture`, `frontend-architecture`, `effect-best-practices` |
-| `capability/` | interface capability、surface、state/data ownership、trace planning | `interface-capability-planning` |
-| `harness/` | harness contract、headless proof、UI harness proof、frontend test proof | `product-harness-system`, `headless-product-harness`, `ui-product-harness`, `frontend-test-system` |
+| `router/` | 用户显式入口与跨域知识路由 | `$ai-coding-os` |
+| `goal/` | 可选 Goal Pack 方法及内部阶段 | `$goal-proof`, `$goal-contracts`, `$finding-proof-step`, `$proof-step-implementation`, `$write-work-plans` |
+| `governance/` | docs layer、authority placement、cleanup、audit | `$docs-governance` |
+| `architecture/` | 应用、前端与 Effect 架构决策 | `$evolvable-application-architecture`, `$frontend-architecture`, `$effect-best-practices` |
+| `capability/` | interface capability、surface、state/data ownership、trace planning | `$interface-capability-planning` |
+| `harness/` | 共享 harness、headless/UI proof、具体前端 test lane | `$product-harness-system`, `$headless-product-harness`, `$ui-product-harness`, `$frontend-test-system` |
+| `preset/` | Agent-guided 可复用默认值发现、增量采用和 resolved project snapshot | `$evolvable-application-preset` |
+| `tooling/` | 已确定架构决策的可执行生成与套件审计 | `$effect-api-app-kit`, `suite_audit.py` |
+| `contracts/` | AI Coding OS 跨 Skill 协作、共享词汇和 Harness schema | `$ai-coding-os-suite-contracts` |
+
+Supporting source：
+
+- `examples/`：指向各 Skill/Preset 自有示例的索引。
 
 ## Common Vocabulary
 
-- `claim`: 当前证据允许 agent 对外声明什么。
-- `proof`: 怎么证明或证伪 claim。
-- `evidence`: 实际观测到的命令输出、测试结果、截图、日志或 evidence record。
-- `gap`: 当前 claim 未覆盖、仍需后续验证、实现、决策或人类介入的缺口。
+- `claim`：当前观察允许声明的有界结论。
+- `proof`：能够支持或证伪 claim 的执行或检查路径。
+- `evidence`：实际命令、测试、截图、日志或 evidence record。
+- `gap`：尚未实现、验证、决定或纳入 claim 的相邻面。
+- `harness`：proof 的可运行观察面。
 
-`harness` 是 `proof` 的可运行实现：命令、测试、fixture、脚本、路由、组件或浏览器流程。
+结构化 artifact 只在改善后续执行、验证、审计、交接或 claim 诚实时创建。
 
-高能力 agent 不需要重流程；需要清楚边界、最小可运行验证路径、claim limit 和 gap。只有当结构化 artifact 能帮助下一个 agent 执行、验证或交接时才创建。
+## Source Rules
 
-## Rules
-
-- 不按目录名触发 skill；始终按 `name:` 触发。
-- 新 skill 先判断 decision surface，再放入对应 group。
-- 如果一个 skill 同时像两个 group，优先收敛它的 ownership，不新增混合 group。
+- 触发 Skill 时使用 `$skill-name`，不使用目录名。
+- 跨 Skill handoff 和关系使用 `$skill-name`。
+- Skill 内相对链接不得逃逸本 Skill 目录；grouped source path 不是运行时依赖。
+- 新 Skill 先确定独立 decision surface，再进入对应 group。
+- 一个概念只有一个主 owner；相邻 Skill 通过 artifact/decision contract 协作。
+- 本仓只维护 grouped source，不生成或保存 Flat 副本。
+- Project authority 优先于 Preset 和通用 Skill 默认值。

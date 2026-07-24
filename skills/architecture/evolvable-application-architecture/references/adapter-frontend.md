@@ -2,7 +2,7 @@
 
 This is the minimum frontend mapping for users who installed only this skill.
 For directory topology, React, Query/store/realtime, naming, host composition,
-and frontend harness rules, use `frontend-architecture` when available.
+and frontend harness rules, use `$frontend-architecture` when available.
 
 ## Baseline Mapping
 

@@ -1,0 +1,11 @@
+schema_version: 1
+profiles:
+  - agent-entry
+  - monorepo-core
+  - typescript-node
+  - react
+  - effect
+  - effect-httpapi-v4
+  - verification-core
+  - headless-product-harness
+  - ui-product-harness

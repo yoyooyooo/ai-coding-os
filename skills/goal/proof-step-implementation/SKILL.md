@@ -1,23 +1,20 @@
 ---
 name: proof-step-implementation
 description: >-
-  Executes Goal Proof System run slices inside an active Goal Pack proof step, verifies
-  them, appends evidence records, applies state, and continues while the goal contract is
-  valid. Use through $goal-proof when a Goal Plan/Goal Pack is ready to run
-  implementation work rather than only compile or review planning artifacts.
+  Proof-step execution for $goal-proof. Use when an active Goal Pack has a
+  runnable proof_step and needs implementation, checks, an append-only evidence
+  record, deterministic progress reduction, and continued execution inside the
+  protected goal contract.
 ---
 
 # Run Phase
 
-Internal phase module for `$goal-proof`.
+Execute the largest safe useful slice inside the current smallest falsifiable
+path. Use this phase through `$goal-proof`.
 
-It runs the current proof step. It does not redefine the goal contract and it
-does not stop merely because one useful slice finished.
+## Readiness Gate
 
-## Run Readiness Gate
-
-Do not run from a vague proof step. Before implementation, confirm
-`progress.yaml.proof_step` contains:
+`progress.yaml.proof_step` is runnable when it contains concrete values for:
 
 ```text
 from
@@ -27,147 +24,65 @@ checks
 failure_inspection
 ```
 
-The proof step is not ready if it only names a future smoke command, repeats the
-goal objective, or lists work items without saying how the next claim will be
-proved or falsified. In that case, return to proof-step discovery and sharpen the
-next proof step before editing production code.
+A future command name, repeated objective, or work-item list returns to
+`$finding-proof-step` before production edits.
 
-Before activating or running a work item, refresh the selected Goal Pack's state,
-evidence records, and relevant relation checks. Do not start from a roadmap
-`default_next` or hand-written progress row alone; roadmap material can
-constrain launch policy, but Goal Pack artifacts prove current work item state.
+## Run Pass
 
-## Core Loop
+| Step | Completion criterion |
+| --- | --- |
+| Refresh | Current Goal Pack state, append-only evidence, relation checks, and relevant authority are read immediately before work starts. |
+| Select slice | The slice moves an owner outcome and stays inside allowed scope, claim limit, and stop rules. |
+| Implement | Source, migration, harness, docs, or review work reaches the current target delta without changing protected goal fields. |
+| Check | Every declared check runs or is inspected; `pass` means its assertion passed, not exit code alone. |
+| Record | One evidence JSON object captures completed, blocked, or reviewed work, commands/observations, claims, `not_claimed`, and next action. |
+| Reduce | Progress fields are derived from the new evidence and the next falsifiable movement is written when known. |
+| Continue | Execution continues while the contract remains valid and another honest path exists; otherwise it transitions to review, needs-plan, blocked, done, or needs-human. |
 
-```text
-read goal contract + progress
-  -> choose largest safe useful slice
-  -> implement inside allowed scope
-  -> run checks
-  -> add evidence record
-  -> update state
-  -> continue | review | needs_plan | blocked | done | needs_human
-```
+Use `goal-proof evidence add --apply --check` when append, reduction, and
+validation need no intermediate inspection.
 
-Use `goal-proof evidence add --apply --check` when no intermediate inspection is
-needed between evidence record append, deterministic state update, and validation.
+## Slice and State Rules
 
-## Slice Policy
-
-Find path small. Execute slice useful.
-
-The proof-step phase finds the smallest falsifiable runnable path. The run phase
-executes the largest safe useful slice inside that path.
-
-Useful slices move the owner outcome: working screen, API path, data path, real
-bug fix, transition slice, milestone review, or harness that proves the current
-proof step.
-
-Avoid micro-slicing into helper churn, wrapper-only work, goal-contract-only files,
-or notes that do not move completion.
-
-## Continue Or Stop
-
-Continue while objective, engineering guidance, authority refs, completion, and
-claim_limit stay unchanged; an honest falsifiable path exists; checks exist
-or can be built inside scope; and risk stays inside allowed blast radius.
-
-Stop for changes to fields listed in `agent_authority.requires_human_decision`, missing
-honest path, repeated unrecoverable check failure, or higher-authority
-boundaries.
-
-For related Goal Packs, keep work in the active Goal Pack. Do not reopen a done
-predecessor for normal follow-up. Record successor evidence in the current
-evidence chain and reference predecessor evidence records through `relations`.
-
-## State Transition
-
-After evidence is recorded and checks pass, reduce it to the next state:
+Useful slices include a working screen, API/data path, bug fix, migration seam,
+review milestone, or harness that proves the current movement. Helper churn and
+notes without claim movement stay inside a larger useful slice.
 
 ```text
-same proof_step still has useful safe work -> continue
-current movement proved and next wave does not depend on a new/changed
-structured plan -> sharpen next proof_step and continue
-current movement proved and next wave depends on a structured plan, contract,
-high-risk work plan, or broad proof-step rationale and plan-optimality review is
-explicitly opted in -> next_action: review or needs_plan, then run the rolling
-review gate before implementation continues
+same proof_step has useful work -> continue
+next movement clear -> update proof_step and continue
+selected high-risk movement needs reviewed structure -> $write-work-plans
 required evidence satisfied -> completion review
 no honest next movement -> blocked
-protected field or claim boundary must change -> needs_human
+protected field must change -> $goal-contracts or needs_human
 ```
 
-Do not imply `$plan-optimality-loop` is mandatory. When the next movement is
-plan-controlled, create or update the selected plan artifact and use the normal
-Goal Proof checks unless the user or Goal Pack explicitly opted into the rolling
-review gate. If opted in, synthesize the adopted correction plan and record
-review / planning evidence before setting `next_action: continue`.
+Separate evidence records across distinct proof surfaces. A lower-level result
+may support a later run but does not become that later claim.
 
-Before crossing to a stronger proof level, confirm the previous evidence names
-`positive_tokens`, preserves `not_claimed`, and satisfies the relevant
-`promotion_gate`. A lower-level proof can support the next level, but it must
-not be reported as the next level's claim.
+## Evidence Discipline
 
-State reduction writes only existing surfaces: evidence `claims`, evidence
-`not_claimed`, `progress.yaml.next_action`, `progress.yaml.proof_step`,
-`progress.yaml.active_work_item`, `progress.yaml.work_items[].status`,
-`progress.yaml.blockers`, and `progress.yaml.last_check`.
+Append one JSON object per completed, blocked, or reviewed work item. Historical
+records remain unchanged; reinterpretation appends a new record.
 
-If the next useful movement requires changing `objective`, `completion`,
-`claim_limit`, `stop_rules`, `authority_refs`, or other protected fields, set
-`needs_human` or return to goal-contract repair.
+- `checks[].status: pass` means the assertion passed.
+- Absence claims use an inverted check or explicit allowlist.
+- Public schema/terminology migrations inspect skills, references, templates,
+  evals, docs, CLI help, tests, fixtures, and active artifacts in scope.
+- Broad claim slices retain command/check evidence, proof surface,
+  `not_claimed`, and remaining gaps.
+- Completion review maps evidence to every `completion.required_evidence` item
+  and sets `completion_satisfied: true`.
 
-## Evidence Record
-
-Append one JSON object per completed, blocked, or reviewed work item to
-`evidence.jsonl`. See [REFERENCE.md](REFERENCE.md#evidence record-rules) for evidence record
-shapes.
-
-Blocked evidence record uses `result: "blocked"`, `blocked_by`, `evidence`, and
-`next_action: "blocked"`.
-
-Completion review requires `type: "review"`, `decision: "complete"`,
-`completion_satisfied: true`, and `claim_evidence` that maps evidence to
-`completion.required_evidence`.
-If the Goal Pack declares hard relations, completion review evidence should include
-relation verification results or the evidence tokens required by the relation.
-
-`checks[].status: "pass"` means the check's assertion passed, not merely that a
-tool command returned exit 0. For absence claims, use an inverted no-match
-command such as `! rg ...` or evidence add an explicit allowlist of intentional
-matches. For schema or terminology migrations, include active surfaces in the
-evidence: templates, references, agents, evals, CLI help/flags, README
-examples, tests/fixtures, and active Goal Pack artifacts.
-
-For goals that hit the semantic risk trigger, implementation evidence must
-preserve the claim coverage review instead of flattening it into broad tokens:
-
-- `claims` names the completed claim slice and proof level.
-- `evidence` cites the command, check, inspected diff, trace, or observation
-  that proves that slice.
-- `not_claimed` records adjacent public surfaces, runtime modes, authority
-  actions, or safety boundaries not proved by this evidence.
-- Different proof levels use separate evidence records when crossing a
-  promotion gate; lower-level proof may support the next level but does not
-  become that level's claim.
-
-## State Update
-
-After appending an evidence record, update `progress.yaml`: `active_work_item`,
-`work_items[].status`, `blockers`, `last_check`, `next_action`, and
-`proof_step` when the next proof step is known. The update is a reduction from
-evidence to existing progress state.
-
-Do not rewrite historical evidence records. Add another evidence record if interpretation
-changes.
+See [Reference](REFERENCE.md) for evidence-record and state-update shapes.
 
 ## Output
 
 ```text
-goal_pack:
-work item:
-evidence record:
-checks:
-state_update:
+goal_pack
+work_item
+evidence_record
+checks
+state_update
 next_action: proof_step | continue | needs_plan | blocked | review | done | needs_human
 ```

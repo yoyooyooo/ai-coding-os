@@ -1,0 +1,16 @@
+schema_version: 1
+id: order.checkout.retry
+capability: order.checkout
+surface: headless
+command: pnpm verify order.checkout.retry
+uses:
+  persistence: postgres
+  external_payment: fake
+can_observe:
+  - command receipt
+  - committed order version
+  - duplicate retry behavior
+does_not_cover:
+  - browser projection
+  - real payment provider
+claim_ceiling: local Postgres, single authority host, restart exercised

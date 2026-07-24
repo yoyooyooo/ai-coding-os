@@ -1,0 +1,16 @@
+schema_version: 1
+harness: order.checkout.retry
+status: pass
+observed:
+  order_version_before: 7
+  order_version_after: 8
+  duplicate_version_after: 8
+supports:
+  - duplicate retry did not create another committed transition
+not_proven:
+  - concurrent multi-process retry
+  - real provider behavior
+environment: local-postgres
+artifacts:
+  - type: trace
+    ref: artifacts/order-checkout-retry.jsonl

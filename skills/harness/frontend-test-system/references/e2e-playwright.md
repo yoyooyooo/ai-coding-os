@@ -34,7 +34,7 @@ Use when the selected claim is a browser-visible user journey that should become
 5. Mock only with a named boundary.
    - Real backend path: claim may include one integrated journey.
    - Playwright route/mock path: claim only covers frontend handling of modeled responses.
-   - Third-party services may be mocked, but list them in `not_claimed`.
+   - Third-party services may be fake or intercepted, but name them in the environment boundary and keep real-provider behavior in `not_proven`.
 
 6. Run narrow, then representative.
    - First run the new/changed spec.
@@ -61,9 +61,9 @@ project_or_browser:
 trace:
 screenshot_or_video:
 agent_browser_observations:
-positive_tokens:
+observed:
+supports:
 flake_risk:
-not_claimed:
 not_proven:
 ```
 

@@ -3,18 +3,23 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Plan tests for a React Query mutation with optimistic UI, ack reconciliation, error rollback, and reload consistency.",
-      "expected_output": "Splits interface_headless mutation/cache proof, render_wiring pending/error/success proof, and browser_visible reload proof; pairs business fact claims with headless product evidence; emits not_claimed and not_proven."
+      "prompt": "Plan proof for a React Query mutation with optimistic UI, authoritative acknowledgement reconciliation, error rollback, and reload consistency.",
+      "expected_output": "Separates interface-headless reconciliation observations, render wiring, and browser reload behavior; pairs accepted-fact claims with formal backend/headless proof and reports observed/supports/not_proven."
     },
     {
       "id": 2,
-      "prompt": "A realtime UI sometimes receives duplicate events, cursor gaps, and reconnects. Decide which proof belongs in browser tests and which belongs below rendering.",
-      "expected_output": "Routes decode/dedupe/gap/reconnect state to interface_headless proof; keeps browser_visible for reachability and visible recovery only; avoids claiming realtime event authority from UI evidence."
+      "prompt": "A realtime UI receives duplicate events, cursor gaps, and reconnects. Decide what belongs below rendering and what belongs in a browser path.",
+      "expected_output": "Keeps decode/dedupe/cursor/gap/backfill state in interface-headless proof, uses browser proof for reachability and visible recovery, and does not equate reconnect success with projection continuity."
     },
     {
       "id": 3,
-      "prompt": "A Playwright test passes for creating an issue from a message, but there is no paired headless proof for persistence or accepted business facts.",
-      "expected_output": "Reports browser_visible success only; records business_fact_claim=false or db_persistence=false in not_claimed; lists missing headless_product evidence in not_proven or gaps."
+      "prompt": "A Playwright test passes for creating an issue from a message, but there is no paired persistence/materialization proof.",
+      "expected_output": "Reports only the local browser-visible path, names the fake/live backend reality, and places persistence and accepted-fact behavior in not_proven instead of claiming product completion."
+    },
+    {
+      "id": 4,
+      "prompt": "Require every UI change to run pure mapper, component, browser, and staged production-near Harnesses in that exact order.",
+      "expected_output": "Rejects the universal sequence. Selects the smallest honest surface or goes directly to the surface required by the current property; framework, cost, and risk policies may still constrain specific environments."
     }
   ]
 }

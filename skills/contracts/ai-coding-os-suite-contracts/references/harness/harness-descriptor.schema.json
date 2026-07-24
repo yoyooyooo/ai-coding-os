@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Descriptor",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "capability",
+    "surface",
+    "command",
+    "can_observe",
+    "does_not_cover"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface": {
+      "enum": [
+        "headless",
+        "interface-headless",
+        "render",
+        "browser",
+        "external-runtime"
+      ]
+    },
+    "command": {
+      "type": "string",
+      "minLength": 1
+    },
+    "uses": {
+      "type": "object"
+    },
+    "can_observe": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "does_not_cover": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "claim_ceiling": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

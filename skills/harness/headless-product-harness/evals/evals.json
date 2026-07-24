@@ -3,18 +3,23 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "We have a TypeScript pnpm workspace for a product that must prove source inventory, mapping profile generation, offline import, and dashboard facts before building the web UI. Design the pnpm xtask command surface and evidence contracts.",
-      "expected_output": "Maps product core, contract, xtask, server, and web authority; proposes stable capability-named pnpm xtask commands; defines JSON/JSONL headless command output envelopes with not_claimed UI/runtime tokens; keeps xtask as orchestration rather than fact authority."
+      "prompt": "A TypeScript monorepo must make source import, mapping generation, database materialization, and projection rebuild independently runnable before UI work. Design the headless command surface.",
+      "expected_output": "Creates capability-named commands with stable non-zero failures and structured observations, keeps orchestration outside fact authority, distinguishes fixture/replay/real database paths, and reports supports/not_proven rather than progress labels."
     },
     {
       "id": 2,
-      "prompt": "Review this Rust repo harness plan: add `just smoke-mvp-2-complete` that prints `target_slice=mvp-2` and `done=true` after a few cargo tests. We also have an xtask crate and boundary-check command.",
-      "expected_output": "Rejects hardcoded progress as proof; renames to capability-based smoke commands or compatibility aliases; places tests near domain/application/runtime authority; requires structured evidence and boundary checks that report violated edges."
+      "prompt": "Review a proposed test command that writes the Orders table directly because invoking the use case is inconvenient.",
+      "expected_output": "Rejects the Harness-only writer, drives the formal command/use-case/materialization path, and adds only read-only probes or setup through accepted project mechanisms."
     },
     {
       "id": 3,
-      "prompt": "A product needs real Codex runtime smoke, replay smoke, and DB restart proof. Decide what belongs in default verification, what must be opt-in, and what evidence must be emitted so we do not overclaim product completion.",
-      "expected_output": "Separates fixture/replay, db_backed restart, and real_runtime_opt_in sublevels; keeps real external runtime outside default CI unless explicitly safe; requires product fact materialization evidence and not_claimed tokens for unproven completion/UI surfaces."
+      "prompt": "A production bug appears only after Postgres restart and replay. The existing harness menu begins with boundary and fixture checks. What should run first?",
+      "expected_output": "Selects the database restart/replay surface directly. The ladder is a discovery menu, not a mandatory progression, and isolation matches the restart claim."
+    },
+    {
+      "id": 4,
+      "prompt": "We need a real external runtime Harness with credentials and irreversible provider effects.",
+      "expected_output": "Keeps the path explicit opt-in because of cost, secrets, privacy, and irreversible risk, and states the exact external surface and remaining unproven behavior."
     }
   ]
 }

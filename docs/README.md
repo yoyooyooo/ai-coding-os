@@ -20,12 +20,15 @@
 
 | Group | Skills | 定位 |
 | --- | --- | --- |
-| `router/` | `ai-coding-os` | 用户默认入口，轻量路由和编排 |
-| `goal/` | `goal-proof`, `goal-contracts`, `finding-proof-step`, `proof-step-implementation`, `write-work-plans` | Goal Pack、目标授权、当前验证步、执行、证据记录和高风险实施计划 |
-| `governance/` | `docs-governance` | 文档分层、权威放置、cleanup、audit |
-| `architecture/` | `agentic-architecture`, `frontend-architecture`, `effect-best-practices` | 底层架构公理、前端架构、Effect runtime / Service / Layer doctrine |
-| `capability/` | `interface-capability-planning` | UI/IA、交互能力、前端状态/数据归属和 trace artifact |
-| `harness/` | `product-harness-system`, `ui-product-harness`, `frontend-test-system`, `headless-product-harness` | harness artifact、`claim_ceiling`、Harness Coverage Matrix、UI/headless proof、frontend test proof |
+| `router/` | `$ai-coding-os` | user-invoked 入口，轻量知识路由 |
+| `contracts/` | `$ai-coding-os-suite-contracts` | 可独立安装的跨 Skill 合同、共享词汇和 Harness schemas |
+| `goal/` | `$goal-proof`, `$goal-contracts`, `$finding-proof-step`, `$proof-step-implementation`, `$write-work-plans` | 显式选择的 Goal Pack 方法及内部阶段 |
+| `governance/` | `$docs-governance` | 文档分层、权威放置、cleanup、audit |
+| `architecture/` | `$evolvable-application-architecture`, `$frontend-architecture`, `$effect-best-practices` | authority-first 应用架构、前端架构与 Effect runtime doctrine |
+| `capability/` | `$interface-capability-planning` | UI/IA、交互能力、前端状态/数据归属和 trace artifact |
+| `harness/` | `$product-harness-system`, `$ui-product-harness`, `$frontend-test-system`, `$headless-product-harness` | 共享 harness、UI/headless proof 与具体前端 test lane |
+| `preset/` | `$evolvable-application-preset` | Agent-guided 默认值发现、增量采用和 resolved project snapshot |
+| `tooling/` | `$effect-api-app-kit`, `suite_audit.py` | 原子生成与 grouped source 审计 |
 
 Goal Proof System 主路径已使用 v2 Goal Pack 口径：
 
@@ -36,7 +39,7 @@ evidence.jsonl
 plans/<work_id>.md
 ```
 
-后续 schema、docs layer 或 skill 口径变更仍应同步更新 skills、templates、checker、README、测试和 dogfood Goal Pack。
+后续 schema、docs layer 或 Skill 口径变更仍应同步更新 skills、templates、checker、README、测试和 dogfood Goal Pack。
 涉及 skill source layout、公开触发名或旧入口退役时，按
 [Skill Source Layout](standards/skill-source-layout.md) 执行。
 涉及 docs layer 准入、promotion / demotion、旧材料清理或审计门时，按

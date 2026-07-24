@@ -35,6 +35,16 @@
       "id": 7,
       "prompt": "An Interaction Kernel design is useful long term, but current code only has CoordinationContract, TurnGrant and A2A candidate validation. Where should each part live?",
       "expected_output": "Keeps current binding constraints and implemented seams in SSoT/Architecture/Standards/Protocols, moves the complete InteractionRun/private-view engine to a future capability capsule, and preserves a falsifiable promotion gate."
+    },
+    {
+      "id": 101,
+      "prompt": "Adopt an architecture Preset in an existing repository with AGENTS.md and current docs/standards. Decide what the Preset, Docs Governance, and project each own.",
+      "expected_output": "Treats Docs Governance as placement/lifecycle owner, the Preset as reusable template/default source, and merged project AGENTS/docs as current project authority; uses an explicit resolved snapshot and upgrade diff without overwriting local content."
+    },
+    {
+      "id": 102,
+      "prompt": "Put the complete monorepo doctrine, naming registry, authority map, Skill list, current tasks, and model configuration into AGENTS.md so every Agent sees it immediately.",
+      "expected_output": "Rejects AGENTS.md as a shadow authority. Keeps it as a thin operational entry with read-first paths, stable rules, resolved commands, language, and router hint; routes standards, facts, topology, Skill registry, and execution state to their proper owners."
     }
   ]
 }

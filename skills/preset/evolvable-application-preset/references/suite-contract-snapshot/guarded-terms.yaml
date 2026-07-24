@@ -1,0 +1,74 @@
+schema_version: 1
+terms:
+  service:
+    questions:
+    - Is this a use-case, port, client, policy, workflow, or Effect Service key?
+    allowed_when:
+    - an established external/framework contract uses the term
+    - a genuine Effect Service key is intentionally exposed
+  manager:
+    questions:
+    - What resource, authority, or lifecycle does it actually own?
+  helper:
+    questions:
+    - Can the product subject and pure responsibility be named?
+  utils:
+    questions:
+    - Is there one narrow coherent public API?
+    - Would mapper, decoder, policy, fixture, or testkit be more precise?
+  common:
+    questions:
+    - Which named capability owns this?
+  core:
+    questions:
+    - Is this a tiny stable kernel or a dependency magnet?
+  base:
+    questions:
+    - Is inheritance actually required?
+  types:
+    replacement_candidates:
+    - model
+    - contract
+    - schema
+    - projection
+    - errors
+  adapter:
+    questions:
+    - Which capability and provider/transport does it adapt?
+  impl:
+    questions:
+    - Can live/fake/provider/host express the variant?
+  api:
+    questions:
+    - Does this mean product contract, HTTP transport, public module surface, or vendor API?
+  processor:
+    questions:
+    - Is this a use-case, workflow, worker, consumer, or policy?
+  controller:
+    questions:
+    - Is this framework-required transport code? Keep it thin and subject-qualified.
+  handler:
+    allowed_patterns:
+    - <subject>.http.handlers.ts
+    - <subject>.webhook.handlers.ts
+    forbidden_patterns:
+    - handler.ts
+    - handlers.ts
+  mock:
+    questions:
+    - Is this a fixture, fake, stub, spy, or emulated server?
+  smoke:
+    questions:
+    - What exact capability and claim ceiling does it exercise?
+  e2e:
+    questions:
+    - Name the actual endpoints and real/fake boundaries.
+  integration:
+    questions:
+    - Which concrete boundaries are integrated?
+  done:
+    questions:
+    - Command completion, scenario pass, product completion, or release completion?
+  complete:
+    questions:
+    - Which claim and observed surfaces justify this term?

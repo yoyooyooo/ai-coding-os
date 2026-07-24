@@ -1,0 +1,10 @@
+id: verification-core
+version: 1
+provides:
+  - Harness Descriptor and Harness Result conventions
+  - verify list/affected/full command slots
+  - fake replay real environment labels
+  - observation/support/not-proven reporting
+rules:
+  - Harness is not product authority or Agent loop controller
+  - Agent may select any sufficient proof surface directly

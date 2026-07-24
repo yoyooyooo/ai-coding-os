@@ -26,8 +26,9 @@ a transaction authority
 a requirement for every async function
 ```
 
-Use `evolvable-application-architecture` to decide where authority, ports, transactions, and
-composition boundaries exist. Then map real capability boundaries into Effect.
+Use `$evolvable-application-architecture` to decide where authority, ports,
+transactions, and composition boundaries exist. Then map real capability
+boundaries into Effect.
 
 ## Pure Core, Effectful Shell
 
@@ -85,12 +86,12 @@ Avoid scattered `Effect.runPromise` in business modules. Build a closed Layer
 once when lifetime permits; run many programs through the owned Runtime; dispose
 it when the host ends.
 
-## Architecture Family
+## Architecture Collaboration
 
 ```text
-evolvable-application-architecture       decides authority and consistency
-frontend-architecture      decides browser/UI state and topology
-effect-best-practices      implements chosen boundaries with Effect
+$evolvable-application-architecture  decides authority and consistency
+$frontend-architecture              decides browser/UI state and topology
+$effect-best-practices              maps chosen boundaries into Effect
 ```
 
 A lower-level Effect convenience never overrides a higher-level authority,

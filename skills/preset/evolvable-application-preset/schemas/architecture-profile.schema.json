@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resolved Architecture Profile",
+  "type": "object",
+  "required": ["schema_version", "preset", "profiles", "decisions", "resolved_standards"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "preset": {
+      "type": "object",
+      "required": ["id", "version", "mode"],
+      "properties": {
+        "id": {"const": "evolvable-application"},
+        "version": {"type": "string"},
+        "mode": {"const": "resolved-snapshot"}
+      }
+    },
+    "profiles": {"type": "array", "items": {"type": "string"}},
+    "decisions": {"type": "object"},
+    "resolved_standards": {"type": "object"},
+    "enforcement": {"type": "object"},
+    "exceptions": {"type": "array"}
+  },
+  "additionalProperties": true
+}

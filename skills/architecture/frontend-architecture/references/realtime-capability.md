@@ -76,4 +76,4 @@ Add browser and real transport tests only for claims that require them.
 When Effect is selected, the live client may use Service/Layer/Scope/Stream/Queue
 for resources, retry, cancellation, and fakes. Expose a runtime-bound
 subscription facade to ordinary feature code unless the feature is explicitly
-Effect-native. Load `effect-best-practices` for version-specific APIs.
+Effect-native. Load `$effect-best-practices` for version-specific APIs.

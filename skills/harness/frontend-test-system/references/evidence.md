@@ -1,63 +1,78 @@
-# Evidence Packet
+# Frontend Test Observation Report
 
-Every testing response must separate what was proven from what was only inspected, assumed, mocked, skipped, or left untested.
+A frontend testing response should separate the executed observation from the
+bounded conclusion and from adjacent behavior that was not exercised. Keep the
+report proportional to the task; a small test may need only a few lines.
 
-## Required Packet
+## Recommended shape
 
 ```text
-claim:
+property:
 lane:
 runner_or_tool:
-repo_state:
-commands:
-environment:
+commands_or_actions:
+environment_and_fake_live_boundary:
 fixtures_or_seed:
-artifacts:
-positive_tokens:
-not_claimed:
+observed:
+supports:
 not_proven:
-next_gap:
+artifacts:
 ```
 
-## Field Rules
+## Field rules
 
-- `claim`: one narrow statement. Avoid "the app works".
-- `lane`: one routed lane from `SKILL.md`.
-- `runner_or_tool`: exact tool, such as `vitest`, `jest`, `playwright`, `agent-browser`, `openapi`, `pact`, or `manual-none`.
-- `repo_state`: discovered scripts/config relevant to this claim.
-- `commands`: exact commands and pass/fail/skipped status.
-- `environment`: OS/container if known, browser, viewport, base URL, env/CI, backend/mock boundary.
-- `fixtures_or_seed`: auth user, seeded data, MSW handlers, database seed, cleanup.
-- `artifacts`: trace, screenshot, video, HTML report, diff image, console/network log, coverage, schema output.
-- `positive_tokens`: concrete success evidence from output or UI.
-- `not_claimed`: areas intentionally outside scope.
-- `not_proven`: desired but unverified areas due to mocks, missing env, missing authority, unavailable credentials, skipped commands, or tool limits.
-- `next_gap`: smallest next action only when a gap remains.
+- `property`: one bounded behavior, not “the app works”.
+- `lane`: unit, component, MSW, contract, Playwright, browser inspection, or the
+  repository's established equivalent.
+- `runner_or_tool`: exact tool when relevant.
+- `commands_or_actions`: actual command/route/browser actions and status.
+- `environment_and_fake_live_boundary`: browser, viewport, base URL, CI/local,
+  backend, provider, and fake/real distinctions required to interpret the run.
+- `fixtures_or_seed`: deterministic data, auth subject, MSW handler, database
+  seed, or cleanup that influenced the result.
+- `observed`: direct output, visible state, console/network status, trace, count,
+  or value from the executed path.
+- `supports`: bounded conclusion justified by those observations and project
+  authority.
+- `not_proven`: adjacent desired behavior not exercised because of lane,
+  environment, fake dependencies, credentials, missing authority, skips, or tool
+  limits.
+- `artifacts`: trace, screenshot, video, report, diff, log, coverage, or schema
+  output when useful.
 
-## Positive Token Examples
+## Observed examples
 
 Good:
 
 ```text
-positive_tokens:
-- `pnpm test src/cart/cart.test.ts` -> `8 passed`
-- `/api/cart` mocked by MSW case `cart-empty`
-- agent-browser observed heading `Your cart is empty`
-- Playwright trace: `test-results/cart-empty/trace.zip`
+observed:
+- `pnpm test src/cart/cart.test.ts` exited 0 with `8 passed`
+- MSW handler `cart-empty` returned the declared empty response
+- browser showed heading `Your cart is empty`
+- Playwright trace exists at `test-results/cart-empty/trace.zip`
+
+supports:
+- the frontend renders the declared empty-cart state under the MSW profile
+
+not_proven:
+- real backend empty-cart response
+- production authentication
 ```
 
 Weak:
 
 ```text
-positive_tokens:
+observed:
 - looks good
 - should pass
-- covered by tests without command/output
+- covered by tests
 ```
 
-## Failure Packet
+Those statements contain no direct observation.
 
-For failures, keep the same packet and add:
+## Failure report
+
+A failed run is still useful evidence. Add:
 
 ```text
 failure_phase:
@@ -68,17 +83,19 @@ likely_owner_boundary:
 blocked_by:
 ```
 
-A failed test run is still evidence. Do not replace failed evidence with a plan.
+Do not replace a failed observation with a plan or erase earlier instability
+because a later retry passed.
 
-## Artifact Naming
+## Artifact naming
 
-Prefer stable, claim-scoped names:
+Prefer stable property-scoped names:
 
 ```text
-playwright: test-results/<spec-or-claim>/trace.zip
-screenshots: artifacts/<claim>/<before|after|diff>-<viewport>.png
-logs: artifacts/<claim>/console-network.log
-contract: artifacts/<claim>/schema-or-pact-output.txt
+playwright: test-results/<property>/trace.zip
+screenshots: artifacts/<property>/<before|after|diff>-<viewport>.png
+logs: artifacts/<property>/console-network.log
+contract: artifacts/<property>/schema-or-pact-output.txt
 ```
 
-If an artifact was expected but not produced, list it under `not_proven` or `next_gap`.
+Persist full provenance only when the result must survive across Agents,
+commits, release decisions, or audits.

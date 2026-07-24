@@ -3,18 +3,23 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Given mixed headless and UI evidence for one user-facing capability, design the durable HarnessScenario and Harness Coverage Matrix.",
-      "expected_output": "Uses HarnessScenario with claim_ceiling, not_claimed, not_proven, evidence refs, and remaining_gaps; separates headless_product from interface_headless/render_wiring/browser_visible coverage; uses headless_sublevel only under headless_product."
+      "prompt": "Design durable discovery for one capability that has a Postgres restart Harness, a pure frontend reconciliation Harness, and a browser path.",
+      "expected_output": "Defines lightweight Harness Descriptors per surface, a coverage view that links rather than merges them, and Harness Results using observed/supports/not_proven. It makes fake/real boundaries and claim ceilings explicit without forcing a linear proof ladder."
     },
     {
       "id": 2,
-      "prompt": "Audit a harness plan that treats fixture data and a browser screenshot as proof of accepted business facts.",
-      "expected_output": "Rejects overclaiming; states that fixtures and browser-visible proof do not own product truth; requires paired headless product evidence or records business_fact_claim=false in not_claimed."
+      "prompt": "Build a central controller that limits every repair to three attempts, requires a separate verifier, and accepts evidence before work can continue.",
+      "expected_output": "Keeps those controls outside Product Harness doctrine. Harnesses expose runnable observation surfaces that the active execution context can choose and compose. Cost, security, production access, or irreversible-effect limits remain environment policy, not a universal repair loop."
     },
     {
       "id": 3,
-      "prompt": "Review a retired Harness Route that was replaced by final product UI and regression tests.",
-      "expected_output": "Requires replacement evidence or recorded remaining_gaps before retirement; keeps raw run artifacts out of durable docs unless summarized or redacted; preserves trace refs."
+      "prompt": "Audit a harness plan that uses fixture data and one browser screenshot as proof that a payment fact was accepted and the real provider executed exactly once.",
+      "expected_output": "Rejects the overclaim, distinguishes fixture/fake/browser observations from backend materialization and real-provider behavior, and records only the supported browser conclusion with adjacent behavior in not_proven."
+    },
+    {
+      "id": 4,
+      "prompt": "A Harness Route has been replaced by final product UI and stable regression commands. Decide how to retire it.",
+      "expected_output": "Updates discovery and coverage links, preserves only durable summarized evidence that still matters, removes obsolete executable surfaces, and does not treat Harness retirement as product-capability completion."
     }
   ]
 }

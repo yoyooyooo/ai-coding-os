@@ -1,0 +1,28 @@
+{
+  "skill_name": "effect-api-app-kit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Plan and atomically add a P2 Orders slice with Postgres, an external risk-score capability, and HTTP transport to apps/api. Do not infer product rules.",
+      "expected_output": "Reads an explicit Change Spec, generates semantic flat P2 files, keeps provider output as Candidate, creates public/wiring surfaces, stages the complete patch, updates managed registry/manifest atomically, and reports structural rather than compile/HTTP evidence unless project commands run.",
+      "files": [],
+      "expectations": [
+        "Preflight completes before source writes.",
+        "P2 differs semantically from P0/P1.",
+        "Provider live implementation is behind an application-owned port.",
+        "Failure rolls back all affected managed/source files."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The managed registry was edited by hand. Add another slice.",
+      "expected_output": "Detects managed drift and refuses apply until verify/repair resolves it; it does not overwrite the registry silently.",
+      "files": [],
+      "expectations": [
+        "Managed hash drift is an error.",
+        "Project-owned source is not silently regenerated.",
+        "Repair only rebuilds managed files from a valid manifest."
+      ]
+    }
+  ]
+}

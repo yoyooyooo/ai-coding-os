@@ -203,7 +203,7 @@ rejected_alternatives:
 - Global proof modality enum: rejected because existing proof ladder and harness vocabularies already own proof levels.
 - Token naming DSL: rejected because checker cannot honestly parse proof semantics from token names.
 - Ready gate formula rewrite: rejected because semantic coverage failure should trigger goal-contract repair or completion stop, not a sixth phase.
-- Default mandatory matrix for every Goal Pack: rejected because it violates strong-agent optimistic workflow and overburdens small goals.
+- Default mandatory matrix for every Goal Pack: rejected because it adds no proof value for small goals and makes the method disproportionate.
 - Natural-language semantic checker: rejected because it overclaims CLI capability.
 
 ### Freeze Record

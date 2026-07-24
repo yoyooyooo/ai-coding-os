@@ -1,0 +1,12 @@
+id: typescript-node
+version: 1
+requires:
+  - monorepo-core
+provides:
+  - TypeScript semantic filename patterns
+  - public/wiring import guidance
+  - package exports and deep-import checks
+  - host entrypoint naming
+rules:
+  - use-case and policy do not import live infrastructure
+  - package does not import app internals

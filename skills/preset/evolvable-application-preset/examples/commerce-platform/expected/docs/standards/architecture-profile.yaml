@@ -1,0 +1,33 @@
+schema_version: 1
+preset:
+  id: evolvable-application
+  version: 1.0.0-experimental.1
+  mode: resolved-snapshot
+profiles:
+- agent-entry
+- monorepo-core
+- typescript-node
+- react
+- effect
+- effect-httpapi-v4
+- verification-core
+- headless-product-harness
+- ui-product-harness
+decisions:
+  repository_mode: monorepo
+  backend_module_style: private-capability-module-first
+  source_layout: bounded-semantic-flat
+  package_promotion: pressure-driven
+  deployable_promotion: pressure-driven
+resolved_standards:
+  source_topology: ./source-topology-and-naming.md
+  vocabulary: ./naming-vocabulary.yaml
+  verification_policy: ./verification-policy.md
+enforcement:
+  architecture_check: pnpm architecture:check
+  verify_affected: pnpm verify:affected
+exceptions:
+- id: next-app-router-files
+  scope: apps/web/src/app/**
+  reason: Next.js-controlled filenames
+  adr: ../adr/0002-next-app-router.md

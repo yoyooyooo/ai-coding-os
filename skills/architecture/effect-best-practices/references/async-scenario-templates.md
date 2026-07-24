@@ -59,7 +59,7 @@ Effect capability + Layer
   -> React renders and dispatches
 ```
 
-Frontend state ownership remains defined by `frontend-architecture`; Effect owns
+Frontend state ownership remains defined by `$frontend-architecture`; Effect owns
 execution and resource semantics only.
 
 ## Test Harness

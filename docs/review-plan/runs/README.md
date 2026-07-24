@@ -17,4 +17,4 @@
 
 ## 最近运行
 
-- `2026-06-02-strong-agent-ready-gate-diff-review.md`：C-001 公共口径闭合评审 ledger；不拥有最终 SSoT、standard、completion evidence 或 implementation status。
+- `2026-06-02-goal-pack-ready-gate-diff-review.md`：C-001 公共口径闭合评审 ledger；不拥有最终 SSoT、standard、completion evidence 或 implementation status。

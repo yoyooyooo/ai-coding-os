@@ -1,130 +1,150 @@
 ---
 name: product-harness-system
 description: >-
-  Defines the shared Product Harness System for high-capability coding agents:
-  harness artifact types, claim ceilings, lifecycle, placement, coverage
-  matrix, and trace links across headless product proof and UI harness proof.
-  Use when designing a project-wide verification architecture, deciding where
-  harness components/routes/fixtures/scenarios/evidence belong, aligning
-  headless and UI harnesses, or planning reusable agent-driven proof surfaces.
+  Product harness architecture for discoverable scenarios,
+  fixtures/fakes/replays, proof surfaces, claim ceilings, coverage, and trace
+  across headless and UI harnesses. Use when a repository needs shared harness
+  vocabulary, lifecycle, or cross-surface verification design.
 ---
 
 # Product Harness System
 
-Use this skill to design the shared harness layer that lets agents prove product
-capabilities without confusing proof surfaces with product authority.
+Design a harness layer that makes product capabilities runnable, observable,
+composable, and discoverable without creating a second product authority.
 
-This skill owns cross-cutting harness doctrine. It does not own concrete
-headless commands or concrete frontend tests.
+> **Harnesses expose observations; project authority gives them meaning.**
 
-## Collaboration Contract
+## Ownership
 
 ```text
-Owns: shared harness artifact vocabulary, trace spine, lifecycle,
-claim_ceiling, Harness Coverage Matrix, gaps, and placement rules.
-Does not own: product truth, concrete CLI/xtask/smoke code, concrete React /
-router / Playwright code, Goal Pack evidence records, or docs-layer authority.
-Inputs: capability refs, desired claim, proof surfaces, fixture/seed needs,
-headless/UI proof refs, and evidence refs.
-Outputs: Harness Scenario, Harness Fixture/Seed, Harness Surface, Harness
-Coverage Matrix, claim_ceiling, not_claimed, not_proven, gaps, and placement
-guidance.
-Handoff: unnamed user-facing capability -> interface capability
-workflow; command proof -> headless harness workflow; browser-visible proof ->
-UI harness workflow; docs-layer decision -> governance workflow; multi-evidence record
-execution -> goal flow.
-Stop: continuing needs product truth, public API/schema/protocol,
-security/private-data, destructive behavior, docs authority, or claim_ceiling
-choice.
+Owns:
+  shared Harness vocabulary
+  scenario and proof-surface discovery
+  fixture/fake/replay distinctions
+  cross-headless/UI trace and coverage
+  descriptive claim ceilings
+  harness asset lifecycle
+
+Adjacent owners:
+  command, DB, replay, recovery proof -> $headless-product-harness
+  component and browser proof -> $ui-product-harness
+  concrete frontend test lane -> $frontend-test-system
+  fact authority -> $evolvable-application-architecture
+  docs placement -> $docs-governance
 ```
+
+Product truth, concrete runners, active execution state, and completion decisions
+remain outside this skill.
 
 ## Core Model
 
 ```text
 Product Capability
-  -> InterfaceCapability when user-facing behavior is involved
   -> Harness Scenario
-  -> Harness Fixture / Seed
-  -> Headless Product Harness and/or UI Harness Surface
-  -> Harness Evidence
-  -> Coverage / Gap / Promotion decision
+  -> Fixture / Fake / Replay when needed
+  -> Headless and/or UI Harness Surface
+  -> structured observations
+  -> supported conclusion + not_proven
 ```
 
-Official terminology is `Harness`. Use `Harness Coverage Matrix` when describing
-grid-like coverage; do not introduce metaphorical names as formal terms.
-
-## Quick Start
-
-1. Identify the capability and the strongest claim the user wants.
-2. Split product facts from interface consumption:
-   - product facts -> `headless-product-harness`;
-   - frontend state/render/browser proof -> `ui-product-harness`.
-3. Define shared artifacts: scenario, fixture/seed, surface, evidence, and trace
-   links.
-4. Pick lifecycle state: `candidate`, `accepted`, `regression`, or `retired`.
-5. Write `claim_ceiling`, `not_claimed`, and `not_proven` before implementation.
-6. Place durable trace in project docs or a Goal Pack companion only when
-   traceability matters.
-
-Read:
-
-- [Artifact Model](references/artifact-model.md)
-- [Lifecycle And Placement](references/lifecycle-and-placement.md)
-- [Claim Ceilings](references/claim-ceilings.md)
-- [Trace Contract](references/trace-contract.md)
-
-## Ownership
-
-This skill owns:
-
-- shared harness artifact vocabulary;
-- cross-layer trace from capability to proof and evidence;
-- lifecycle states and promotion/retirement policy;
-- `claim_ceiling`, `not_claimed`, and `not_proven` discipline;
-- placement rules for harness docs, runtime support code, and evidence.
-
-This skill does not own:
-
-- product truth, domain facts, API schemas, or database state;
-- concrete CLI/xtask/smoke command design;
-- React, router, Playwright, or `agent-browser` implementation details;
-- Goal Pack state, evidence records, or completion review lifecycle.
-
-## Routing
-
-- Use `interface-capability-planning` before this skill when the user-facing
-  capability contract is not yet named.
-- Use `headless-product-harness` for command surfaces, fixture/replay ladders,
-  boundary checks, storage/runtime proof, and product-fact evidence.
-- Use `ui-product-harness` for interface-headless tests, Harness Components,
-  Harness Routes, browser-visible proof, and frontend adapter discovery.
-- Use `docs-governance` for docs-layer authority and retained-evidence
-  placement.
-
-## Coverage Cell Promotion
-
-Harness Coverage Matrix cells may move during rolling Goal execution, but a
-cell status change must carry a small promotion packet:
+The portable Harness vocabulary and Descriptor/Result schemas are provided by
+`$ai-coding-os-suite-contracts`. This Skill owns their product-proof semantics;
+the contracts Skill makes the machine-readable forms independently discoverable.
 
 ```text
-cell_id
-from_status
-to_status
-evidence_refs
-positive_tokens
-not_claimed
-not_proven
-promotion_gate
-next_gap
+fixture  static deterministic input
+fake     deterministic behavioral replacement through an explicit proof boundary
+replay   recorded normalized input sequence
+driver   action issuer through a formal boundary
+probe    read-only observer
+harness  runnable observation surface
 ```
 
-`planned` and `candidate` mean a route exists; they do not prove coverage.
-Only promote a cell when command/test/browser evidence proves the cell's own
-claim ceiling. If evidence proves only a lower level, keep the stronger cell as
-`gap` or `planned`.
+Guarded labels such as `mock`, `smoke`, `e2e`, `integration`, or `complete`
+carry a boundary and claim ceiling whenever used.
 
-## Stop / Ask
+## Harness Pass
 
-Ask only when continuing would change product truth, public protocol/API/schema
-posture, security/private-data rules, destructive behavior, or the desired
-claim_ceiling. Missing harness detail is implementation scope.
+| Step | Completion criterion |
+| --- | --- |
+| Ground | The bounded product capability, current property, project authority, and existing descriptors/commands are identified. |
+| Discover | Existing proof surfaces are reused where they observe the required property without bypassing production boundaries. |
+| Split | Headless, UI, and concrete frontend test lanes are separated only where their semantics differ. |
+| Add | The thinnest missing scenario, fixture, fake, replay, driver, probe, or harness exists; no empty artifact family is generated. |
+| Observe | Result output distinguishes `observed`, `supports`, and `not_proven`, and identifies fake/local/real dependencies. |
+| Retain | Descriptor, lifecycle, and coverage are persisted only when they improve future discovery or regression use. |
+
+A proof ladder is a menu: select the surface required by the property.
+
+## Descriptor and Result
+
+```yaml
+schema_version: 1
+id: order.checkout.retry
+capability: order.checkout
+surface: headless
+command: pnpm verify order.checkout.retry
+uses:
+  persistence: postgres
+  external_payment: fake
+can_observe:
+  - committed order version
+  - duplicate retry behavior
+does_not_cover:
+  - browser projection
+  - real payment provider
+claim_ceiling: local Postgres; one authority host; restart exercised
+```
+
+```yaml
+schema_version: 1
+harness: order.checkout.retry
+status: pass
+observed:
+  order_version_before: 7
+  order_version_after: 8
+  duplicate_version_after: 8
+supports:
+  - duplicate retry produced no second committed transition
+not_proven:
+  - concurrent multi-process retry
+  - real provider behavior
+```
+
+Add full provenance when evidence must survive a commit, execution context, CI
+run, release decision, or audit.
+
+## Lifecycle and Placement
+
+```text
+candidate   useful discovery surface
+accepted    stable for normal reuse
+regression  expected CI or release coverage
+retired     replaced or intentionally removed with trace updated
+```
+
+Business-specific harnesses stay near their module or feature. Cross-host,
+business-neutral primitives may enter an admitted testkit package. Generic
+discovery tooling belongs under `tooling/verification`; an independent app is
+justified only by a real host lifecycle.
+
+Project docs placement is governed by `$docs-governance`.
+
+## False-Proof Audit
+
+Check that the harness:
+
+- reaches the formal use case instead of a privileged DB writer;
+- reuses product policy rather than copying a second algorithm;
+- labels fake, replay, local, browser, and external surfaces accurately;
+- proves projection continuity rather than transport reconnection alone;
+- keeps assertions anchored to existing authority;
+- executes the product path before reporting success;
+- invalidates retained evidence when relevant surfaces change.
+
+## Read When Needed
+
+- Defining artifact roles: [Artifact Model](references/artifact-model.md)
+- Deciding retention or placement needs: [Lifecycle and Placement](references/lifecycle-and-placement.md)
+- Bounding conclusions: [Claim Ceilings](references/claim-ceilings.md)
+- Linking capabilities to surfaces: [Trace Contract](references/trace-contract.md)

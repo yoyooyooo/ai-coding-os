@@ -4,81 +4,70 @@
 
 ## Owns
 
-- 当前方法论对象的权威含义。
+- 当前方法对象的权威含义。
 - 顶层命名和字段语义。
-- 不应被 roadmap、Goal Pack 或 README 随意改写的事实。
+- 不应被 Roadmap、Goal Pack 或 README 静默改写的事实。
 
 ## Must Not Own
 
-- 迁移顺序。
-- 临时任务状态。
-- 历史讨论。
-- 未采纳提案。
+- 迁移顺序、临时任务状态、历史讨论或未采纳提案。
 
 ## Boundary
 
-本层只写“现在应被视为事实”的对象、术语和不变量。ADR 可以解释为什么采纳；
-standards 可以规定怎么执行；roadmap 可以说明何时迁移；Goal Pack 可以记录执行证据。
-这些层都不能静默改写本层事实。
-
-如果代码或测试和本层冲突，代码证据只能证明实际行为已经漂移，不能自动成为方法论事实。
-需要同步更新 SSoT / standards / ADR，或把差异记录为 gap。
+ADR 解释采用原因；Standards 规定执行方式；Roadmap 记录未来顺序；所选执行方法记录
+运行状态和证据。代码与测试能证明实际行为，不能静默重定义本层事实。
 
 ## Promotion / Demotion
 
-- 从 ADR、完成的 Goal Pack、roadmap gate 或 verified evidence 中抽取稳定事实时，promote 到本层。
-- 若本层内容退化为迁移计划、历史解释或执行状态，demote 到 roadmap、ADR、source 或 report。
-- 废弃事实必须删除或明确改写为历史来源，不能继续以当前事实语气保留。
+- 从 ADR、完成证据或 Roadmap gate 中抽取稳定事实时 promote 到本层。
+- 迁移计划、历史解释和执行状态分别 demote 到 Roadmap、ADR、source/report 或执行方法。
+- 废弃事实从当前口径移除；追溯依赖 Git history 或明确历史材料。
 
 ## 当前事实
 
-- 仓库定位是 AI Coding OS 方法套件仓：一组按 decision surface 分组的公开 skill、一个轻量入口 skill，以及仍以 `goal-proof` 发布的 Goal Pack CLI。
-- AI Coding OS 的第一准则是 `strong-agent optimistic workflow`：默认面向高智能 agent，方法系统提供边界、路由、proof path、evidence、claim discipline 和 stop signal，而不是弱模型防御式流程表。
-- Durable artifact 只有在帮助下一位 agent 执行、验证、审计、交接或降低 overclaim 风险时才应存在；不能用规划表面替代可运行或可检查的 proof path。
-- AI Coding OS 是方法论和 skill suite 品牌名；默认落地边界是 workspace/repo，不进入品牌名。
-- 默认用户入口是 `ai-coding-os`。它只路由和编排，不拥有持久 artifact。
-- 命名裁决由 [ADR: AI Coding OS 命名与边界](../adr/2026-05-28-ai-coding-os-naming-and-boundary.md) 固化。
-- `docs-governance` 独立公开，拥有文档分层、权威放置、cleanup 和 audit。
-- `agentic-architecture` 独立公开，拥有 AI agent 时代的底层架构公理、authority-first doctrine、Capability Port / Adapter、composition root、可替换性、agent freedom boundary 和 evidence gate。
-- `agentic-architecture` 是上游 architecture lens；它指导前端、Effect、harness、memory、provider / runtime 等具体方法的边界判断，但不拥有这些领域的实现细节。
-- `interface-capability-planning` 独立公开，拥有 UI/IA 交互能力合同、状态/数据归属、testability planning 和 harness handoff。
-- `product-harness-system` 独立公开，拥有通用 Harness artifact、生命周期、`claim_ceiling`、Harness Coverage Matrix 和 trace 规范。
-- `ui-product-harness` 独立公开，拥有 interface-headless、render wiring、browser-visible 和 production-near UI proof 方法的架构和 durable output 边界。
-- `frontend-test-system` 独立公开，拥有 frontend testing claim discovery、最小 proof lane、Playwright / agent-browser / Vitest / MSW / contract evidence packet 和 claim ceiling。
-- `headless-product-harness` 独立公开，拥有 headless proof command、smoke evidence、
-  fixture/replay，以及 headless command JSON / JSONL output shape。
-- `goal-proof` 独立公开，拥有 Goal Pack 目标计划、滚动执行和跨会话延续。
-- CLI / npm package 暂保留 `goal-proof` 命名。
-- Goal Pack 核心产物是 `goal.yaml`、`progress.yaml`、`evidence.jsonl`、`plans/<work_id>.md`；涉及 UI/IA/interaction trace 时可带 optional companion `interface-capabilities.yaml`；涉及 harness proof trace 时可带 optional companion `product-harness.yaml`。
-- `goal.yaml` 表示目标授权和 agent 对人类意图的可执行压缩。
-- `plans/<work_id>.md` 只在 `needs_plan` 高风险 slice 中存在。
-- 默认证据模式面向强 agent，不要求每一步机器级证明。
-- Goal Pack ready 必须由稳定 goal contract 加上已授权的 `proof_step` 构成；该
-  `proof_step` 必须能在 `claim_limit` 内产出或检查 `completion.required_evidence`。
-- Evidence envelope 是跨方法 claim discipline，由 SSoT / Goal Proof canonical 口径拥有：
-  positive evidence 必须绑定执行或检查路径，`not_claimed` 用于结构性限制相邻 claim，
-  未检查的相邻面应以叙事性的 `not_proven` 或 `remaining_gaps` 表达。
-- 在未同步升级 schema、template 和 checker 前，`changed surfaces` 与 `not_proven`
-  不是 v2 Goal Pack completion review 的正式字段。
-- Completion review 必须回扣 `completion.required_evidence`，并说明 `not_claimed` 与 `remaining_gaps`。
-- 当前 CLI、templates、skills、checker、tests、README 和 dogfood Goal Pack 主路径使用 v2 schema 口径。
+- 本仓是 AI Coding OS 方法套件、grouped Skill source 和 `goal-proof` CLI 源码仓。
+- 默认落地边界是 workspace/repo。
+- `$ai-coding-os` 是 user-invoked 薄路由，只选择知识和 execution surface，不拥有 durable artifact。
+- `$ai-coding-os-suite-contracts` 是可独立安装的跨 Skill precedence/handoff、共享词汇、文件模式和 Harness schema owner；它不保存静态 Skill 清单。
+- 项目 `AGENTS.md`、SSoT、Standards、ADR、contracts、源码和可执行证据优先于 Preset 与通用 Skill 默认值。
+- `$docs-governance` 拥有 docs layer、AGENTS.md entry、authority placement、cleanup 和 audit。
+- `$evolvable-application-architecture` 拥有 authority-first doctrine、事务、Capability Port / Adapter、composition root、Monorepo/source topology、迁移与可替换性。
+- `$frontend-architecture` 拥有前端状态、feature topology、host composition、contract evolution 和 realtime reconciliation。
+- `$effect-best-practices` 拥有 Effect Service/Layer/Scope/runtime、错误通道、资源生命周期和版本映射。
+- `$interface-capability-planning` 拥有 UI/IA 能力合同、surface、状态/数据归属与 proof handoff。
+- `$product-harness-system` 拥有共享 Harness 词汇、descriptor/result、coverage、claim ceiling 与 lifecycle。
+- `$headless-product-harness`、`$ui-product-harness` 和 `$frontend-test-system` 分别拥有 headless、UI 和具体前端 test lane。
+- `$evolvable-application-preset` 是 Agent-guided 可复用默认来源；可按 surface 增量采用，应用后项目 resolved docs 与 AGENTS.md 成为当前权威。
+- `$effect-api-app-kit` 只实例化已确定的 Change Spec；结构验证不能替代项目真实编译或行为证据。
+- `$goal-proof` 是显式选择的可选执行方法；任务复杂度本身不触发 Goal Pack。
+- CLI/npm package 继续使用 `goal-proof`。
+- Goal Pack v2 主路径为 `goal.yaml`、`progress.yaml`、`evidence.jsonl` 和按需存在的 `plans/<work_id>.md`。
+- Goal Pack ready 需要稳定 contract 与能在 `claim_limit` 内产出或检查 required evidence 的 `proof_step`。
+- Evidence 结论不得超过实际执行或检查的 surface；相邻面用 `not_claimed`、叙事性 `not_proven` 或 remaining gaps 表达。
+- 真实 `evidence.jsonl` 保持 append-only。
+- 路由分支只在 `$ai-coding-os` 中维护；跨 Skill 合同按 `$ai-coding-os-suite-contracts` 发现，不使用 sibling path。
+- 本仓只维护 grouped Skill source，不生成 Flat 版本；每个 Skill 必须兼容独立、重排或扁平安装。
 
-## Priority
+## Authority Resolution
 
-默认冲突顺序：
+Authority is claim-scoped rather than one universal file order:
 
 ```text
-docs/ssot/**
-  -> docs/standards/**
-  -> docs/adr/**
-  -> code + tests + generated evidence
-  -> docs/protocols/** when the question is wire/schema compatibility
-  -> docs/interface-capabilities/**
-  -> docs/product-harness/**
-  -> docs/architecture/**
-  -> docs/roadmap/**
-  -> docs/goal-proof/**
+host instructions and repository AGENTS.md
+  -> adopted project authority for the claim
+     current facts -> docs/ssot/**
+     executable rules -> docs/standards/**
+     accepted tradeoffs -> docs/adr/**
+     wire compatibility -> project protocol/schema contract
+  -> executable reality for implementation claims
+     source, lockfiles, tests, command evidence
+  -> unadopted Preset source/candidate
+  -> specialist doctrine and router recommendation
 ```
+
+An adopted Preset output belongs to its project docs layer. It is not a second
+Preset authority. If project authority and executable reality disagree, record a
+stale-doc or implementation-drift conflict; do not silently rank one away.
 
 ## Read Next
 

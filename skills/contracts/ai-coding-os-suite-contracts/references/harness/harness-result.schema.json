@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Harness Result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "harness",
+    "status",
+    "observed",
+    "supports",
+    "not_proven"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "harness": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "fail",
+        "blocked",
+        "skipped",
+        "unstable-pass"
+      ]
+    },
+    "observed": {
+      "type": "object"
+    },
+    "supports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "not_proven": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "environment": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

@@ -70,10 +70,10 @@ An adapter is useful only when it:
 - includes common failure modes, not just an ideal directory tree;
 - says which pressure profiles do not need its advanced machinery.
 
-## Skill-Family Boundary
+## Cross-Skill Boundary
 
 When the ecosystem deserves a standalone specialization, define its ownership
 and handoff contract. Keep universal authority, transaction, migration, and
-evidence doctrine in `evolvable-application-architecture`; let the
+evidence doctrine in `$evolvable-application-architecture`; let the
 specialization own only domain- or technology-specific decisions. Add
 cross-skill selection evals so the new skill does not become a duplicate trigger.

@@ -1,77 +1,66 @@
 # Harness Artifact Model
 
-Use these artifact names across UI and headless proof so agents can trace claims
-without inventing project-specific vocabulary.
+Use a small shared language so Agents can discover and compose proof surfaces
+without creating a parallel product architecture.
 
-## Core Artifacts
+## Core concepts
 
 ```text
 Harness Scenario
-  Semantic proof story for one bounded capability.
+  bounded semantic proof story for one capability
 
-Harness Fixture / Seed
-  Deterministic input, backend seed, replay trace, mock server state, or browser
-  runtime fixture used by a scenario.
+Harness Fixture
+  static deterministic input or seed
 
-Headless Product Harness
-  Command, fixture/replay, adapter, projection, DB, or runtime proof that
-  establishes product facts without relying on UI.
+Harness Fake
+  deterministic behavioral replacement
 
-UI Harness Surface
-  Auxiliary interface used for frontend and browser proof. It may include
-  Harness Components, Harness Routes, stories, fixture selectors, and debug
-  panels.
+Harness Replay
+  recorded normalized input sequence
 
-Harness Component
-  Minimal component that consumes real frontend boundaries and exposes visible
-  pending/success/failure/recovery states. It is not final product UI.
+Harness Surface
+  runnable headless, interface-headless, render, browser, or external-runtime path
 
-Harness Route
-  Dev/test route such as `/__harness/<scenario>` that renders a UI Harness
-  Surface for browser proof. It must not enter formal product navigation.
+Harness Descriptor
+  discoverability record: command, surface, observations, exclusions
 
-Harness Evidence
-  Durable or inline evidence add of what ran, what passed, what was not proven, and
-  which claims remain forbidden.
+Harness Result
+  structured observations plus bounded supports and not_proven
 
 Harness Coverage Matrix
-  Coverage view that maps capability IDs to harness levels, evidence,
-  coverage status, and gaps.
+  optional durable view mapping capabilities to available surfaces and gaps
 ```
 
-## Trace Spine
+A driver or probe is introduced only when it is a real reusable role. A simple
+scenario may be one `<subject>.<case>.harness.ts` file.
 
-Default trace:
+## Trace spine
 
 ```text
 product capability id
   -> interface capability id when applicable
-  -> harness scenario id
-  -> harness surface / command id
-  -> evidence id
+  -> harness scenario/descriptor id
+  -> command/route/component/test
+  -> current observation/result or durable evidence reference
 ```
 
-Suggested ID prefixes:
+Suggested IDs remain optional:
 
 ```text
-ic.<domain>.<action>   InterfaceCapability
-hs.<domain>.<case>     Harness Scenario
-hr.<domain>.<case>     Harness Route
-hc.<domain>.<case>     Harness Component
-hf.<domain>.<case>     Harness Fixture
-uh.<domain>.<case>     UI Harness Evidence
-hp.<domain>.<case>     Headless Product Harness Evidence
+ic.<domain>.<action>
+hs.<domain>.<case>
+hr.<domain>.<case>
+hc.<domain>.<case>
+hf.<domain>.<case>
+hp.<domain>.<case>
+uh.<domain>.<case>
 ```
 
 ## Rules
 
-- Harness artifacts prove or support claims; they do not become product
-  authority.
-- UI Harness Surface may be long-lived test infrastructure, but it must not be
-  described as final UI.
-- Fixture data may support deterministic proof, but it must not be reported as
-  real business fact unless paired with a headless/product proof that establishes
-  the fact.
-- Keep scenario steps semantic. Avoid low-level selectors in trace artifacts.
-- Use canonical fields: `claim_ceiling`, `not_claimed`, `not_proven`, and
-  `status`. Do not introduce parallel claim-limit fields.
+- Harness artifacts support claims; they do not become product authority.
+- UI Harness Surfaces are proof infrastructure, not final UI.
+- Fixture data is not a real business fact.
+- Test steps remain semantic; low-level selectors stay in executable code.
+- Keep `observed`, `supports`, and `not_proven` distinguishable.
+- `claim_ceiling` is descriptive metadata, not an Agent permission gate.

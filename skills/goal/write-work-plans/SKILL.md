@@ -1,47 +1,35 @@
 ---
 name: write-work-plans
 description: >-
-  Writes plans/<work_id>.md for selected high-risk Goal Proof System work items.
-  Use through $goal-proof when a Goal Plan/Goal Pack work item needs pre-reviewed
-  execution structure because of broad transition, security, public
-  API/schema/protocol, irreversible data, strict multi-agent coordination, or
-  expensive rollback.
+  High-risk work-plan authoring for $goal-proof. Use when a selected Goal Pack
+  work item needs plans/<work_id>.md because execution changes a public
+  API/schema/protocol, irreversible data, security or permissions, a broad
+  transition, strict multi-agent sequencing, or an expensive rollback path.
 ---
 
 # Plan Required Phase
 
-This is an internal phase module for `$goal-proof`.
-
-It writes an implementation plan for a selected high-risk work item. It is not the
-normal path for rolling execution and not a second goal-planning workflow.
-
-Use this phase to make a selected work item reviewable before execution, not to
-create a prose goal document outside the Goal Pack. "Goal before go" means the
-Goal Pack contract and current proof step are stable before broad execution;
-"plan before risky work" applies only to selected high-risk work items.
-
-Default output:
+Write one reviewable implementation plan for a selected high-risk work item:
 
 ```text
 docs/goal-proof/goals/<goal-id>/plans/<work_id>.md
 ```
 
-The plan lives inside the Goal Pack by design. It is not a product spec, schema
-authority, goal contract replacement, phase authority, roadmap, or parallel
-workflow. The corresponding `progress.yaml` should set `next_action: needs_plan`,
-keep the selected work item as `status: active` or `blocked`, and reference
-`plan: plans/<work_id>.md` when the schema needs an explicit plan pointer.
-For related Goal Packs, the plan may cite `relations` as predecessor
-evidence, but it must not create a thread-owned lifecycle, stored graph, nested
-work item tree, or cross-pack state ownership.
+Use this phase through `$goal-proof`. The plan returns to the current proof step;
+it is neither a second Goal Pack nor a product or roadmap authority.
 
-## Use Only When
+## Admission
+
+Use a work plan when at least one condition materially changes execution:
 
 - transition or deletion has broad blast radius;
-- public API, schema, protocol, or persisted goal contract changes;
-- irreversible data, destructive action, credentials, permissions, or security;
-- multiple agents need strict sequencing or disjoint write-scope control;
-- a wrong first implementation would be expensive to unwind.
+- public API, schema, protocol, persisted contract, or command language changes;
+- data, credentials, permissions, security, or an external effect is hard to
+  reverse;
+- multiple agents require strict ordering or disjoint write scopes;
+- a wrong first implementation is expensive to unwind.
+
+Ordinary rolling work stays in `progress.yaml.proof_step`.
 
 ## Required Inputs
 
@@ -49,50 +37,42 @@ work item tree, or cross-pack state ownership.
 goal_pack
 goal.claim_limit
 progress.proof_step
-work item.objective
-work item.allowed_scope
-work item.checks
-work item.stop_if
+work_item.objective
+work_item.allowed_scope
+work_item.checks
+work_item.stop_if
 authority_refs
 ```
 
-Stop if any field listed in `agent_authority.requires_human_decision` would need to
-change.
+Protected fields stay unchanged; any required change routes to `$goal-contracts`
+or the human decision named by the contract.
 
-For schema, terminology, or command-language migrations, the plan should include
-an active-surface pass: skill bodies, references, templates, agents, evals,
-README/package docs, CLI help/flags, tests/fixtures, and active Goal Pack
-artifacts. It should also state the public-surface decision for renamed fields:
-rename now, keep a documented compatibility alias, or leave it as a
-`remaining_gaps` item instead of claiming it complete.
+## Planning Pass
 
-## Plan Shape
+| Step | Completion criterion |
+| --- | --- |
+| Admit | A concrete high-risk condition justifies a separate plan. |
+| Ground | Every required input and affected authority/public surface is identified. |
+| Sequence | Transitions, write scopes, compatibility bridges, rollback limits, and ownership handoffs are ordered without creating a second work tree. |
+| Verify | Each stage has a falsifiable check, expected evidence record, and first failure-inspection point. |
+| Cover | Schema/terminology changes include all active skills, references, templates, evals, docs, CLI, tests, fixtures, and active artifacts in scope. |
+| Handoff | `ready_for_run: true` only when `progress.yaml.proof_step` names the runnable next movement and all required plan review findings are resolved. |
 
-Use [REFERENCE.md](REFERENCE.md#plan-template) for the full template and
-[EXAMPLES.md](EXAMPLES.md) for an example. The plan must include verification,
-evidence record requirements, and handoff back to the run phase.
+For renamed public fields, record one decision per surface: rename now, retain a
+documented compatibility alias, or leave an explicit remaining gap.
 
-After writing or materially changing a high-risk work plan, route the plan
-through `$plan-optimality-loop` only when multi-reviewer / subagent review is
-explicitly requested by the user or required by the active Goal Pack / work
-plan. The output is not a loose comment list: the main agent must synthesize an
-adopted correction plan, apply accepted changes to `plans/<work_id>.md` and any
-bound proof-step text, and record review / planning evidence. Keep
-`ready_for_run: false` while unresolved findings remain.
-
-`ready_for_run: true` requires a falsifiable next proof step in `proof_step`. If the plan clarifies
-the missing evidence path, update or request an update to `progress.yaml.proof_step`
-before handing back to implementation. It also requires the rolling review gate
-to be passed when that optional gate has been explicitly enabled.
+Use [Reference](REFERENCE.md) for the full template and [Examples](EXAMPLES.md)
+for a worked plan. `plan-reviewer-prompt.md` is optional when the repository has
+selected an independent plan review.
 
 ## Output
 
 ```text
-implementation_plan:
-path:
-goal_pack:
-work item:
+implementation_plan
+path
+goal_pack
+work_item
 ready_for_run: true | false
-blocked_by:
+blocked_by
 next_phase: run | blocked
 ```

@@ -1,0 +1,333 @@
+schema_version: 1
+syntax:
+  segment_case: kebab-case
+  segment_separator: .
+  order:
+  - product-subject
+  - facet-or-operation
+  - responsibility
+  - implementation-qualifier
+  typical_semantic_segments: 2-4
+  review_over_semantic_segments: 5
+  note: Dots compress local semantics; they do not create isolation or authority.
+terms:
+  authority:
+    category: architecture
+    owner: evolvable-application-architecture
+    means: The rule or component with final power to accept and materialize a fact within a declared consistency domain and epoch.
+    does_not_mean:
+    - the only machine that may propose a change
+    - a folder or package by itself
+  command:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Authoritative intent requesting a controlled state transition.
+    does_not_mean:
+    - an accepted fact
+    - an arbitrary function call
+  command-context:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Explicit actor, correlation, request, time, deadline, and authorization context carried into a controlled command path.
+    does_not_mean:
+    - ambient process-global context
+    - unvalidated transport request
+  query:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: A read of an authoritative projection or state without creating accepted facts.
+    does_not_mean:
+    - a mutation hidden behind a read name
+  use-case:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: A controlled application path that authorizes, validates, transitions, and may commit accepted facts.
+    does_not_mean:
+    - generic service
+    - transport handler
+  workflow:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Cross-capability application orchestration that calls public commands/queries without owning other modules’ facts.
+    does_not_mean:
+    - a universal event bus
+    - automatic authority
+  policy:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Pure or explicitly contextual decision logic.
+    does_not_mean:
+    - database or transport orchestration
+  model:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Cohesive domain data and ordinary TypeScript behavior for a bounded subject.
+    does_not_mean:
+    - ORM record
+    - generic types bucket
+  projection:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: A read-oriented representation derived after accepted commit.
+    does_not_mean:
+    - the materialization authority
+    - optimistic local proposal
+  observation:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Non-authoritative input observed from an external, inferred, or asynchronous source.
+    does_not_mean:
+    - an accepted local fact
+  candidate:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: A normalized proposal awaiting a governed decision/materialization path.
+    does_not_mean:
+    - an accepted fact
+  receipt:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Typed evidence that an operation or external effect was accepted, attempted, or observed at a stated boundary.
+    does_not_mean:
+    - proof of every downstream physical outcome
+  event:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: A stable notification of an accepted change or explicitly named domain occurrence.
+    does_not_mean:
+    - a generic command bus message
+  port:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Application-owned contract for a genuine outer capability or replaceable boundary.
+    does_not_mean:
+    - an interface for every class
+  repository:
+    category: capability
+    owner: evolvable-application-architecture
+    means: Application-owned persistence capability for one bounded subject, expressed through explicit transaction and concurrency semantics.
+    does_not_mean:
+    - generic base repository for every object
+    - permission for callers to bypass a use case
+  transaction:
+    category: persistence
+    owner: evolvable-application-architecture
+    means: Atomic consistency boundary that commits accepted facts and required durable side records together.
+    does_not_mean:
+    - payment attempt
+    - cross-module workflow
+    - long-running external effect
+  idempotency:
+    category: persistence
+    owner: evolvable-application-architecture
+    means: Durable command/effect identity and replay behavior preventing duplicate accepted transitions at the declared boundary.
+    does_not_mean:
+    - provider exactly-once execution
+    - best-effort in-memory dedupe
+  contract:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Stable cross-boundary or public shape with explicit compatibility expectations.
+    does_not_mean:
+    - all local types
+  schema:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Runtime-decodable shape for untrusted or wire data.
+    does_not_mean:
+    - domain truth by itself
+  mapper:
+    category: responsibility
+    owner: evolvable-application-architecture
+    means: Pure conversion between explicitly named representations.
+    does_not_mean:
+    - business decision hiding in conversion
+  public:
+    category: boundary
+    owner: evolvable-application-architecture
+    means: Ordinary cross-module collaboration surface.
+    does_not_mean:
+    - host-only implementations
+    - wildcard barrel
+  wiring:
+    category: boundary
+    owner: evolvable-application-architecture
+    means: Host composition surface exposing constructors, live layers, or adapter factories.
+    does_not_mean:
+    - business module API
+  composition:
+    category: host
+    owner: evolvable-application-architecture
+    means: Assembly of selected implementations and resource graphs at an owned host boundary.
+    does_not_mean:
+    - product transition logic
+  config:
+    category: host
+    owner: evolvable-application-architecture
+    means: Validated host configuration and environment mapping.
+    does_not_mean:
+    - deep environment reads throughout the core
+  main:
+    category: host
+    owner: evolvable-application-architecture
+    means: Runnable host entrypoint.
+    does_not_mean:
+    - business logic owner
+  worker:
+    category: host
+    owner: evolvable-application-architecture
+    means: Long-running or queued host entry/adapter whose fact writes still pass through authority commands.
+    does_not_mean:
+    - automatic fact authority
+  migration:
+    category: evolution
+    owner: evolvable-application-architecture
+    means: Forward data or contract transformation with explicit source, target, and deletion/rollback limits.
+    does_not_mean:
+    - permanent compatibility bridge
+  outbox:
+    category: persistence
+    owner: evolvable-application-architecture
+    means: Durable post-commit delivery record written atomically with accepted facts.
+    does_not_mean:
+    - generic in-memory event emitter
+  inbox:
+    category: persistence
+    owner: evolvable-application-architecture
+    means: Durable receive/dedupe record for externally delivered messages.
+    does_not_mean:
+    - project planning inbox
+  client:
+    category: frontend
+    owner: frontend-architecture
+    means: Typed product capability gateway or facade, separate from React/query/store/view concerns.
+    does_not_mean:
+    - giant application service
+  store:
+    category: frontend
+    owner: frontend-architecture
+    means: Owner of local interaction state.
+    does_not_mean:
+    - remote projection mirror
+  realtime:
+    category: frontend
+    owner: frontend-architecture
+    means: Typed projection continuity, dedupe, gap detection, and reconciliation logic.
+    does_not_mean:
+    - transport construction
+    - business authority
+  view-model:
+    category: frontend
+    owner: frontend-architecture
+    means: Pure combination of projection and local interaction for a surface.
+    does_not_mean:
+    - wire DTO
+    - global state owner
+  page:
+    category: frontend
+    owner: frontend-architecture
+    means: Route/page container glue for feature capabilities.
+    does_not_mean:
+    - feature business core
+  surface:
+    category: frontend
+    owner: frontend-architecture
+    means: Harnessable UI boundary consuming a view model and callbacks.
+    does_not_mean:
+    - final visual approval by itself
+  live:
+    category: runtime
+    owner: effect-best-practices
+    means: A real runtime implementation selected by wiring/composition.
+    does_not_mean:
+    - currently enabled
+    - proof of production equivalence
+  fake:
+    category: harness
+    owner: product-harness-system
+    means: Deterministic behavioral replacement used through an explicit proof or test boundary.
+    does_not_mean:
+    - static fixture
+    - silent production fallback
+  layer:
+    category: runtime
+    owner: effect-best-practices
+    means: Effect dependency/resource construction value.
+    does_not_mean:
+    - business authority graph
+  runtime:
+    category: runtime
+    owner: effect-best-practices
+    means: Owned execution environment for a closed Effect dependency graph.
+    does_not_mean:
+    - process-global default singleton
+  scope:
+    category: runtime
+    owner: effect-best-practices
+    means: Lifetime boundary pairing acquisition and release.
+    does_not_mean:
+    - business transaction
+  scenario:
+    category: harness
+    owner: product-harness-system
+    means: Bounded semantic proof story for a product capability.
+    does_not_mean:
+    - a low-level selector script
+  fixture:
+    category: harness
+    owner: product-harness-system
+    means: Static deterministic input or seed material.
+    does_not_mean:
+    - mutable fake behavior
+    - real business fact
+  replay:
+    category: harness
+    owner: product-harness-system
+    means: Recorded and normalized input sequence executed again against a stated boundary.
+    does_not_mean:
+    - the source authority
+  driver:
+    category: harness
+    owner: product-harness-system
+    means: Reusable action issuer for a formal command, interface, or transport boundary.
+    does_not_mean:
+    - business transition implementation
+  probe:
+    category: harness
+    owner: product-harness-system
+    means: Read-only observer of outputs, state, resources, or diagnostics.
+    does_not_mean:
+    - a hidden writer
+  harness:
+    category: harness
+    owner: product-harness-system
+    means: Runnable, observable proof surface combining the minimum roles needed for a bounded claim.
+    does_not_mean:
+    - a second product architecture
+    - agent loop controller
+  result:
+    category: harness
+    owner: product-harness-system
+    means: Structured observation and bounded interpretation emitted by a harness run.
+    does_not_mean:
+    - automatic proof of unrelated surfaces
+qualifiers:
+  policy: Existing canonical qualifier first; a new durable qualifier is project-registered the first time it becomes part of a stable filename pattern.
+  host:
+  - browser
+  - server
+  - worker
+  transport:
+  - http
+  - webhook
+  - websocket
+  - sse
+  - cli
+  - consumer
+  implementation:
+  - live
+  - fake
+  - memory
+  - postgres
+  - generated
+  provider: Project-defined and registered under implementation_qualifiers, for example stripe or openai.

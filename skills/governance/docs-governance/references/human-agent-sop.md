@@ -7,28 +7,25 @@ prompts, and unverified claims.
 
 ```text
 human input
-  -> inspect current repo state
-  -> classify distance
-  -> place artifact in the right layer
-  -> freeze authority / evidence boundary
-  -> plan only the reachable slice
-  -> implement near
-  -> verify
-  -> report only proven claims
-  -> promote gaps into the next loop
+  -> inspect current repository authority and state
+  -> classify the information or change
+  -> route durable content to the right owner
+  -> implement and verify through repository-selected surfaces
+  -> report observations, supported conclusions, and unresolved uncertainty
+  -> update durable authority only when current truth actually changed
 ```
+
+This is a semantic map rather than a mandatory reasoning sequence. Planning,
+implementation, inspection, and verification may follow the order best suited
+to the work while preserving repository authority and evidence boundaries.
 
 ## Human Escalation Rule
 
 Escalate to a human only as a last resort. Missing implementation detail is not
-itself a blocker when the higher layers are clear.
-
-If objective, SSoT / standards, goal objective, claim_limit, allowed write
-scope, and falsifiable evidence intent are clear, the agent should fill missing
-harness, bridge, command wrapper, local test, report, index, or queue plumbing as
-part of the current goal. This applies during planning as well as
-implementation: a planning gap usually means create the thinnest bridge or
-readiness artifact, not stop for a human.
+itself a blocker when the current authority, allowed write scope, and
+falsifiable verification intent are clear. The Agent should create the thinnest
+missing harness, bridge, command wrapper, local test, report, index, or queue
+plumbing that the work genuinely requires.
 
 Mark work blocked and ask for a human / higher-authority decision only when one
 of these is true:
@@ -64,10 +61,8 @@ Treat user input as one of:
 - `proposal`: shaped candidate with tradeoffs or open questions when the repo
   is not routing that candidate through `$goal-proof`.
 - `authority change`: SSoT, standard, ADR, protocol, or governance update.
-- `goal`: durable objective with evidence contract.
-- `goal-wave`: one launch intent that should execute several related ready
-  goals without human relaunch after each short goal.
-- `implementation`: chosen slice with files, tests, and claim_limit.
+- `execution-method-artifact`: tracker, spec, Goal Pack, or another explicitly adopted method artifact.
+- `implementation`: chosen change with files, verification surfaces, and an honest conclusion boundary.
 - `audit`: compare current repo against declared rules.
 - `cleanup`: delete, migrate, or retire old artifacts.
 
@@ -98,9 +93,9 @@ inspect current material
 New repositories are not a special workflow. They usually have fewer artifacts
 to classify, so convergence mostly creates thin layer README files and a small
 project-local `AGENTS.md` / docs router. Existing repositories follow the same
-loop but first assign docs-layer retention verdicts to current docs. For Goal
-Diffusion artifacts, use `$goal-proof` for method lifecycle and this skill
-for layer placement, indexing, retained evidence risk, and conflict behavior.
+loop but first assign docs-layer retention verdicts to current docs. For artifacts belonging to an explicitly adopted execution method, use that
+method for its internal lifecycle and this Skill for layer placement, indexing,
+retained-evidence risk, and conflict behavior.
 
 When baseline docs are missing, create only the minimum host-appropriate
 structure needed for future agents to route work:
@@ -317,40 +312,46 @@ Do not use it as a second source of Goal Pack progress truth.
 Do not use a roadmap, proposal directory, Goal Proof System inbox, or
 method-specific queue as a generic planning backlog.
 
-## 4. Gate Implementation
+## 4. Make Work Legible Without Controlling The Agent
 
-Implementation may start only when the agent can name:
+Before durable implementation, the Agent should be able to discover enough
+repository context to act honestly:
 
 ```text
-objective
-non_goals
-authority_refs
-chosen_slice
-harness_pack
-claim_limit
-verification_commands
-stop_rules
+objective or requested change
+relevant authority refs
+chosen product slice
+allowed write/security boundaries
+available verification surfaces
+public or durable compatibility constraints
 ```
 
-If these are missing, route to planning or gap discovery. If the target is far
-from current reality, produce a gap map, bridge ladder, prerequisite goal, or
-first proof path instead of fabricating a work item list.
+These are discovery needs rather than a mandatory form or fixed execution state
+machine. Infer and refine them from repository authority while working. Ask
+only when unresolved ambiguity changes product meaning, fact authority, public
+compatibility, permissions, privacy, or irreversible behavior.
 
-## 5. Implement With Rolling Freedom
+If a project uses a tracker, Goal Pack, spec, or another execution method, that
+method may impose its own durable fields. Docs Governance does not make one
+method universal.
 
-Implementation plans are not perfect. The executor may adapt exact steps when
-new evidence appears, but may not:
+## 5. Preserve Agent Freedom And Durable Boundaries
 
-- lower the evidence standard;
-- change the objective;
-- expand the write scope silently;
-- claim completion without the named checks;
-- bury new authority changes inside code only.
+The Agent may adapt exact steps, verification depth, and implementation shape as
+new evidence appears. Governance should not prescribe fixed attempt counts,
+model roles, diff-size budgets, or one mandatory planning sequence.
 
-Small discovered gaps can be patched into the implementation artifact. Larger
-gaps should be promoted back into a brief, proposal, standard, ADR, SSoT change,
-or method inbox item when they are not yet evaluable but worth preserving for a
-future planning loop.
+The Agent still must not:
+
+- silently change current product authority or public contracts;
+- hide a new long-lived rule only in code when project standards/SSoT must change;
+- report evidence stronger than the exercised surface;
+- move active progress into Roadmap or Reports as a second truth;
+- retain duplicate current documentation homes.
+
+Small missing bridges, harnesses, indexes, or checks can be created directly when
+their meaning follows from current authority. Preserve a future candidate only
+when it has durable navigation value.
 
 ## 6. Report Evidence
 
@@ -391,7 +392,7 @@ for:
 When a repository explicitly adopts Goal Proof System for a candidate stream,
 use `$goal-proof` for its method-internal Goal Pack, progress, evidence and
 completion lifecycle. That choice is optional and must not be inferred merely
-because `docs-governance` is in use.
+because `$docs-governance` is in use.
 
 The handoff boundary is artifact-based. Do not rely on conversation memory as
 the only carrier of scope.

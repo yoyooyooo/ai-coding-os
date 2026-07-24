@@ -338,16 +338,16 @@ W1 不新增 `goal-proof dag`。
   - 新增 top-level `dag` command。
   - `--thread <id>` 在 MVP 中 required。
   - 支持 `--json`。
-- `packages/cli/src/render-goal-dag.ts`
-  - 新建 renderer。
+- Future candidate: packages/cli/src/render-goal-dag.ts（当前 CLI 尚未实现）。
+  - 预期新建 renderer。
   - 复用 goals root 解析、Goal Pack collection 和 relation check helper。
   - 只读取 selected thread。
   - 生成 `nodes`、`edges`、`ready_goal_ids`、`blocked_goal_ids`、`done_goal_ids`、
     `errors`、`warnings`。
 - `packages/cli/src/index.ts`
   - export DAG renderer / runner。
-- `packages/cli/test/goal-dag-cli.test.ts`
-  - Fermi-like fixture。
+- Future candidate: packages/cli/test/goal-dag-cli.test.ts（当前测试集尚未实现）。
+  - 预期包含 Fermi-like fixture。
   - JSON contract。
   - text output。
   - no-write assertion。

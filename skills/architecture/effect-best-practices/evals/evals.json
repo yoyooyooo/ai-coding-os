@@ -28,7 +28,7 @@
     {
       "id": 5,
       "prompt": "A React Query hook creates ManagedRuntime and provides the live Layer in every queryFn. Refactor the Effect integration only.",
-      "expected_output": "Moves Runtime/Layer construction to the host root and exposes a runtime-bound client while deferring Query/store topology to frontend-architecture.",
+      "expected_output": "Moves Runtime/Layer construction to the host root and exposes a runtime-bound client while deferring Query/store topology to $frontend-architecture.",
       "files": []
     },
     {

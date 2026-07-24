@@ -43,7 +43,7 @@ transport remains at the host/client boundary.
 Add Effect when typed errors, replaceable capabilities, structured concurrency,
 resource lifecycles, retry/timeout/cancel, or a shared Effect backend/client
 justify it. The app host owns the runtime. Feature APIs consume runtime-bound
-facades or dedicated React adapters. Load `effect-best-practices` for details.
+facades or dedicated React adapters. Load `$effect-best-practices` for details.
 
 ## Full Reference Combination
 

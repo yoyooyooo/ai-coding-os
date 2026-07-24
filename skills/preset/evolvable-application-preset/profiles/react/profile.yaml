@@ -1,0 +1,10 @@
+id: react
+version: 1
+requires:
+  - monorepo-core
+provides:
+  - client/query/store/realtime/view-model/page/surface vocabulary
+  - feature and host composition defaults
+rules:
+  - remote projection has one owner and is not mirrored into local store
+  - components render and dispatch; host roots construct live resources

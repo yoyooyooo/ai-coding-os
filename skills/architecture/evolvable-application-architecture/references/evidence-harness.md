@@ -1,10 +1,30 @@
 # Evidence Harness
 
-Architecture claims need evidence at the boundary they describe.
+Architecture should make important claims executable and observable. Harnesses
+provide discovery and observation surfaces; execution strategy remains with the
+active engineering context.
 
-## Evidence Ladder
+## Core distinction
 
-Use the smallest honest level:
+```text
+Harness execution
+  -> structured observations
+
+Agent interpretation against project authority
+  -> bounded supported conclusions
+
+unexercised adjacent properties
+  -> not_proven / not_claimed
+```
+
+The same Agent may execute and interpret. Keep the epistemic distinction between
+what ran and what is inferred; do not require a separate verifier by default.
+
+## Evidence ladder
+
+Choose the smallest surface that can honestly test the current property. An
+Agent may enter at any appropriate level; this is a capability menu, not a fixed
+stage gate.
 
 ```text
 static dependency / visibility check
@@ -16,107 +36,110 @@ durable-store / restart proof
 transport, queue, and projection proof
 browser or interface proof
 real external adapter opt-in
-failure injection / chaos / partition proof
+failure injection / partition proof
 load, soak, and production-near smoke
 ```
 
 A lower level supports but does not prove a higher-level claim. Functional tests
 do not prove throughput, privacy, crash safety, or replaceability.
 
-## Evidence Envelope
+## Lightweight contracts
 
-Capture:
+`$ai-coding-os-suite-contracts` provides optional portable Harness Descriptor
+and Result schemas. Load them by Skill name rather than assuming a sibling path.
 
-```text
-claim
-proof_path
-commands_or_scenarios
-positive assertions or evidence tokens
-authority checked
-consistency and transaction boundary checked
-adapter/profile and capability version
-restart/replay/idempotency result
-ordering/backfill/reconciliation result
-redaction/privacy result
-load/failure envelope when claimed
-not_claimed
-not_proven
-next_gap
+A normal local result may be as small as:
+
+```yaml
+harness: order.checkout.retry
+status: pass
+observed:
+  order_version_before: 7
+  order_version_after: 8
+  duplicate_version_after: 8
+supports:
+  - duplicate retry did not create a second committed transition
+not_proven:
+  - multi-process contention
+  - real provider behavior
 ```
 
-Use `not_claimed` for adjacent capabilities outside intended scope. Use
-`not_proven` when the property should hold but was not checked.
+Add commit, lockfile, fixture, scenario, runtime, and artifact provenance only
+when evidence must survive across Agents, commits, release decisions, audit, or
+high-risk operation.
 
-## Boundary Checks
+## Boundary checks
 
-Mechanically enforce high-value rules where possible:
+Mechanically enforce durable edges where useful:
 
 - forbidden imports/dependencies;
 - public mutable state access;
-- adapter dependence on infrastructure internals;
+- core dependence on provider SDKs or ORM records;
 - transport access to authority persistence;
-- core dependence on vendor SDKs;
-- composition-root fact writes;
+- composition-root product writes;
 - direct UI mutation of product authority;
+- fake implementation in production composition;
 - stale authority-epoch writes;
 - test-only APIs exported in production;
 - legacy bridge callers after cutover.
 
-## Conformance Suites
+Use hard errors for durable violations. Use warnings when a universal rule would
+replace sound engineering judgment with style enforcement.
 
-Each replaceable capability should have contract tests for applicable behavior:
+## Conformance suites
 
-```text
-normalized output
-error taxonomy
-deadline and cancellation
-idempotency / retry / duplicate receipt
-capability reporting and version negotiation
-redaction and privacy
-fallback or explicit rejection
-restart and replay
-unknown-outcome and reconciliation
-```
-
-Run fake/replay plus at least one realistic adapter path before claiming
-replaceability.
-
-## Distributed and Performance Claims
-
-For P3/P4 slices, test the failure shape, not only the happy path:
+A replaceable capability may need shared behavior checks for:
 
 ```text
-crash before and after commit
-late duplicate delivery
-reordering and gaps
-network timeout after send-started
-leader/lease change
-partial dependency outage
-hot partition and backpressure
-restart with pending work
+normalized output and error taxonomy
+deadline, cancellation, retry, idempotency
+capability/version reporting
+redaction/privacy
+restart/replay
+unknown outcome and reconciliation
+explicit rejection of unsupported features
 ```
 
-A benchmark must state dataset, concurrency, topology, hardware/profile,
-duration, percentile, error budget, and saturation behavior. Do not translate an
-architectural absence of global locks into an unsupported throughput claim.
+Run a deterministic fake/replay and at least one realistic adapter path before
+claiming behavioral replaceability.
 
-## Harness Boundary
+## Negative controls
 
-Harnesses may seed through supported fixture/setup paths, drive interfaces,
-replay traces, and collect evidence. They should not create accepted facts
-through a privileged alternate path when the claim concerns production
-materialization.
+Negative controls are a high-value technique, especially for authorization,
+idempotency, recovery, dedupe, cursor gaps, and version conflicts. The harness
+framework itself should prove that it can fail. Do not mechanically require a
+mutation test for every simple pure function.
 
-Move smoke-only builders, proof report construction, and test fixtures out of
-production application APIs when they begin to define a second architecture.
+## Isolation matches the claim
 
-## Deletion Proof
+```text
+pure function claim          -> ordinary process-local test may be enough
+resource cleanup claim       -> owned Scope/lifecycle needed
+restart durability claim     -> real persistence plus restart needed
+browser reload claim         -> real browser context needed
+cross-request isolation      -> multiple requests/instances needed
+```
+
+Clean-room ceremony is not universal; isolation is a proof condition.
+
+## Harness boundary
+
+Harnesses may seed through supported fixture/setup paths, drive formal
+interfaces, replay traces, and collect observations. They must not create
+accepted facts through a privileged alternate path when the claim concerns
+production materialization.
+
+Do not copy a second business algorithm into test utilities. Do not report fake,
+replay, headless, render, or local production-near evidence as a stronger real
+surface than actually exercised.
+
+## Deletion proof
 
 A migration is incomplete until evidence shows:
 
-- all intended callers use the new path;
-- old writes are impossible or fenced;
-- restart and idempotency pass on the new path;
+- intended callers use the new path;
+- old writes are fenced or impossible;
+- restart and idempotency pass on the new path when claimed;
 - projections/backfill agree within the stated ceiling;
 - bridge dependencies are zero;
-- old code and schema paths are deleted or explicitly retained.
+- old code/schema paths are deleted or explicitly retained.

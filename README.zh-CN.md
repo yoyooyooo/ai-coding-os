@@ -4,59 +4,55 @@
 
 # AI Coding OS
 
-AI Coding OS 是一套面向高智能 agent 的 AI coding 方法论和 skill suite。
-它默认相信模型能力会持续进化，所以系统不把 agent 当弱执行器，也不把
-agent 锁进防御式流程表格。它提供的是边界、路由、验证路径和 claim 标准。
-它把人类意图推进为有证据支撑的 workspace 状态变化：形成 goal contract，
-找到当前 `proof_step`，追加 evidence，并把 evidence 归约成下一步状态。
+AI Coding OS 是一套按 decision surface 分组的 AI coding 方法与 Skill Suite。
+它为 repository/workspace 工作提供薄用户路由、项目文档权威、可演进架构、界面能力、
+Product Harness、可选 Goal Pack 方法、可复用 Preset 和确定性生成工具。
 
-默认落地边界是 workspace：一个 repo、一个产品表面、一组 docs、一个目标流。
-这套方法可用于 MVP、功能、迁移、重构、排障、审计、研究、文档治理和工具建设。
-
-默认入口是 `$ai-coding-os`。它不拥有持久 artifact，只负责把工作路由到
-Agentic Architecture、Goal Proof System、Docs Governance、Effect Best
-Practices、Interface Capability Planning、Product Harness System、UI Product
-Harness、Frontend Test System、Headless Product Harness，或一轮内 inline 实施。
+默认落地边界是 workspace/repo。跨域或入口不明确的工作使用 user-invoked
+`$ai-coding-os`；边界明确时直接使用拥有该决策面的专业 Skill。
 
 ## 核心原则
 
 ```text
-高智能 agent 优先
-目标和边界清楚
-proof path 可运行
-evidence 支撑 claim
-gap 显式留下
+project authority 优先
+一个决策面一个主 owner
+proof surface 与 claim 匹配
+observed / supports / not_proven 分离
+Preset 只生成 resolved snapshot
+跨 Skill 依赖使用 `$skill-name`，不依赖安装目录
+结构化 artifact 按长期价值创建
 ```
 
-这不是形式化证明系统。默认口径是 strong-agent optimistic workflow：相信 agent
-能自主推进，但要求它在 evidence、not_claimed、stop signal 和 completion claim 上诚实。
+这不是形式化证明系统，也不规定唯一执行流程。架构和治理约束 durable semantics；
+当前任务依据项目权威、风险和可用验证面决定实施策略。
 
 ## Skill Suite
 
-多数用户只需要从 `$ai-coding-os` 进入。进阶用户可直接点名某个方法或阶段 skill。
-
 | Group | Skill | 作用 |
 | --- | --- | --- |
-| `router/` | `ai-coding-os` | 用户入口、意图路由、inline-vs-durable 判断 |
-| `goal/` | `goal-proof` | Goal Pack、goal contract、proof step、evidence chain、completion review |
-| `goal/` | `goal-contracts` | 创建或修复 `goal.yaml` |
-| `goal/` | `finding-proof-step` | 寻找可证伪的 `proof_step` |
-| `goal/` | `proof-step-implementation` | 执行、验证、添加 evidence、apply progress |
-| `goal/` | `write-work-plans` | 为高风险 work item 写 `plans/<work_id>.md` |
-| `governance/` | `docs-governance` | docs layer、SSoT、standards、ADR、roadmap、cleanup、audit |
-| `architecture/` | `agentic-architecture` | AI agent 时代的底层架构公理、authority、Capability Port / Adapter、composition root、可替换性和 evidence gate |
-| `architecture/` | `frontend-architecture` | TypeScript 前端架构、依赖方向、命名语义、React/Effect/Query/Store 分层和 harness-ready 边界 |
-| `architecture/` | `effect-best-practices` | Effect TypeScript Service/Layer/Scope/runtime、错误通道、资源生命周期和 v4/v3 迁移差异 |
-| `capability/` | `interface-capability-planning` | UI/IA、InterfaceCapability、surface、state/data ownership、harness handoff |
-| `harness/` | `product-harness-system` | harness artifact model、`claim_ceiling`、Harness Coverage Matrix、trace lifecycle |
-| `harness/` | `ui-product-harness` | interface-headless、render wiring、browser-visible、production-near UI proof |
-| `harness/` | `frontend-test-system` | frontend claim discovery、最小 test lane、Playwright / agent-browser / Vitest / MSW / contract 证据包 |
-| `harness/` | `headless-product-harness` | proof command、smoke、fixture/replay、headless command JSON/JSONL output shape |
+| `router/` | `$ai-coding-os` | user-invoked 薄路由；选择 Lead/Supporting Skill |
+| `contracts/` | `$ai-coding-os-suite-contracts` | 可独立安装的跨 Skill 协作、共享词汇与 Harness schema |
+| `goal/` | `$goal-proof` | 显式采用时的 Goal Pack、proof step、evidence 和 completion review |
+| `goal/` | `$goal-contracts` | 创建或修复 `goal.yaml` |
+| `goal/` | `$finding-proof-step` | 寻找可证伪的 `proof_step` |
+| `goal/` | `$proof-step-implementation` | 执行、验证、追加 evidence、归约 progress |
+| `goal/` | `$write-work-plans` | 为选中的高风险 work item 写 `plans/<work_id>.md` |
+| `governance/` | `$docs-governance` | docs layer、AGENTS.md、authority placement、cleanup、audit |
+| `architecture/` | `$evolvable-application-architecture` | authority、事务、端口、组合根、Monorepo/source topology、迁移与可替换性 |
+| `architecture/` | `$frontend-architecture` | 前端状态权威、feature topology、host composition、realtime reconciliation |
+| `architecture/` | `$effect-best-practices` | Effect Service/Layer/Scope/runtime、错误、资源与版本映射 |
+| `capability/` | `$interface-capability-planning` | UI/IA、InterfaceCapability、surface、state/data ownership、proof handoff |
+| `harness/` | `$product-harness-system` | 共享 Harness 词汇、descriptor/result、coverage、claim ceiling、lifecycle |
+| `harness/` | `$headless-product-harness` | capability command、fixture/replay、DB/restart、boundary proof |
+| `harness/` | `$ui-product-harness` | interface-headless、render wiring、browser-visible proof |
+| `harness/` | `$frontend-test-system` | 具体前端 test lane 与 runner 选择 |
+| `preset/` | `$evolvable-application-preset` | Agent 发现并选择性采用可复用默认值，产出项目拥有的 snapshot |
+| `tooling/` | `$effect-api-app-kit` | 从已确定 Change Spec 原子生成 Effect API capability slice |
 
-## 状态变化模型
+## Goal Proof 状态变化模型
 
-正式主线是 intent-to-evidence state transition。Goal Diffusion 只保留为这条
-主线的隐喻：粗目标通过更小、更清楚、已验证的状态逐步变清晰。
+`$goal-proof` 是显式选择的可选 durable execution method。采用后，目标通过
+intent-to-evidence state transition 推进：
 
 ```text
 human intent -> goal contract -> proof_step -> evidence -> next_action
@@ -83,7 +79,7 @@ human intent -> goal contract -> proof_step -> evidence -> next_action
 
 ## Goal Proof System
 
-Goal Proof System 是 OS 的长期目标载体。
+Goal Proof System 是 Suite 中可选的长期目标载体。
 
 ```text
 human intent
@@ -178,6 +174,9 @@ npx skills add https://github.com/yoyooyooo/ai-coding-os -g --agent codex --skil
 ```
 
 仓库和 skill suite 名是 AI Coding OS。CLI 和 npm package 仍是 `goal-proof`。
+安装器可以重排或打平 Skill 目录：每个 Skill 的相对链接只指向自身文件，跨 Skill
+依赖通过 `$skill-name` 发现。共享合同的独立入口是
+`$ai-coding-os-suite-contracts`，不依赖本仓 grouped path。
 
 ## 使用
 
@@ -220,7 +219,7 @@ Headless proof：
 
 ```text
 使用 $headless-product-harness：
-设计最小 proof command、fixture/replay、headless command output envelope 和 not_claimed。
+设计最小 proof command、fixture/replay、headless command output envelope，并记录 `not_proven` gaps。
 ```
 
 Docs governance：
@@ -236,8 +235,22 @@ Docs governance：
 Architecture baseline：
 
 ```text
-使用 $agentic-architecture：
-检查 authority、Capability Port / Adapter、composition root、provider/runtime/memory/plugin 边界、可替换性和 evidence gate。
+使用 $evolvable-application-architecture：
+检查 authority、事务、Capability Port / Adapter、composition root、source topology、迁移与 claim ceiling。
+```
+
+Project Preset：
+
+```text
+使用 $evolvable-application-preset：
+基于已确定的技术选型和现有项目权威，发现最小 profile closure，增量采用兼容的 AGENTS/docs/check surfaces；renderer 仅作为可选原语。
+```
+
+Effect API scaffold：
+
+```text
+使用 $effect-api-app-kit：
+从已确认的 Change Spec plan/apply/verify 一个原子 capability slice。
 ```
 
 ## CLI 快速查看
@@ -290,10 +303,14 @@ packages/cli/                         TypeScript CLI，使用 Bun 构建
 skills/router/                        OS 入口和用户意图路由
 skills/goal/                          Goal Pack 方法和执行阶段
 skills/governance/                    文档层治理
-skills/architecture/                  Agentic / frontend / Effect architecture doctrine
+skills/architecture/                  application / frontend / Effect doctrine
 skills/capability/                    Interface capability planning
-skills/harness/                       Product、headless 和 UI harness guidance
-skills/README.md                      Skill suite 分组索引
+skills/harness/                       shared、headless、UI 与 frontend test guidance
+skills/preset/                        resolved project defaults
+skills/tooling/                       executable profiles and source audit
+skills/contracts/                     可独立安装的 AI Coding OS Suite contracts
+skills/examples/                      owner-local examples index
+skills/README.md                      grouped source 索引
 docs/                                 文档治理与方法论分层入口
 assets/                               README media
 ```
@@ -321,10 +338,13 @@ GitHub Actions 从 tag 发布 npm 包。AGS remote 可以继续用于局域网�
 
 ```bash
 bun install
+python3 -m pip install -r requirements-dev.txt
 bun run build
 bun run typecheck
 bun run test
 bun run check
+python3 skills/tooling/suite_audit.py --suite skills
+python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
 ```
 
 CLI 源码是 TypeScript。`bun build` 将 npm 包产物输出到 `packages/cli/dist/`。

@@ -1,0 +1,38 @@
+{
+  "skill_name": "evolvable-application-preset",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Adopt the Evolvable Application defaults in an existing pnpm monorepo that already has AGENTS.md. Preserve local instructions and do not make the project dynamically inherit future Preset versions.",
+      "expected_output": "Inspects existing authority, invokes $docs-governance only if docs homes are missing or disputed, maps the smallest compatible profile slice, preserves local AGENTS.md content, and verifies a scoped diff without requiring a full repository re-render.",
+      "files": [],
+      "expectations": [
+        "Treats project files as current authority after rendering.",
+        "Does not overwrite existing AGENTS.md wholesale.",
+        "Does not invent authority or product terms.",
+        "Uses a candidate-managed-file diff rather than dynamic inheritance or unrelated repository deletions."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Show me what the preset produces for a commerce monorepo with web, api, worker, Orders, Billing, Checkout workflow, and headless/browser verification.",
+      "expected_output": "Uses the commerce-platform golden fixture and explains the separation between AGENTS entry, Standards, SSoT, Architecture, ADR, Harness coverage, and project-specific overlay.",
+      "files": [],
+      "expectations": [
+        "Most reusable standards live in Preset profiles/templates.",
+        "Project facts remain in resolved project docs.",
+        "Example is an optional broad render fixture, not a required incremental-adoption shape or second standard."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We already chose a pnpm monorepo, React, Effect v4 HttpApi, and headless verification. Initialize the useful Preset parts without asking us to choose the stack again.",
+      "expected_output": "Treats the choices as settled, follows profile requirements to the smallest closure, rejects conflicting versions, discovers existing project authority, and adopts only useful missing or compatible surfaces. Renderer input files remain optional unless repeatability justifies them."
+    },
+    {
+      "id": 4,
+      "prompt": "This existing repository already has good SSoT and ADRs but lacks a naming standard and architecture check. Use the Preset incrementally.",
+      "expected_output": "Keeps project-owned SSoT and ADRs, selects only the compatible naming/check contribution plus required local context, avoids a full docs rewrite, and verifies the changed surfaces."
+    }
+  ]
+}

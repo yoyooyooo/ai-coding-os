@@ -1,0 +1,40 @@
+# Repository Agent Guide
+
+<!-- evolvable-application-preset:begin -->
+This repository adopts the profile declared in `docs/standards/architecture-profile.yaml`.
+
+Repository-local SSoT, standards, ADRs, contracts, source code, lockfiles, and executable evidence take precedence over generic Skill defaults.
+
+## Read First
+
+1. `docs/README.md`
+2. `docs/ssot/README.md`
+3. `docs/standards/README.md`
+4. `docs/standards/architecture-profile.yaml`
+5. `docs/standards/source-topology-and-naming.md`
+6. `docs/standards/naming-vocabulary.yaml`
+7. The nearest app/package/module README or local `AGENTS.md`
+
+## Working Rules
+
+- Reuse canonical project terms.
+- Respect public/wiring and fact-writer boundaries.
+- Prefer existing Harness surfaces and formal commands/queries.
+- Report observations, supported conclusions, and unproven surfaces separately.
+
+## Commands
+
+{{commands}}
+
+## Skill Routing
+
+Use `$ai-coding-os` for ambiguous or cross-cutting work when the Suite is available. Clear tasks may use the owning specialist directly. Skill guidance never overrides repository-local authority.
+
+## Language
+
+{{language_policy}}
+<!-- evolvable-application-preset:end -->
+
+## Repository-Specific Notes
+
+{{local_notes}}
