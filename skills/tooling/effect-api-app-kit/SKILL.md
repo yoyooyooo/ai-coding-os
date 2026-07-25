@@ -1,9 +1,10 @@
 ---
 name: effect-api-app-kit
 description: >-
-  Atomic Effect API scaffolding from an explicit Change Spec. Use after
-  architecture and Effect-version decisions are settled to inspect, plan,
-  apply, verify, or repair P0-P3 capability slices and managed registry state.
+  Atomic Effect API scaffolding from an explicit Change Spec. Use when settled
+  architecture and Effect-version decisions need a P0-P3 capability slice to
+  be inspected, planned, applied, verified, or repaired with managed registry
+  state.
 ---
 
 # Effect API App Kit
@@ -28,54 +29,31 @@ Owns:
   structural verification and repair
 
 Project owns:
-  product and fact authority
+  product decision authority and fact authority
   pressure selection
   transaction and public API semantics
   exact installed Effect surface
   dependency installation
   docs authority
   claims beyond executed commands
+
+Adjacent Suite owners, when installed:
+  product requirements and acceptance -> `$product-definition`
+  architecture and source-shape decisions -> `$evolvable-application-architecture`
+  Effect version and runtime constraints -> `$effect-best-practices`
+  reusable default adoption -> `$evolvable-application-preset`
 ```
 
 ## Change Spec
 
-```yaml
-schema_version: 1
-change:
-  id: add-order-create
-  operation: add-slice
-host:
-  path: apps/api
-  name: api
-slice:
-  module: orders
-  subject: order
-  operation: create
-  pressure: P1
-  persistence: postgres
-  effect_profile: installed
-http:
-  enabled: true
-external_capability: null
-verification:
-  commands:
-    - pnpm --filter api typecheck
-    - pnpm --filter api test
-```
-
-Shapes encode real semantic differences:
-
-```text
-P0  model + use case + public surface + focused test
-P1  command/context + transaction/idempotency/persistence ports
-    fake/live seam + expected version/receipt + wiring
-P2  external port + observation/candidate + provider adapter
-    materialization use case + conformance test
-P3  outbox/inbox/replay/recovery harness placeholders
-```
-
-Spec fields select files; the Kit does not generate a complete suffix set by
-symmetry.
+`plan` and `apply` consume the local
+[Change Spec schema](schemas/change-spec.schema.json). When authoring one, read
+the [worked example](examples/add-order-create.yaml); when reviewing P0-P3 file
+selection, read [Generated Shape](references/generated-shape.md). Spec fields
+select semantic files rather than a symmetrical suffix set. P3 requires an
+existing project Harness entry plus an explicit command, observable set,
+exclusions, and claim ceiling. The Kit binds those project-owned declarations
+into a canonical Harness Descriptor v2; it does not invent recovery coverage.
 
 ## Kit Pass
 
@@ -86,7 +64,7 @@ symmetry.
 | Stage | Every output file is rendered and structurally validated in a temporary tree. |
 | Apply | One lock and transaction journal cover source, manifest, and registry replacement; any failure restores all touched paths. |
 | Verify | Manifest parses, hashes and files agree, registry matches, and no incomplete transaction remains. |
-| Run | When `--run` is selected, recorded project commands execute and their actual statuses bound compile/test claims. |
+| Run | When `--run` is selected, recorded project commands execute under a bounded timeout; exit/timeout observations do not prove that a Descriptor exercised every declared claim. |
 | Repair | Managed drift is either reconstructed from the manifest or reported as a project-owned conflict. |
 
 ## Commands
@@ -96,7 +74,7 @@ python3 scripts/kit.py inspect --repo <repo>
 python3 scripts/kit.py plan --repo <repo> --change <change.yaml>
 python3 scripts/kit.py apply --repo <repo> --change <change.yaml>
 python3 scripts/kit.py verify --repo <repo>
-python3 scripts/kit.py verify --repo <repo> --run
+python3 scripts/kit.py verify --repo <repo> --run --timeout-seconds 120
 python3 scripts/kit.py repair --repo <repo>
 ```
 
@@ -121,11 +99,11 @@ inspect and validate
 The manifest and generated registry stay managed. Newly created capability
 files become ordinary project source and are not silently overwritten.
 
-Default `verify` supports structural-integrity claims only. `verify --run` adds
-only the claims supported by the recorded commands.
+Default `verify` supports structural-integrity claims only. `verify --run`
+records bounded command exit/timeout observations; semantic Descriptor coverage
+still requires a Harness Result or equivalent project evidence. Expected input,
+filesystem, commit, and rollback failures return structured JSON without a raw
+traceback.
 
-## Read When Needed
-
-- Applying or recovering a transaction: [Atomic Patch Protocol](references/atomic-patch-protocol.md)
-- Inspecting generated files: [Generated Shape](references/generated-shape.md)
-- Authoring input: [Change Spec Schema](schemas/change-spec.schema.json)
+Read [Atomic Patch Protocol](references/atomic-patch-protocol.md) when an apply
+or recovery path needs transaction detail.

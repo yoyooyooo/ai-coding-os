@@ -1,127 +1,73 @@
-# Harness Ladder
+# UI Harness Selection
 
-Use the smallest harness that can honestly prove the current claim.
+Use the smallest Proof Surface that can honestly observe the current property.
+This is a selection menu, not a mandatory sequence.
 
-## interface_headless
+## `surface_kind: interface_headless`
 
-No full component render. Use for:
+No full component render. Use for DTO/view-model mapping, event reducers,
+optimistic acknowledgement and rollback, cache invalidation/backfill, local
+interaction transitions, router state, and realtime decode/dedupe/gap recovery.
 
-- DTO -> view model;
-- event -> reducer;
-- command intent -> request payload;
-- mutation lifecycle -> optimistic / ack / rollback;
-- cache patch / invalidation / backfill;
-- local interaction store transitions;
-- router model / URL state derivation;
-- realtime decode / dedupe / cursor / gap / reconnect.
+Typical focus and ceiling:
 
-Typical evidence:
-
-```text
-view_model_mapping_verified=true
-optimistic_ack_reconciled=true
-duplicate_event_deduped=true
-gap_triggers_backfill=true
-local_store_does_not_hold_server_truth=true
+```yaml
+proof_surface:
+  surface_kind: interface_headless
+  dependency_reality: [fixture]
+  proof_focus: [projection_reconciliation]
 ```
 
-Claim ceiling:
+This does not prove browser reachability or backend materialization.
 
-```text
-interface_headless_passed=true
-browser_ui_claim=false
-business_fact_claim=false unless paired with headless proof
+## `surface_kind: render`
+
+Use `proof_focus: [render_wiring]` for control dispatch, accessible roles and
+names, and bounded pending/error/empty/success states.
+
+```yaml
+proof_surface:
+  surface_kind: render
+  dependency_reality: [fake]
+  environment_class: local_process
+  proof_focus: [render_wiring]
 ```
 
-## render_wiring
+This does not prove reload, navigation through a real browser, backend facts, or
+visual design approval.
 
-Thin component or render test. Use for:
+## `surface_kind: browser`
 
-- button/input/menu wires the right UI intent;
-- accessible name / role exists;
-- pending, disabled, error, empty, success states render;
-- local state resets on subject switch;
-- no internal-only terms leak into default UI;
-- critical affordance is reachable without relying on final visual polish.
+Use a real browser for visible user paths, focus/keyboard, navigation/deep links,
+reload, console/network, hydration, responsive spots, and visible recovery.
 
-Typical evidence:
-
-```text
-intent_command_wired=true
-accessible_affordance_present=true
-pending_state_visible=true
-error_recovery_visible=true
-internal_terms_default_hidden=true
+```yaml
+proof_surface:
+  surface_kind: browser
+  dependency_reality: [fake]
+  environment_class: local_stack
+  proof_focus: [reload_consistency]
 ```
 
-Claim ceiling:
+A browser surface does not reveal whether the backend or provider is real. Pair
+with headless proof before claiming accepted business facts.
 
-```text
-render_wiring_passed=true
-reload_consistency_claim=false
-production_near_claim=false
-```
+## Environment and external runtime
 
-## browser_visible
-
-Real page in a browser. Use for:
-
-- complete user path through visible controls;
-- console / React / hydration errors;
-- failed network requests;
-- reload/deep-link consistency;
-- critical layout: fixed composer, drawers, modals, keyboard/focus, mobile;
-- screenshot or video evidence for UX regressions;
-- exploratory dogfood before a stable regression test exists.
-
-Typical evidence:
-
-```text
-browser_visible_path_passed=true
-reload_consistent=true
-console_errors=false
-network_failures=false
-critical_layout_passed=true
-```
-
-Claim ceiling:
-
-```text
-browser_visible_passed=true
-business_fact_claim=false unless paired with headless proof
-final_visual_design_claim=false
-```
-
-## production_near
-
-Real backend/DB/runtime or local production-like stack. Use only when the claim
-requires real integration.
-
-Typical evidence:
-
-```text
-production_near_stack_started=true
-real_backend_used=true
-db_projection_backed=true
-real_runtime_opt_in_used=true
-browser_visible_path_passed=true
-headless_proof_ref_verified=true
-```
-
-Claim ceiling must name the environment and exclusions. Do not infer
-production deployment, production auth, distribution, or public availability
-from a local production-near harness.
+When real local or staged dependencies are required, change
+`dependency_reality` and `environment_class`; do not invent a
+`production_near` surface. Use `surface_kind: external_runtime` only when the
+property is observed at an explicitly opted-in provider, device, or runtime
+boundary. Name credentials, irreversible effects, and exclusions.
 
 ## Lifecycle
-
-Use the shared lifecycle statuses:
 
 ```text
 candidate    useful but not a regression gate
 accepted     stable enough for implementation guidance
-regression   must run in CI or release gate
-retired      replaced by equivalent coverage or intentionally removed
+regression   expected CI or release coverage
+retired      replaced or intentionally removed with trace updated
 ```
 
-Promote only when the scenario has stable subjects, stable entrypoint semantics,
-paired authority proof where needed, and low flake risk.
+Promote only when subjects and entrypoints are stable, paired fact proof exists
+where needed, and flake risk is acceptable.

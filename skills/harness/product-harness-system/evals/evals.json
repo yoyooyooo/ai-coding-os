@@ -1,25 +1,42 @@
 {
+  "schema_version": 1,
   "skill_name": "product-harness-system",
   "evals": [
     {
       "id": 1,
       "prompt": "Design durable discovery for one capability that has a Postgres restart Harness, a pure frontend reconciliation Harness, and a browser path.",
-      "expected_output": "Defines lightweight Harness Descriptors per surface, a coverage view that links rather than merges them, and Harness Results using observed/supports/not_proven. It makes fake/real boundaries and claim ceilings explicit without forcing a linear proof ladder."
+      "expected_output": "Defines lightweight Harness Descriptors per surface, a coverage view that links rather than merges them, and Harness Results using observed/supports/not_proven. It makes fake/real boundaries and claim ceilings explicit without forcing a linear proof ladder.",
+      "expectations": [
+        "Produces a concrete Harness scenario/coverage/trace/claim-ceiling contract or placement decision.",
+        "Keeps user capability semantics, raw run artifacts, and execution status with Interface/Product, test, and workflow owners."
+      ]
     },
     {
       "id": 2,
       "prompt": "Build a central controller that limits every repair to three attempts, requires a separate verifier, and accepts evidence before work can continue.",
-      "expected_output": "Keeps those controls outside Product Harness doctrine. Harnesses expose runnable observation surfaces that the active execution context can choose and compose. Cost, security, production access, or irreversible-effect limits remain environment policy, not a universal repair loop."
+      "expected_output": "Keeps those controls outside Product Harness doctrine. Harnesses expose runnable observation surfaces that the active execution context can choose and compose. Cost, security, production access, or irreversible-effect limits remain environment policy, not a universal repair loop.",
+      "expectations": [
+        "Produces a concrete Harness scenario/coverage/trace/claim-ceiling contract or placement decision.",
+        "Keeps user capability semantics, raw run artifacts, and execution status with Interface/Product, test, and workflow owners."
+      ]
     },
     {
       "id": 3,
       "prompt": "Audit a harness plan that uses fixture data and one browser screenshot as proof that a payment fact was accepted and the real provider executed exactly once.",
-      "expected_output": "Rejects the overclaim, distinguishes fixture/fake/browser observations from backend materialization and real-provider behavior, and records only the supported browser conclusion with adjacent behavior in not_proven."
+      "expected_output": "Rejects the overclaim, distinguishes fixture/fake/browser observations from backend materialization and real-provider behavior, and records only the supported browser conclusion with adjacent behavior in not_proven.",
+      "expectations": [
+        "Produces a concrete Harness scenario/coverage/trace/claim-ceiling contract or placement decision.",
+        "Keeps user capability semantics, raw run artifacts, and execution status with Interface/Product, test, and workflow owners."
+      ]
     },
     {
       "id": 4,
       "prompt": "A Harness Route has been replaced by final product UI and stable regression commands. Decide how to retire it.",
-      "expected_output": "Updates discovery and coverage links, preserves only durable summarized evidence that still matters, removes obsolete executable surfaces, and does not treat Harness retirement as product-capability completion."
+      "expected_output": "Updates discovery and coverage links, preserves only durable summarized evidence that still matters, removes obsolete executable surfaces, and does not treat Harness retirement as product-capability completion.",
+      "expectations": [
+        "Produces a concrete Harness scenario/coverage/trace/claim-ceiling contract or placement decision.",
+        "Keeps user capability semantics, raw run artifacts, and execution status with Interface/Product, test, and workflow owners."
+      ]
     }
   ]
 }

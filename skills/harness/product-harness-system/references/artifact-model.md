@@ -1,7 +1,7 @@
 # Harness Artifact Model
 
-Use a small shared language so Agents can discover and compose proof surfaces
-without creating a parallel product architecture.
+Use a small shared language so Agents can discover and compose proof without
+creating a parallel product architecture.
 
 ## Core concepts
 
@@ -9,23 +9,17 @@ without creating a parallel product architecture.
 Harness Scenario
   bounded semantic proof story for one capability
 
-Harness Fixture
-  static deterministic input or seed
+Harness Fixture / Fake / Replay
+  explicit deterministic or recorded dependency material
 
-Harness Fake
-  deterministic behavioral replacement
-
-Harness Replay
-  recorded normalized input sequence
-
-Harness Surface
-  runnable headless, interface-headless, render, browser, or external-runtime path
+Proof Surface
+  surface_kind + dependency_reality + optional environment_class + proof_focus
 
 Harness Descriptor
-  discoverability record: command, surface, observations, exclusions
+  discoverability record: command, Proof Surface, observations, exclusions
 
 Harness Result
-  structured observations plus bounded supports and not_proven
+  direct observations plus bounded supports, not_proven, and claim_ceiling
 
 Harness Coverage Matrix
   optional durable view mapping capabilities to available surfaces and gaps
@@ -37,11 +31,11 @@ scenario may be one `<subject>.<case>.harness.ts` file.
 ## Trace spine
 
 ```text
-product capability id
+product capability or AC/UAT ref
   -> interface capability id when applicable
   -> harness scenario/descriptor id
   -> command/route/component/test
-  -> current observation/result or durable evidence reference
+  -> Harness Result or durable evidence reference
 ```
 
 Suggested IDs remain optional:
@@ -58,9 +52,9 @@ uh.<domain>.<case>
 
 ## Rules
 
-- Harness artifacts support claims; they do not become product authority.
-- UI Harness Surfaces are proof infrastructure, not final UI.
+- Harness artifacts support claims; they do not become product decision authority.
+- UI Harness surfaces are proof infrastructure, not final UI.
 - Fixture data is not a real business fact.
 - Test steps remain semantic; low-level selectors stay in executable code.
-- Keep `observed`, `supports`, and `not_proven` distinguishable.
+- Keep `observed`, `supports`, `not_proven`, and `claim_ceiling` distinguishable.
 - `claim_ceiling` is descriptive metadata, not an Agent permission gate.

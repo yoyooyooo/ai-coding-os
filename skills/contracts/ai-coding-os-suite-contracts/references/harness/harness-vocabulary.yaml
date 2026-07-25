@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 terms:
   scenario: bounded semantic proof story
   fixture: static deterministic input or seed
@@ -11,8 +11,29 @@ terms:
   supports: bounded interpretation justified by observations and repository authority
   not_proven: property that may matter but was not exercised
   claim_ceiling: descriptive maximum supported by the exercised surface, not an Agent permission gate
+proof_axes:
+  surface_kind:
+    - headless
+    - interface_headless
+    - render
+    - browser
+    - external_runtime
+  dependency_reality:
+    - none
+    - fixture
+    - fake
+    - replay
+    - real_local
+    - real_external
+  environment_class:
+    - isolated
+    - local_process
+    - local_stack
+    - staging
+    - production
+  proof_focus: owner-local snake_case labels such as render_wiring or persistence_restart
 principles:
-- harness does not become product authority
-- agent chooses proof depth
-- fake/replay/real are explicit
-- observations and conclusions remain distinguishable
+  - harness does not become product authority
+  - agent chooses proof depth
+  - observation surface and dependency reality remain orthogonal
+  - observations and conclusions remain distinguishable

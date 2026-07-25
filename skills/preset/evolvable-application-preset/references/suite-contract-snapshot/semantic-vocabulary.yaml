@@ -1,3 +1,5 @@
+# Scope: owner-declared application/source vocabulary used by Preset naming output.
+# It is not a Suite-wide natural-language ontology or project product glossary.
 schema_version: 1
 syntax:
   segment_case: kebab-case
@@ -14,8 +16,9 @@ terms:
   authority:
     category: architecture
     owner: evolvable-application-architecture
-    means: The rule or component with final power to accept and materialize a fact within a declared consistency domain and epoch.
+    means: In this owner-declared source vocabulary, authority means fact authority with final power to accept and materialize a fact within a declared consistency domain and epoch; cross-Skill prose must qualify other authority kinds.
     does_not_mean:
+    - product decision authority, documentation authority, execution authority, or policy authority
     - the only machine that may propose a change
     - a folder or package by itself
   command:
@@ -63,6 +66,7 @@ terms:
     owner: evolvable-application-architecture
     means: Cohesive domain data and ordinary TypeScript behavior for a bounded subject.
     does_not_mean:
+    - product model, persistence model, view model, or model-provider integration
     - ORM record
     - generic types bucket
   projection:
@@ -129,6 +133,7 @@ terms:
     owner: evolvable-application-architecture
     means: Stable cross-boundary or public shape with explicit compatibility expectations.
     does_not_mean:
+    - an execution-method contract, product contract, or suite coordination contract without an explicit qualifier
     - all local types
   schema:
     category: responsibility

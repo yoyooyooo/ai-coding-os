@@ -2,6 +2,9 @@ id: typescript-node
 version: 1
 requires:
   - monorepo-core
+suite_contract:
+  filename_pattern_owners:
+    - evolvable-application-architecture
 provides:
   - TypeScript semantic filename patterns
   - public/wiring import guidance

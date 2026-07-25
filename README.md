@@ -4,377 +4,249 @@
 
 # AI Coding OS
 
-AI Coding OS is a grouped methodology and Skill Suite for repository/workspace
-work. It provides a thin user router, project documentation authority,
-evolvable application architecture, interface capability planning, Product
-Harnesses, an optional Goal Pack method, reusable Presets, and deterministic
-generation tools.
+AI Coding OS is a portable Skill Suite for project-level knowledge, standards,
+Authority, architecture, product definition, and bounded proof. It helps Agents
+find the owner of a question and preserve durable project semantics without
+prescribing one reading, planning, ticketing, or execution workflow.
 
-Use the user-invoked `$ai-coding-os` for ambiguous or cross-cutting work. Clear
-requests go directly to the specialist that owns the decision surface.
+Use the user-invoked `$ai-coding-os` when ownership is ambiguous or a concern
+crosses decision surfaces. Clear concerns go directly to the owning specialist.
 
-## Core Principles
+## Minimal Knowledge Kernel
 
 ```text
-project authority first
-one primary owner per decision surface
-proof surface matches the claim
-observed / supports / not_proven stay distinct
-Preset produces a resolved snapshot
-cross-Skill dependencies use `$skill-name`, not install paths
-structured artifacts earn their lifetime
+Project Authority First
+Question-scoped Ownership
+One Scoped Meaning, One Current Home
+Binding Constraint Is Not Semantic Ownership
+Evidence Bounds Claims
+Route Is an Edge; Change Creates an Impact Obligation
 ```
 
-This is not a formal proof system and does not prescribe one execution flow.
-Architecture and governance constrain durable semantics; each task selects its
-implementation strategy from project authority, risk, and available evidence.
+The portable canonical form is carried by `$ai-coding-os-suite-contracts` so it
+survives independent or flat installation; this README is the public projection.
 
-## Skill Suite
+The Suite assumes an Agent can choose strategy, infer ordinary reversible details
+from applicable project Authority and local patterns, isolate a genuinely
+undecidable claim, and continue unaffected work. It does not encode the Agent's
+reasoning or implementation order.
 
-| Group | Skill | Role |
+`Pass` and decision tables express coverage, not reasoning order. Only an owner
+with a real state machine, transaction, migration, safety protocol, or external
+protocol may require ordering. Trackers, ticketing Skills, experimental methods,
+and release processes own their workflow state outside the core Suite.
+
+## Core Skill Suite
+
+| Group | Skill | Decision surface |
 | --- | --- | --- |
-| `router/` | `$ai-coding-os` | User-invoked router selecting Lead and Supporting Skills |
-| `contracts/` | `$ai-coding-os-suite-contracts` | Independently installable cross-Skill coordination, shared vocabulary, and Harness schemas |
-| `goal/` | `$goal-proof` | Explicitly selected Goal Pack, proof-step, evidence, and completion method |
-| `goal/` | `$goal-contracts` | Create or repair `goal.yaml` |
-| `goal/` | `$finding-proof-step` | Find the next falsifiable `proof_step` |
-| `goal/` | `$proof-step-implementation` | Execute, verify, append evidence, reduce progress |
-| `goal/` | `$write-work-plans` | Write `plans/<work_id>.md` for selected high-risk work |
-| `governance/` | `$docs-governance` | Docs layers, AGENTS.md, authority placement, cleanup, audit |
-| `architecture/` | `$evolvable-application-architecture` | Authority, transactions, ports, composition, Monorepo/source topology, migration |
-| `architecture/` | `$frontend-architecture` | Frontend state authority, feature topology, host composition, realtime reconciliation |
+| `router/` | `$ai-coding-os` | User-invoked knowledge-owner map |
+| `contracts/` | `$ai-coding-os-suite-contracts` | Portable knowledge kernel, Proof Surface, Evidence Envelope, eval and Harness schemas |
+| `governance/` | `$docs-governance` | Documentation Authority, Routes, Earned Shape, lifecycle, cleanup, audit |
+| `product/` | `$product-definition` | Product framing, source synthesis, business model, decisions, requirements, acceptance |
+| `architecture/` | `$evolvable-application-architecture` | Fact authority, transactions, modules, ports, composition, migration |
+| `architecture/` | `$frontend-architecture` | Frontend state, feature topology, projections, Query/store/realtime |
 | `architecture/` | `$effect-best-practices` | Effect Service/Layer/Scope/runtime, failures, resources, version mapping |
-| `capability/` | `$interface-capability-planning` | UI/IA capability, surfaces, state/data ownership, proof handoff |
-| `harness/` | `$product-harness-system` | Shared Harness vocabulary, descriptors/results, coverage, claim ceilings, lifecycle |
-| `harness/` | `$headless-product-harness` | Capability commands, fixture/replay, DB/restart, boundary proof |
-| `harness/` | `$ui-product-harness` | Interface-headless, render-wiring, browser-visible proof |
+| `capability/` | `$interface-capability-planning` | User work, IA, surfaces, interaction states, frontend ownership, proof needs |
+| `harness/` | `$product-harness-system` | Shared Harness vocabulary, coverage, trace, claim ceilings, lifecycle |
+| `harness/` | `$headless-product-harness` | Headless commands, fixture/replay, DB/restart, boundary proof |
+| `harness/` | `$ui-product-harness` | Interface-headless, render focus, browser-visible proof |
 | `harness/` | `$frontend-test-system` | Concrete frontend test-lane and runner selection |
-| `preset/` | `$evolvable-application-preset` | Agent-guided discovery and selective adoption of project-owned AGENTS/docs/check defaults |
-| `tooling/` | `$effect-api-app-kit` | Atomically generate an Effect API capability slice from a settled Change Spec |
+| `preset/` | `$evolvable-application-preset` | Discovery and selective adoption of reusable project defaults |
+| `tooling/` | `$effect-api-app-kit` | Atomic generation from a settled Effect API Change Spec |
 
-## Goal Proof State Transition
+Every core Skill remains installable independently. Relative links stay inside
+one Skill; cross-Skill relationships use `$skill-name` rather than repository
+paths. The grouped folders are source-maintenance organization, not runtime
+topology.
 
-`$goal-proof` is an optional durable execution method selected explicitly by
-the user or repository. Once selected, it advances through intent-to-evidence
-state transitions:
+## Project Knowledge Network
 
-```text
-human intent -> goal contract -> proof_step -> evidence -> next_action
-```
-
-The formal method name is Goal Proof System. The formal CLI is `goal-proof`.
-
-## Core Vocabulary
-
-| Term | Meaning |
-| --- | --- |
-| Goal Pack | Durable completion unit for one long-running goal |
-| Goal Contract | `goal.yaml`; goal authorization, boundaries, completion criteria, claim limit |
-| Proof Step | `progress.yaml.proof_step`; current falsifiable movement from state A to state B |
-| Proof Path | Runnable or inspectable path that can support or falsify the proof step |
-| Work Item | Bounded unit inside `progress.yaml.work_items`, usually `W###` |
-| Evidence Record | Append-only JSONL entry in `evidence.jsonl`, usually `E###` |
-| Completion Review | Final review evidence that maps evidence back to `completion.required_evidence` |
-| Claim Limit | What the current goal or proof may and may not claim |
-| Gap | Uncovered claim area, missing evidence, unresolved decision, or human-intervention point |
-| Goal Thread | Shared `relations.thread_id` label across related Goal Packs |
-| Goal Relation | Typed metadata link from one Goal Pack to another |
-| Derived Graph View | CLI-rendered view from relations; not stored planning state |
-
-## Goal Proof System
-
-Goal Proof System is the Suite's optional long-running goal carrier.
+Project documentation is a multi-entry network. An Agent may begin from a
+question, code area, term, ADR, schema, test, Harness result, source file,
+repository entry, or docs index and follow only relevant links.
 
 ```text
-human intent
-  -> goal.yaml goal contract
-  -> progress.yaml proof_step
-  -> evidence.jsonl evidence
-  -> apply progress
-  -> next_action: proof_step | continue | needs_plan | blocked | review | done | needs_human
+Product / Requirements       what should the system do
+SSoT                         what shared terms, objects, states, and invariants mean
+Standards                    which current rules and quality gates apply
+ADR / Product decisions      why a choice was accepted
+Architecture                 current topology, ownership, and accepted seams
+Protocols / API              what an interface accepts
+Source / schema / migrations what implementation structure and static properties exist
+Tests / runtime / release    what behavior was observed on a bounded path
+Harness / Evidence           which bounded claim has been exercised
+Selected execution method    work decomposition, dependencies, status, completion
 ```
 
-A Goal Pack is ready when the goal contract is stable and the next
-`proof_step` is authorized to produce or inspect `completion.required_evidence`
-inside `claim_limit`. It is not ready merely because a work item list exists.
+`AGENTS.md` exposes stable project constraints and available knowledge surfaces.
+`docs/README.md` may index by question, Authority, code area, or artifact. Neither
+is a mandatory traversal root or a copy of current truth.
 
-Work items and checks are execution details, not required top-level concepts in
-the goal loop.
-Use `plans/<work_id>.md` only when a selected work item is high risk and needs a
-reviewed execution plan before implementation. It is not a second task system.
+Portable Skill output paths are candidate defaults. Existing project Homes win;
+an external Skill must not create a second glossary, ADR collection, standard,
+or execution ledger for a meaning the project already owns.
 
-Completion requires a review evidence record with `completion_satisfied: true`
-and `claim_evidence` mapping each completion claim to evidence.
-Cross-method Evidence Envelope Discipline is owned by SSoT / Goal Proof.
-`changed surfaces` and `not_proven` are narrative envelope concepts here, not
-formal v2 schema fields unless templates and checkers are explicitly upgraded.
+## Proof And Evidence
 
-## Goal Pack Files
+The shared Proof Surface separates:
 
 ```text
-docs/goal-proof/
-  README.md
-  inbox/
-  sources/
-  goals/<goal-id>/
-    goal.yaml
-    progress.yaml
-    evidence.jsonl
-    plans/<work_id>.md  # only when needs_plan
-    interface-capabilities.yaml  # optional UI/interface trace companion
-    product-harness.yaml  # optional harness proof companion
-    notes/
+surface_kind       what observation surface was exercised
+dependency_reality none / fixture / fake / replay / real_local / real_external
+environment_class  isolated / local process / local stack / staging / production
+proof_focus        owner-local property such as render_wiring or persistence_restart
 ```
 
-`goal.yaml` owns objective, authority refs, engineering guidance, completion,
-claim limit, stop rules, and agent authority. `progress.yaml` owns runtime
-state, active work item, proof step, blockers, last check, and next action.
-`evidence.jsonl` is append-only evidence. `notes/` stores long context only.
+`none` is reserved for pure static proof and cannot be combined with another
+dependency reality.
 
-## Interface Capability And Harness
-
-UI and harness skills let agents validate product capability from both
-directions:
+The optional Evidence Envelope carries bounded evidence only when a real machine
+consumer, durable citation, or repeated cross-owner handoff earns a shared
+shape. Version 2 is direction-neutral: it preserves source, claim ceiling,
+observations, supported interpretation, unproven neighbors, Evidence refs, and
+an optional Proof Surface without importing workflow or document lifecycle.
 
 ```text
-Product Capability
-  -> InterfaceCapability
-  -> InterfaceSurface / Region
-  -> Interaction State Contract
-  -> Frontend State/Data Ownership
-  -> Harness Scenario
-  -> Headless Proof and/or UI Proof
-  -> Evidence
-  -> Claim / Gap
+Harness pass != execution completion
+execution status != product or document acceptance
+accepted target != verified implementation
+observed behavior != accepted future intent
 ```
 
-When the final UI is not fixed, agents can still use harness routes, harness
-components, interface-headless tests, or browser-visible candidate paths to
-prove local behavior. When the production interface stabilizes, reusable proof
-paths can become regression coverage.
-
-Durable placement:
-
-- Workspace interface trace: `docs/interface-capabilities/**`
-- Workspace harness contract: `docs/product-harness/**`
-- Goal-local interface companion: `docs/goal-proof/goals/<goal-id>/interface-capabilities.yaml`
-- Goal-local harness companion: `docs/goal-proof/goals/<goal-id>/product-harness.yaml`
-
-## Install
-
-Install the CLI:
-
-```bash
-npm install -g goal-proof
-goal-proof --help
-```
-
-Install all AI Coding OS skills:
-
-```bash
-npx skills add https://github.com/yoyooyooo/ai-coding-os -g --agent '*' --skill '*' --full-depth -y
-```
-
-Codex-only:
-
-```bash
-npx skills add https://github.com/yoyooyooo/ai-coding-os -g --agent codex --skill '*' --full-depth -y
-```
-
-The repository and skill suite name is AI Coding OS. The CLI and npm package
-remain `goal-proof`. Installers may flatten or rearrange Skill directories:
-relative links stay inside each Skill, while cross-Skill dependencies resolve by
-`$skill-name`. The independently discoverable shared-contract entry is
-`$ai-coding-os-suite-contracts`, not a grouped repository path.
+Source can establish current implementation structure and static properties.
+Runtime, reachability, deployment, and environment claims require executed or
+observed Evidence; neither source nor Evidence decides accepted product intent.
 
 ## Use
 
-Normal workspace work:
+Ambiguous or cross-cutting ownership:
 
 ```text
-Use $ai-coding-os:
-I want to govern / plan / implement / audit ...
-Context: ...
-Boundaries: ...
-Acceptance: ...
+Use $ai-coding-os to identify the smallest set of project knowledge owners for
+this concern. Do not choose a workflow or create durable state.
 ```
 
-Long-running goal:
+Documentation convergence:
 
 ```text
-Use $goal-proof:
-Goal: ...
-Context: ...
-Boundaries: ...
-Acceptance: ...
-Stop conditions: ...
+Use $docs-governance to converge Authority, multi-entry Routes, Earned Shape,
+lifecycle, source alignment, and audit findings.
 ```
 
-UI capability planning:
+Product definition:
 
 ```text
-Use $interface-capability-planning:
-Split product intent into InterfaceCapability, surface, interaction state,
-frontend state/data ownership, and harness needs.
+Use $product-definition to synthesize sources, model product meaning, challenge
+conflicts, record accepted decisions, and produce proportionate acceptance.
 ```
 
-UI proof:
+Application architecture:
 
 ```text
-Use $ui-product-harness:
-Plan interface-headless, render wiring, browser-visible proof, evidence, gaps,
-and claim_ceiling for this InterfaceCapability.
+Use $evolvable-application-architecture to review fact writers, transactions,
+module boundaries, capabilities, composition, migration, and claim ceilings.
 ```
 
-Headless proof:
+Interface and proof:
 
 ```text
-Use $headless-product-harness:
-Design the smallest proof command, fixture/replay path, headless command output
-envelope, and the `not_proven` gaps for this capability.
+Use $interface-capability-planning for user work, surfaces, states, frontend
+ownership, and proof needs. Use the applicable Harness or test owner for the
+smallest honest observation surface.
 ```
 
-Docs governance:
+Preset and generation:
 
 ```text
-Use $docs-governance:
-Check docs layers, authority placement, README routes, obsolete planning docs,
-and audit.
+Use $evolvable-application-preset to discover and selectively adopt compatible
+project defaults. Renderer output remains a candidate until project owners
+merge selected content into Current Homes. Use $effect-api-app-kit only after
+architecture and Effect version decisions are settled.
 ```
 
-This repository's docs layer rules live in `docs/standards/docs-governance.md`;
-public skill source layout and trigger-name rules live in
-`docs/standards/skill-source-layout.md`.
+## Core Distribution
 
-Architecture baseline:
-
-```text
-Use $evolvable-application-architecture:
-Review authority, transactions, Capability Ports / Adapters, composition roots,
-source topology, migrations, replaceability, and claim ceilings.
-```
-
-Project Preset:
-
-```text
-Use $evolvable-application-preset:
-Start from settled technical choices and existing project authority, discover the smallest profile closure, and incrementally adopt compatible AGENTS/docs/check surfaces; rendering is optional.
-```
-
-Effect API scaffold:
-
-```text
-Use $effect-api-app-kit:
-Plan, apply, and verify one atomic capability slice from a settled Change Spec.
-```
-
-## CLI Quick Inspect
-
-```bash
-goal-proof summary .
-goal-proof list . --completion todo
-goal-proof inspect <goal-pack> --json
-goal-proof work list <goal-pack>
-goal-proof evidence list <goal-pack> --limit 5
-goal-proof relations goals . --thread <thread-id> --completion todo --json
-goal-proof relations work . --thread <thread-id> --completion todo --json
-goal-proof relations check . --thread <thread-id>
-goal-proof relations graph . --thread <thread-id>
-goal-proof work brief <goal-pack>
-goal-proof check <goal-pack>
-```
-
-Relations commands inspect cross-pack continuity and discover thread-member
-candidates. They do not create a queue, worklist, scheduler, thread lifecycle,
-stored graph, or execution order. `relations.thread_id` is a label only.
-
-## CLI Reference
-
-```bash
-goal-proof --help
-goal-proof <command> --help
-goal-proof inspect <goal-pack> [--json]
-goal-proof summary [project-root|goals-dir] [--completion all|todo|done] [--status <status>] [--depth repo|groups|items] [--limit N] [--include fields] [--show-empty] [--json]
-goal-proof list [project-root|goals-dir] [--completion all|todo|done] [--status <status>] [--limit N] [--include fields] [--show-empty] [--json]
-goal-proof work list <goal-pack> [--completion all|todo|done] [--status queued|active|blocked|done] [--limit N] [--include fields] [--show-empty] [--json]
-goal-proof work brief <goal-pack> [--work <id>] [--json]
-goal-proof work activate <goal-pack> --work <id> [--dry-run]
-goal-proof evidence list <goal-pack> [--limit N] [--work <id>] [--type discovery|decision|implementation|coordination|review|planning] [--result done|blocked] [--decision <value>] [--next-action proof_step|continue|needs_plan|blocked|review|done|needs_human] [--completion-satisfied true|false] [--changed-file <glob>] [--command-status pass|fail] [--contains <text>] [--include fields] [--show-empty] [--json]
-goal-proof evidence show <goal-pack> --index N [--json]
-goal-proof evidence add <goal-pack> (--file evidence-record.json | --json '<json>' | --stdin) [--apply] [--check] [--dry-run]
-goal-proof relations list [project-root|goals-dir] [--thread <id>] [--limit N] [--include fields] [--show-empty] [--json]
-goal-proof relations goals [project-root|goals-dir] [--thread <id>] [--completion all|todo|done] [--status forming|ready|running|blocked|done|retired] [--next-action proof_step|continue|needs_plan|blocked|review|done|needs_human] [--limit N] [--include fields] [--show-empty] [--json]
-goal-proof relations work [project-root|goals-dir] [--thread <id>] [--completion all|todo|done] [--status queued|active|blocked|done] [--goal-completion all|todo|done] [--goal-status forming|ready|running|blocked|done|retired] [--goal <goal-id>] [--limit N] [--include fields] [--show-empty] [--json]
-goal-proof relations check [project-root|goals-dir] [--thread <id>] [--json]
-goal-proof relations graph [project-root|goals-dir] [--thread <id>] [--json]
-goal-proof apply <goal-pack> [--dry-run]
-goal-proof check <goal-pack>
-```
-
-Typical loop:
-
-```text
-check -> inspect -> work brief -> work -> evidence add -> apply -> check
-```
-
-Use a bare goal id when running inside a project with
-`docs/goal-proof/goals/<goal-id>`, or pass the goal folder.
-
-## Repository Layout
-
-```text
-packages/cli/                         TypeScript CLI, built with Bun
-skills/router/                        OS entry and user intent routing
-skills/goal/                          Goal Pack method and execution phases
-skills/governance/                    Docs layer governance
-skills/architecture/                  application / frontend / Effect doctrine
-skills/capability/                    Interface capability planning
-skills/harness/                       shared, headless, UI, frontend-test guidance
-skills/preset/                        resolved project defaults
-skills/tooling/                       executable profiles and source audit
-skills/contracts/                     independently installable AI Coding OS Suite contracts
-skills/examples/                      owner-local examples index
-skills/README.md                      grouped source index
-docs/                                 Workspace documentation and Goal Pack examples
-assets/                               README media
-```
-
-## Release
-
-Publishing is tag-driven through GitHub Actions and npm Trusted Publishing.
-
-```bash
-bun run release:check patch
-bun run release patch
-# or
-bun run release 0.2.0
-```
-
-`bun run release:check` validates release readiness without changing files.
-`bun run release` creates a temporary local release branch, updates package
-versions, commits, tags `vX.Y.Z`, pushes only the tag to the configured public
-GitHub release remote, then returns to the original branch. GitHub Actions
-publishes the npm package from the tag. Local AGS remotes may be used for LAN
-sync, but they are not the release trigger.
-
-The npm tarball contains only `dist/`, `README.md`, `README.zh-CN.md`,
-`LICENSE`, and package metadata.
-
-## Development
+The canonical core source is [`skills/**`](skills/README.md). Build a
+deterministic core-only grouped-source ZIP, audit JSON, and sidecar manifest:
 
 ```bash
 bun install
 python3 -m pip install -r requirements-dev.txt
-bun run build
-bun run typecheck
-bun run test
-bun run check
-python3 skills/tooling/suite_audit.py --suite skills
-python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
+bun run bundle:skills
 ```
 
-The CLI source is TypeScript. `bun build` emits npm package artifacts under
-`packages/cli/dist/`.
+The bundle contains the core Skill Suite and excludes co-located experiments,
+CLI packages, project docs, and repository release scripts. It is self-contained:
+`skills/VERSION` supplies the Core version, `skills/requirements-audit.txt`
+pins audit dependencies, bundle-local audit and builder tools run after
+extraction, and `source_tree_sha256` binds the passed audit to the
+exact packaged `skills/**` tree. The builder emits a canonical audit, manifest,
+change report, and composition review together; machine-absolute paths and
+compiler-dependent template-typecheck status are excluded from canonical
+provenance so identical source is reproducible across paths. Per-Skill SHA-256
+values identify unversioned Skill source.
+
+## Co-located Experiment: Goal Proof
+
+Goal Proof is an early, user-invoked experiment for Goal Pack state, proof steps,
+append-only evidence, and completion review. Its long-term usefulness is not yet
+established. It is not a core Skill, Router branch, knowledge-network default,
+or core bundle member.
+
+- Experiment boundary and Skill: [`experiments/goal-proof/`](experiments/goal-proof/README.md)
+- Experimental CLI package: [`packages/cli/`](packages/cli/README.md)
+- Historical dogfood: [`experiments/goal-proof/dogfood/`](experiments/goal-proof/dogfood/README.md)
+
+The npm package remains `goal-proof` while the experiment is evaluated:
+
+```bash
+npm install -g goal-proof@^0.2.0
+goal-proof --help
+```
+
+## Repository Layout
+
+```text
+skills/                              core AI Coding OS grouped Skill source
+  router/ contracts/ governance/ product/
+  architecture/ capability/ harness/ preset/ tooling/
+experiments/goal-proof/              independent early workflow experiment
+packages/cli/                         experimental Goal Proof CLI
+scripts/                              repository release support
+docs/                                 current project knowledge and standards network
+assets/                               README media
+```
+
+## Repository Checks
+
+```bash
+bun run check:core
+bun run check:goal-proof-experiment
+bun run check
+```
+
+- `check:core`: core Suite audit plus Docs Governance audit.
+- `check:goal-proof-experiment`: experimental Skill self-check plus CLI build,
+  typecheck, and tests.
+- `check`: aggregate repository gate; it does not imply that Goal Proof belongs
+to the core Suite.
+
+## Release
+
+`bun run bundle:skills` creates the versioned core Skill bundle without publishing. Core Suite versioning is independent from the CLI package version.
+
+The tag-oriented local release helper only versions and tags the experimental
+`goal-proof` CLI package. Actual npm publishing is a separately configured
+release step and is not claimed by this repository:
+
+```bash
+bun run release:check patch
+bun run release patch
+```
+
+The npm tarball contains `dist/`, package READMEs, `LICENSE`, and package
+metadata. It does not distribute the core Skill Suite.
 
 ## License
 

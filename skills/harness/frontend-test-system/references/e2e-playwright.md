@@ -1,6 +1,6 @@
 # E2E Playwright Playbook
 
-Use when the selected claim is a browser-visible user journey that should become durable regression coverage.
+Use when the selected claim is a browser user journey that should become durable regression coverage.
 
 ## Entry Criteria
 
@@ -69,4 +69,4 @@ not_proven:
 
 ## Claim Ceiling
 
-A Playwright E2E test proves one browser-visible path under the stated browser, data, auth, and backend/mock boundary. It does not prove all business rules, all roles, all browsers, full a11y, final design approval, or real backend behavior when responses are mocked.
+A Playwright E2E test proves one browser path under the stated browser, data, auth, and backend/mock boundary. It does not prove all business rules, all roles, all browsers, full a11y, final design approval, or real backend behavior when responses are mocked.

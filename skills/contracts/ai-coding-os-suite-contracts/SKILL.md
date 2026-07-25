@@ -1,11 +1,13 @@
 ---
 name: ai-coding-os-suite-contracts
 description: >-
-  Canonical shared contracts for the AI Coding OS Skill Suite. Use when an
-  AI Coding OS skill needs cross-skill precedence and handoff shape, shared
-  architecture vocabulary and filename patterns, guarded terms,
-  or Harness Descriptor/Result schemas. Do not use for project-specific
-  contracts, routing decisions, or implementation work.
+  AI Coding OS portable knowledge kernel and shared machine contracts for
+  Proof Surface and the optional claim-bounded Evidence Envelope, eval assets,
+  architecture vocabulary, filename patterns, guarded terms, and Harness
+  schemas. Use when a Suite Skill
+  needs one portable contract or must identify
+  its semantic owner; project-specific decisions stay with project authority
+  and the owning specialist.
 ---
 
 # AI Coding OS Suite Contracts
@@ -22,39 +24,44 @@ usable when all Skill directories are flattened into one runtime collection.
 
 ```text
 Owns:
-  cross-Skill precedence and handoff shape
-  portable registry of owner-declared architecture vocabulary and filename defaults
+  the minimal cross-Skill knowledge kernel and optional handoff guidance
+  portable catalog of owner-declared architecture/source vocabulary and filename defaults
   guarded naming terms
-  portable Harness Descriptor / Result vocabulary and schemas
+  portable Proof Surface, Harness Descriptor / Result, Evidence Envelope, and eval schemas
 
-Does not own:
-  routing branches or lead selection
-  specialist semantics named by each registry entry
-  project-specific vocabulary or architecture decisions
-  product truth or implementation state
-  execution strategy or completion control
+Hands off:
+  routing branches and lead selection -> `$ai-coding-os`
+  specialist semantics -> the owner named by each contract entry
+  project vocabulary and architecture decisions -> project authority
+  product truth and implementation state -> their project owners
+  execution strategy and completion control -> the selected execution method
 ```
 
-Use `$ai-coding-os` for routing, the owning specialist for a domain decision,
-and project AGENTS/docs for adopted repository authority.
+Project `AGENTS.md` constrains Agent conduct; applicable project Product, SSoT,
+Standards, ADRs, contracts, source, and Evidence answer their own questions.
 
-## Contract Use Pass
+## Contract Coverage
 
-| Step | Completion criterion |
+Cover the applicable rows in any order; this is not a reasoning or execution sequence.
+
+| Decision | Completion criterion |
 | --- | --- |
-| Select | The requesting Skill, project authority, and only the needed coordination, naming, or Harness contract are identified. |
-| Apply | Contract vocabulary is interpreted through its declared owner; project overrides and unresolved limits stay explicit. |
-| Hand off | Continuation names `$skill-name` and a bounded project artifact or decision contract, never a sibling filesystem path. |
+| Selection | The requesting Skill, project authority, and only the needed coordination, naming, or Harness contract are identified. |
+| Application | Contract vocabulary is interpreted through its declared owner; project overrides and unresolved limits stay explicit. |
+| Handoff | Continuation names `$skill-name` and a bounded project artifact or decision contract, never a sibling filesystem path. |
 
 ## Read When Needed
 
 | Need | Local reference |
 | --- | --- |
-| Precedence and handoff shape | [Skill Coordination](references/skill-coordination.md) |
-| Architecture responsibility vocabulary | [Semantic Vocabulary](references/semantic-vocabulary.yaml) |
+| Minimal knowledge kernel and optional handoff guidance | [Skill Coordination](references/skill-coordination.md) |
+| Owner-declared architecture/source vocabulary | [Semantic Vocabulary](references/semantic-vocabulary.yaml) |
 | Bounded Semantic Flatness patterns | [Filename Patterns](references/filename-patterns.yaml) |
 | Ambiguous naming terms requiring clarification | [Guarded Terms](references/guarded-terms.yaml) |
-| Harness vocabulary and schemas | [Harness Contracts](references/harness/README.md) |
+| Proof axes and Harness schemas | [Harness Contracts](references/harness/README.md) |
+| Cross-owner evidence handoff under real reuse pressure | [Evidence Envelope](references/evidence/evidence-envelope.md) |
+| Eval asset shape | [Skill Eval Contract](references/evals/README.md) |
+| v1-to-v2 compatibility | [Suite Contracts v2 Migration](references/migrations/v2-proof-evidence.md) |
 
 ## Portability Contract
 

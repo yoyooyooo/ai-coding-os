@@ -18,3 +18,10 @@
 ## 最近运行
 
 - `2026-06-02-goal-pack-ready-gate-diff-review.md`：C-001 公共口径闭合评审 ledger；不拥有最终 SSoT、standard、completion evidence 或 implementation status。
+
+## Routes
+
+- 评审层说明：`../README.md`
+- 文档网络：`../../README.md`
+- 当前事实：`../../ssot/README.md`
+- 文档治理：`../../standards/docs-governance.md`

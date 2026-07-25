@@ -1,113 +1,109 @@
 # Standards
 
-本层保存可执行规则、命令、质量门和协作 SOP。
+本层保存可执行规则、命令、质量门和协作标准。
 
 ## Owns
 
-- 开发和验证命令。
-- 文档治理规则。
-- skill 源码布局和入口口径。
-- Goal Proof System schema 迁移时必须同步的对象。
-- agent 协作规则。
+- 核心 Suite 与共仓实验的验证命令。
+- 文档治理和 Skill source layout。
+- Skill 写作、invocation、coverage 与 eval 标准。
+- 公开 contract/schema 变化时必须同步的 surface。
 
 ## Must Not Own
 
-- 产品定位。
-- 当前 Goal Pack 运行状态。
-- 未决取舍。
+- 产品定位、当前 execution state、未决取舍或实验结论。
 
 ## Boundary
 
-本层写可执行规则：命令、检查门、命名、schema 同步要求、文档治理 SOP、
-skill 源码布局规则和 agent 协作规则。它不解释产品为什么存在，也不保存当前任务状态。
+Standards 规定当前如何检查和协作。代码只能证明实现状态；是否接受实现为新规则，需要更新对应 Standard、SSoT 或 ADR。
 
-当本层规则和代码行为冲突时，代码只能证明当前实现状态；是否接受该行为为新规则，
-必须通过本层、SSoT 或 ADR 明确更新。
-
-## Promotion / Demotion
-
-- 重复出现的 review 规则、命令门、docs governance 规则、skill source layout 规则，
-  从 Goal Pack、roadmap 或 report promote 到本层。
-- 一次性计划、候选取舍或执行证据从本层 demote 到 roadmap、ADR、Goal Pack 或 report。
-- 被 ADR 或更高标准替代的旧规则应删除，不能留下并行 current home。
-
-## 开发标准
-
-使用 Bun：
+## Repository Gates
 
 ```bash
 bun install
-bun run build
-bun run typecheck
-bun run test
+python3 -m pip install -r requirements-dev.txt
+bun run check:core
+bun run check:goal-proof-experiment
 bun run check
+bun run bundle:skills
 ```
 
-改公开命令、Goal Pack schema、evidence record 语义、skill 口径时，同步更新：
+- `check:core`：核心 Suite audit 与 Docs audit。
+- `check:goal-proof-experiment`：Goal Proof Skill self-check、CLI build/typecheck/tests。
+- `check`：整仓聚合门，不合并 Core/Experiment claim。
+- `bundle:skills`：生成 core-only Suite ZIP、audit JSON 与 manifest。
 
-- `README.zh-CN.md`
-- `README.md`
-- `skills/**`
-- `skills/**/templates/**`
-- CLI checker / renderer
-- tests
+## Skill Authoring Standard
 
-## Skill 源码布局标准
+详细 source 规则见 [Skill Source Layout](skill-source-layout.md)。
 
-- 详细规则见 [Skill Source Layout](skill-source-layout.md)。
-- AI Coding OS 是对外开源源码仓；本仓只定义 `skills/**` grouped source layout、公开触发名和本仓验证口径。
-- 当前公开 Skill Suite 入口见 [skills/README.md](../../skills/README.md)；跨 Skill 合同、共享词汇和 Harness schemas 由 `$ai-coding-os-suite-contracts` 提供。
-- Skill 运行时触发名由 `SKILL.md` frontmatter `name` 决定，不由目录名决定。
-- 下游用户或维护者如何安装、复制、镜像或分发 skill，属于 downstream distribution，不写入本仓公开叙事。
-- 退役 Skill 不保留兼容 alias；历史 evidence/source 可保留追溯材料，但不能定义当前口径。
-- 本仓只维护 grouped source，不生成 Flat 版本。
-- 改 suite 收口策略时，默认先改本仓 `skills/**` 和公开 docs，再运行本仓验证；不得把下游 runtime 或同步工具状态说成本仓事实。
+- Skill 触发名由 `SKILL.md` frontmatter `name` 决定，不由 grouped folder 决定。
+- Model-invoked description 只保留独立 trigger branches 和必要 reach clause。
+- User-invoked Skill 由人类承担索引成本；核心 `$ai-coding-os` 和实验 `$goal-proof` 均为 user-invoked，但属于不同分发边界。
+- `SKILL.md` 内联所有 branches 共用的步骤、强不变量和 completion criterion；branch-only reference 通过条件明确的 pointer 披露。
+- Pass/Steps 默认表示 owner-local coverage 与 semantic dependency，不规定 Agent 推理顺序。真实状态机、事务、安全顺序、迁移和外部协议可以拥有 sequence。
+- 一个 meaning 一个 source；清理 duplication、sediment、sprawl 和 no-op。
+- Leading word 必须真实改变 invocation 或 execution predictability，不为形式对称复制。
+- Eval 使用真实近邻 prompt；关键 case 的 expectations 同时覆盖正向产物、ownership 和 claim boundary。
+- 相对链接只指向本 Skill；跨 Skill 关系使用 `$skill-name`。
+- 核心 source 只维护 `skills/**` grouped layout；Goal Proof experiment 位于 `experiments/**`，不进入核心 roster。
 
-## 文档标准
+## Documentation Standard
 
-- 新增文档必须放入正确 `docs/*` 层。
-- 高密度目录必须有 README。
-- 每个 durable docs layer README 至少包含 `Owns`、`Must Not Own`、入口或 `Read Next`；权威密集层还必须包含 `Boundary` 或冲突规则，以及 promotion / demotion 路径。
-- 详细文档治理规则见 [Docs Governance](docs-governance.md)。
-- 不创建 `docs/specs/**`；实施规格放 root `specs/**`。
-- 不保留两个 current home。
-- 叙述性正文使用中文；字段名、命令、路径和 schema 示例可保留英文。
+- Durable 内容按语义 Authority 放入 `docs/*` layer。
+- `docs/README.md` 与 layer README 暴露 Routes，不规定 Read First 顺序。
+- Agent 可以从问题、code area、term、artifact、source 或 Evidence 进入知识网络。
+- Layer 默认扁平；partition、identity、registry 和 graph metadata 由实际压力触发。
+- 同一 claim、representation 和 scope 不保留两个 canonical Current Home；portable Skill output path 不能覆盖项目 Authority。
+- Execution artifact、ticket blockers 和 workflow status 留在 selected method，不复制到 Roadmap、SSoT 或 Artifact Graph。
+- 高密度 durable layer 需要薄 router；router 只链接，不复制 current truth。
+- 不创建 `docs/specs/**`；项目采用 implementation spec 时使用 root `specs/**`。
 
-## Goal Proof System 标准
+详细规则见 [Docs Governance](docs-governance.md)。
 
-- `$goal-proof` 是显式选择的可选执行方法；任务复杂度本身不触发 Goal Pack。
-- Proof path 优先；文档、计划和 work item list 只有在缩短执行、验证、审计或交接路径时才保留。
-- 用户明确要求目标计划、Goal Pack 或使用 `$goal-proof` 时，由 Goal Pack 承载该 workstream 的 durable planning state。
-- 随口小需求不创建 Goal Pack；直接 inline 实施并验证。
-- 简单工作不引入 strict proof。
-- 高风险工作使用 `evidence_mode: strict`。
-- 真实 Goal Pack 的历史 `evidence.jsonl` 不重写，只追加。
-- `plans/<work_id>.md` 不作为第二套任务系统。
-- Goal Pack ready 必须同时满足 goal contract stable，且 `progress.yaml.proof_step`
-  已被授权在 `claim_limit` 内产出或检查 `completion.required_evidence`；roadmap
-  段落、future command name、work item list 或 docs-only preface 不能单独使 Goal Pack ready。
-- First proof step 应是 runnable 或 inspectable movement。docs-only first proof step
-  只在目标 delta 本身就是承载 claim 的 doc / review authority surface，且 proof
-  step 能检查 diff、交叉引用、authority conflict 或 static scan 时成立。
-- 重要 completion / promotion evidence 应采用 SSoT / Goal Proof 拥有的跨方法
-  Evidence Envelope Discipline：列出实际 commands/checks、positive evidence、叙事性的
-  changed surfaces、`not_claimed`、叙事性的 `not_proven` 或 remaining gaps，不能只堆散 token。
-  除非同步升级 schema、template 和 checker，`changed surfaces` 与 `not_proven` 不表示
-  v2 completion review 的正式字段。
+## Contract Synchronization
 
-## Skill Suite 验证
+改公开 contract、schema、Skill boundary、Preset output 或 CLI behavior 时，按 owner 同步：
+
+```text
+SKILL.md and references
+templates and schemas
+evals and fixtures
+public README / owner docs
+checker / renderer / CLI help
+tests and golden output
+migration note when semantics break
+```
+
+核心 Evidence Envelope v2 是按真实消费者压力存在的方向中立 claim-boundary shape，不编码 tracker、ticket、Goal 或 release workflow lifecycle；legacy v1 directional shape 仅作有限 reader compatibility。Goal-specific schema/template/CLI compatibility 留在 experiment。
+
+## Core Suite Audit
 
 ```bash
 python3 skills/tooling/suite_audit.py --suite skills
 ```
 
-该检查覆盖 frontmatter/cross-Skill reference closure、共享 Schema、`$skill-name` handoff、
-Skill-local link containment、Preset isolated-install/golden render、退役入口、
-capability-tier 叙事、Flat source 和 Kit 原子性。
+覆盖 core frontmatter、Skill-local links、cross-Skill refs、Proof/Evidence/Harness/eval schemas、targeted negative cases、eval IDs、Preset candidate/profile provenance/language closure/golden/merge/upgrade、Docs audit compatibility、Effect Kit project-bound P3/command timeout/structured rollback、subprocess timeout、bundle-only rebuild、canonical audit sidecar、跨路径确定性、source provenance 和 source hygiene。
 
-## Read Next
+## Experiment Audit
+
+```bash
+python3 experiments/goal-proof/scripts/self_check.py
+bun run --filter goal-proof test
+```
+
+实验自检覆盖 user invocation、Skill-local references、Goal/Progress/Evidence templates 与 eval shape；CLI tests 覆盖实际读写与兼容。实验通过不构成核心 Suite claim。
+
+## Promotion / Demotion
+
+- 重复出现且当前适用的命令、质量门和协作规则 promote 到本层。
+- 一次性计划、候选取舍、历史 evidence 和 experiment status 留在其 owner。
+- 被新 ADR/Standard 替代的旧规则应 supersede 或删除，不能并行保持 current。
+
+## Routes
 
 - 当前事实：`../ssot/README.md`
-- 结构视图：`../architecture/README.md`
 - 文档治理：`docs-governance.md`
 - Skill source layout：`skill-source-layout.md`
+- 结构视图：`../architecture/README.md`
+- Goal Proof experiment：`../../experiments/goal-proof/README.md`

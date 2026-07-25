@@ -1,7 +1,15 @@
 id: react
 version: 1
 requires:
-  - monorepo-core
+  - typescript-node
+suite_contract:
+  term_owners:
+    - frontend-architecture
+  filename_pattern_owners:
+    - frontend-architecture
+  qualifiers:
+    host: [browser]
+    transport: [http, websocket, sse]
 provides:
   - client/query/store/realtime/view-model/page/surface vocabulary
   - feature and host composition defaults

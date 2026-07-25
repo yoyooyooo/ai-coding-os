@@ -3,7 +3,7 @@ version: 1
 provides:
   - thin AGENTS.md operational entry
   - managed Evolvable Application section
-  - Read First links
+  - unordered knowledge-network routes
   - resolved command slots
   - language policy slot
 rules:

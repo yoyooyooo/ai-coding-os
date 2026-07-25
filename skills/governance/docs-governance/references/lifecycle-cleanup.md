@@ -1,171 +1,102 @@
-# Lifecycle And Cleanup
+# Lifecycle and Cleanup
 
-Use this reference when a project has missing, old, duplicated, converted, or
-stale governance material. This covers new repositories, lightweight existing
-docs, migrated planning folders, mature repos due for periodic cleanup, and
-project-local governance skills that should be replaced.
+Initialization, migration, periodic cleanup, partitioning, and flattening use the same convergence loop with different amounts of existing material.
 
-Do not treat new-project initialization as a separate doctrine. A new
-repository is just convergence with little prior material: create the thinnest
-routing structure that the host needs, then let project docs own project facts.
+## Convergence Loop
 
-Human escalation is a last resort. Missing index or routing structure is not
-automatically `blocked` when the agent can create the minimum artifact within
-existing authority and claim_limit. For Goal Proof System bridge, inbox,
-promotion, retention, or completion questions, hand off to `$goal-proof`;
-this reference handles only docs-layer placement, cleanup, evidence retention,
-and authority conflicts.
+```text
+inspect
+  -> classify claims and artifacts
+  -> assign lifecycle and retention verdicts
+  -> keep or create only thin routing structure
+  -> promote authority
+  -> demote candidates
+  -> partition or flatten only when earned
+  -> preserve evidence backlinks
+  -> delete obsolete material
+  -> update nearest indexes
+  -> audit
+```
 
 ## Lifecycle States
 
 | State | Meaning | Default action |
 |---|---|---|
-| `missing-baseline` | A needed routing or authority index does not exist yet | Create the thinnest host-appropriate README / template |
-| `active-authority` | Current truth or executable rule | Keep in SSoT / standards / protocol / ADR |
-| `active-route` | Current or long-horizon sequence, gate, coverage, or referenced future capability route | Keep in roadmap/future or goal index while it retains route/gate value |
-| `future-capability` | Long-horizon capability with prerequisites, first falsifier and promotion targets, but no current authority | Keep as `docs/roadmap/future/<capability>/README.md` and prevent shadow layers |
-| `candidate-material` | Still under evaluation and not yet a durable future route | Keep in the project's candidate layer, such as Goal Proof System inbox or `docs/proposals/**` |
-| `decision-needed` | Conflict, authority question, or missing bridge that truly requires human / higher-authority choice | Record in decision queue or closest proposal |
-| `bridge-needed` | Two docs-layer states need a routing or authority bridge | Create the thinnest routing bridge or hand off to the repository's configured planning/execution method when it is a first proof path question |
-| `converted-source` | Already consumed by authority, Goal Pack, roadmap, report, or spec but useful for traceability | Move to the method/source layer or backlink from target artifact |
-| `evidence-record` | Past verified result or audit summary | Keep in reports, spec evidence, or linked handoff |
-| `obsolete` | Superseded and no longer useful | Delete after reference check |
-
-When an active route is backed by Goal Proof System, keep the roadmap or goal index
-as a route/index artifact. Do not convert it into a parallel hand-written copy
-of Goal Pack ready / running / done state.
+| `missing-baseline` | a needed router or authority entry is absent | create the thinnest useful artifact |
+| `active-authority` | current fact, binding, contract, or adopted decision | keep in its owning layer |
+| `accepted-target` | adopted delivery target without current proof | keep in the owning target/requirement/decision artifact and link execution |
+| `active-route` | current or long-horizon sequence, gate, or route | keep while it still changes decisions |
+| `future-capability` | durable future candidate with prerequisites and promotion path | keep as a capability route/capsule |
+| `candidate-material` | still under evaluation | keep in the configured candidate method |
+| `active-proof` | implementation or validation in progress | route to the configured tracker/spec/evidence owner |
+| `converted-source` | consumed by authority but useful for traceability | backlink or retain as source |
+| `historical-evidence` | durable past proof or audit | keep in reports/evidence when justified |
+| `decision-needed` | real Authority conflict requiring a decision | record only in an established project decision home when persistence is earned |
+| `obsolete` | superseded with no remaining route or evidence value | delete after reference check |
 
 ## Retention Gate
 
-Use this gate when auditing old docs, inherited planning trees, stale roadmap
-entries, report piles, source digests, or migrated folders. The point is not to
-save every artifact. The point is to keep the smallest durable evidence add that lets
-a future agent preserve current authority, evidence, and traceability.
+A durable document remains in `docs/**` when it is at least one of:
 
-A document may stay in `docs/**` only when it satisfies at least one condition:
+- current authority or an accepted target;
+- an active route, gate, or useful index;
+- retained source linked from current authority or a decision;
+- durable audit, release, migration, security, or verification evidence;
+- a router that materially helps readers choose the correct artifact.
 
-- it is current authority, executable standard, ADR, protocol contract, product
-  positioning, or architecture map;
-- it is an active route, gate, coverage matrix, status index, or method
-  artifact still used to decide future work;
-- it is durable evidence for a current claim, report, release, security review,
-  or implementation handoff;
-- it is retained source material linked from a promoted goal, brief, ADR,
-  standard, roadmap, or report;
-- it is an index needed to help agents choose the right document layer.
+Otherwise delete, demote, merge, or move it to the owning method.
 
-If none apply, remove it from `docs/**` by deletion, demotion, or migration.
+## Shape Lifecycle
 
-If a needed routing document is missing, add it only when it will help future
-agents place material. A missing layer is not automatically a defect; unused
-layers should stay absent.
+### Partition
 
-## Retention Verdicts
+Partition when durable boundary or navigation pressure has been established. Move the smallest coherent cluster, add a local router only when it improves entry, update inbound links, and preserve shared files at the parent layer.
 
-Assign one explicit verdict before moving or deleting old material.
+### Flatten
 
-| Verdict | Use when | Action |
-|---|---|---|
-| `create-thin` | A missing docs router, layer README, ADR template, or host-equivalent index is needed for future routing | Create only the minimal file, with owns / must-not-own / conflict behavior |
-| `keep` | The document is current authority, active routing, or required evidence | Keep and ensure the nearest index explains why |
-| `promote` | The document contains a rule or truth that should become authority | Move or rewrite into SSoT, standards, ADR, protocol, product, or roadmap |
-| `demote` | The document is useful context but not authority | Move to the appropriate candidate/source/report layer, method artifact, or root implementation artifact |
-| `migrate` | The document is valid but lives in the wrong layer | Move by semantic role and update inbound links |
-| `split` | One document contains multiple candidates, decisions, or goal tracks | Split by docs-layer role; use `$goal-proof` for Goal Pack / inbox / source internals |
-| `merge` | Multiple artifacts duplicate the same candidate or decision | Merge into one live artifact and retire the rest |
-| `bridge` | A docs route or authority relation lacks an explicit bridge | Create a thin routing bridge; use the repository's configured planning/execution method for first proof path bridge work |
-| `block` | Human or higher-authority decision is required; no honest falsifiable path exists within current authority | Add a decision item; do not promote or implement yet |
-| `archive-as-source` | The document is no longer active but explains where accepted work came from | Move to a source/evidence layer and backlink from the promoted artifact |
-| `delete` | The document is obsolete, misleading, duplicate, or no longer referenced | Delete after reference and evidence checks |
+Flatten when a child directory no longer has an independent boundary, contains only accidental fragmentation, forces symmetric boilerplate, or makes the reading path longer. Move files to the nearest semantic parent, resolve name collisions semantically, update links, then remove the redundant README and directory.
 
-Default bias: delete or demote stale planning prose unless it carries current
-authority, active routing value, or evidence that is linked from a live artifact.
+### Merge and Split
 
-Do not apply this deletion bias mechanically to long-horizon Roadmaps. A product evolution sequence or future capability capsule remains an `active-route` when it still constrains ordering, prevents premature implementation, or defines a falsifiable promotion gate. “Not implemented yet” is not a deletion reason.
-
-## Staleness Triggers
-
-Treat a document as stale until proven otherwise when it:
-
-- describes a previous folder scheme, workflow, or local skill that has been
-  replaced;
-- repeats a rule now owned by SSoT, standards, ADR, or protocol docs;
-- claims completion without evidence links;
-- keeps candidate material open after it has already become current authority,
-  a Goal Pack, a report, source, or implementation artifact;
-- keeps roadmap, plan, or candidate prose open after the work has been converted
-  into a Goal Pack, implementation artifact, accepted evidence, source, report,
-  or successor route;
-- keeps an implementation plan as active guidance after execution evidence has
-  moved into the owning evidence record, spec, roadmap, or report;
-- keeps an index, source map, or coverage matrix that only repeats another
-  current route;
-- repeats Goal Proof System method-internal rules already owned by
-  `$goal-proof`;
-- keeps decision conflicts in prose instead of a decision queue;
-- uses a method-specific work queue as a generic backlog;
-- records a meeting-style narrative, temporary idea, or agent diary with no
-  durable decision;
-- uses phase or MVP wording as if it were current implementation authority;
-- cannot answer why a future agent must read it;
-- makes future agents choose between old and new homes for the same artifact
-  type.
+- split a mixed artifact only when the resulting parts have different authority, owners, lifecycle, or reading paths;
+- merge artifacts when one coherent read is shorter and duplicate ownership disappears;
+- do not split merely because a document is mature or long.
 
 ## Migration Rules
 
 1. Check inbound references before moving or deleting.
-2. Preserve evidence links before deleting old planning text.
-3. Move by docs-layer role, not by filename. Inside Goal Proof System flows, use
-   `$goal-proof` artifact routing for the method-internal role.
-4. Update the closest README / index in the same change.
-5. Do not leave two current homes for the same artifact type.
-6. Promotion from a future capsule moves accepted authority into formal layers and removes duplicate promoted text from the capsule.
-7. Preserve or repair the host narrative language policy while migrating. When
-   touching a planning artifact in a path where `AGENTS.md` requires a specific
-   prose language, convert newly written or substantially rewritten narrative
-   text to that language while keeping machine fields, commands, schemas, code
-   symbols and templates stable.
+2. Move by semantic role, not filename or age.
+3. Update the closest README/index in the same change.
+4. Keep one canonical Current Home for each claim, representation, and scope.
+5. Preserve source/evidence context before deleting candidate prose.
+6. Keep host language policy intact.
+7. Treat generated review signals as inputs to judgment, not automatic file moves.
 
 ## Deletion Rules
 
 Delete when all are true:
 
-- the content is superseded;
-- no current artifact depends on it as evidence;
-- any useful source context has been linked elsewhere;
-- keeping it would make an agent choose the wrong path.
+- the content is superseded or no longer changes decisions;
+- no current or accepted artifact depends on it as evidence or source;
+- useful context has been linked elsewhere;
+- retaining it would make a reader choose the wrong route.
 
-Do not delete when:
-
-- it is evidence for a claim still referenced by roadmap, ADR, SSoT, or report;
-- legal, release, audit, or security retention applies;
-- the replacement path is not yet indexed.
-
-## Replacing Project-local Governance Skills
-
-When a generic governance skill is introduced, a project-local architecture skill
-can be deleted only after:
-
-- generic governance owns docs layer and human-agent SOP;
-- project-specific authority has moved into `docs/ssot/**`,
-  `docs/standards/**`, or ADR;
-- code/module conventions live in standards or language-specific skills;
-- no AGENTS.md or runtime config still points to the old skill as required;
-- at least one audit run confirms equivalent coverage.
-
-Until then, treat the project-local skill as a temporary adapter, not a source of
-new generic doctrine.
+Retain or escalate when legal, security, release-history, compliance, or irreversible data risk applies.
 
 ## Cleanup Output
 
-Use this structure:
-
 ```text
 kept:
-moved:
+promoted:
+demoted:
+partitioned:
+flattened:
+merged:
+split:
 converted_to_source:
 deleted:
 indexes_updated:
 temporary_bridges:
 verification:
+unresolved_decisions:
 ```

@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "skill_name": "product-definition",
+  "evals": [
+    {
+      "id": "pd-001-source-is-not-decision",
+      "prompt": "A user provides a strategy deck and asks for a final PRD.",
+      "expected_output": "Synthesize intent, extract claims and assumptions, identify decisions needed, and produce a draft specification clearly labeled as not yet baselined. Do not treat the strategy deck as final product truth.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-002-code-is-not-product-truth",
+      "prompt": "The current code has a page that is not mentioned in accepted requirements. Should it be in scope?",
+      "expected_output": "Classify it as current implementation evidence or unaccepted implementation, reserve observed-behavior claims for executed evidence, assess user value, migration cost, and risk, and prepare a product decision. Do not keep it solely because it exists.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners.",
+        "Classifies static paths, modules, schemas, routes, or tables as implementation claims rather than observed behavior."
+      ]
+    },
+    {
+      "id": "pd-003-conflict-needs-recommendation",
+      "prompt": "Two business documents define different lifecycle statuses for the same object.",
+      "expected_output": "Expose the conflict, explain object, workflow, metric, permission, migration, and acceptance impact, recommend a unified lifecycle, list alternatives, and route to a decision owner. Do not merely ask the business to confirm.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-004-model-before-pages",
+      "prompt": "A user asks for page-by-page prototypes for a complex workflow.",
+      "expected_output": "First model actors, objects, relationships, workflow, state dimensions, rules, permissions, artifacts, and metrics; then produce a state-complete design handoff without taking over final interaction or visual design.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-005-unresolved-policy-isolated",
+      "prompt": "A draft policy determines one workflow deadline, but no final policy owner has approved it.",
+      "expected_output": "Label the deadline as draft-policy-derived, prepare a recommended default and decision packet, isolate the affected deadline and acceptance, and continue unaffected product work. Do not baseline it as binding.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-006-docs-home-is-repository-owned",
+      "prompt": "The repository has established documentation homes and the user asks for product artifacts.",
+      "expected_output": "Use established homes and naming conventions. Do not create a parallel product-definition directory tree merely because the Skill has templates.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-007-prd-is-not-delivery-proof",
+      "prompt": "A PRD was accepted. Is the feature complete?",
+      "expected_output": "State that the PRD is the accepted product target, not delivery proof; completion requires the owning test, UAT, release, or runtime evidence.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-008-technical-design-adjacent",
+      "prompt": "The user asks what database schema to use after product rules are accepted.",
+      "expected_output": "Provide product data semantics, invariants, sensitivity, retention, and migration expectations, then route schema design to architecture or engineering rather than owning the technical design.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-009-minimum-artifact-set",
+      "prompt": "A small low-risk internal tool has one clear workflow and one team. Should every template be created?",
+      "expected_output": "Use a compact product brief or PRD with inline model, scope, and acceptance. Do not generate the full artifact suite without distinct authority, reader, cadence, reuse, or risk pressure.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-010-scope-honesty",
+      "prompt": "A roadmap mentions AI assistance next year, while the current version is a basic workflow product.",
+      "expected_output": "Keep AI as a future candidate unless separately accepted; exclude it from current acceptance and avoid a detailed pseudo-PRD that makes it look committed.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-012-state-dimensions",
+      "prompt": "A team wants one status field for business progress, approval, SLA warning, publication, and archive state.",
+      "expected_output": "Separate business, approval, task, time, visibility, and archive state or document explicit derivations. Explain why one overloaded status creates product contradictions.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-013-workflow-exceptions",
+      "prompt": "The source material only describes a happy path for a multi-role approval workflow.",
+      "expected_output": "Model rejection, withdrawal, delegation, timeout, external failure, concurrent update, cancellation, and recovery only where material, and identify missing decisions before baselining.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-014-permission-beyond-buttons",
+      "prompt": "A PRD says users without permission should not see the edit button.",
+      "expected_output": "Define the product permission across actor, operation, data scope, object relationship, state, sensitivity, and delegation constraints, and require consistent behavior for URL, API, export, file, and background actions.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-015-responsibility-versus-permission",
+      "prompt": "A stakeholder assumes the person assigned to do the work must also approve it.",
+      "expected_output": "Separate responsibility, assignment, approval authority, and permission; expose any separation-of-duty issue and prepare a decision rather than merging the roles.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-016-metric-definition",
+      "prompt": "Different dashboards show different values for 'active users'.",
+      "expected_output": "Create or repair a metric definition covering formula, population, grain, deduplication, time basis, filters, visibility, refresh, and drill-down, then trace affected acceptance and reports.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-017-quality-requirement",
+      "prompt": "A stakeholder says the product must be fast, secure, accessible, and global.",
+      "expected_output": "Translate only relevant product constraints into measurable targets with context, scope, priority, verification method, and evidence owner; route technical mechanisms and proof to adjacent owners.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-018-decision-packet-before-meeting",
+      "prompt": "The user needs to align several non-product stakeholders who are not prepared to design the solution.",
+      "expected_output": "Prepare decision packets with neutral issues, recommendations, alternatives, tradeoffs, no-decision consequences, owners, and deadlines; do not send a passive list of vague questions.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-019-meeting-notes-not-ssot",
+      "prompt": "A meeting ended with several decisions recorded in minutes.",
+      "expected_output": "Promote durable decisions into PDRs or accepted decision records and update scope, model, PRD, rules, metrics, and acceptance. Treat minutes as discussion evidence, not a competing product SSoT.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-020-change-impact",
+      "prompt": "A stakeholder changes an accepted approval rule after several PRDs were written.",
+      "expected_output": "Assess impact on scope, actors, objects, workflow, state, permissions, metrics, quality, migration, acceptance, UAT, design, technical handoff, and operations; update all affected product authorities rather than one PRD only.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-021-proportionate-traceability",
+      "prompt": "A high-risk product is implemented by several teams and changes frequently.",
+      "expected_output": "Use stable IDs and trace source, issue, decision, requirement, rule or state, acceptance, UAT, and delivery evidence ownership. Keep delivery proof outside product truth.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-024-sensitive-source-minimization",
+      "prompt": "Raw customer or employee records are included in source material, but the product task only needs workflow rules.",
+      "expected_output": "Minimize or redact sensitive data, use identifiers or summaries, and retain only the product-relevant facts within the approved workspace.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-025-current-behavior-needs-verification",
+      "prompt": "A screenshot suggests a feature exists, but no one has verified production behavior.",
+      "expected_output": "Classify it as screenshot-derived evidence with limited confidence, request or plan verification, and do not present it as accepted current fact.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-026-duplicate-action-behavior",
+      "prompt": "A user may click submit twice while the first request is still processing.",
+      "expected_output": "Define the observable product expectation for duplicate action, user feedback, resulting object count, retry, and stale state without prescribing the technical idempotency mechanism.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-027-deprecated-enum-mapping",
+      "prompt": "Legacy data contains status values that do not exist in the proposed lifecycle.",
+      "expected_output": "Define legacy value semantics, target mapping, exceptions, reporting impact, migration behavior, and unresolved decisions before changing the baseline or acceptance.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-028-scanner-is-mechanical",
+      "prompt": "The product artifact scanner reports no duplicate IDs. Does that prove the PRD is correct?",
+      "expected_output": "No. Explain that the scanner only checks explicit mechanical conventions and local links; semantic product truth, completeness, approval, implementation, and release evidence still require human and adjacent-owner review.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-029-design-handoff-to-interface-capability",
+      "prompt": "Accepted product requirements and acceptance criteria need to become a durable interface planning handoff.",
+      "expected_output": "The Product Design Handoff preserves Requirement, Rule, and AC source IDs plus user goals, product behavior, objects, state obligations, permissions, exceptions, and acceptance expectations; it leaves surface, region, interaction-state ownership, proof-surface mapping, layout, components, and frontend technology ownership to $interface-capability-planning and its adjacent owners.",
+      "expectations": [
+        "Produces the proportionate positive product artifact, decision, model, acceptance, or handoff requested by the prompt.",
+        "Separates source/current implementation/observed behavior/recommendation from accepted product truth and leaves delivery/release proof to its owners."
+      ]
+    },
+    {
+      "id": "pd-030-reversible-detail-does-not-need-decision-packet",
+      "prompt": "The accepted cancellation flow is clear. One low-risk confirmation label is unspecified, while the project SSoT and nearby UI consistently use 'Cancel order'.",
+      "expected_output": "Uses the established product term as a visible reversible assumption, completes the local specification detail, and does not create a Decision Packet or block unrelated work unless the wording changes scope, policy, permissions, or acceptance.",
+      "expectations": [
+        "Produces the smallest positive product clarification from existing Authority and local patterns.",
+        "Does not promote the local wording into a new global Product rule or claim delivery proof."
+      ]
+    }
+  ]
+}

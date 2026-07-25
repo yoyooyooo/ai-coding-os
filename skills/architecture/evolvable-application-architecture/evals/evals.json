@@ -1,4 +1,5 @@
 {
+  "schema_version": 1,
   "skill_name": "evolvable-application-architecture",
   "evals": [
     {
@@ -167,6 +168,24 @@
         "Updates project vocabulary aliases/deprecations.",
         "Avoids a full suffix/file set.",
         "Links filename roles to import boundaries."
+      ]
+    },
+    {
+      "id": 103,
+      "prompt": "Should this one external email sender sit behind an application-owned port? Answer only this narrow architecture question.",
+      "expected_output": "Returns a concise decision, core reason, ownership boundary, unproven assumptions, and smallest verification path. It adds no full architecture diagram, module inventory, migration plan, or large risk table unless repository pressure makes one material.",
+      "expectations": [
+        "Names a concrete authority, use-case/transaction, port/adapter, composition, migration, or claim-boundary outcome.",
+        "Separates current source behavior from accepted product intent and does not absorb frontend, Effect, or execution lifecycle ownership."
+      ]
+    },
+    {
+      "id": 104,
+      "prompt": "Product meaning, permissions, public API, and durable-data constraints are already accepted. Two internal modules could own the final Order writer. Decide the boundary without sending an ordinary technical choice back to a human.",
+      "expected_output": "Uses current source patterns and the smallest consistency domain to select one final writer, records the alternative and verification path, and escalates only if the choice would materially alter an accepted product, trust, durable-data, compatibility, policy, destructive, or irreversible-external boundary.",
+      "expectations": [
+        "Architecture itself decides the ordinary final-writer and consistency boundary.",
+        "If one slice remains genuinely undecidable, it isolates that slice and continues unaffected mapping rather than blocking the whole review."
       ]
     }
   ]

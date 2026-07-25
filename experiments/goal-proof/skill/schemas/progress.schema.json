@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Goal Proof Progress v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "goal_id",
+    "status",
+    "proof_step",
+    "active_work_item",
+    "work_items",
+    "blockers",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "goal_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["forming", "ready", "running", "blocked", "done", "retired"]},
+    "proof_step": {
+      "type": "object",
+      "required": ["from", "target_delta", "proof_path", "checks", "failure_inspection"],
+      "properties": {
+        "from": {"type": ["string", "array"]},
+        "target_delta": {"type": ["string", "array"]},
+        "proof_path": {"type": "array", "items": {"type": "string"}},
+        "checks": {"type": "array", "items": {"type": "string"}},
+        "failure_inspection": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "active_work_item": {"type": ["string", "null"]},
+    "work_items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "status", "objective"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^W[0-9]{3}$"},
+          "type": {"enum": ["discovery", "decision", "implementation", "coordination", "review", "planning"]},
+          "status": {"enum": ["queued", "active", "blocked", "done"]},
+          "objective": {"type": "string", "minLength": 1},
+          "plan": {"type": "string"},
+          "allowed_scope": {"type": "array", "items": {"type": "string"}},
+          "checks": {"type": "array", "items": {"type": "string"}},
+          "stop_if": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "blockers": {"type": "array", "items": {"type": "string"}},
+    "last_check": {"type": "object"},
+    "next_action": {"enum": ["proof_step", "continue", "needs_plan", "blocked", "review", "done", "needs_human"]}
+  },
+  "additionalProperties": true
+}

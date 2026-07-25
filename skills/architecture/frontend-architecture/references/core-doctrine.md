@@ -119,7 +119,7 @@ headless feature test
 component/surface test
 browser scenario
 real backend/realtime scenario
-production-near failure/recovery scenario
+declared local-stack or staging failure/recovery scenario
 ```
 
 Do not claim browser behavior from a reducer test or realtime continuity from a

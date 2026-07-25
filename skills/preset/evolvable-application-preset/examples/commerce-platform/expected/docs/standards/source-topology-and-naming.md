@@ -1,17 +1,19 @@
 # Source Topology and Naming
 
-本文件是当前项目生效的 resolved standard。通用理论来自 Suite Skills；本文件记录本仓库采用结果。
+本文件是 Preset 生成的候选 standard，不是当前项目 Authority。只有对应 owner 审阅并合入 Current Home 后才生效。
 
 ## Repository Topology
 
 - Repository mode: `monorepo`
 - Deployable hosts: apps/web, apps/api, apps/worker
 - Workspace packages: packages/contracts, packages/testkit
-- 后端默认从 `apps/api/src/modules/<capability>` 的私有 capability module 开始。
-- 跨 module 普通调用只使用 `<subject>.public.ts`；host composition 可额外使用 `<subject>.wiring.ts`。
-- package 不得 import app internals；module 不因使用 Effect 自动成为 package。
+- capability module 默认保持私有，跨边界只暴露明确 public surface。
+- host composition 与普通业务调用分离。
+- package 不得 import app internals。
+- TypeScript 跨 module 普通调用使用 `<subject>.public.ts`；host composition 可使用 `<subject>.wiring.ts`。
+- Effect 使用不自动创建 package；API 与 runtime 规则服从已安装 major。
 
-## Bounded Semantic Flatness
+## Source Topology: Bounded Semantic Flatness
 
 ```text
 目录表达 durable ownership
@@ -30,25 +32,32 @@ app 表达 runnable/deployable lifecycle
 
 重复点号前缀只是 lexical cluster，不是 module/package/authority。只有独立 owner、依赖规则、资源生命周期、替换/迁移、编译或部署压力出现时才晋升。
 
+## Documentation Shape
+
+项目 `docs/**` 的 layer、partition 与 identity 由 `$docs-governance` 负责。Preset 输出可以提供 broad candidate，但不是每个项目都必须采用的目录树；未使用的 layer 可以省略，layer 默认保持扁平，二级目录只有在 durable ownership、安全、保留、生命周期、读者路由或重复导航压力成立后才建立。Preset 不自动创建 `node_id`、编号体系或未来影子 authority。
+
 ## Canonical Patterns
 
 ```text
-order.create.use-case.ts
-order.by-id.query.ts
-order.repository.port.ts
-order.repository.postgres.live.ts
-order.repository.memory.fake.ts
-order.http.contract.ts
-order.http.handlers.ts
-order.public.ts
-order.wiring.ts
-channel.client.browser.live.ts
-channel.query.ts
-channel.store.ts
-channel.realtime.ts
-channel.view-model.ts
-channel.surface.tsx
-order.checkout.retry.harness.ts
+<subject>.<operation>.command.ts
+<subject>.command-context.ts
+<subject>.<operation>.use-case.ts
+<subject>.<read-purpose>.query.ts
+<subject>.<capability>.port.ts
+<subject>.transaction.port.ts
+<subject>.idempotency.port.ts
+<subject>.<capability>.<provider>.live.ts
+<subject>.<capability>.memory.fake.ts
+<subject>.public.ts
+<subject>.wiring.ts
+<subject>.http.contract.ts
+<subject>.http.handlers.ts
+<subject>.client.ts
+<subject>.query.ts
+<subject>.store.ts
+<subject>.realtime.ts
+<subject>.view-model.ts
+<subject>.surface.tsx
 ```
 
 不机械生成完整后缀套装。框架保留文件名可以例外，但 adapter 应保持薄。
@@ -61,6 +70,7 @@ order.checkout.retry.harness.ts
 - `*.http.*.ts` 只 decode/map/call use case，不直接写数据库。
 - 普通业务 module 不 import `*.wiring.ts`。
 - `*.fake.ts` 不能无提示进入 production composition。
+- 本地 store 不镜像 remote projection；host root 组装 live client 与资源。
 - Harness 不得绕过正式 use-case/materialization path。
 
 ## Promotion Ladder
@@ -69,7 +79,7 @@ order.checkout.retry.harness.ts
 lexical cluster -> private submodule -> workspace package -> deployable process
 ```
 
-每次晋升都需要真实压力；目录或 package 本身不授予 accepted-fact 写入权。
+每次晋升都需要真实压力；目录或 package 本身不授予事实写入权。
 
 ## Profiles
 

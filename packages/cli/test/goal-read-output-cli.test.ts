@@ -38,7 +38,8 @@ engineering_guidance:
     - "Read output stays bounded and thread-aware."
 completion:
   signal: "Summary exposes thread groups without duplicate goal placement."
-  required_evidence: "CLI tests pass."
+  required_evidence:
+    - "CLI tests pass."
 claim_limit: "Only proves read-output CLI behavior."
 `;
 }
@@ -98,7 +99,7 @@ function reviewEvidence(id = "E999") {
 
 function makeProject() {
   const project = mkdtempSync(join(tmpdir(), "goal-proof-read-output-"));
-  const goals = join(project, "docs", "goal-proof", "goals");
+  const goals = join(project, ".goal-proof", "goals");
   writePack(join(goals, "fermi-ingest"), {
     goal: goal({ id: "fermi-ingest", status: "done", thread: "fermi-thread", objective: "Import fermi source data." }),
     progress: progress({ id: "fermi-ingest", status: "done", nextAction: "done", workItems: [{ id: "W999", type: "review", status: "done" }] }),
@@ -204,12 +205,12 @@ test("read commands share limit/include/show-empty controls", () => {
     assert.equal(listPayload.items_omitted, 4);
     assert.equal("path" in listPayload.items[0], false);
 
-    const workPath = join(project, "docs", "goal-proof", "goals", "cli-output");
+    const workPath = join(project, ".goal-proof", "goals", "cli-output");
     const work = run(["work", "list", workPath, "--json"]);
     assert.equal(work.status, 0, work.stderr);
     assert.equal("objective" in JSON.parse(work.stdout).items[0], false);
 
-    const evidencePath = join(project, "docs", "goal-proof", "goals", "fermi-ingest");
+    const evidencePath = join(project, ".goal-proof", "goals", "fermi-ingest");
     const evidence = run(["evidence", "list", evidencePath, "--include", "path", "--show-empty", "--json"]);
     assert.equal(evidence.status, 0, evidence.stderr);
     const evidencePayload = JSON.parse(evidence.stdout);

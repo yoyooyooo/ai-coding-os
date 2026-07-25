@@ -1,67 +1,50 @@
 # Interface Capabilities
 
-本层保存项目级界面能力合同。它回答“用户界面能力是什么、要证明什么”。
+本层保存项目级界面能力合同：用户要完成什么、入口和 surface 是什么、交互状态与前端 owner 如何分配、需要哪些证明。
 
 ## Owns
 
-- `InterfaceCapability`：用户任务、入口、交互合同、状态/数据归属、coverage intent。
+- `InterfaceCapability`：用户工作、入口、交互合同、状态/数据归属和 coverage intent。
 - `InterfaceSurface`：surface / region 到 capability 的索引。
-- capability 到 product / SSoT / design / harness ID 的引用。
-- 从 Goal Pack companion artifact promote 出来的稳定界面能力合同。
+- Capability 到 Product、SSoT、Design、Architecture 和 Harness IDs 的引用。
+- 从任意 source、proposal 或 execution method 显式 promote 的稳定界面能力语义。
 
 ## Must Not Own
 
-- HarnessScenario、HarnessFixture、HarnessRoute、HarnessComponent 或 HarnessEvidence 的完整定义。
-- Playwright / agent-browser / unit test 的步骤。
-- fixture 数据、mock handler、seed 数据或 replay trace。
-- 产品事实、API schema、数据库事实、正式 UI 视觉方案。
-- Goal Pack 运行状态、evidence record 或 completion review。
+- Product、domain、API 或数据库事实。
+- HarnessScenario、fixture、route、component 或 raw Evidence 的完整定义。
+- 具体 test runner、Playwright/browser steps、fixture data 或 mock handlers。
+- 最终 visual design。
+- Tracker、ticket、Goal、release 或其他 execution state。
 
 ## Boundary
 
-`InterfaceCapability` 可以声明 `coverage_intent`，但只能引用 harness ID
-或需要的 harness level，不能内嵌完整 proof 方案。
+`InterfaceCapability` 可以声明 proof needs 和 `coverage_intent`，但只引用 Harness IDs 或所需 Proof Surface，不复制完整 proof design。
 
 ```yaml
 coverage_intent:
   required_harness:
     - hs.channel.issue-from-message
-  required_levels:
-    - headless_product
+  required_surfaces:
     - interface_headless
-    - browser_visible
+    - browser
 ```
 
-完整证明方案放 `docs/product-harness/**`。
+完整 Harness contract 放 `docs/product-harness/**`；执行结果留在 owning test/Harness/evidence surface。`InterfaceCapability.status` 只表达 definition lifecycle：`sketch | candidate | accepted | retired`。Product/design owner 接受定义；Harness pass、delivery completion 或 regression 不能自动改变该状态。
 
 ## Promotion / Demotion
 
-Goal Pack 可以先生成候选稿：
+任何 workflow/source 产生的候选稿只有经项目文档 Authority 接受后才进入本层。Promotion 保留 source 和 Evidence links，但不复制外部 workflow status。
 
-```text
-docs/goal-proof/goals/<goal-id>/interface-capabilities.yaml
-```
-
-完成时必须给 retention verdict：
-
-```text
-promote | keep-in-goal | split | retire | block
-```
-
-Promote 后，Goal Pack companion 应只保留 source / promoted_to / evidence
-link，不再作为长期权威。
-
-如果 capability 只是一次性验证脚手架、未被产品化、或已被新的 capability 吸收，
-demote 回 Goal Pack note/source 或在本层标记 retired 后删除重复定义。
+一次性验证脚手架、未产品化 candidate 或被新 capability 吸收的内容，留在 source/report 或标记 retired；不在本层保留两份 Current definition。
 
 ## Conflict
 
-冲突时按本仓 `docs/README.md` 的顺序裁决。`docs/ssot/**`、`docs/standards/**`
-和已采纳 ADR 高于本层；本层高于 roadmap / Goal Pack 中的候选稿。
+按 question-scoped Authority 处理：Product/SSoT 拥有用户和业务意义；本层拥有 interface capability projection；Architecture/Frontend 拥有技术 topology；Harness/Test 拥有 proof implementation。不存在统一文件顺序。
 
-## Read Next
+## Routes
 
-- Harness 证明合同：`../product-harness/README.md`
-- 文档路由：`../README.md`
+- Harness contract：`../product-harness/README.md`
+- 文档网络：`../README.md`
 - 当前事实：`../ssot/README.md`
 - 文档治理：`../standards/docs-governance.md`

@@ -11,7 +11,8 @@ property:
 lane:
 runner_or_tool:
 commands_or_actions:
-environment_and_fake_live_boundary:
+proof_surface:
+test_environment:
 fixtures_or_seed:
 observed:
 supports:
@@ -26,8 +27,10 @@ artifacts:
   repository's established equivalent.
 - `runner_or_tool`: exact tool when relevant.
 - `commands_or_actions`: actual command/route/browser actions and status.
-- `environment_and_fake_live_boundary`: browser, viewport, base URL, CI/local,
-  backend, provider, and fake/real distinctions required to interpret the run.
+- `proof_surface`: canonical observation surface, dependency realities,
+  environment class when material, and owner-local proof focus.
+- `test_environment`: runner-specific browser, viewport, base URL, CI/local,
+  auth subject, or configuration needed to reproduce the run.
 - `fixtures_or_seed`: deterministic data, auth subject, MSW handler, database
   seed, or cleanup that influenced the result.
 - `observed`: direct output, visible state, console/network status, trace, count,

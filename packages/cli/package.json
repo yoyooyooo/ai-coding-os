@@ -1,7 +1,7 @@
 {
   "name": "goal-proof",
-  "version": "0.1.0",
-  "description": "A Goal Proof CLI for evidence-backed long-running AI coding loops.",
+  "version": "0.2.0",
+  "description": "Experimental Goal Proof CLI for evidence-backed durable coding goals.",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/yoyooyooo/ai-coding-os#readme",
@@ -42,7 +42,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "rm -rf dist && bun build src/goal-proof.ts --target=node --outfile=dist/cli.js && bun build src/index.ts --target=node --outfile=dist/index.js && chmod +x dist/cli.js",
+    "build": "mkdir -p dist && bun build src/goal-proof.ts --target=node --outfile=dist/cli.js && bun build src/index.ts --target=node --outfile=dist/index.js && chmod +x dist/cli.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "bun test",
     "check": "bun run build && bun run typecheck && bun run test",

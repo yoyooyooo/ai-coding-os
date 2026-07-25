@@ -1,13 +1,12 @@
 ---
 name: evolvable-application-architecture
 description: >-
-  Authority-first application architecture for durable facts, transactions,
-  external capabilities, modular monoliths, migrations, repository topology,
-  and semantic source naming. Use when deciding or auditing fact ownership,
-  use-case and port boundaries, consistency, composition roots,
-  module/package/deployable promotion, MVP takeover, or replaceability. Use
-  $frontend-architecture and $effect-best-practices for their implementation
-  surfaces.
+  Authority-first application architecture for durable facts and change. Use
+  when deciding or auditing fact ownership, transactions and use cases,
+  capability ports, consistency, composition roots, repository/package/deployable
+  boundaries, source topology and naming, forward migration, MVP takeover, or
+  replaceability. Frontend and Effect details stay with $frontend-architecture
+  and $effect-best-practices.
 ---
 
 # Evolvable Application Architecture
@@ -41,19 +40,22 @@ Owns:
   forward migration, bridge fencing, deletion gates, replaceability
   architecture claim ceilings
 
-Adjacent owners:
+Adjacent Suite owners, when installed:
+  product framing, decisions, requirements, and acceptance -> $product-definition
   frontend state/topology/realtime -> $frontend-architecture
   Effect Service/Layer/Scope/API/runtime -> $effect-best-practices
-  managed Effect API generation -> $effect-api-app-kit
-  docs placement and lifecycle -> $docs-governance
+  managed Effect API generation after decisions settle -> $effect-api-app-kit
+  proof architecture -> $product-harness-system
 ```
 
 The project owns product truth, public compatibility, security, privacy,
 retention, and destructive decisions.
 
-## Architecture Pass
+## Architecture Coverage
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the current architecture pressure; this is not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Ground | Relevant `AGENTS.md`, SSoT, Standards, ADRs, contracts, source, lockfile, tests, and deployable roots are identified; Suite defaults are separated from project facts. |
 | Trace | One real intent is followed through authorization, transition, commit, projection, and reconciliation; external inputs include observation/candidate and materialization. |
@@ -64,9 +66,13 @@ retention, and destructive decisions.
 | Evolve | One vertical slice can migrate through the seam; temporary bridges have fencing and deletion conditions. |
 | Prove | Executed or planned proof matches the claim; observations, inferences, `not_proven`, and `not_claimed` are distinct. |
 
-Escalate when repository authority cannot settle product semantics, final
-writers, permissions, privacy/retention, destructive migration, public
-compatibility, or irreversible external effects.
+Within accepted Product/SSoT, binding constraints, and current source patterns,
+choose the smallest final writer and consistency domain as an architecture
+decision. Escalate only when materially different choices would change product
+semantics, permissions or trust boundaries, irreversible durable data, public
+compatibility, binding policy, destructive migration, or irreversible external
+effects. If one writer slice remains undecidable, isolate it and continue the
+unaffected authority, topology, migration, and proof mapping.
 
 ## Invariants
 
@@ -93,34 +99,13 @@ lexical dot-prefix != module/package/process boundary
 
 ## Source Topology
 
-```text
-repo/
-  apps/                 runnable hosts
-  packages/             admitted compile/reuse boundaries
-  tooling/              checks and repository automation
-  docs/                 project authority chain
-  specs/                active implementation artifacts when adopted
+Start with a private, semantically flat module. Promote a lexical cluster only
+when ownership, dependency, lifecycle, compile, trust, or deployment pressure
+makes the boundary enforceable.
 
-apps/api/src/
-  host/                 config, runtime, resources, composition, shutdown
-  modules/<capability>  private authority/capability modules
-  workflows/<name>      cross-module orchestration through public surfaces
-```
-
-Start with a private module. Inside it, prefer semantic flat files over
-technical-layer directory chains. Promote a lexical cluster when ownership,
-dependency, lifecycle, compile, trust, or deployment pressure makes the new
-boundary enforceable.
-
-```text
-<subject>.public.ts   ordinary collaboration surface
-<subject>.wiring.ts   host-only construction surface
-```
-
-Suite-level machine-readable vocabulary, filename patterns, and guarded terms
-are provided by `$ai-coding-os-suite-contracts`. Use
-`$evolvable-application-preset` only when those defaults should be resolved into
-project-owned Standards.
+Suite-level machine-readable vocabulary and filename patterns come from
+`$ai-coding-os-suite-contracts`; `$evolvable-application-preset` resolves
+selected defaults into project-owned Standards.
 
 ## Read When Needed
 
@@ -151,25 +136,17 @@ project-owned Standards.
 
 ## Output
 
-Always return:
+Every response includes only the decision-bearing core:
 
 ```text
-mode
-lifecycle_stage
-pressure_profile
-sources_read
-vertical_slice
-observed_vs_inferred
-critical_authorities
-current_pressure
-proposed_seam
-source_topology_effect
-verification_surface
+conclusion
+core_reasoning
+fact_authority_and_ownership_boundary
 not_proven
-not_claimed
+smallest_verification_path
 ```
 
-Add mode-specific detail only when it changes the decision: findings and target
-contract for reviews; six-lens map for audits; authority/port/composition map for
-designs; bridge ledger for migrations; characterization and first production
-slice for MVP takeover.
+Add lifecycle/pressure classification, source topology, diagrams, full module or
+port maps, migration plans, bridge ledgers, large risk tables, or persistent
+artifacts only when they materially change the answer or the user requests the
+corresponding review, audit, design, migration, or takeover branch.

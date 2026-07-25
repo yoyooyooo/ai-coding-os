@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "ai-coding-os-monorepo",
@@ -10,7 +11,7 @@
     },
     "packages/cli": {
       "name": "goal-proof",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "bin": {
         "goal-proof": "dist/cli.js",
       },

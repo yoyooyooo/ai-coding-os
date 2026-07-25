@@ -1,86 +1,65 @@
 # Roadmap
 
-本层保存顺序、状态、证据链接和迁移波次。
+本层保存 AI Coding OS 当前迁移 gate、后续 capability delta 和 Evidence links。它不是 tracker、ticket、Goal、release 或其他 execution status 的副本。
 
 ## Owns
 
-- 已选择的迁移顺序。
-- 当前状态摘要。
-- 证据链接。
-- 待执行 Goal Pack 或 roadmap 级 gap。
+- 已接受的迁移方向与长期 gate。
+- 已完成 capability delta 的 Evidence links。
+- 尚未进入 Current Authority 的后续波次。
 
 ## Must Not Own
 
-- 逐步实施任务清单。
-- evidence record 细节。
-- 产品事实。
+- 逐步任务、blocking edges、assignment、execution completion、Product/SSoT 或 Evidence record 原文。
 
-## Boundary
+## Current State
 
-本层只保存迁移顺序、当前 gate、证据链接和后续波次。它不是任务系统，
-也不是 Goal Pack 状态的手写副本。Goal Pack ready / running / done、active work item、
-evidence record 和 completion review 由 `docs/goal-proof/**` 与 CLI 输出拥有。
+已完成的当前迁移：
+
+- Core Suite 收敛为 14 个项目级知识、规范、Authority、产品、架构、接口、proof、Preset 和 Tooling Skills。
+- Router 只提供 Owner Map；Route 不再表示阅读或执行序列。
+- Docs/Preset/AGENTS 从 `Read First` 收敛为多入口 Knowledge/Discovery Surfaces 和 Routes。
+- Owner-local Pass 统一解释为 coverage；真实状态机和事务协议保留 sequence。
+- Core Evidence Envelope v2 收敛为方向中立、按真实消费压力存在的最小 claim-boundary shape；v1 directional reader 仅保留有限 compatibility。
+- Goal Proof 从核心 `skills/**`、Router、Suite audit 和 core bundle 隔离到 `experiments/goal-proof/**`。
+- Goal Proof 四个公开阶段 Skill 合并为一个 user-invoked experimental Skill 的 conditional references。
+- Core Suite bundle 与 npm Goal CLI distribution 分开。
+- Core ZIP 已自包含 bundle-local README、audit、builder 和 `skills/VERSION`；canonical audit 是实际 release sidecar，通过 `source_tree_sha256` 绑定源码，并排除绝对路径/compiler-dependent diagnostics 后参与跨机器 provenance hash。
+- Preset renderer 只生成 `candidate-snapshot`，技术 fact writer map 归 Architecture Home；profile provenance 区分 user request、system default、dependency 和 resolved closure；语言中立 profile 不再泄漏 TypeScript filename patterns。
+- Harness v2 validator 拒绝 legacy/canonical 双写和已知 camelCase aliases，静态 proof 可诚实声明 `[none]`；Effect Kit P3 Descriptor 必须绑定项目已有 Harness entry，verification command 有 timeout 和结构化失败输出。
+- Product Source Synthesis 将静态源码/路由/Schema/表存在性归为 `implementation`，仅把执行或观察结果归为 `observed-behavior`。
+
+Current facts 已同步到 SSoT，长期取舍由 [2026-07-25 boundary ADR](../adr/2026-07-25-core-knowledge-network-and-goal-proof-experiment.md) 解释。
+
+## Future Candidates
+
+- 基于真实跨项目安装证据，评估 core Suite ZIP 的发布渠道；当前只声明本仓自包含 bundle output。
+- 冻结 doctrine，使用当前 10 个 composition cases 进行记录实际 Skill SHA 的真实 Agent dogfood；不以继续增加静态 case 替代行为证据。
+- 基于真实使用与 model-run eval，判断 Goal Proof experiment 是否保留、重构或退役。
+- 只有出现跨仓稳定 key、CI machine routing 或重复 Authority 冲突时，才重新评估 Authority Registry / Artifact Graph 扩张。
+- 只有真实 navigation pressure 证明必要时，才增加 code-area projection 或更深 docs partitions。
 
 ## Promotion / Demotion
 
-- 被验证为稳定规则的 roadmap gate，promote 到 standards。
-- 变成当前事实的迁移结果，promote 到 SSoT。
-- 需要解释长期取舍的迁移决策，promote 到 ADR。
-- 详细执行计划 demote 到 Goal Pack `plans/<work_id>.md` 或 root `specs/**`。
-- 已完成且只剩追溯价值的材料，demote 到 evidence/source 或删除。
-
-## Conflict
-
-若 roadmap 状态与 Goal Pack evidence、CLI 输出、SSoT 或 standards 冲突，
-roadmap 视为过期索引。修正链接和 gate 摘要，不复制 evidence 原文。
-
-## 当前状态
-
-已完成：
-
-- v2 Goal Pack schema 迁移：`goal.yaml`、`progress.yaml`、`evidence.jsonl`、`proof_step`、`work_items`、`evidence_id`、`work_id`、`next_action`、`claim_limit`、`claim_evidence`。
-- CLI / checker / renderer / tests / README / skills / templates / dogfood Goal Pack 主路径同步到 v2 口径。
-- 仓库定位升级为 AI Coding OS 方法套件仓。
-- Skill Suite 已扩展为 interface capability、shared product harness、UI/headless harness 和 frontend test lane：由 `$interface-capability-planning`、`$product-harness-system`、`$ui-product-harness`、`$headless-product-harness` 与 `$frontend-test-system` 分别拥有。
-- Repo shell 已收敛：GitHub repo / remote URL 为 `github.com/yoyooyooo/ai-coding-os`。
-- 公开 skill suite 源码布局已收敛：canonical suite 使用本仓 `skills/**` grouped layout，公开触发名由 `SKILL.md` frontmatter `name` 决定，旧入口不保留 active alias。
-- 顶层叙事已收敛为 authority-and-concern routing；`intent-to-evidence state transition` 仅属于显式采用的 `$goal-proof` 方法，不再作为整个 Suite 的默认控制流。
-- Goal Proof owner-local Skill delta 已落地：`$goal-contracts` 承载 `minimum sufficient horizon`，`$proof-step-implementation` 承载 evidence-to-progress 归约，`$ai-coding-os` 仅保留轻路由。
-- 整仓 architecture view 已补齐：`docs/architecture/repository-layer-breakdown.md` 描述 public shell、method source、execution engine、authority docs、long-running artifacts、verification / release support 的分层边界。
-- 应用架构主 doctrine 已收敛到 `$evolvable-application-architecture`；源码新增 `$ai-coding-os-suite-contracts`、`$evolvable-application-preset`、`$effect-api-app-kit` 与 grouped source audit，不保留兼容入口或 Flat source。
-
-已完成 Goal Pack 状态由 `../goal-proof/goals/` 下 evidence records 保留。当前没有 active Goal Pack。
-
-## 后续波次
-
-- 如果后续继续 polish product / SSoT 叙事，只采纳 artifact ownership 和用户价值表述；不得新增 workflow、schema、CLI 或公共 Check 名。
-- 如果未来决定重命名 CLI / npm package，再单独开 Goal Pack；当前明确保留 `goal-proof`。
-- 如果 OS 入口未来承载 CLI 或更重 artifact lifecycle，再重新评估 CLI / npm package 命名。
-
-## 当前治理 Gate
-
-本仓当前处于 `old-entry-retired` 状态：公开 repo shell、`skills/**` source layout、
-README / docs / templates / tests 已按 `AI Coding OS` / `$ai-coding-os` /
-`Goal Proof System` 口径收敛。后续不再扩散新命名。
-
-下游 runtime 安装、同步脚本和外部 skill 管理仓不属于本仓公开状态。
+- 稳定事实 promote 到 SSoT。
+- 可执行规则 promote 到 Standards。
+- 长期取舍 promote 到 ADR。
+- Execution detail 留在 selected method；历史 experiment evidence 留在 experiment dogfood。
+- 已完成且只有追溯价值的 roadmap delta 缩成 Evidence link 或移出 current view。
 
 ## Evidence
 
-- 顶层目标口径：`../../README.zh-CN.md`
-- 文档路由：`../README.md`
-- 当前事实：`../ssot/README.md`
-- 命名 ADR：`../adr/2026-05-28-ai-coding-os-naming-and-boundary.md`
-- Skill source layout 标准：`../standards/skill-source-layout.md`
-- 顶层叙事 delta proposal：`../goal-proof/sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md`
-- 顶层叙事 review ledger：`../review-plan/runs/2026-05-31-compiler-narrative-delta-proposal-review.md`
-- v2 迁移记录：`../goal-proof/goals/2026-05-24-goal-proof-v2-dogfood-migration/`
-- Repo shell evidence：`gh repo view yoyooyooo/ai-coding-os`、`git remote -v`
+- Public overview：`../../README.zh-CN.md`
+- Current facts：`../ssot/README.md`
+- Boundary ADR：`../adr/2026-07-25-core-knowledge-network-and-goal-proof-experiment.md`
+- Core architecture：`../architecture/repository-layer-breakdown.md`
+- Skill source standard：`../standards/skill-source-layout.md`
+- Goal experiment history：`../../experiments/goal-proof/dogfood/README.md`
+- Verification：`bun run check`、`bun run bundle:skills`
 
-## Read Next
+## Routes
 
-- 文档路由：`../README.md`
+- 文档网络：`../README.md`
 - 当前事实：`../ssot/README.md`
-- 文档治理：`../standards/docs-governance.md`
-- Skill 源码布局：`../standards/skill-source-layout.md`
-- Goal Pack 状态：`../goal-proof/README.md`
+- Standards：`../standards/README.md`
+- Architecture：`../architecture/README.md`

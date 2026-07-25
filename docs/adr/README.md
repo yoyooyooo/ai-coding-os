@@ -39,9 +39,13 @@ standards 不一致，先判断是否已有后续 ADR 或标准更新；没有�
 
 ## Accepted
 
-- [2026-05-28 AI Coding OS 命名与边界](2026-05-28-ai-coding-os-naming-and-boundary.md)
+- [2026-07-25 Core Knowledge Network And Goal Proof Experiment Boundary](2026-07-25-core-knowledge-network-and-goal-proof-experiment.md)
 
-## Read Next
+## Superseded
+
+- [2026-05-28 AI Coding OS 命名与边界](2026-05-28-ai-coding-os-naming-and-boundary.md) — Goal Proof membership and Router boundary superseded; naming decisions retained.
+
+## Routes
 
 - 文档路由：`../README.md`
 - 当前事实：`../ssot/README.md`

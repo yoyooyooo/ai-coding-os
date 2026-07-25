@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "AI Coding OS Semantic Vocabulary",
+  "title": "AI Coding OS Owner-Declared Architecture/Source Vocabulary",
+  "description": "Portable source and architecture terms selected by Preset profiles; not a project product glossary or Suite-wide natural-language ontology.",
   "type": "object",
   "required": [
     "schema_version",

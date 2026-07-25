@@ -20,7 +20,7 @@ export function renderWorkBriefText(brief) {
   lines.push(`engineering_guidance.standards: ${formatList(brief.goal_fields.engineering_guidance.standards)}`);
   lines.push(`engineering_guidance.architecture_notes: ${formatList(brief.goal_fields.engineering_guidance.architecture_notes)}`);
   lines.push(`completion.signal: ${brief.goal_fields.completion.signal}`);
-  lines.push(`completion.required_evidence: ${brief.goal_fields.completion.required_evidence}`);
+  lines.push(`completion.required_evidence: ${formatList(brief.goal_fields.completion.required_evidence)}`);
   lines.push(`claim_limit: ${brief.goal_fields.claim_limit}`);
   lines.push(`stop_rules: ${formatList(brief.goal_fields.stop_rules)}`);
   lines.push("");

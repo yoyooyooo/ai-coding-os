@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render and validate the Evolvable Application Preset.
 
-The renderer is intentionally conservative. It produces a resolved project
+The renderer is intentionally conservative. It produces a candidate project
 snapshot and never makes the project dynamically inherit a newer Preset.
 """
 from __future__ import annotations
@@ -22,7 +22,7 @@ except ImportError as exc:  # pragma: no cover
     raise SystemExit("PyYAML is required: pip install pyyaml") from exc
 
 PRESET_ID = "evolvable-application"
-PRESET_VERSION = "1.0.0-experimental.1"
+PRESET_VERSION = (Path(__file__).resolve().parents[1] / "VERSION").read_text(encoding="utf-8").strip()
 MANAGED_BEGIN = "<!-- evolvable-application-preset:begin -->"
 MANAGED_END = "<!-- evolvable-application-preset:end -->"
 
@@ -92,6 +92,39 @@ def load_profiles(ids: list[str]) -> tuple[list[dict[str, Any]], list[str]]:
     return [load(profile_id) for profile_id in resolved], resolved
 
 
+def contract_selection(profile_ids: list[str]) -> dict[str, Any]:
+    profiles, _ = load_profiles(profile_ids)
+    selected: dict[str, Any] = {
+        "term_owners": set(),
+        "terms": set(),
+        "filename_pattern_owners": set(),
+        "guarded_terms": set(),
+        "qualifiers": {},
+    }
+    for profile in profiles:
+        contract = profile.get("suite_contract") or {}
+        if not isinstance(contract, dict):
+            raise ValueError(f"profile {profile['id']!r} suite_contract must be an object")
+        for key in ("term_owners", "terms", "filename_pattern_owners", "guarded_terms"):
+            values = contract.get(key) or []
+            if not isinstance(values, list) or any(not isinstance(value, str) or not value for value in values):
+                raise ValueError(f"profile {profile['id']!r} suite_contract.{key} must be an array of strings")
+            selected[key].update(values)
+        qualifiers = contract.get("qualifiers") or {}
+        if not isinstance(qualifiers, dict):
+            raise ValueError(f"profile {profile['id']!r} suite_contract.qualifiers must be an object")
+        for key, value in qualifiers.items():
+            if value is True:
+                selected["qualifiers"][key] = True
+            elif isinstance(value, list) and all(isinstance(item, str) and item for item in value):
+                if selected["qualifiers"].get(key) is not True:
+                    current = selected["qualifiers"].setdefault(key, [])
+                    current.extend(item for item in value if item not in current)
+            else:
+                raise ValueError(f"profile {profile['id']!r} suite_contract.qualifiers.{key} must be true or an array of strings")
+    return selected
+
+
 def validate_overlay_shape(overlay: dict[str, Any]) -> None:
     def require_mapping(value: Any, label: str) -> dict[str, Any]:
         if not isinstance(value, dict):
@@ -159,19 +192,35 @@ def validate_overlay_shape(overlay: dict[str, Any]) -> None:
             require_mapping(item, f"harness_coverage[{index}]")
 
 
-def validate_inputs(preset_input: dict[str, Any], overlay: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+def resolve_profile_selection(requested: list[str]) -> dict[str, list[str]]:
+    requested_ids = list(dict.fromkeys(requested))
+    defaults_added = [] if "agent-entry" in requested_ids else ["agent-entry"]
+    _, resolved_ids = load_profiles([*defaults_added, *requested_ids])
+    dependency_added = [
+        profile_id
+        for profile_id in resolved_ids
+        if profile_id not in requested_ids and profile_id not in defaults_added
+    ]
+    return {
+        "requested": requested_ids,
+        "defaults_added": defaults_added,
+        "dependency_added": dependency_added,
+        "resolved": resolved_ids,
+    }
+
+
+def validate_inputs(preset_input: dict[str, Any], overlay: dict[str, Any]) -> tuple[dict[str, list[str]], dict[str, Any]]:
     if preset_input.get("schema_version") != 1:
         raise ValueError("preset-input schema_version must be 1")
     ids = preset_input.get("profiles")
     if not isinstance(ids, list) or not ids:
         raise ValueError("profiles must be a non-empty list")
-    if "agent-entry" not in ids:
-        ids = ["agent-entry", *ids]
+    if any(not isinstance(profile_id, str) or not profile_id for profile_id in ids):
+        raise ValueError("profiles must contain non-empty strings")
     if overlay.get("schema_version") != 1:
         raise ValueError("project-overlay schema_version must be 1")
     validate_overlay_shape(overlay)
-    _, resolved_ids = load_profiles(ids)
-    return resolved_ids, overlay["project"]
+    return resolve_profile_selection(ids), overlay["project"]
 
 
 def is_zh(overlay: dict[str, Any]) -> bool:
@@ -197,6 +246,29 @@ def command_lines(commands: dict[str, Any], zh: bool) -> str:
     return "\n".join(lines)
 
 
+def managed_rule_lines(profile_ids: list[str], zh: bool) -> str:
+    selected = set(profile_ids)
+    rules = [
+        "采纳后复用项目 vocabulary 中的 canonical terms。" if zh else "After adoption, reuse canonical terms from the project vocabulary.",
+        "只有当前事实、标准、合同、决策或拓扑变化时才更新持久文档。" if zh else "Update durable docs only when current truth, rules, contracts, decisions, or topology change.",
+    ]
+    if "monorepo-core" in selected:
+        rules.extend([
+            "遵守 module public / host wiring 边界与事实 writer 约束。" if zh else "Respect module public/host-wiring boundaries and fact-writer constraints.",
+            "测试、Adapter、Worker、前端状态或直接持久化不能创造第二条 accepted-fact 写入路径。" if zh else "Tests, adapters, workers, frontend state, and direct persistence do not create another accepted-fact writer.",
+        ])
+    if "react" in selected:
+        rules.append("远端投影只有一个 owner；本地 store 不镜像 server truth。" if zh else "Remote projection has one owner; local stores do not mirror server truth.")
+    if "effect" in selected:
+        rules.append("Effect API 与运行时规则服从已安装 major 和声明文件。" if zh else "Effect API and runtime rules follow the installed major and declarations.")
+    if "verification-core" in selected:
+        rules.extend([
+            "优先复用现有 Harness；缺失时补最薄、可证伪的执行面。" if zh else "Prefer existing Harnesses; add the thinnest falsifiable surface when needed.",
+            "区分 Proof Surface、依赖真实性、实际观察、支持结论与未证明项。" if zh else "Separate Proof Surface, dependency reality, observations, supported conclusions, and unproven neighbors.",
+        ])
+    return "\n".join(f"- {rule}" for rule in rules)
+
+
 def managed_agents_section(overlay: dict[str, Any], profile_ids: list[str]) -> str:
     zh = is_zh(overlay)
     project = overlay["project"]
@@ -204,28 +276,20 @@ def managed_agents_section(overlay: dict[str, Any], profile_ids: list[str]) -> s
     if zh:
         language = "持久叙事文档使用中文；路径、命令、Schema 字段、协议名和代码符号保留 canonical 形式。"
         text = f"""{MANAGED_BEGIN}
-本仓库采用 `docs/standards/architecture-profile.yaml` 中声明的 Evolvable Application Preset 解析快照。
+本节来自 Evolvable Application Preset 候选快照，尚未成为项目 Authority。
 
-未采用的 Preset 与 Skill 默认值不能覆盖项目 authority；当前事实、规则、决策和实现证据按其 claim 类型读取。已采用的 Preset 输出归入对应项目 docs layer。
+Preset 与 Skill 默认值不能覆盖项目 authority；当前事实、规则、决策和实现证据按其 claim 类型读取。只有经对应 semantic owner 显式采纳的内容才进入项目 Current Home。
 
-## Read First
+## Knowledge Surfaces
 
-1. `docs/README.md`
-2. `docs/ssot/README.md`
-3. `docs/standards/README.md`
-4. `docs/standards/architecture-profile.yaml`
-5. `docs/standards/source-topology-and-naming.md`
-6. `docs/standards/naming-vocabulary.yaml`
-7. 最近的 app/package/module README 或局部 `AGENTS.md`
+- `docs/README.md`（存在时）索引项目 Authority 网络。
+- 当前问题、code area、artifact、owning layer 和直接 Evidence 都可以作为入口。
+- app/package/module README 或局部 `AGENTS.md` 只声明真实 local delta。
+- Portable Skill 输出路径是候选默认值；现有项目 Current Home 优先。
 
-## Working Rules
+## Candidate Working Rules
 
-- 复用 `docs/standards/naming-vocabulary.yaml` 中的 canonical terms。
-- 遵守 module public / host wiring 边界与事实 writer 约束。
-- 不通过测试、Harness、Adapter、Worker、前端状态或直接持久化创造第二条 accepted-fact 写入路径。
-- 优先复用现有 Harness；缺失时补最薄、可证伪的执行面。
-- 区分实际观察、观察支持的结论与尚未证明的邻接能力。
-- 只有当前事实、标准、合同、决策或拓扑变化时才更新持久文档。
+{managed_rule_lines(profile_ids, True)}
 
 ## Commands
 
@@ -233,7 +297,7 @@ def managed_agents_section(overlay: dict[str, Any], profile_ids: list[str]) -> s
 
 ## Skill Routing
 
-当 AI Coding OS Skill Suite 可用时，跨域或不明确任务使用 `$ai-coding-os` 作为知识路由；明确任务可直接使用专业 Skill。Skill 建议不能覆盖仓库内当前权威。
+当 AI Coding OS Skill Suite 可用时，跨域或不明确任务可按需使用 `$ai-coding-os`；明确任务可直接使用专业 Skill。Skill 建议不能覆盖仓库内当前权威。
 
 ## Language
 
@@ -245,28 +309,20 @@ Project: {project['name']} (`{project['id']}`)
     else:
         language = "Use the repository narrative language for durable prose; preserve canonical paths, commands, schema fields, protocol names, and code symbols."
         text = f"""{MANAGED_BEGIN}
-This repository adopts the resolved Evolvable Application Preset declared in `docs/standards/architecture-profile.yaml`.
+This section comes from an Evolvable Application Preset candidate snapshot and is not yet project Authority.
 
-Unadopted Preset and Skill defaults cannot override project authority; resolve current facts, rules, decisions, and implementation evidence by claim type. Adopted Preset output belongs to its project docs layer.
+Preset and Skill defaults cannot override project authority; resolve current facts, rules, decisions, and implementation evidence by claim type. Only content explicitly adopted by the applicable semantic owner enters a project Current Home.
 
-## Read First
+## Knowledge Surfaces
 
-1. `docs/README.md`
-2. `docs/ssot/README.md`
-3. `docs/standards/README.md`
-4. `docs/standards/architecture-profile.yaml`
-5. `docs/standards/source-topology-and-naming.md`
-6. `docs/standards/naming-vocabulary.yaml`
-7. The nearest app/package/module README or local `AGENTS.md`
+- `docs/README.md`, when present, indexes the project Authority network.
+- The current question, code area, artifact, owning layer, or direct Evidence may be an entry.
+- App/package/module READMEs and local `AGENTS.md` describe only real local deltas.
+- Portable Skill output paths are candidate defaults; existing project Current Homes win.
 
-## Working Rules
+## Candidate Working Rules
 
-- Reuse canonical terms from `docs/standards/naming-vocabulary.yaml`.
-- Respect module public/host-wiring and fact-writer boundaries.
-- Do not create another accepted-fact writer through tests, harnesses, adapters, workers, frontend state, or direct persistence.
-- Prefer existing Harness surfaces; add the thinnest falsifiable surface when needed.
-- Separate observations, supported conclusions, and unproven adjacent behavior.
-- Update durable docs only when current truth, rules, contracts, decisions, or topology change.
+{managed_rule_lines(profile_ids, False)}
 
 ## Commands
 
@@ -274,7 +330,7 @@ Unadopted Preset and Skill defaults cannot override project authority; resolve c
 
 ## Skill Routing
 
-Use `$ai-coding-os` for ambiguous or cross-cutting work when the Suite is available. Clear tasks may use the owning specialist directly. Skill guidance never overrides repository-local authority.
+Ambiguous or cross-cutting work may use `$ai-coding-os` when useful and the Suite is available. Clear tasks may use the owning specialist directly. Skill guidance never overrides repository-local authority.
 
 ## Language
 
@@ -293,7 +349,11 @@ def merge_agents(existing: str | None, managed: str, zh: bool) -> str:
         if zh:
             local = "## Repository-Specific Notes\n\n- 在这里补充本仓库特有命令、受限路径、生成路径、安全约束与有意偏差。"
         return f"{title}\n\n{managed}\n\n{local}\n"
-    if MANAGED_BEGIN in existing and MANAGED_END in existing:
+    begin_count = existing.count(MANAGED_BEGIN)
+    end_count = existing.count(MANAGED_END)
+    if begin_count != end_count or begin_count > 1:
+        raise ValueError("Preset managed AGENTS.md markers are unbalanced or repeated; inspect the diff before adoption")
+    if begin_count == 1:
         before, rest = existing.split(MANAGED_BEGIN, 1)
         _, after = rest.split(MANAGED_END, 1)
         return before.rstrip() + "\n\n" + managed + "\n\n" + after.lstrip()
@@ -304,10 +364,12 @@ def layer_readme(title: str, owns: list[str], not_owns: list[str], reads: list[s
     links = chr(10).join(f"- [{item}]({item})" for item in reads)
     is_router = title == "Documentation Router"
     if zh:
-        reading_heading = "## 最短阅读路径 / 下一步阅读" if is_router else "## Read Next"
+        reading_heading = "## Discovery Surfaces" if is_router else "## Routes"
         return f"""# {title}
 
-## Owns
+> Preset 候选快照：本文件尚未成为项目 Authority，只有 semantic owner 显式采纳的内容才进入 Current Home。
+
+## Proposed Ownership
 
 {chr(10).join('- ' + x for x in owns)}
 
@@ -317,20 +379,26 @@ def layer_readme(title: str, owns: list[str], not_owns: list[str], reads: list[s
 
 ## Boundary / Conflict
 
-仓库当前权威优先；本层只拥有上面列出的语义。与其他层重复时，移动到唯一 owner 并保留必要链接。
+仓库当前权威优先；候选层只建议上面列出的语义。与项目 Current Home 重复时，不得形成平行 Authority。
 
 ## Promotion / Demotion
 
-候选内容只有在被采用并与源码/合同对齐后才能晋升为当前权威；过期内容应降级为 source/report 或删除。
+候选内容只有在对应 semantic owner 明确采用后才能进入 Current Home；源码或合同存在本身不足以完成晋升。
+
+## Internal Shape
+
+本层候选默认保持扁平。只有在 durable ownership、安全、保留、生命周期、读者路由或重复导航压力成立后才建议子目录。
 
 {reading_heading}
 
 {links}
 """
-    reading_heading = "## Read First / Read Next" if is_router else "## Read Next"
+    reading_heading = "## Discovery Surfaces" if is_router else "## Routes"
     return f"""# {title}
 
-## Owns
+> Preset candidate snapshot: this file is not project Authority until the applicable semantic owner explicitly adopts it into a Current Home.
+
+## Proposed Ownership
 
 {chr(10).join('- ' + x for x in owns)}
 
@@ -340,11 +408,15 @@ def layer_readme(title: str, owns: list[str], not_owns: list[str], reads: list[s
 
 ## Boundary / Conflict
 
-Repository current authority wins. This layer owns only the semantics listed above. Move duplicate current content to one owner and keep links where useful.
+Repository current authority wins. The candidate layer proposes only the semantics listed above and must not create a parallel Authority.
 
 ## Promotion / Demotion
 
-Candidates become current authority only after adoption and source/contract alignment. Obsolete content becomes source/report evidence or is deleted.
+Candidates enter a Current Home only after adoption by the applicable semantic owner; source or contract existence alone is insufficient.
+
+## Internal Shape
+
+The candidate stays flat by default. Suggest child partitions only after durable ownership, security, retention, lifecycle, reader-routing, or repeated navigation pressure is established.
 
 {reading_heading}
 
@@ -352,28 +424,45 @@ Candidates become current authority only after adoption and source/contract alig
 """
 
 
-def render_architecture_profile(preset_input: dict[str, Any], overlay: dict[str, Any], profiles: list[str]) -> str:
+def render_architecture_profile(overlay: dict[str, Any], resolution: dict[str, list[str]]) -> str:
+    profiles = resolution["resolved"]
     project = overlay["project"]
-    data = {
-        "schema_version": 1,
-        "preset": {"id": PRESET_ID, "version": PRESET_VERSION, "mode": "resolved-snapshot"},
-        "profiles": profiles,
-        "decisions": {
+    selected = set(profiles)
+    decisions: dict[str, Any] = {}
+    if "monorepo-core" in selected:
+        decisions.update({
             "repository_mode": project.get("repository_mode", "monorepo"),
             "backend_module_style": "private-capability-module-first",
             "source_layout": "bounded-semantic-flat",
+            "docs_shape": "earned-semantic-layers",
             "package_promotion": "pressure-driven",
             "deployable_promotion": "pressure-driven",
-        },
+        })
+    if "react" in selected:
+        decisions["frontend_projection_ownership"] = "single-owner-reconciliation"
+    if "effect" in selected:
+        decisions["effect_runtime_ownership"] = "per-host"
+    if "verification-core" in selected:
+        decisions["proof_contract"] = "orthogonal-proof-surface-v2"
+    commands = overlay.get("commands") or {}
+    configured_enforcement = overlay.get("enforcement") or {}
+    default_enforcement: dict[str, Any] = {}
+    if "typescript-node" in selected:
+        default_enforcement["architecture_check"] = configured_enforcement.get("architecture_check", commands.get("architecture_check"))
+    if "verification-core" in selected:
+        default_enforcement["verify_affected"] = configured_enforcement.get("verify_affected", commands.get("verify_affected"))
+    data = {
+        "schema_version": 1,
+        "preset": {"id": PRESET_ID, "version": PRESET_VERSION, "mode": "candidate-snapshot"},
+        "profiles": list(profiles),
+        "profile_resolution": {key: list(values) for key, values in resolution.items()},
+        "decisions": decisions,
         "resolved_standards": {
             "source_topology": "./source-topology-and-naming.md",
             "vocabulary": "./naming-vocabulary.yaml",
-            "verification_policy": "./verification-policy.md" if "verification-core" in profiles else None,
+            "verification_policy": "./verification-policy.md" if "verification-core" in selected else None,
         },
-        "enforcement": overlay.get("enforcement") or {
-            "architecture_check": (overlay.get("commands") or {}).get("architecture_check"),
-            "verify_affected": (overlay.get("commands") or {}).get("verify_affected"),
-        },
+        "enforcement": default_enforcement,
         "exceptions": overlay.get("exceptions") or [],
     }
     # Remove nulls without hiding explicitly empty structures.
@@ -388,21 +477,81 @@ def render_source_standard(overlay: dict[str, Any], profiles: list[str]) -> str:
     packages = overlay.get("packages") or []
     apps_text = ", ".join(item.get("path", str(item)) if isinstance(item, dict) else str(item) for item in deployables) or "not-yet-established"
     pkg_text = ", ".join(item.get("path", str(item)) if isinstance(item, dict) else str(item) for item in packages) or "not-yet-established"
+    selection = contract_selection(profiles)
+    owners = set(selection["term_owners"]) | set(selection["filename_pattern_owners"])
+    snapshot = Path(__file__).resolve().parents[1] / "references/suite-contract-snapshot"
+    pattern_contract = load_yaml(snapshot / "filename-patterns.yaml")
+    selected_patterns = [
+        item["pattern"]
+        for item in pattern_contract.get("patterns", [])
+        if item.get("owner") in selection["filename_pattern_owners"]
+    ]
+    if not owners and "monorepo-core" not in profiles:
+        note = "当前 profiles 未采用源码命名合同。" if zh else "The selected profiles adopt no source naming contract."
+        return f"# Source Topology and Naming\n\n{note}\n\n## Profiles\n\n" + "\n".join(f"- `{item}`" for item in profiles) + "\n"
+    pattern_text = "\n".join(selected_patterns) or "not-yet-established"
+    topology_zh = []
+    topology_en = []
+    boundaries_zh = []
+    boundaries_en = []
+    if "monorepo-core" in profiles:
+        topology_zh.extend([
+            "- capability module 默认保持私有，跨边界只暴露明确 public surface。",
+            "- host composition 与普通业务调用分离。",
+            "- package 不得 import app internals。",
+        ])
+        topology_en.extend([
+            "- Capability modules stay private by default and expose explicit public surfaces across boundaries.",
+            "- Host composition stays separate from ordinary business calls.",
+            "- Packages do not import app internals.",
+        ])
+    if "evolvable-application-architecture" in owners:
+        topology_zh.append("- TypeScript 跨 module 普通调用使用 `<subject>.public.ts`；host composition 可使用 `<subject>.wiring.ts`。")
+        topology_en.append("- TypeScript cross-module business calls use `<subject>.public.ts`; host composition may use `<subject>.wiring.ts`.")
+        boundaries_zh.extend([
+            "- `*.policy.ts` 不依赖 HTTP、DB、SDK 或 live adapter。",
+            "- `*.use-case.ts` 不依赖 `*.live.ts` 或 transport handler。",
+            "- `*.port.ts` 不泄露 provider SDK / ORM 类型。",
+            "- `*.http.*.ts` 只 decode/map/call use case，不直接写数据库。",
+            "- 普通业务 module 不 import `*.wiring.ts`。",
+        ])
+        boundaries_en.extend([
+            "- `*.policy.ts` does not depend on HTTP, DB, SDK, or live adapters.",
+            "- `*.use-case.ts` does not depend on `*.live.ts` or transport handlers.",
+            "- `*.port.ts` does not expose provider SDK/ORM types.",
+            "- `*.http.*.ts` decodes/maps/calls use cases and does not write persistence directly.",
+            "- Business modules do not import `*.wiring.ts`.",
+        ])
+    if "effect-best-practices" in owners:
+        topology_zh.append("- Effect 使用不自动创建 package；API 与 runtime 规则服从已安装 major。")
+        topology_en.append("- Effect usage does not create a package; API/runtime rules follow the installed major.")
+        boundaries_zh.append("- `*.fake.ts` 不能无提示进入 production composition。")
+        boundaries_en.append("- `*.fake.ts` is never a silent production fallback.")
+    if "frontend-architecture" in owners:
+        boundaries_zh.append("- 本地 store 不镜像 remote projection；host root 组装 live client 与资源。")
+        boundaries_en.append("- Local stores do not mirror remote projection; host roots assemble live clients and resources.")
+    if "product-harness-system" in owners:
+        boundaries_zh.append("- Harness 不得绕过正式 use-case/materialization path。")
+        boundaries_en.append("- Harnesses do not bypass the formal materialization path.")
+    topology_zh_text = "\n".join(topology_zh)
+    topology_en_text = "\n".join(topology_en)
+    boundaries_zh_text = "\n".join(boundaries_zh) or "- 当前 profiles 未采用额外 import boundary。"
+    boundaries_en_text = "\n".join(boundaries_en) or "- The selected profiles adopt no additional import boundary."
+    promotion_zh = "每次晋升都需要真实压力；目录或 package 本身不授予事实写入权。" if "monorepo-core" in profiles else "当前 profiles 未采用 promotion ladder。"
+    promotion_en = "Each promotion needs real pressure; a directory or package does not grant fact-writing authority." if "monorepo-core" in profiles else "The selected profiles adopt no promotion ladder."
     if zh:
         return f"""# Source Topology and Naming
 
-本文件是当前项目生效的 resolved standard。通用理论来自 Suite Skills；本文件记录本仓库采用结果。
+本文件是 Preset 生成的候选 standard，不是当前项目 Authority。只有对应 owner 审阅并合入 Current Home 后才生效。
 
 ## Repository Topology
 
 - Repository mode: `{overlay['project'].get('repository_mode', 'monorepo')}`
 - Deployable hosts: {apps_text}
 - Workspace packages: {pkg_text}
-- 后端默认从 `apps/api/src/modules/<capability>` 的私有 capability module 开始。
-- 跨 module 普通调用只使用 `<subject>.public.ts`；host composition 可额外使用 `<subject>.wiring.ts`。
-- package 不得 import app internals；module 不因使用 Effect 自动成为 package。
+{topology_zh_text}
 
-## Bounded Semantic Flatness
+## Source Topology: Bounded Semantic Flatness
 
 ```text
 目录表达 durable ownership
@@ -421,38 +570,21 @@ app 表达 runnable/deployable lifecycle
 
 重复点号前缀只是 lexical cluster，不是 module/package/authority。只有独立 owner、依赖规则、资源生命周期、替换/迁移、编译或部署压力出现时才晋升。
 
+## Documentation Shape
+
+项目 `docs/**` 的 layer、partition 与 identity 由 `$docs-governance` 负责。Preset 输出可以提供 broad candidate，但不是每个项目都必须采用的目录树；未使用的 layer 可以省略，layer 默认保持扁平，二级目录只有在 durable ownership、安全、保留、生命周期、读者路由或重复导航压力成立后才建立。Preset 不自动创建 `node_id`、编号体系或未来影子 authority。
+
 ## Canonical Patterns
 
 ```text
-order.create.use-case.ts
-order.by-id.query.ts
-order.repository.port.ts
-order.repository.postgres.live.ts
-order.repository.memory.fake.ts
-order.http.contract.ts
-order.http.handlers.ts
-order.public.ts
-order.wiring.ts
-channel.client.browser.live.ts
-channel.query.ts
-channel.store.ts
-channel.realtime.ts
-channel.view-model.ts
-channel.surface.tsx
-order.checkout.retry.harness.ts
+{pattern_text}
 ```
 
 不机械生成完整后缀套装。框架保留文件名可以例外，但 adapter 应保持薄。
 
 ## Import Boundaries
 
-- `*.policy.ts` 不依赖 HTTP、DB、SDK 或 live adapter。
-- `*.use-case.ts` 不依赖 `*.live.ts` 或 transport handler。
-- `*.port.ts` 不泄露 provider SDK / ORM 类型。
-- `*.http.*.ts` 只 decode/map/call use case，不直接写数据库。
-- 普通业务 module 不 import `*.wiring.ts`。
-- `*.fake.ts` 不能无提示进入 production composition。
-- Harness 不得绕过正式 use-case/materialization path。
+{boundaries_zh_text}
 
 ## Promotion Ladder
 
@@ -460,7 +592,7 @@ order.checkout.retry.harness.ts
 lexical cluster -> private submodule -> workspace package -> deployable process
 ```
 
-每次晋升都需要真实压力；目录或 package 本身不授予 accepted-fact 写入权。
+{promotion_zh}
 
 ## Profiles
 
@@ -468,42 +600,29 @@ lexical cluster -> private submodule -> workspace package -> deployable process
 """
     return f"""# Source Topology and Naming
 
-This is the project's current resolved standard. Generic rationale remains in the Suite Skills; this file records the repository's adopted result.
+This is a Preset-generated candidate standard, not current project Authority. It takes effect only after the applicable owner reviews and merges it into the project Current Home.
 
 ## Repository Topology
 
 - Repository mode: `{overlay['project'].get('repository_mode', 'monorepo')}`
 - Deployable hosts: {apps_text}
 - Workspace packages: {pkg_text}
-- Backend capability modules start private under `apps/api/src/modules/<capability>` by default.
-- Cross-module business calls use `<subject>.public.ts`; host composition may also use `<subject>.wiring.ts`.
-- Packages do not import app internals; Effect usage does not automatically create a package.
+{topology_en_text}
 
-## Bounded Semantic Flatness
+## Source Topology: Bounded Semantic Flatness
 
 Directories express durable ownership; filenames express local subject, responsibility, implementation, and proof role; packages enforce compile/import boundaries; apps run.
 
 Use `<subject>[.<facet>...].<responsibility>[.<qualifier>...].<extension>` with kebab-case inside a segment and dots between dimensions. A repeated prefix is a lexical cluster, not a module/package/authority.
 
+## Documentation Shape
+
+The project's `docs/**` layer, partition, and identity decisions belong to `$docs-governance`. A Preset render is a broad candidate snapshot, not a mandatory docs tree: unused layers may be omitted, layers stay flat by default, and child partitions require durable ownership, security, retention, lifecycle, reader-routing, or repeated navigation pressure. The Preset does not automatically create `node_id`, numbering schemes, or future shadow authority.
+
 ## Canonical Patterns
 
 ```text
-order.create.use-case.ts
-order.by-id.query.ts
-order.repository.port.ts
-order.repository.postgres.live.ts
-order.repository.memory.fake.ts
-order.http.contract.ts
-order.http.handlers.ts
-order.public.ts
-order.wiring.ts
-channel.client.browser.live.ts
-channel.query.ts
-channel.store.ts
-channel.realtime.ts
-channel.view-model.ts
-channel.surface.tsx
-order.checkout.retry.harness.ts
+{pattern_text}
 ```
 
 Do not mechanically generate a complete suffix set. Framework-reserved filenames
@@ -511,17 +630,13 @@ may be exceptions, but adapters should remain thin.
 
 ## Import Boundaries
 
-- `*.policy.ts` does not depend on HTTP, DB, SDK, or live adapters.
-- `*.use-case.ts` does not depend on `*.live.ts` or transport handlers.
-- `*.port.ts` does not expose provider SDK/ORM types.
-- `*.http.*.ts` decodes/maps/calls use cases and does not write persistence directly.
-- Business modules do not import `*.wiring.ts`.
-- `*.fake.ts` is never a silent production fallback.
-- Harnesses do not bypass the formal materialization path.
+{boundaries_en_text}
 
 ## Promotion Ladder
 
 `lexical cluster -> private submodule -> workspace package -> deployable process`
+
+{promotion_en}
 
 ## Profiles
 
@@ -535,9 +650,32 @@ def render_vocabulary(overlay: dict[str, Any], profiles: list[str]) -> str:
     vocabulary = load_yaml(snapshot / "semantic-vocabulary.yaml")
     patterns = load_yaml(snapshot / "filename-patterns.yaml")
     guarded = load_yaml(snapshot / "guarded-terms.yaml")
-    terms = overlay.get("domain_terms") or {}
+    selection = contract_selection(profiles)
+    selected_terms = {
+        token: spec
+        for token, spec in (vocabulary.get("terms") or {}).items()
+        if spec.get("owner") in selection["term_owners"] or token in selection["terms"]
+    }
+    selected_patterns = [
+        item
+        for item in (patterns.get("patterns") or [])
+        if item.get("owner") in selection["filename_pattern_owners"]
+    ]
+    selected_guarded = {
+        token: spec
+        for token, spec in (guarded.get("terms") or {}).items()
+        if token in selection["guarded_terms"]
+    }
+    selected_qualifiers: dict[str, Any] = {}
+    for key, selector in selection["qualifiers"].items():
+        canonical = (vocabulary.get("qualifiers") or {}).get(key)
+        if selector is True:
+            selected_qualifiers[key] = canonical
+        elif isinstance(canonical, list):
+            selected_qualifiers[key] = [item for item in canonical if item in selector]
+    domain_terms = overlay.get("domain_terms") or {}
     project_terms: dict[str, Any] = {}
-    for token, info in terms.items():
+    for token, info in domain_terms.items():
         if not isinstance(info, dict):
             info = {"meaning": str(info)}
         project_terms[token] = {
@@ -545,8 +683,7 @@ def render_vocabulary(overlay: dict[str, Any], profiles: list[str]) -> str:
             "product_term": info.get("product_term", token),
             "source_token": info.get("source_token", token),
             "kind": info.get("kind", "product-term"),
-            "meaning": info.get("meaning", "not-yet-established"),
-            "not_the_same_as": info.get("not_the_same_as", []),
+            "meaning_ref": "../ssot/product-language.md",
             "aliases": info.get("aliases", {}),
         }
     data = {
@@ -555,15 +692,22 @@ def render_vocabulary(overlay: dict[str, Any], profiles: list[str]) -> str:
             "id": PRESET_ID,
             "version": PRESET_VERSION,
             "profiles": profiles,
-            "note": "Resolved copy. Project standards are current authority; Suite files are provenance, not dynamic inheritance.",
+            "note": "Candidate owner-declared source-naming copy. Project Standards and SSoT own meaning only after explicit adoption; Suite files remain provenance, not dynamic inheritance.",
+        },
+        "contract_selection": {
+            "term_owners": sorted(selection["term_owners"]),
+            "extra_terms": sorted(selection["terms"]),
+            "filename_pattern_owners": sorted(selection["filename_pattern_owners"]),
+            "guarded_terms": sorted(selection["guarded_terms"]),
+            "qualifiers": selection["qualifiers"],
         },
         "syntax": vocabulary.get("syntax") or {},
-        "canonical_terms": vocabulary.get("terms") or {},
-        "canonical_qualifiers": vocabulary.get("qualifiers") or {},
-        "filename_patterns": patterns.get("patterns") or [],
-        "directory_admission": patterns.get("directory_admission") or [],
-        "promotion_ladder": patterns.get("promotion_ladder") or [],
-        "guarded_terms": guarded.get("terms") or {},
+        "canonical_terms": selected_terms,
+        "canonical_qualifiers": selected_qualifiers,
+        "filename_patterns": selected_patterns,
+        "directory_admission": (patterns.get("directory_admission") or []) if "monorepo-core" in profiles else [],
+        "promotion_ladder": (patterns.get("promotion_ladder") or []) if "monorepo-core" in profiles else [],
+        "guarded_terms": selected_guarded,
         "project_terms": project_terms,
         "implementation_qualifiers": overlay.get("implementation_qualifiers") or {},
         "deprecated_terms": overlay.get("deprecated_terms") or {},
@@ -575,9 +719,9 @@ def render_product_language(overlay: dict[str, Any]) -> str:
     zh = is_zh(overlay)
     terms = overlay.get("domain_terms") or {}
     if zh:
-        lines = ["# Product Language", "", "本文件记录产品 canonical terms。它拥有产品词义，不拥有源码目录规则。", "", "| Canonical term | Meaning | Kind | Not the same as |", "| --- | --- | --- | --- |"]
+        lines = ["# Product Language Candidate", "", "本文件是产品 canonical terms 的候选输入，不是项目 SSoT；产品 owner 采纳后才拥有当前词义。", "", "| Canonical term | Meaning | Kind | Not the same as |", "| --- | --- | --- | --- |"]
     else:
-        lines = ["# Product Language", "", "This file records canonical product terms. It owns product meaning, not source-directory rules.", "", "| Canonical term | Meaning | Kind | Not the same as |", "| --- | --- | --- | --- |"]
+        lines = ["# Product Language Candidate", "", "This file is candidate input for canonical product terms, not project SSoT; product ownership adopts current meaning.", "", "| Canonical term | Meaning | Kind | Not the same as |", "| --- | --- | --- | --- |"]
     if not terms:
         lines.append("| not-yet-established | - | - | - |")
     else:
@@ -591,11 +735,11 @@ def render_product_language(overlay: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_authority_map(overlay: dict[str, Any]) -> str:
+def render_fact_authority_map(overlay: dict[str, Any]) -> str:
     zh = is_zh(overlay)
     authorities = overlay.get("authorities") or []
-    intro = "本文件记录当前 accepted facts 与 writer 权威。未知项不得凭 Preset 推断。" if zh else "This file records current accepted facts and writer authority. Unknown entries must not be inferred from the Preset."
-    lines = ["# Authority Map", "", intro, "", "| Fact | Authority module | Writer host | Allowed entry | Forbidden path | Transaction / consistency |", "| --- | --- | --- | --- | --- | --- |"]
+    intro = "本文件是技术 fact writer 与 consistency boundary 的架构候选，不是全局 Authority Map；架构 owner 采纳前不得视为当前规则。" if zh else "This is an architecture candidate for technical fact writers and consistency boundaries, not a global Authority Map; it is not current until adopted by the architecture owner."
+    lines = ["# Fact Authority Map Candidate", "", intro, "", "| Fact | Authority module | Writer host | Allowed entry | Forbidden path | Transaction / consistency |", "| --- | --- | --- | --- | --- | --- |"]
     if not authorities:
         lines.append("| not-yet-established | - | - | - | - | - |")
     else:
@@ -607,8 +751,8 @@ def render_authority_map(overlay: dict[str, Any]) -> str:
 
 def render_topology(overlay: dict[str, Any]) -> str:
     zh = is_zh(overlay)
-    intro = "本文件描述当前实际拓扑，不重新定义标准。" if zh else "This file describes current actual topology; it does not redefine standards."
-    lines = ["# Repository Topology", "", intro, ""]
+    intro = "本文件是基于 overlay 的拓扑候选；架构 owner 采纳前不证明当前实际拓扑，也不重新定义标准。" if zh else "This is an overlay-derived topology candidate; it does not prove current topology or redefine standards before architecture adoption."
+    lines = ["# Repository Topology Candidate", "", intro, ""]
     for title, key in (("Deployables", "deployables"), ("Packages", "packages"), ("Authority Modules", "modules"), ("Workflows", "workflows")):
         lines.append(f"## {title}")
         items = overlay.get(key) or []
@@ -633,12 +777,15 @@ def render_topology(overlay: dict[str, Any]) -> str:
 def render_verification_policy(overlay: dict[str, Any]) -> str:
     zh = is_zh(overlay)
     if zh:
-        return """# Verification Policy
+        return """# Verification Policy Candidate
 
-## Owns
+> Preset 候选：verification owner 采纳前不构成当前项目规则。
+
+## Proposed Ownership
 
 - 可发现的 Harness command/descriptor 约定。
-- fixture、fake、replay、real-local、real-external 的明确标识。
+- `surface_kind` 与 `dependency_reality` 的正交标识；纯静态证明使用 `[none]`。
+- 必要时记录 `environment_class`、`proof_focus` 和 `claim_ceiling`。
 - 结构化结果中的 `observed`、`supports`、`not_proven`。
 
 ## Must Not Own
@@ -653,14 +800,17 @@ def render_verification_policy(overlay: dict[str, Any]) -> str:
 
 ## Claim Boundary
 
-Harness 只支持实际执行表面对应的结论。Fake、Replay、Headless、Browser 与 External Runtime 必须明确区分。
+Harness 只支持实际 Proof Surface 对应的结论。Browser 不表示真实后端；fixture/fake/replay/local/external 依赖必须独立声明。
 """
-    return """# Verification Policy
+    return """# Verification Policy Candidate
 
-## Owns
+> Preset candidate: this is not a current project rule before adoption by the verification owner.
+
+## Proposed Ownership
 
 - Discoverable Harness command/descriptor conventions.
-- Explicit fixture/fake/replay/real-local/real-external labels.
+- Orthogonal `surface_kind` and `dependency_reality` labels; pure static proof uses `[none]`.
+- `environment_class`, `proof_focus`, and `claim_ceiling` when material.
 - Structured `observed`, `supports`, and `not_proven` output.
 
 ## Must Not Own
@@ -675,7 +825,7 @@ Repository commands in `AGENTS.md` and package scripts are authoritative. Prefer
 
 ## Claim Boundary
 
-Harness conclusions must match the exercised surface. Fake, replay, headless, browser, and external-runtime paths remain explicit.
+Harness conclusions match the exercised Proof Surface. Browser does not imply a real backend; fixture/fake/replay/local/external dependencies remain independently explicit.
 """
 
 
@@ -683,53 +833,57 @@ def render_harness_readme(zh: bool) -> str:
     return layer_readme(
         "Product Harness",
         ["稳定 Harness descriptor/scenario 引用、coverage 与 lifecycle" if zh else "stable Harness descriptor/scenario references, coverage, and lifecycle"],
-        ["产品事实、可执行测试源码、原始日志、Goal progress" if zh else "product truth, executable test source, raw logs, or Goal progress"],
+        ["产品事实、可执行测试源码、原始日志或执行方法进度" if zh else "product truth, executable test source, raw logs, or execution-method progress"],
         ["coverage.yaml", "../standards/verification-policy.md"], zh,
     )
 
 
 def render_adoption_adr(overlay: dict[str, Any], profiles: list[str]) -> str:
     zh = is_zh(overlay)
-    adoption_date = str(overlay.get("adoption_date") or "not-yet-established")
+    proposal_date = str(overlay.get("adoption_date") or "not-yet-established")
     if zh:
-        return f"""# ADR-0001: Adopt Evolvable Application Preset
+        return f"""# ADR-0001: Proposed Evolvable Application Preset Adoption
 
-- Status: accepted
-- Date: {adoption_date}
+- Status: proposed
+- Date: {proposal_date}
 
 ## Context
 
-本项目希望复用稳定的 authority-first、Monorepo/reference topology、Bounded Semantic Flatness、语义词汇与 Harness 默认值，同时让项目内 Docs 保持当前权威。
+本候选解析所选 profiles 的最小默认值，供项目 semantic owners 审阅；未选择领域不进入候选快照。
 
-## Decision
+## Proposed Decision
 
-采用 Evolvable Application Preset `{PRESET_VERSION}`，profiles：{', '.join(profiles)}。
-Preset 以 `resolved-snapshot` 模式渲染；项目 `AGENTS.md` 与 `docs/**` 是当前权威。
+建议采用 Evolvable Application Preset `{PRESET_VERSION}`，profiles：{', '.join(profiles)}。
+Renderer 只生成 `candidate-snapshot`；各内容只有在对应 owner 审阅并合入 Current Home 后才成为项目 Authority。
 
-## Consequences
+## Consequences If Adopted
 
 - 通用规则不需要每个项目重新讨论。
-- 项目仍必须填写自身产品语言、authority、实际拓扑与例外。
+- 项目仍拥有产品语言、fact authority、实际拓扑与例外。
+- source naming 只引用项目 SSoT 的产品词义，不复制第二份定义。
 - Preset 升级必须显式比较并采纳，不能动态覆盖当前标准。
+- docs layer 可按项目需要省略；二级目录和 identity 字段必须经过 `$docs-governance` 的 earned-shape 判断。
 """
-    return f"""# ADR-0001: Adopt Evolvable Application Preset
+    return f"""# ADR-0001: Proposed Evolvable Application Preset Adoption
 
-- Status: accepted
-- Date: {adoption_date}
+- Status: proposed
+- Date: {proposal_date}
 
 ## Context
 
-The project wants reusable authority-first, Monorepo reference topology, Bounded Semantic Flatness, vocabulary, and Harness defaults while keeping project Docs authoritative.
+This candidate resolves the minimum defaults from the selected profiles for review by project semantic owners; unselected domains do not enter the candidate snapshot.
 
-## Decision
+## Proposed Decision
 
-Adopt Evolvable Application Preset `{PRESET_VERSION}` with profiles: {', '.join(profiles)}. The Preset renders in `resolved-snapshot` mode; project `AGENTS.md` and `docs/**` are current authority.
+Propose adopting Evolvable Application Preset `{PRESET_VERSION}` with profiles: {', '.join(profiles)}. The renderer emits only a `candidate-snapshot`; content becomes project Authority only after its owner reviews and merges it into a Current Home.
 
-## Consequences
+## Consequences If Adopted
 
 - Cross-project defaults are not re-designed for every repository.
-- The project still owns product language, authority, actual topology, and exceptions.
+- The project still owns product language, fact authority, actual topology, and exceptions.
+- Source naming references product meaning in project SSoT instead of copying a second definition.
 - Preset upgrades require explicit comparison and adoption.
+- Docs layers may be omitted when unused; child partitions and identity fields require an earned-shape decision from `$docs-governance`.
 """
 
 
@@ -795,21 +949,21 @@ def render_exception_adr(exception: dict[str, Any], zh: bool, default_date: str)
     if zh:
         return f"""# ADR: {identifier}
 
-- Status: accepted
+- Status: proposed
 - Date: {date}
 
 ## Context
 
-`{scope}` 需要偏离通用 Preset 默认。
+`{scope}` 可能需要偏离通用 Preset 默认。
 
-## Decision
+## Proposed Decision
 
-在该 scope 内采用例外：{reason}
+建议在该 scope 内采用例外：{reason}
 
-## Consequences
+## Consequences If Adopted
 
 - 例外只适用于声明的 scope。
-- 非框架/工具强制代码仍遵循 `docs/standards/source-topology-and-naming.md`。
+- 非框架/工具强制代码仍遵循项目采纳后的 source standard。
 - 例外失去必要性时应删除并更新架构检查。
 
 ## Revisit Conditions
@@ -818,21 +972,21 @@ def render_exception_adr(exception: dict[str, Any], zh: bool, default_date: str)
 """
     return f"""# ADR: {identifier}
 
-- Status: accepted
+- Status: proposed
 - Date: {date}
 
 ## Context
 
-`{scope}` requires a deliberate deviation from the generic Preset defaults.
+`{scope}` may require a deliberate deviation from generic Preset defaults.
 
-## Decision
+## Proposed Decision
 
-Adopt the exception within that scope: {reason}
+Propose the exception within that scope: {reason}
 
-## Consequences
+## Consequences If Adopted
 
 - The exception applies only to the declared scope.
-- Non-framework/tool-controlled code still follows `docs/standards/source-topology-and-naming.md`.
+- Non-framework/tool-controlled code follows the source standard after project adoption.
 - Remove the exception and update checks when the pressure disappears.
 
 ## Revisit Conditions
@@ -855,42 +1009,98 @@ def exception_adr_files(overlay: dict[str, Any], zh: bool) -> dict[str, str]:
     return files
 
 def render_files(preset_input: dict[str, Any], overlay: dict[str, Any], existing_agents: str | None = None) -> dict[str, str]:
-    profiles, _ = validate_inputs(preset_input, overlay)
+    resolution, _ = validate_inputs(preset_input, overlay)
+    profiles = resolution["resolved"]
     zh = is_zh(overlay)
     managed = managed_agents_section(overlay, profiles)
-    files: dict[str, str] = {}
-    files["AGENTS.md"] = merge_agents(existing_agents, managed, zh)
-    files["docs/README.md"] = layer_readme(
-        "Documentation Router",
-        ["当前文档入口与层级路由" if zh else "current documentation entry and layer routing"],
-        ["产品事实、架构标准或执行进度本身" if zh else "product truth, architecture standards, or execution progress itself"],
-        ["product/README.md", "ssot/README.md", "standards/README.md", "architecture/README.md", "adr/README.md"], zh)
-    files["docs/product/README.md"] = layer_readme("Product", ["产品含义与用户/运营语义" if zh else "product and user/operator meaning"], ["源码目录规则、事实 writer、实施进度" if zh else "source layout rules, fact writers, or implementation progress"], ["../ssot/product-language.md"], zh)
-    files["docs/ssot/README.md"] = layer_readme("SSoT", ["当前事实、对象所有权与不变量" if zh else "current facts, object ownership, and invariants"], ["未来候选、目录规范、运行日志" if zh else "future candidates, directory rules, or run logs"], ["product-language.md", "authority-map.md", "../standards/README.md"], zh)
-    if zh:
-        files["docs/ssot/README.md"] += """\n## Authority Resolution\n\n权威按 claim 类型解析，而不是使用一条无条件文件排序：\n\n```text\nhost instructions and repository AGENTS.md\n  -> adopted project authority for the claim\n     current facts -> docs/ssot/**\n     executable rules -> docs/standards/**\n     accepted tradeoffs -> docs/adr/**\n     wire compatibility -> project protocol/schema contract\n  -> executable reality for implementation claims\n     source, lockfiles, tests, command evidence\n  -> unadopted Preset source/candidate\n  -> specialist doctrine and router recommendation\n```\n\n已采用的 Preset 输出归入对应项目 docs layer，不是第二套 Preset authority。\n项目 authority 与 executable reality 冲突时，记录 stale-doc 或 implementation-drift，\n不能静默选择一方。\n"""
-    else:
-        files["docs/ssot/README.md"] += """\n## Authority Resolution\n\nAuthority is resolved by claim type rather than one unconditional file order:\n\n```text\nhost instructions and repository AGENTS.md\n  -> adopted project authority for the claim\n     current facts -> docs/ssot/**\n     executable rules -> docs/standards/**\n     accepted tradeoffs -> docs/adr/**\n     wire compatibility -> project protocol/schema contract\n  -> executable reality for implementation claims\n     source, lockfiles, tests, command evidence\n  -> unadopted Preset source/candidate\n  -> specialist doctrine and router recommendation\n```\n\nAn adopted Preset output belongs to its project docs layer; it is not a second\nPreset authority. If project authority and executable reality disagree, record\nstale-doc or implementation-drift instead of silently choosing one.\n"""
-    files["docs/ssot/product-language.md"] = render_product_language(overlay)
-    files["docs/ssot/authority-map.md"] = render_authority_map(overlay)
-    files["docs/standards/README.md"] = layer_readme("Standards", ["当前可执行规则、命名、检查与命令" if zh else "current executable rules, naming, checks, and commands"], ["产品事实、实际拓扑、未来路线" if zh else "product truth, actual topology, or future roadmap"], ["architecture-profile.yaml", "source-topology-and-naming.md", "naming-vocabulary.yaml"], zh)
-    files["docs/standards/architecture-profile.yaml"] = render_architecture_profile(preset_input, overlay, profiles)
+    files: dict[str, str] = {"AGENTS.md": merge_agents(existing_agents, managed, zh)}
+
+    has_product_language = bool(overlay.get("domain_terms"))
+    has_fact_authority_map = bool(overlay.get("authorities"))
+    has_ssot = has_product_language
+    has_topology = any(overlay.get(key) for key in ("deployables", "packages", "modules", "workflows", "topology_notes"))
+    has_architecture = has_topology or has_fact_authority_map
+    has_harness = "verification-core" in profiles and bool(overlay.get("harness_coverage"))
+
+    standard_reads = ["architecture-profile.yaml", "source-topology-and-naming.md", "naming-vocabulary.yaml"]
+    if "verification-core" in profiles:
+        standard_reads.append("verification-policy.md")
+    files["docs/standards/README.md"] = layer_readme(
+        "Standards",
+        ["供项目 owner 采纳的规则、命名、检查与命令候选" if zh else "candidate rules, naming, checks, and commands for project-owner adoption"],
+        ["产品事实、实际拓扑、未来路线" if zh else "product truth, actual topology, or future roadmap"],
+        standard_reads,
+        zh,
+    )
+    files["docs/standards/architecture-profile.yaml"] = render_architecture_profile(overlay, resolution)
     files["docs/standards/source-topology-and-naming.md"] = render_source_standard(overlay, profiles)
     files["docs/standards/naming-vocabulary.yaml"] = render_vocabulary(overlay, profiles)
-    files["docs/architecture/README.md"] = layer_readme("Architecture", ["当前实际系统拓扑、运行视图与接受的 seam" if zh else "current actual topology, runtime views, and accepted seams"], ["强制标准、产品事实、未来候选" if zh else "binding standards, product truth, or future candidates"], ["repository-topology.md", "../ssot/README.md", "../ssot/authority-map.md", "../standards/source-topology-and-naming.md"], zh)
-    files["docs/architecture/repository-topology.md"] = render_topology(overlay)
+    if "verification-core" in profiles:
+        files["docs/standards/verification-policy.md"] = render_verification_policy(overlay)
+
+    if has_ssot:
+        files["docs/ssot/README.md"] = layer_readme(
+            "SSoT",
+            ["共享术语、对象、状态与不变量的候选 Current Home" if zh else "candidate Current Home for shared terms, objects, states, and invariants"],
+            ["技术 writer/transaction 规则、目录规范、运行日志或所有 claim 的全局最高权威" if zh else "technical writer/transaction rules, directory rules, run logs, or a globally highest authority for every claim"],
+            ["product-language.md", "../standards/README.md"],
+            zh,
+        )
+        files["docs/ssot/product-language.md"] = render_product_language(overlay)
+
+    if has_architecture:
+        architecture_reads = ["../standards/source-topology-and-naming.md"]
+        if has_topology:
+            architecture_reads.insert(0, "repository-topology.md")
+        if has_fact_authority_map:
+            architecture_reads.append("fact-authority-map.md")
+        if has_ssot:
+            architecture_reads.append("../ssot/README.md")
+        files["docs/architecture/README.md"] = layer_readme(
+            "Architecture",
+            ["系统拓扑、技术 fact writer、consistency boundary 与接受 seam 的候选" if zh else "candidate system topology, technical fact writers, consistency boundaries, and accepted seams"],
+            ["强制标准、产品事实、未来候选" if zh else "binding standards, product truth, or future candidates"],
+            architecture_reads,
+            zh,
+        )
+        if has_topology:
+            files["docs/architecture/repository-topology.md"] = render_topology(overlay)
+        if has_fact_authority_map:
+            files["docs/architecture/fact-authority-map.md"] = render_fact_authority_map(overlay)
+
     exception_files = exception_adr_files(overlay, zh)
     adr_reads = ["0001-adopt-evolvable-application-preset.md", *[Path(path).name for path in sorted(exception_files)], "_template.md"]
-    files["docs/adr/README.md"] = layer_readme("Architecture Decision Records", ["已采用取舍、替代方案与重新评估条件" if zh else "adopted tradeoffs, alternatives, and revisit conditions"], ["当前标准全文、实施进度、未来猜测" if zh else "full current standards, execution progress, or future speculation"], adr_reads, zh)
+    files["docs/adr/README.md"] = layer_readme(
+        "Architecture Decision Records",
+        ["待项目 owner 决定的取舍、替代方案与重新评估条件" if zh else "proposed tradeoffs, alternatives, and revisit conditions for project-owner decision"],
+        ["当前标准全文、实施进度、未来猜测" if zh else "full current standards, execution progress, or future speculation"],
+        adr_reads,
+        zh,
+    )
     files["docs/adr/_template.md"] = "# ADR-XXXX: <Decision>\n\n- Status: proposed | accepted | superseded | rejected\n- Date: YYYY-MM-DD\n\n## Context\n\n## Decision\n\n## Alternatives\n\n## Consequences\n\n## Revisit Conditions\n"
     files["docs/adr/0001-adopt-evolvable-application-preset.md"] = render_adoption_adr(overlay, profiles)
     files.update(exception_files)
-    if "verification-core" in profiles:
-        files["docs/standards/verification-policy.md"] = render_verification_policy(overlay)
+
+    if has_harness:
         files["docs/product-harness/README.md"] = render_harness_readme(zh)
         files["docs/product-harness/coverage.yaml"] = dump_yaml({"schema_version": 1, "capabilities": overlay.get("harness_coverage") or []})
     if "typescript-node" in profiles:
         files["tooling/architecture_check.py"] = architecture_checker_template()
+
+    docs_reads = ["standards/README.md", "adr/README.md"]
+    if has_ssot:
+        docs_reads.append("ssot/README.md")
+    if has_architecture:
+        docs_reads.append("architecture/README.md")
+    if has_harness:
+        docs_reads.append("product-harness/README.md")
+    files["docs/README.md"] = layer_readme(
+        "Documentation Router",
+        ["候选文档入口与层级路由" if zh else "candidate documentation entry and layer routing"],
+        ["产品事实、架构标准或执行进度本身" if zh else "product truth, architecture standards, or execution progress itself"],
+        docs_reads,
+        zh,
+    )
     return files
 
 
@@ -957,23 +1167,23 @@ def inspect_repo(repo: Path) -> dict[str, Any]:
     agents_path = root / "AGENTS.md"
     agents_text = agents_path.read_text(encoding="utf-8", errors="replace") if agents_path.is_file() else ""
     profile_path = root / "docs/standards/architecture-profile.yaml"
-    adopted: dict[str, Any] = {}
+    snapshot: dict[str, Any] = {}
     if profile_path.is_file():
         try:
             profile = load_yaml(profile_path)
-            adopted = {
+            snapshot = {
                 "mode": (profile.get("preset") or {}).get("mode"),
                 "version": (profile.get("preset") or {}).get("version"),
                 "profiles": profile.get("profiles") or [],
             }
         except Exception as exc:
-            adopted = {"parse_error": str(exc)}
+            snapshot = {"parse_error": str(exc)}
     surface_candidates = [
         "AGENTS.md",
         "docs/README.md",
         "docs/ssot/README.md",
         "docs/ssot/product-language.md",
-        "docs/ssot/authority-map.md",
+        "docs/architecture/fact-authority-map.md",
         "docs/standards/README.md",
         "docs/standards/architecture-profile.yaml",
         "docs/standards/source-topology-and-naming.md",
@@ -988,7 +1198,8 @@ def inspect_repo(repo: Path) -> dict[str, Any]:
         "repo": str(root),
         "existing_surfaces": [rel for rel in surface_candidates if (root / rel).is_file()],
         "managed_agents_section": MANAGED_BEGIN in agents_text and MANAGED_END in agents_text,
-        "adopted_preset": adopted or None,
+        "preset_snapshot": snapshot or None,
+        "adopted_preset": snapshot if snapshot.get("mode") == "resolved-snapshot" else None,
         "package_manager_locks": locks,
         "workspace_manifests": [str(path.relative_to(root)) for path, _ in manifest_data],
         "apps": apps,
@@ -1007,50 +1218,86 @@ def validate_repo(repo: Path) -> dict[str, Any]:
     root = repo.resolve()
     findings: list[dict[str, str]] = []
     profile_path = root / "docs/standards/architecture-profile.yaml"
-    resolved_snapshot = False
+    snapshot_mode: str | None = None
+    declared_snapshot = False
+    selected_profiles: list[str] = []
+    declared_surfaces: list[str] = []
     if profile_path.is_file():
         try:
             profile = load_yaml(profile_path)
             mode = ((profile.get("preset") or {}).get("mode"))
-            resolved_snapshot = mode == "resolved-snapshot"
-            if not resolved_snapshot:
-                findings.append({"severity": "error", "path": str(profile_path), "message": "preset.mode must be resolved-snapshot"})
+            snapshot_mode = mode if isinstance(mode, str) else None
+            declared_snapshot = snapshot_mode in {"candidate-snapshot", "resolved-snapshot"}
+            if not declared_snapshot:
+                findings.append({"severity": "error", "path": str(profile_path), "message": "preset.mode must be candidate-snapshot or legacy resolved-snapshot"})
             selected = profile.get("profiles") or []
             if not isinstance(selected, list) or not selected:
-                findings.append({"severity": "error", "path": str(profile_path), "message": "resolved snapshot must declare profiles"})
+                findings.append({"severity": "error", "path": str(profile_path), "message": "Preset snapshot must declare profiles"})
             else:
+                selected_profiles = selected
                 try:
                     _, resolved_ids = load_profiles(selected)
                     if selected != resolved_ids:
                         findings.append({"severity": "error", "path": str(profile_path), "message": "profile list is not the resolved dependency closure"})
                 except ValueError as exc:
                     findings.append({"severity": "error", "path": str(profile_path), "message": str(exc)})
+            resolution = profile.get("profile_resolution") or {}
+            if not isinstance(resolution, dict):
+                findings.append({"severity": "error", "path": str(profile_path), "message": "profile_resolution must be an object"})
+            elif "defaults_added" in resolution:
+                keys = ("requested", "defaults_added", "dependency_added", "resolved")
+                if any(not isinstance(resolution.get(key), list) or any(not isinstance(item, str) or not item for item in resolution.get(key, [])) for key in keys):
+                    findings.append({"severity": "error", "path": str(profile_path), "message": "profile_resolution fields must be arrays of non-empty profile ids"})
+                else:
+                    requested = list(dict.fromkeys(resolution["requested"]))
+                    defaults_added = list(dict.fromkeys(resolution["defaults_added"]))
+                    if set(requested).intersection(defaults_added):
+                        findings.append({"severity": "error", "path": str(profile_path), "message": "profile_resolution requested/defaults_added must be disjoint"})
+                    else:
+                        try:
+                            _, expected_resolved = load_profiles([*defaults_added, *requested])
+                        except ValueError as exc:
+                            findings.append({"severity": "error", "path": str(profile_path), "message": str(exc)})
+                        else:
+                            expected_dependencies = [item for item in expected_resolved if item not in requested and item not in defaults_added]
+                            if resolution["resolved"] != expected_resolved or resolution["dependency_added"] != expected_dependencies or selected_profiles != expected_resolved:
+                                findings.append({"severity": "error", "path": str(profile_path), "message": "profile_resolution provenance does not match defaults, dependencies, and resolved closure"})
+            resolved_standards = profile.get("resolved_standards") or {}
+            if not isinstance(resolved_standards, dict):
+                findings.append({"severity": "error", "path": str(profile_path), "message": "resolved_standards must be an object"})
+            else:
+                for value in resolved_standards.values():
+                    if not isinstance(value, str) or not value:
+                        continue
+                    candidate = (profile_path.parent / value).resolve()
+                    try:
+                        declared_surfaces.append(candidate.relative_to(root).as_posix())
+                    except ValueError:
+                        findings.append({"severity": "error", "path": str(profile_path), "message": f"resolved standard escapes repository: {value}"})
         except Exception as exc:
             findings.append({"severity": "error", "path": str(profile_path), "message": f"invalid YAML: {exc}"})
     else:
-        findings.append({"severity": "warn", "path": "docs/standards/architecture-profile.yaml", "message": "no resolved snapshot found; validation is limited to adopted project surfaces"})
+        findings.append({"severity": "warn", "path": "docs/standards/architecture-profile.yaml", "message": "no Preset snapshot found; validation is limited to project surfaces"})
 
-    full_required = [
-        "AGENTS.md", "docs/README.md", "docs/ssot/README.md", "docs/standards/README.md",
-        "docs/standards/architecture-profile.yaml", "docs/standards/source-topology-and-naming.md",
-        "docs/standards/naming-vocabulary.yaml", "docs/architecture/repository-topology.md",
-        "docs/adr/0001-adopt-evolvable-application-preset.md",
-    ]
-    if resolved_snapshot:
-        for rel in full_required:
+    if declared_snapshot:
+        required = ["docs/standards/architecture-profile.yaml", *declared_surfaces]
+        if "agent-entry" in selected_profiles:
+            required.append("AGENTS.md")
+        for rel in dict.fromkeys(required):
             if not (root / rel).is_file():
-                findings.append({"severity": "error", "path": rel, "message": "required resolved Preset file is missing"})
+                findings.append({"severity": "error", "path": rel, "message": "declared resolved Preset surface is missing"})
 
     agents = root / "AGENTS.md"
     if agents.is_file():
         text = agents.read_text(encoding="utf-8", errors="ignore")
         if MANAGED_BEGIN not in text or MANAGED_END not in text:
             findings.append({"severity": "warn", "path": "AGENTS.md", "message": "Preset managed markers missing; upgrades cannot merge the section safely"})
-        for rel in ("docs/README.md", "docs/standards/architecture-profile.yaml", "docs/standards/naming-vocabulary.yaml"):
+        required_links = ["docs/README.md"] if (root / "docs" / "README.md").is_file() else []
+        for rel in required_links:
             if rel not in text:
-                findings.append({"severity": "warn", "path": "AGENTS.md", "message": f"Read First link missing: {rel}"})
+                findings.append({"severity": "warn", "path": "AGENTS.md", "message": f"knowledge-network route missing: {rel}"})
     summary = {"error": sum(x["severity"] == "error" for x in findings), "warn": sum(x["severity"] == "warn" for x in findings), "total": len(findings)}
-    return {"repo": str(root), "scope": "resolved-snapshot" if resolved_snapshot else "partial", "summary": summary, "findings": findings}
+    return {"repo": str(root), "scope": snapshot_mode or "partial", "summary": summary, "findings": findings}
 
 
 def unified_diff(repo: Path, rendered: Path) -> str:
@@ -1075,7 +1322,7 @@ def cmd_render(args: argparse.Namespace) -> None:
     out=Path(args.out).resolve(); existing=(out/"AGENTS.md").read_text(encoding="utf-8") if (out/"AGENTS.md").is_file() else None
     files=render_files(preset_input, overlay, existing)
     write_files(out, files, args.force)
-    print(json.dumps({"status":"rendered","out":str(out),"files":sorted(files)}, ensure_ascii=False, indent=2))
+    print(json.dumps({"status":"candidate-rendered","out":str(out),"files":sorted(files),"claim":"not-adopted"}, ensure_ascii=False, indent=2))
 
 
 def cmd_diff(args: argparse.Namespace) -> None:

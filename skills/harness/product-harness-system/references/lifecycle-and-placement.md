@@ -68,6 +68,6 @@ docs/reports/**
 Raw run artifacts belong in the test/artifact system, not copied into durable
 docs by default.
 
-If a project explicitly uses Goal Proof, its Goal Pack may reference Harness IDs
-or results. Harness doctrine does not depend on Goal Proof and does not duplicate
-Goal Pack lifecycle.
+A repository-selected execution method may reference Harness IDs or results.
+Harness doctrine does not depend on that method and does not duplicate its
+lifecycle, blocking graph, or completion state.

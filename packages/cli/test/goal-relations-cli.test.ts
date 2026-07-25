@@ -62,7 +62,8 @@ engineering_guidance:
     - "Relations are inspection metadata."
 completion:
   signal: "Relations CLI can inspect and verify links."
-  required_evidence: "CLI tests pass."
+  required_evidence:
+    - "CLI tests pass."
 claim_limit: "Only proves relation command behavior."
 `;
 }
@@ -149,7 +150,7 @@ function reviewEvidence(evidence = ["protocol=true"]) {
 
 function makeRelationsProject() {
   const project = mkdtempSync(join(tmpdir(), "goal-proof-relations-"));
-  const goalsRoot = join(project, "docs", "goal-proof", "goals");
+  const goalsRoot = join(project, ".goal-proof", "goals");
   writePack(join(goalsRoot, "protocol-goal"), {
     goal: relationGoal({ id: "protocol-goal", status: "done", links: [] }),
     progress: doneProgress("protocol-goal"),
@@ -232,7 +233,7 @@ test("relations goals and work discover thread members with filters", () => {
 
 test("relations check validates hard evidence and reports related_to as warnings", () => {
   const project = mkdtempSync(join(tmpdir(), "goal-proof-relations-check-"));
-  const goalsRoot = join(project, "docs", "goal-proof", "goals");
+  const goalsRoot = join(project, ".goal-proof", "goals");
   writePack(join(goalsRoot, "protocol-goal"), {
     goal: relationGoal({ id: "protocol-goal", status: "done", links: [] }),
     progress: doneProgress("protocol-goal"),
@@ -281,7 +282,7 @@ test("relations check matches structured evidence and graph renders derived view
     assert.equal(check.status, 0, check.stderr);
     assert.equal(JSON.parse(check.stdout).ok, true);
 
-    const goalsRoot = join(project, "docs", "goal-proof", "goals");
+    const goalsRoot = join(project, ".goal-proof", "goals");
     const before = readFileSync(join(goalsRoot, "cli-goal", "progress.yaml"), "utf8");
     const graph = run(["relations", "graph", project, "--thread", "goal-relations", "--json"]);
     assert.equal(graph.status, 0, graph.stderr);
@@ -302,13 +303,11 @@ test("relations check matches structured evidence and graph renders derived view
   }
 });
 
-test("relations command family is documented in root, package, and skill docs", () => {
+test("relations command family is documented in experiment package and skill docs", () => {
   const docs = [
-    readFileSync(join(repoRoot, "README.md"), "utf8"),
-    readFileSync(join(repoRoot, "README.zh-CN.md"), "utf8"),
     readFileSync(join(packageRoot, "README.md"), "utf8"),
     readFileSync(join(packageRoot, "README.zh-CN.md"), "utf8"),
-    readFileSync(join(repoRoot, "skills/goal/goal-proof-system/SKILL.md"), "utf8"),
+    readFileSync(join(repoRoot, "experiments/goal-proof/skill/references/cli.md"), "utf8"),
   ].join("\n");
 
   assert.match(docs, /goal-proof relations list/);

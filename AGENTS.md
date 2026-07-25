@@ -1,158 +1,118 @@
 # Agent 协作规则
 
-本仓库是 AI Coding OS 方法套件、agent skills 和 `goal-proof` CLI 的源码仓库。
+本仓库维护 AI Coding OS 核心 Skill Suite，以及共仓但独立的 Goal Proof 早期实验与 CLI。
 
 ## 沟通与文档语言
 
 - 始终用中文回复用户。
-- `README.zh-CN.md`、`docs/**`、Goal Pack 叙述性正文优先使用中文。
-- YAML 字段名、CLI 命令、代码符号、协议名、schema 示例和可复制模板可保留英文。
-- 不写情绪价值开场白；分歧时按事实和约束说明。
+- `README.zh-CN.md`、`docs/**` 和实验叙述性正文优先使用中文。
+- YAML 字段、CLI 命令、代码符号、协议名、schema 示例和可复制模板可保留英文。
+- 不写情绪价值开场白；分歧按事实、Authority 和证据说明。
 
-## 当前顶层口径
+## 核心定位
 
-AI Coding OS 通过明确的 authority、proof surface 与 claim boundary 支持 agent 自主推进。默认落地边界是 workspace/repo，不进入方法论品牌名。
-
-默认用户入口是 `$ai-coding-os`。它是轻量路由 skill，不拥有持久 artifact；按用户意图路由到：
-
-- `$ai-coding-os-suite-contracts`：AI Coding OS 跨 Skill precedence/handoff、共享词汇、文件模式与 Harness schemas。
-- `$goal-proof`：目标计划、Goal Pack、跨会话延续、长期执行。
-- `$docs-governance`：docs 分层、权威放置、文档清理和审计。
-- `$evolvable-application-architecture`：authority-first 应用架构、事务、Capability Port / Adapter、composition root、Monorepo/source topology、迁移和可替换性。
-- `$frontend-architecture`：TypeScript 前端架构、依赖方向、命名语义、React / Effect / Query / Store 分层和 source-only package 边界。
-- `$effect-best-practices`：Effect Service / Layer / Scope / runtime、错误通道、资源生命周期和 v4/v3 差异口径。
-- `$evolvable-application-preset`：Agent 发现并选择性采用通用架构默认值，增量形成项目拥有的 AGENTS/docs/checks snapshot。
-- `$effect-api-app-kit`：在架构与 Effect 版本决策明确后，原子生成和校验 Effect API capability slice。
-- `$interface-capability-planning`：UI/IA、surface、route、交互状态、前端状态/数据归属和 InterfaceCapability trace 规划。
-- `$product-harness-system`：通用 Harness artifact、claim ceiling、coverage matrix、生命周期和 trace 规范。
-- `$ui-product-harness`：interface-headless、render wiring、browser-visible 和 production-near UI proof。
-- `$frontend-test-system`：frontend testing claim discovery、最小 proof lane、Playwright / agent-browser / Vitest / MSW / contract 证据包和 claim ceiling。
-- `$headless-product-harness`：headless proof command、smoke evidence、fixture/replay、headless command JSON / JSONL output shape。
-- inline work：一轮内可完成且有明确验证路径的小改动。
-
-Goal Proof System 是本套件的目标计划和滚动执行载体。只要用户要求“生成目标计划 / Goal Plan / Goal Pack / 使用 Goal Proof System”，就进入 Goal Proof System；随口小改动不创建 Goal Pack，直接实施并验证。
-
-明确采用 `$goal-proof` 后，其工作流是：
+AI Coding OS 是项目级多入口知识、规范、Authority、架构、产品与 proof semantics 网络。它不规定统一阅读、规划、ticket 或执行 workflow。
 
 ```text
-human intent
--> agent writes goal contract
--> agent finds current proof_step
--> agent executes largest safe useful slice
--> agent adds evidence record
--> proof_step | continue | needs_plan | blocked | review | done | needs_human
--> completion review maps evidence to completion
--> done
+Route is an edge, not a sequence.
+Pass is coverage, not reasoning order.
+Router selects knowledge; Agent selects strategy.
 ```
 
-Goal Pack 语义：
+核心 user-invoked 入口是 `$ai-coding-os`。ownership 明确时直接使用专业 Skill：
 
-```text
-goal.yaml             目标授权与人类意图压缩
-progress.yaml               当前运行态
-evidence.jsonl           追加式证据检查点
-plans/<work_id>.md   仅 needs_plan 时存在
-notes/                   长材料，不承载当前状态
-```
+- `$ai-coding-os-suite-contracts`：最小知识内核、可选 handoff guidance、Proof Surface、方向中立的可选 Evidence Envelope、eval、owner-declared source vocabulary 和 Harness schemas。
+- `$docs-governance`：文档 Authority、Routes、Earned Shape、生命周期、清理和审计。
+- `$product-definition`：产品 framing、source synthesis、业务模型、决策、需求、acceptance 和 UAT。
+- `$evolvable-application-architecture`：fact authority、事务、Capability Port / Adapter、composition、source topology 和迁移。
+- `$frontend-architecture`：前端 state、feature topology、Query/store/realtime 和 host composition。
+- `$effect-best-practices`：Effect Service / Layer / Scope / runtime、错误、资源和版本映射。
+- `$interface-capability-planning`：用户工作、IA、surface、交互状态、前端归属和 proof needs。
+- `$product-harness-system`：Harness 共享词汇、coverage、trace、claim ceiling 和 lifecycle。
+- `$headless-product-harness`：headless command、fixture/replay、DB/restart 和 boundary proof。
+- `$ui-product-harness`：interface-headless、render focus 和 browser proof。
+- `$frontend-test-system`：具体 frontend test lane 与 runner。
+- `$evolvable-application-preset`：发现并选择性采用项目默认值；renderer 只生成 candidate，不自称项目 Authority。
+- `$effect-api-app-kit`：从已确定 Change Spec 原子生成 Effect API slice。
 
-当前仓库主路径使用 v2 Goal Pack schema：`schema_version: 2`、`goal.yaml`、`progress.yaml`、`evidence.jsonl`、`proof_step`、`work_items`、`evidence_id`、`work_id`、`next_action`、`claim_limit`、`completion review`。新增或重写方法论文档、CLI、checker、template、测试和 dogfood Goal Pack 时，同步更新相关文档和测试。
+Tracker、ticket Skill、实验 Goal 方法、release process 和其他 execution system 在核心 Router 外拥有自己的拆解、依赖、状态和完成生命周期。它们可以消费项目 Authority 和有界 Evidence，但不能成为 Product、SSoT、ADR、Architecture、Contract 或 documentation Authority。
+
+## 共仓实验
+
+Goal Proof 位于 `experiments/goal-proof/**`，是 user-invoked 早期实验，不属于核心 `skills/**`、Router branch 或核心 Suite ZIP。CLI 位于 `packages/cli/**`。
+
+- 不因任务规模、持续时间或复杂度自动使用 Goal Proof。
+- 同一 workstream 不保留 tracker/tickets 与 Goal Pack 两套 execution ledger。
+- `experiments/goal-proof/dogfood/**/evidence.jsonl` 是历史证据，不重写；修正解释时追加记录或更新当前实验文档。
+- Goal Proof 的状态机和 CLI reducer 是实验 owner-local 协议，不扩散为核心 OS workflow。
 
 ## Skill 迭代原则
 
-持续优化 skill、schema、artifact 或字段时，默认按这些原则裁决：
+按 `$writing-great-skills` 与 `$skill-creator` 的共同质量门维护 Skill：
 
-- 约束系统语义：提供 authority、claim、proof path、gap 和 stop rule，不固化单一推理或执行流程。
-- 非必要不结构化：只有当结构化 artifact 能帮助下一个 agent 执行、验证、审计或交接时才创建。
-- 浅到够用：使用能支撑当前 claim 的最小分解深度；只有权限、状态归属、异步、realtime、可见性或 handoff 会含糊时才加深。
-- DSL 要薄：能从源码、测试、路由、命令输出或现有 authority 推导的内容，不写进长期合同；除非它本身就是 contract。
-- 字段按 claim 触发：不要为了“完整”添加字段；新增字段必须能约束 claim、暴露 gap、避免 overclaim，或改善 agent 执行。
-- ownership 要硬：一个概念只能有一个主 owner；如果像两个 skill 都该管，先收敛边界，不新增混合层。
-- 安装拓扑不可假设：每个 Skill 必须能独立或扁平安装；相对链接只指向本 Skill，跨 Skill 关系使用 `$skill-name`。
-- 跨方法 Evidence Envelope Discipline 归 SSoT / Goal Proof；headless harness 只拥有本地命令输出 shape。
-- proof level 不是 checklist：按 claim 选择最低诚实 proof level；不要默认跑满所有 harness 层级。
-- 记录不声称的内容：会被误读的相邻 surface 要写 `not_claimed`；没有检查过的用叙事性 `not_proven` 或 `remaining_gaps` 表达，不要伪装成已证明。
-- 保持 claim 诚实：改 skill 口径时区分本仓公开 source claim 和下游 runtime install claim；本仓验证不能被说成任意 runtime 已安装。
+- **Invocation**：只有 Agent 或其他 Skill 必须自主发现时才使用 model-invoked；user-invoked Skill 由人类承担索引成本。
+- **Description**：只保留做什么、独立触发 branch 和必要 reach clause；每个词都承担 context load。
+- **Information hierarchy**：所有 branch 共用的步骤、强不变量和 completion criterion 留在 `SKILL.md`；branch-only reference 通过条件明确的 context pointer 披露。
+- **Predictability**：owner-local Pass 默认表达 coverage 和可检查完成标准，不规定推理顺序；只有真实状态机、事务、安全顺序、迁移或外部协议可以规定 sequence。
+- **Pruning**：一个 meaning 一个 source；删除 duplication、sediment、sprawl 和 no-op，不为结构对称新增 Skill、reference、字段或 artifact。
+- **Leading words**：复用已经能稳定触发行为的词，不为形式统一给所有 Skill 发明同一套口号。
+- **Eval**：真实近邻 prompt 优先；`expected_output` 说明成功；每个 core case 用至少两个可区分 expectations 检查正向产物/观察与 ownership/claim boundary。
+- **Portability**：相对链接只指向本 Skill；跨 Skill 关系使用 `$skill-name`；运行时不依赖 grouped source 路径。
+- **Ownership**：一个 claim、representation 和 scope 有一个主 semantic owner；binding constraint、implementation Evidence 和 observed Evidence 保持独立。
+
+默认从适用 Project Authority 和局部模式推导普通可逆细节，隔离真正不可决定的局部 claim，并继续无关工作。结构化 artifact 只有在改善后续执行、验证、审计、交接或 claim 诚实时才存在；字段必须有真实消费者并能约束 claim、暴露 gap、避免 overclaim 或改善可靠消费。
+
+## 文档网络
+
+- `docs/README.md` 是多入口索引，不承载领域真相，也不是必经阅读根。
+- Agent 可以从问题、code area、term、artifact、source、test、Evidence 或任一 owner 进入，只沿相关 Route 探索。
+- `docs/product/**`：产品/方法论定位和用户价值。
+- `docs/ssot/**`：当前事实、术语和不变量。
+- `docs/standards/**`：可执行规则、命令、质量门和协作标准。
+- `docs/adr/**`：已采纳取舍及原因。
+- `docs/architecture/**`：结构、模块关系和运行时视图。
+- `docs/roadmap/**`：迁移顺序、gate 和 Evidence links；不复制 execution status。
+- `docs/interface-capabilities/**`：项目级 InterfaceCapability trace。
+- `docs/product-harness/**`：项目级 Harness contract、coverage 和 claim ceiling。
+
+新增或迁移 durable 文档必须满足：语义 layer 正确、同一 claim/representation/scope 一个 canonical Current Home、相关 Routes 更新、Evidence 保留、生命周期明确。Portable Skill 的默认输出路径不能覆盖项目已有 Authority。
 
 ## 目录结构
 
-- `packages/cli/src/`：CLI 命令和库代码。
-- `packages/cli/test/`：CLI 行为测试。
-- `scripts/`：发布脚本和脚本级测试。
-- `skills/`：AI Coding OS Suite 的 grouped source，包含 router / contracts / goal / governance / architecture / capability / harness / preset / tooling；`$ai-coding-os-suite-contracts` 是可独立安装 Skill。
-- `docs/`：项目文档分层入口。先读 `docs/README.md`。
-- `docs/standards/docs-governance.md`：本仓 docs layer、authority、promotion / demotion 和 audit 标准。
-- `docs/standards/skill-source-layout.md`：公开 skill source layout、触发名和旧名退役标准。
-- `docs/goal-proof/goals/`：Goal Pack 示例或历史工作记录。
-- `assets/`：README 横幅等媒体资源。
-
-## Docs 治理
-
-遵循 `$docs-governance` 口径：
-
-- `docs/README.md` 是文档路由入口，不承载领域真相。
-- `docs/product/**` 放产品/方法论定位和用户价值。
-- `docs/ssot/**` 放当前事实、术语和不变量。
-- `docs/standards/**` 放可执行规则、命令、质量门和协作 SOP。
-- `docs/adr/**` 放已采纳取舍。
-- `docs/architecture/**` 放系统结构、模块关系和运行时视图。
-- `docs/roadmap/**` 放迁移顺序、状态、证据链接和后续波次。
-- `docs/goal-proof/**` 放 Goal Proof System 方法产物；不要放项目级 docs 治理规则。
-- 涉及 docs layer 准入、authority 顺序、promotion / demotion、旧材料清理或 audit 门时，按 `docs/standards/docs-governance.md`。
-- 涉及 skill source layout、公开触发名或旧入口退役时，按 `docs/standards/skill-source-layout.md`。
-
-新增或迁移文档时：
-
-1. 先判断文档层。
-2. 更新最近的 README / 索引。
-3. 不保留两个 current home。
-4. 不删除仍被引用的证据。
-5. 报告只承载证据摘要，不写过程日记。
+- `skills/**`：核心 AI Coding OS grouped Skill source。
+- `experiments/goal-proof/**`：Goal Proof 独立实验 Skill、dogfood 和 self-check。
+- `packages/cli/src/**`、`packages/cli/test/**`：实验 CLI 源码与测试。
+- `skills/tooling/suite_audit.py`：核心 Suite source audit。
+- `skills/tooling/build_suite_release.py`：核心 Suite-only release bundle；canonical audit 与待打包源码必须具有同一 `source_tree_sha256`，并与 manifest/review sidecars 在不同绝对路径下保持确定性。
+- `skills/governance/docs-governance/scripts/**`：Docs audit。
+- `docs/**`：本项目当前知识和规范网络。
 
 ## 开发命令
 
-使用 Bun；Suite/Docs audit 还需要锁定的 Python 开发依赖。
+使用 Bun；Python audit 依赖由 `requirements-dev.txt` 固定。
 
 ```bash
 bun install
 python3 -m pip install -r requirements-dev.txt
-bun run build
-bun run typecheck
-bun run test
+bun run check:core
+bun run check:goal-proof-experiment
 bun run check
-python3 skills/tooling/suite_audit.py --suite skills
-python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
+bun run bundle:skills
 ```
 
-- `bun run build` 构建 CLI 到 `dist/`。
-- `bun run typecheck` 运行 TypeScript 检查。
-- `bun run test` 运行 Bun 测试。
-- `bun run check` 运行 build、typecheck、test、Suite audit 和 Docs audit；提交前使用。
-- `requirements-dev.txt` 固定 Suite/Docs audit 所需的 PyYAML/jsonschema。
-- Suite audit 校验 grouped source、frontmatter/cross-Skill references、Schema、Preset golden output 与 Kit atomicity。
-- Docs audit 校验文档层、链接、入口和源码锚点。
-- `bun run pack:dry` 检查 npm 包内容。
+- `check:core`：核心 Suite audit 和 Docs audit。
+- `check:goal-proof-experiment`：实验 Skill self-check、CLI build/typecheck/tests。
+- `check`：整仓聚合门，不改变 Core/Experiment 边界。
+- `bundle:skills`：生成不含 experiment、CLI、项目 docs 或 release scripts 的核心 Suite ZIP、audit JSON 和 manifest。
 
 ## 代码规范
 
-- TypeScript 使用 ES modules。
-- 保持现有风格：2 空格缩进、分号、双引号、显式 `node:*` imports。
+- TypeScript 使用 ES modules、2 空格缩进、分号、双引号和显式 `node:*` imports。
 - 源码文件用 kebab-case；函数和变量用 camelCase。
-- CLI 行为必须确定性；优先结构化解析，避免 ad hoc 字符串处理。
-
-## Agent 实施规则
-
-- 不重写真实 Goal Pack 的历史 `evidence.jsonl`；需要修正解释时追加新 evidence record。
-- 在已采用 Goal Pack 的 workstream 内，只要目标、边界、证据路径和风险仍在 `goal.yaml` 内，就继续执行。
-- 不把普通目标膨胀成完整任务树；只找当前 `proof_step`，执行最大安全有用 slice。
-- 只有 public API / schema / protocol、安全、权限、私有数据、破坏性迁移、release/compliance、多 agent 严格协作等场景才升级到 strict。
-- `plans/<work_id>.md` 只用于 `needs_plan` 高风险 slice；它不是第二套任务系统。
-- 改公开命令、Goal Pack schema、evidence record 语义、skill 口径时，同步更新 README、docs、skills、templates、checker rules 和测试。
+- CLI 行为保持确定性；优先结构化解析，避免 ad hoc 字符串处理。
+- 改公开 CLI、Goal schema 或实验 Skill 时，同步更新 experiment docs、templates、checker 和 tests，不把它写回核心 Router/roster。
+- 改核心 contract、Skill boundary、Preset output 或 docs route 时，同步更新 source、references、evals、golden、audit 和公共 docs。
 
 ## Pull Request
 
-提交应保持 scope 小。PR 需要包含：
-
-- 变更摘要；
-- 用户可见命令或 schema 变化；
-- 文档 / skill / template 是否同步；
-- 验证命令，通常是 `bun run check`。
+提交保持 claim scope 清楚。PR 应包含变更摘要、用户可见 contract/command 变化、Core/Experiment 边界、文档与 template 同步情况，以及实际验证命令。

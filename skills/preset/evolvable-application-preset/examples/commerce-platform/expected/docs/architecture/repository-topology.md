@@ -1,6 +1,6 @@
-# Repository Topology
+# Repository Topology Candidate
 
-本文件描述当前实际拓扑，不重新定义标准。
+本文件是基于 overlay 的拓扑候选；架构 owner 采纳前不证明当前实际拓扑，也不重新定义标准。
 
 ## Deployables
 

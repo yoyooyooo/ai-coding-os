@@ -1,107 +1,100 @@
-# 文档路由
+# 文档网络
 
-本目录按文档层组织，而不是按阶段、个人习惯或临时计划组织。
+本目录按语义 Authority 组织项目知识和规范。它是多入口网络，不是阶段目录、阅读清单、工作流或执行状态树。
 
-## 最短阅读路径
+## Discovery Surfaces
 
-1. 先读仓库根目录 [AGENTS.md](../AGENTS.md)，确认协作语言、开发命令和当前方法论口径。
-2. 读本文件，确定文档放置层。
-3. 读 [docs/product/README.md](product/README.md)，理解 AI Coding OS 方法论定位和 workspace 落地边界。
-4. 读 [docs/ssot/README.md](ssot/README.md)、[docs/standards/README.md](standards/README.md) 和
-   [Docs Governance](standards/docs-governance.md)，确认当前事实、可执行规则和文档放置边界。
-5. 需要查看长期目标状态时，读 [docs/goal-proof/README.md](goal-proof/README.md)。
-6. 需要判断命名、公开 skill source layout 或旧入口退役边界时，读 [docs/adr/2026-05-28-ai-coding-os-naming-and-boundary.md](adr/2026-05-28-ai-coding-os-naming-and-boundary.md) 和 [docs/standards/skill-source-layout.md](standards/skill-source-layout.md)。
-
-## 当前状态
-
-本仓库是 AI Coding OS 方法套件仓：一组按决策面分组的公开 skill、一个轻量 OS 入口，以及仍以 `goal-proof` 发布的 Goal Pack CLI。默认落地边界是 workspace/repo；默认入口仍是 `$ai-coding-os`，它不拥有持久 artifact，只负责把 AI coding 意图路由到拥有方法和 artifact 的 skill。
-
-当前 skill suite 见 [skills/README.md](../skills/README.md)。逻辑分组：
-
-| Group | Skills | 定位 |
-| --- | --- | --- |
-| `router/` | `$ai-coding-os` | user-invoked 入口，轻量知识路由 |
-| `contracts/` | `$ai-coding-os-suite-contracts` | 可独立安装的跨 Skill 合同、共享词汇和 Harness schemas |
-| `goal/` | `$goal-proof`, `$goal-contracts`, `$finding-proof-step`, `$proof-step-implementation`, `$write-work-plans` | 显式选择的 Goal Pack 方法及内部阶段 |
-| `governance/` | `$docs-governance` | 文档分层、权威放置、cleanup、audit |
-| `architecture/` | `$evolvable-application-architecture`, `$frontend-architecture`, `$effect-best-practices` | authority-first 应用架构、前端架构与 Effect runtime doctrine |
-| `capability/` | `$interface-capability-planning` | UI/IA、交互能力、前端状态/数据归属和 trace artifact |
-| `harness/` | `$product-harness-system`, `$ui-product-harness`, `$frontend-test-system`, `$headless-product-harness` | 共享 harness、UI/headless proof 与具体前端 test lane |
-| `preset/` | `$evolvable-application-preset` | Agent-guided 默认值发现、增量采用和 resolved project snapshot |
-| `tooling/` | `$effect-api-app-kit`, `suite_audit.py` | 原子生成与 grouped source 审计 |
-
-Goal Proof System 主路径已使用 v2 Goal Pack 口径：
+Agent 可以从任意与当前 concern 相关的表面进入：
 
 ```text
-goal.yaml
-progress.yaml
-evidence.jsonl
-plans/<work_id>.md
+问题或用户意图
+code area / source symbol
+canonical term / object / state
+Product、SSoT、Standard、ADR、Architecture artifact
+API/schema/test/Harness Result/runtime evidence
+仓库 AGENTS.md、本文或任一 layer router
 ```
 
-后续 schema、docs layer 或 Skill 口径变更仍应同步更新 skills、templates、checker、README、测试和 dogfood Goal Pack。
-涉及 skill source layout、公开触发名或旧入口退役时，按
-[Skill Source Layout](standards/skill-source-layout.md) 执行。
-涉及 docs layer 准入、promotion / demotion、旧材料清理或审计门时，按
-[Docs Governance](standards/docs-governance.md) 执行。
+只沿当前 claim 相关的 Authority、Evidence、source 和 neighboring routes 探索；不要求经过统一根节点，也不要求预读所有 layer。
 
-## 文档层
+## By Question
 
-| 层 | 拥有 | 不拥有 |
+| 问题 | 主要 Authority |
+| --- | --- |
+| 系统应该做什么 | accepted product/business decision 或 baselined requirement |
+| 当前存在什么实现结构 | source、schema、migration、lockfile、generated artifact |
+| 哪些行为被实际观察 | executed tests、Harness、runtime、release 或 operational Evidence |
+| 共享术语、对象、状态或不变量是什么意思 | `docs/ssot/**` 与 accepted decision |
+| 为什么这样决定 | Product Decision Record 或技术 ADR |
+| 接口接受什么 | adopted protocol/schema 与 contract evidence |
+| 当前结构与 owner 是什么 | `docs/architecture/**` 与源码事实 |
+| 做到什么程度 | bounded Evidence、selected execution method 与 release evidence |
+
+源码证明实现结构和静态属性；runtime、reachability、deployment 和 environment behavior 需要执行或观察 Evidence。它们不静默改写产品意图、共享事实或已采纳取舍。Execution status 不自动成为 Product、Docs 或 release Authority。
+
+## By Authority
+
+| Layer | Owns | Must Not Own |
 | --- | --- | --- |
-| `docs/product/**` | 产品/方法论定位、用户价值、非目标 | 工程规则、当前任务状态 |
-| `docs/ssot/**` | 当前事实、术语、不变量、权威边界 | 路线图、任务清单、历史讨论 |
-| `docs/standards/**` | 可执行规则、命令、质量门、协作 SOP | 产品愿景、未采纳提案 |
-| `docs/adr/**` | 已采纳取舍及后果 | 当前任务状态或完整标准 |
-| `docs/architecture/**` | 系统结构、模块关系、运行时视图 | 覆盖 SSoT 或隐藏任务 |
-| `docs/roadmap/**` | 顺序、状态、证据链接、迁移波次 | 逐步实施任务清单 |
-| `docs/review-plan/**` | `$plan-optimality-loop` 对结构化计划、SSoT contract、proposal 和叙事候选稿的评审 ledger | 产品事实、SSoT、standard、ADR、Goal Pack 运行状态、completion evidence |
-| `docs/interface-capabilities/**` | 项目级 InterfaceCapability / InterfaceSurface trace artifact，当项目选择集中管理 UI 能力追溯时使用 | 业务事实、测试代码、Goal Pack 运行状态 |
-| `docs/product-harness/**` | 项目级 HarnessScenario / HarnessFixture refs / HarnessRoute refs / evidence refs / `claim_ceiling` / Harness Coverage Matrix | 用户能力语义、产品事实、测试代码、Goal Pack 运行状态 |
-| `docs/goal-proof/**` | Goal Pack、inbox、sources、evidence records、Goal Relations | 项目级 docs 治理或产品权威 |
+| `docs/product/**` | AI Coding OS 产品/方法论定位、用户价值、非目标 | 工程规则、执行状态 |
+| `docs/ssot/**` | 当前事实、术语、不变量和核心边界 | Roadmap、历史讨论、workflow state |
+| `docs/standards/**` | 可执行规则、命令、质量门和协作标准 | 产品愿景、未采纳提案 |
+| `docs/adr/**` | 已采纳取舍、替代方案和后果 | 当前任务状态、完整 Standards |
+| `docs/architecture/**` | 系统结构、模块关系、运行时与发布边界视图 | 覆盖 SSoT 或执行队列 |
+| `docs/roadmap/**` | 迁移顺序、gate 和 Evidence links | tracker/Goal/ticket 状态副本 |
+| `docs/review-plan/**` | 历史或当前 plan/proposal review ledger | Product、SSoT、Standards、ADR 或 completion Authority |
+| `docs/interface-capabilities/**` | 项目级 InterfaceCapability trace | 产品事实、测试代码、execution state |
+| `docs/product-harness/**` | 项目级 HarnessScenario、coverage、claim ceiling、Evidence refs | 用户能力语义、测试代码、workflow state |
 
-## 冲突顺序
+Layer 可以省略；新增 layer、partition 或 identity 需要通过 `$docs-governance` 的 Earned Shape 判断。
 
-默认意图权威顺序：
+## By Code Area
+
+当前仓库主要 code areas：
+
+| Code area | Knowledge / rules | Evidence |
+| --- | --- | --- |
+| `skills/**` | [Skill source layout](standards/skill-source-layout.md)、[Core Suite architecture](architecture/repository-layer-breakdown.md) | core Suite audit、Skill eval assets |
+| `skills/governance/docs-governance/**` | [Docs Governance Standard](standards/docs-governance.md) | Docs self-check、scanner fixtures、Docs audit |
+| `skills/preset/**` | Preset Skill-local profiles、schemas 和 golden fixture | Preset render/validate/golden checks |
+| `packages/cli/**` | [Goal Proof experiment](../experiments/goal-proof/README.md) | Bun build/typecheck/tests |
+| `experiments/goal-proof/**` | experiment Skill、schemas、dogfood history | experiment self-check、CLI tests |
+
+这张表只路由，不复制 owning artifact 的内容。新增稳定 code area 时只在 discovery value 足够时增加条目。
+
+## Core Suite And Experiment Boundary
+
+核心 AI Coding OS source 见 [skills/README.md](../skills/README.md)。核心 Router 选择知识 owner，不选择 workflow。
+
+Goal Proof 是共仓早期实验，位于 [experiments/goal-proof/README.md](../experiments/goal-proof/README.md)。它不属于核心 Skill roster、Router branch、Docs layer 或核心 Suite bundle；历史 dogfood 也不承担当前项目 Authority。
+
+## Placement
 
 ```text
-docs/ssot/**
-  -> docs/standards/**
-  -> docs/adr/**
-  -> code + tests + generated evidence
-  -> docs/protocols/** when the question is wire/schema compatibility
-  -> docs/interface-capabilities/**
-  -> docs/product-harness/**
-  -> docs/architecture/**
-  -> docs/roadmap/**
-  -> docs/goal-proof/**
-  -> README / research / external notes
+current product meaning       -> docs/product/**
+current shared fact/term      -> docs/ssot/**
+current executable rule       -> docs/standards/**
+accepted technical tradeoff   -> docs/adr/**
+current topology / owner view -> docs/architecture/**
+future sequence / gate        -> docs/roadmap/**
+interface capability trace    -> docs/interface-capabilities/**
+Harness proof contract        -> docs/product-harness/**
+execution state               -> repository-selected external or experimental method
+implementation spec           -> root specs/** when the project uses it
 ```
 
-代码和测试能证明实际行为，但不能静默重定义更高层的当前事实、规则或已采纳取舍。
-如果某次迁移发现两层都可能是最高权威，先记录 decision/gap，不要把冲突埋进 prose。
+Portable Skill output paths are defaults. Existing project Authority wins and prevents a parallel Current Home.
 
-## 放置规则
+## Routes
 
-- 当前事实或术语 -> `docs/ssot/**`
-- 可执行规则或命令 -> `docs/standards/**`
-- 已采纳取舍 -> `docs/adr/**`
-- 结构视图 -> `docs/architecture/**`
-- 顺序/状态/证据链接 -> `docs/roadmap/**`
-- 计划评审 ledger -> `docs/review-plan/**`
-- 项目级界面能力 trace -> `docs/interface-capabilities/**`
-- 项目级 harness 证明合同、Harness Coverage Matrix 和 evidence refs -> `docs/product-harness/**`
-- Goal Pack 生命周期 -> `docs/goal-proof/**`
-- 实施任务和本地证据 -> root `specs/**`，不要放 `docs/specs/**`
-
-## 语言策略
-
-叙述性正文使用中文。字段名、命令、路径、schema 示例和代码符号可保留英文。
-
-## 下一步阅读
-
-- 产品/方法论定位：[docs/product/README.md](product/README.md)
-- 当前事实：[docs/ssot/README.md](ssot/README.md)
-- 可执行规则：[docs/standards/README.md](standards/README.md)
-- 文档治理：[docs/standards/docs-governance.md](standards/docs-governance.md)
-- Skill source layout：[docs/standards/skill-source-layout.md](standards/skill-source-layout.md)
+- 产品定位：[product/README.md](product/README.md)
+- 当前事实：[ssot/README.md](ssot/README.md)
+- 可执行规则：[standards/README.md](standards/README.md)
+- 文档治理：[standards/docs-governance.md](standards/docs-governance.md)
+- Skill source layout：[standards/skill-source-layout.md](standards/skill-source-layout.md)
+- 结构视图：[architecture/README.md](architecture/README.md)
+- 已采纳决策：[adr/README.md](adr/README.md)
+- 后续迁移：[roadmap/README.md](roadmap/README.md)
+- 评审账本：[review-plan/README.md](review-plan/README.md)
+- InterfaceCapability：[interface-capabilities/README.md](interface-capabilities/README.md)
+- Product Harness：[product-harness/README.md](product-harness/README.md)

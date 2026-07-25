@@ -12,7 +12,7 @@ Scope/finalizer and interruption test
 Stream/Queue concurrency test
 HTTP/CLI/worker black-box test
 real database/provider/resource integration
-production-near recovery scenario
+declared local-stack or staging recovery scenario
 ```
 
 A fake Layer proves application behavior against the contract, not the real

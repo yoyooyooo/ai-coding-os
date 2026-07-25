@@ -1,40 +1,29 @@
----
-node_id: roadmap-future-<capability>
-artifact_type: roadmap
-status: open-candidate
-authority_scope: future-candidate
-objective: <future outcome>
-claim_limit: Future candidate only; no current product or implementation claim.
-evidence_contract: <evidence required before promotion>
-next_action: <smallest safe next route>
----
-
 # <Capability Name>
 
-## Product Hypothesis
+> Optional capability capsule. Use this only after a flat Roadmap route has earned co-located material.
+> Remove prompts that do not help a reader decide, verify, or promote the future delta.
 
-## Candidate Capability Boundary
+## Future Delta
 
-## Reusable Current Foundations
+- Hypothesis or capability change:
+- What is deliberately not current authority:
 
-## Current Non-authority
+## Boundary and Foundations
 
-State explicitly what current Product/SSoT/Standards do not promise.
+- Candidate capability boundary:
+- Reusable current foundations:
+- Prerequisites or dependencies:
 
-## Candidate Authority Model
+## Gates and First Proof
 
-## Candidate Architecture
+- Promotion gate(s):
+- First falsifiable proof:
+- Unsafe early implementation(s):
 
-## Prerequisites
+## Promotion and Sources
 
-## Promotion Gates
+- Formal authority target(s):
+- Repository-selected execution/evidence method:
+- Sources, links, and retained evidence:
 
-## First Falsifiable Proof
-
-## Forbidden Early Implementations
-
-## Promotion Targets
-
-List formal layers that would receive accepted authority after proof.
-
-## Sources And Evidence
+Use semantic paths by default. Add frontmatter, a stable key, sequence numbers, or `node_id` only when the repository has an explicit traceability or graph need. The capsule must remain a future route until promotion succeeds.

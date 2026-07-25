@@ -1,16 +1,15 @@
 ---
 name: evolvable-application-preset
 description: >-
-  Agent-guided Evolvable Application Preset discovery and selective adoption.
-  Use after technical choices are settled to initialize or incrementally align
-  AGENTS.md, project Standards, vocabulary, topology and authority slots,
-  Harness discovery, or architecture checks without mechanically replacing
-  existing project authority.
+  Evolvable Application Preset discovery and selective adoption. Use when
+  settled technical choices need a new or existing repository to adopt the
+  smallest compatible AGENTS.md, Standards, vocabulary, topology, authority,
+  Harness, or architecture-check surface while preserving project authority.
 ---
 
 # Evolvable Application Preset
 
-Turn reusable doctrine into a project-owned resolved snapshot:
+Turn reusable doctrine into a reviewable candidate that project owners may adopt:
 
 > **Skills store knowledge. Presets store defaults. Project docs store adopted
 > rules and current facts.**
@@ -19,24 +18,22 @@ Use `$docs-governance` only when the repository's canonical entry or docs homes
 are missing or disputed. This Preset discovers existing authority first and
 contributes only the smallest useful missing or compatible slice.
 
-## Default Operating Mode
+## Adoption Model
 
 The Agent owns discovery, selection, conflict judgment, and adoption. Scripts
-are optional deterministic primitives, not a mandatory workflow or a substitute
-for repository reading.
+are optional deterministic primitives, not a project workflow or a substitute
+for repository evidence.
 
 ```text
-settled technical choices + repository evidence
-  -> discover current adoption state
-  -> map the smallest applicable profile closure
-  -> classify each target surface
-  -> adopt / merge / keep-project / skip / conflict
-  -> verify only the resulting claim
+inputs: settled technical choices + repository evidence
+coverage: current surfaces + smallest profile closure + conflicts
+surface decisions: adopt | merge | keep-project | skip | conflict
+claim: only explicitly adopted and verified project surfaces
 ```
 
-Do not require `preset-input.yaml` or `project-overlay.yaml` unless a repeatable
-render, diff, fixture, or upgrade candidate benefits from them. Do not reopen
-settled technology decisions merely because a profile exists.
+Keep `preset-input.yaml` and `project-overlay.yaml` optional; use them when a
+repeatable render, diff, fixture, or upgrade candidate benefits. Treat settled
+technology decisions as constraints on profile discovery.
 
 ## Ownership
 
@@ -46,73 +43,79 @@ Owns:
   reusable project defaults
   greenfield and incremental adoption guidance
   thin AGENTS.md overlay
-  resolved docs templates
+  earned-shape-aware candidate docs templates
   vocabulary and filename baseline
   staged render/diff/upgrade tooling
   golden rendered examples
 
 Project owns:
-  product terms and facts
+  product terms and product decisions
   fact authority
   actual apps/packages/modules
   public contracts
   local security constraints and exceptions
   final resolved files
+
+Adjacent Suite owners, when installed:
+  architecture decisions -> `$evolvable-application-architecture`
+  Effect constraints -> `$effect-best-practices`
+  deterministic code generation after decisions settle -> `$effect-api-app-kit`
+  documentation authority and placement conflicts -> `$docs-governance`
 ```
 
 ## Authority Model
 
 ```text
 Preset source
-  -> rendered snapshot
-  -> project AGENTS.md and docs/** become current authority
+  -> rendered `candidate-snapshot`
+  -> semantic owners explicitly merge selected content into project Current Homes
 ```
 
-Each adoption records Preset ID, version, `resolved-snapshot` mode, and selected
-profiles. A newer Preset changes nothing until an explicit upgrade stages and
-adopts a semantic diff.
+A repeatable render records Preset ID, version, `candidate-snapshot` mode, and
+selected profiles. Generated AGENTS, Standards, ADRs, SSoT, and Architecture
+files remain proposed and must not self-assert accepted/current status. A direct
+incremental adoption may update only one existing project surface without
+creating a parallel snapshot artifact. Legacy `resolved-snapshot` remains
+readable, but new renders are candidates. A newer Preset changes nothing until
+an explicit upgrade stages and the project adopts a semantic diff.
 
 The renderer consumes a fixed contract snapshot bundled inside this Skill.
 `$ai-coding-os-suite-contracts` owns the source semantics, but the executable
 never resolves a sibling Skill path; Suite audit checks snapshot parity.
+Docs layer placement, partition admission, and identity admission remain owned
+by `$docs-governance`; the Preset supplies candidate defaults with explicit
+provenance, while project owners create the adopted result.
 
-## Profiles
+## Profile Discovery
 
-```text
-agent-entry                 implicit thin AGENTS.md managed section
-monorepo-core               apps/packages/tooling/docs semantics
-typescript-node             requires monorepo-core
-react                       requires monorepo-core
-effect                      requires typescript-node
-effect-httpapi-v3           requires effect; installed v3 policy
-effect-httpapi-v4           requires effect; installed v4 policy
-verification-core           Harness Descriptor/Result and commands
-headless-product-harness    requires verification-core
-ui-product-harness          requires verification-core
-```
+Treat local `profiles/*/profile.yaml` files as the profile catalog. Start from
+settled user-visible technology or proof needs, follow `requires` to the
+smallest closure, and reject conflicting profiles. Dependencies complete a
+selection while leaving technology decisions settled. Resolved artifacts record
+requested profiles, resolved closure, and dependency-added profiles; adopted
+vocabulary, filename patterns, guarded terms, AGENTS rules, and optional
+verification files come only from that closure.
 
-Profiles are a discovery menu. Select the user-visible technology or proof
-needs first, then follow local `profiles/*/profile.yaml` requirements to the
-smallest closure; dependency profiles are not a request to re-decide technology.
-Mutually conflicting profiles must be rejected, for example
-`effect-httpapi-v3` and `effect-httpapi-v4` together.
+The renderer records a broad candidate closure, not an incremental surface
+selector. `requested`, `defaults_added`, `dependency_added`, and `resolved` stay
+separate so a system default is never presented as user intent. Existing
+projects may adopt one compatible surface directly without rendering the
+complete candidate.
 
-The deterministic renderer is a broad candidate primitive. Its profile list
-records the selected closure and gates verification/check outputs, but it is not
-an incremental surface selector. For existing projects, the Agent may directly
-adopt one surface without rendering the complete candidate.
+## Adoption Coverage
 
-## Agent Discovery Loop
+Cover applicable rows in the order suggested by current evidence. The table is
+not a repository reading or implementation sequence.
 
-| Step | Completion criterion |
+| Decision | Completion criterion |
 | --- | --- |
-| Ground | Settled technical choices, repository instructions, existing AGENTS/docs, manifests, package/lock evidence, commands, and framework-reserved paths are known. |
-| Discover | Each relevant surface is classified as absent, compatible, locally authoritative, conflicting, or not applicable. |
-| Map | The smallest profile dependency closure and concrete files/sections that could help are named; a full renderer candidate is optional. |
-| Slice | Each surface receives `adopt`, `merge`, `keep-project`, `skip`, or `conflict`, with project authority winning unresolved conflicts. |
-| Materialize | The Agent edits directly, uses a local template, or invokes a deterministic script only where that reduces risk or repetition. |
-| Verify | Direct adoption checks only the changed surfaces; a rendered candidate uses the scoped `diff`/`validate` primitives and does not imply unselected profile behavior. |
-| Continue | Stop when the requested initialization/alignment claim is supported; another slice may be adopted later without completing the whole Preset. |
+| Context | Settled technical choices, repository instructions, existing AGENTS/docs, manifests, package/lock evidence, commands, and framework-reserved paths are known. |
+| Surface discovery | Each relevant surface is classified as absent, compatible, locally authoritative, conflicting, or not applicable. |
+| Profile mapping | The smallest profile dependency closure and concrete files/sections that could help are named; a full renderer candidate is optional. |
+| Surface decision | Each surface receives `adopt`, `merge`, `keep-project`, `skip`, or `conflict`, with project authority winning unresolved conflicts. |
+| Materialization | The Agent edits directly, uses a local template, or invokes a deterministic script only where that reduces risk or repetition. |
+| Verification | Direct adoption checks only the changed surfaces; a rendered candidate uses the scoped `diff`/`validate` primitives and does not imply unselected profile behavior. |
+| Completion | Stop when the requested initialization/alignment claim is supported; another slice may be adopted later without completing the whole Preset. |
 
 Keep the surface map inline unless persistence materially improves review or
 repeatability:
@@ -132,51 +135,38 @@ surface | current authority | Preset contribution | action | verification
 
 ## Project Output
 
-A broad rendered candidate can include the following project-owned surfaces;
-profile selection records the selected doctrine and gates optional verification
-outputs, while incremental adoption can target any one surface directly:
+A broad candidate may contribute one marker-bounded `AGENTS.md` section,
+project-owned Standards and ADR surfaces, and selected verification or checker
+surfaces. SSoT candidates appear only for explicit product-language material.
+Architecture candidates appear for fact-writer or topology material, and
+technical writer maps use `docs/architecture/fact-authority-map.md`; an empty
+Product, SSoT, Architecture, or Harness layer is not generated. Profiles
+define the technical closure; exact files are inspected in the candidate or
+golden fixture. Incremental adoption may target any one compatible surface and
+is the default for existing repositories.
 
-```text
-AGENTS.md
-docs/README.md
-docs/product/README.md
-docs/ssot/README.md
-docs/ssot/product-language.md
-docs/ssot/authority-map.md
-docs/standards/README.md
-docs/standards/architecture-profile.yaml
-docs/standards/source-topology-and-naming.md
-docs/standards/naming-vocabulary.yaml
-docs/architecture/README.md
-docs/architecture/repository-topology.md
-docs/adr/README.md
-docs/adr/_template.md
-docs/adr/0001-adopt-evolvable-application-preset.md
-```
+This is a menu, not a mandatory docs tree. Projects may omit unused layers,
+keep layers flat, and admit child partitions or identities only under
+`$docs-governance`. Product meaning remains in its project SSoT; generated
+source-naming vocabulary references that Home instead of copying its meaning.
+Unknown authority remains `not-yet-established`; templates preserve that gap
+instead of inventing current facts.
 
-Verification profiles may add:
-
-```text
-docs/standards/verification-policy.md
-docs/product-harness/README.md
-docs/product-harness/coverage.yaml
-tooling/architecture_check.py
-```
-
-Unknown authority remains `not-yet-established`; templates never invent current
-facts.
+Read the [commerce-platform example](examples/commerce-platform/README.md) only
+when a repeatable broad render or fixture comparison is needed.
 
 ## AGENTS.md
 
-`agent-entry` is enabled by default. It creates or updates one marked section
-that points to project authority, resolved commands, vocabulary, and the thin
-`$ai-coding-os` entry. Project-owned sections remain untouched. Nested entries
+`agent-entry` is added as an explicit recorded default. It creates or updates
+one marked section that points to project authority, resolved commands,
+vocabulary, and the optional thin `$ai-coding-os` entry. Project-owned sections
+remain untouched. Nested entries
 are generated only for real local differences.
 
 ## Optional Deterministic Primitives
 
-Use these when they shorten a discovered slice; they do not define the required
-Agent workflow:
+Use these when they shorten a discovered slice; they do not define project
+exploration or adoption order:
 
 ```bash
 python3 scripts/preset.py inspect --repo <repo>
@@ -187,14 +177,10 @@ python3 scripts/preset.py upgrade --repo <repo> --input <preset-input.yaml> --ov
 ```
 
 `inspect` reports existing surfaces, managed-section presence, adopted profiles,
-locks, dependency versions, apps/packages, and commands; it does not choose an
-action. `render` is useful for a broad candidate or reproducible fixture. `diff` and
-`upgrade` compare only candidate-managed files. `upgrade` writes under
+locks, dependency versions, apps/packages, and commands; the Agent chooses the
+action. For an existing repository, direct adoption after `inspect` is the
+normal path. `render` is an explicit broad candidate or reproducible fixture;
+it is not a prerequisite for one-surface adoption. `diff` and `upgrade` compare
+only candidate-managed files. `upgrade` writes under
 `.evolvable-preset/upgrade-candidate/`; the Agent still decides which compatible
 surfaces the project adopts.
-
-## Example
-
-`examples/commerce-platform/` contains optional renderer inputs and the
-canonical `expected/` fixture. Read it when repeatable broad rendering is useful;
-it is not the required shape for incremental adoption.

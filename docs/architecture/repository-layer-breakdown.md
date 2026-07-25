@@ -1,151 +1,39 @@
-# AI Coding OS 整仓分层拆解
-
-## 状态
+# AI Coding OS Repository Ownership Map
 
 ```yaml
 status: current-architecture-view
-scope: repository layout and cross-layer ownership
+scope: repository layout, ownership, verification, and distribution
 not_authority_over:
   - docs/ssot/**
   - docs/standards/**
   - docs/adr/**
-  - packages/cli/src/**
-  - Goal Pack evidence records
+  - source and executable evidence
+  - external or experimental execution state
 ```
 
-本文是仓库结构视图，用来帮助 agent 判断文件归属、改动传播面和提交边界。它不替代 SSoT、standards、ADR、CLI 代码或 Goal Pack evidence。
+本视图帮助 Agent 判断文件归属和 change propagation。Repository nodes 是并列 owner，不是 public shell 到 execution 的流水线。
 
-## 总体分层
+## Core Skill Suite
 
 ```text
-public shell
-  -> method source
-  -> execution engine
-  -> authority docs
-  -> long-running artifacts
-  -> verification / release support
+skills/**
 ```
 
-仓库同时承载多种 decision surface。显式采用 `$goal-proof` 时，其状态流是：
-
-```text
-human intent -> goal contract -> proof_step -> evidence -> next_action
-```
-
-仓库分层不是新 workflow，而是说明各类 authority、方法与工具的物理落点。
-
-## 1. Public Shell
-
-拥有对外第一印象、安装入口和维护者入口。
-
-```text
-README.md
-README.zh-CN.md
-AGENTS.md
-assets/**
-package.json
-bun.lock
-```
-
-职责：
-
-- 说明 AI Coding OS 是按 decision surface 分组的方法论和 Skill Suite。
-- 说明 grouped Suite、项目 authority、验证表面与可选 Goal Pack 方法的关系。
-- 保留 `goal-proof` 作为当前 CLI / npm 包名。
-- 给用户安装和启动入口。
-- 给维护 agent 本仓语言、命令、同步更新和验证规则。
-
-不拥有：
-
-- schema 事实。
-- Goal Pack 当前状态。
-- skill phase 的细节规则。
-- CLI 行为定义。
-
-改动传播：
-
-- README 公共叙事改变时，检查 `docs/product/**`、`docs/ssot/**`、`skills/**` 是否仍一致。
-- AGENTS 维护规则改变时，检查相关 skill、docs audit 和验证命令。
-
-## 2. Method Source
-
-拥有 agent skill 的源码视图。运行时触发名由每个 `SKILL.md` frontmatter `name` 决定，目录只服务维护者阅读。
-
-```text
-skills/router/**
-skills/goal/**
-skills/governance/**
-skills/architecture/**
-skills/capability/**
-skills/harness/**
-skills/preset/**
-skills/tooling/**
-skills/contracts/ai-coding-os-suite-contracts/**
-skills/examples/**
-skills/README.md
-```
-
-分组：
-
-| Layer | Owns | Must Not Own |
+| Node | Owns | Must Not Own |
 | --- | --- | --- |
-| `skills/router/**` | user-invoked 薄路由、Lead/Supporting Skill 选择 | 持久 artifact、执行控制、Goal Pack state、docs lifecycle |
-| `skills/goal/**` | 显式采用的 Goal Pack 生命周期、goal contract、proof_step、evidence、completion review | docs layer placement、UI/harness 具体证明细节 |
-| `skills/governance/**` | docs layer、authority placement、cleanup、audit | product truth、Goal Pack evidence |
-| `skills/architecture/**` | 可复用工程架构 doctrine 和审计 | 单个产品事实、任务状态 |
-| `skills/capability/**` | UI/IA、surface、state/data ownership、trace planning | harness 生命周期和具体测试命令 |
-| `skills/harness/**` | Harness product-proof doctrine、claim ceiling、UI/headless proof、frontend test lane | 业务语义、共享 contract serialization 和 Goal Pack lifecycle |
-| `skills/preset/**` | Agent-guided 默认值发现、增量采用、resolved snapshot、golden example | 项目事实、全量机械初始化和动态 authority |
-| `skills/tooling/**` | 已确定决策的生成器与 grouped source audit | 产品架构决策 |
-| `skills/contracts/ai-coding-os-suite-contracts/**` | 可独立安装的跨 Skill 合同、共享词汇和 Harness schema | 静态 Skill 清单、项目领域词汇、路由分支、安装路径 |
-| `skills/examples/**` | owner-local example index | 第二份 golden source |
+| `router` | user-invoked knowledge Owner Map | durable artifact、workflow、model orchestration |
+| `contracts` | portable knowledge kernel、Proof Surface、Evidence Envelope、eval/Harness schemas | static roster、project product vocabulary、execution lifecycle |
+| `governance` | documentation Authority、Routes、Earned Shape、cleanup、audit | product truth、tracker state |
+| `product` | product framing、model、decision、requirements、acceptance | docs placement、technical design、delivery evidence |
+| `architecture` | application/frontend/Effect doctrine | product facts、execution status |
+| `capability` | interface capability、surface、state/data ownership、proof needs | product truth、test runner |
+| `harness` | proof architecture、headless/UI observation、frontend lane | business semantics、execution completion |
+| `preset` | reusable defaults、incremental adoption guidance、explicit `candidate-snapshot`、managed upgrade candidate | accepted/current project claims、project facts、empty Docs layers、dynamic inheritance |
+| `tooling` | deterministic generation、targeted contract negatives、bounded audit、source-bound self-contained core bundle | unsettled product/architecture decisions |
 
-当前滚动实施规则：
+Core Skills may compose through bounded decision edges. They do not form one mandatory pipeline.
 
-- `$goal-contracts` 校准 `objective` 的 minimum sufficient horizon。
-- `$finding-proof-step` 只选择当前 falsifiable movement。
-- `$proof-step-implementation` 把 fresh evidence 归约回现有 progress state。
-- `$ai-coding-os` 只识别并路由，不保存状态。
-
-改动传播：
-
-- 改 skill frontmatter `name` 或公开触发名，必须检查 `docs/standards/skill-source-layout.md`、README、安装示例和测试。
-- 改 Goal Proof 语义，必须检查 `skills/goal/**`、`packages/cli/**`、templates、checker rules、README 和 dogfood Goal Pack。
-- 改架构 / capability / harness skill 的公共边界，必须检查 `skills/README.md` 和对应 docs layer。
-
-## 3. Execution Engine
-
-拥有可运行 CLI、Goal Pack 读写、checker、renderer 和测试。
-
-```text
-packages/cli/src/**
-packages/cli/test/**
-packages/cli/README.md
-packages/cli/README.zh-CN.md
-packages/cli/package.json
-```
-
-职责：
-
-- 发布当前 CLI：`goal-proof`。
-- 读写 v2 Goal Pack artifacts。
-- 提供 `check`、`inspect`、`summary`、`work`、`evidence`、`relations` 等命令。
-- 用 tests 固化 CLI 行为和 schema 检查。
-
-不拥有：
-
-- AI Coding OS 顶层品牌重命名。
-- docs layer authority。
-- skill trigger 分发状态。
-
-改动传播：
-
-- 新增或修改 CLI command / flag / output，需要更新 CLI README、根 README 命令示例、skill references、tests。
-- 修改 schema / checker / evidence record 规则，需要同步 templates、checker rules、Goal Pack examples 和相关 dogfood artifacts。
-
-## 4. Authority Docs
-
-拥有当前事实、执行规则、取舍、结构视图和迁移顺序。
+## Project Knowledge Network
 
 ```text
 docs/product/**
@@ -157,105 +45,72 @@ docs/roadmap/**
 docs/review-plan/**
 docs/interface-capabilities/**
 docs/product-harness/**
-docs/README.md
 ```
 
-分层：
-
-| Layer | Owns | Example |
-| --- | --- | --- |
-| `docs/product/**` | 产品 / 方法论定位 | workspace 边界、用户价值、Suite 构成 |
-| `docs/ssot/**` | 当前事实、术语、不变量 | skill 分组事实、Goal Pack artifact ownership |
-| `docs/standards/**` | 可执行规则、命令、SOP | skill source layout、docs governance |
-| `docs/adr/**` | 已采纳取舍 | 命名与边界决策 |
-| `docs/architecture/**` | 结构视图和数据流 | 本文件、仓库模块关系 |
-| `docs/roadmap/**` | 迁移顺序、状态、证据链接 | 后续波次和 gate |
-| `docs/review-plan/**` | plan/proposal review ledger；不拥有 completion evidence | `$plan-optimality-loop` 评审记录 |
-| `docs/interface-capabilities/**` | 项目级 interface trace | UI/IA 追溯 |
-| `docs/product-harness/**` | 项目级 harness contract | coverage matrix、claim ceiling |
-
-改动传播：
-
-- 当前事实变化：优先更新 `docs/ssot/**`，再更新 README / skill / roadmap。
-- 可执行规则变化：更新 `docs/standards/**`，再更新 skill 或脚本。
-- 结构视图变化：更新 `docs/architecture/**` 和最近 README 索引。
-- 迁移顺序变化：更新 `docs/roadmap/**`，不要把 roadmap 写成 Goal Pack progress ledger。
-
-## 5. Long-Running Artifacts
-
-拥有 Goal Proof System 的长期执行材料、来源和 evidence。
-
-```text
-docs/goal-proof/inbox/**
-docs/goal-proof/sources/**
-docs/goal-proof/goals/**
-```
-
-职责：
-
-- `inbox/**`：弱信号、待 triage 候选。
-- `sources/**`：已消费的 proposal、handoff、source materials。
-- `goals/<goal-id>/goal.yaml`：goal contract。
-- `goals/<goal-id>/progress.yaml`：rolling state。
-- `goals/<goal-id>/evidence.jsonl`：append-only transition evidence。
-- `goals/<goal-id>/plans/<work_id>.md`：仅高风险 `needs_plan` slice。
-
-不拥有：
-
-- 顶层产品事实。
-- docs layer governance。
-- CLI schema authority。
-
-改动传播：
-
-- Goal Pack completion review 可以 promote 稳定事实到 SSoT / standards / ADR。
-- Source material 被采纳后，应保留为 source，不应继续作为当前 authority。
-- Roadmap 可以链接 Goal Pack evidence，但不能复制 Goal Pack 运行状态。
-
-## 6. Verification / Release Support
-
-拥有仓库验证、发布和脚本测试。
-
-```text
-scripts/**
-skills/tooling/suite_audit.py
-skills/preset/**/scripts/**
-skills/tooling/effect-api-app-kit/scripts/**
-tsconfig.json
-package.json
-bun.lock
-```
-
-职责：
-
-- `bun run build`、`bun run typecheck`、`bun run test`、`bun run check`。
-- grouped Skill source、Preset golden output 和 Kit atomicity audit。
-- release precheck / no-push dry run 行为。
-- npm package 内容和发布前检查。
-
-改动传播：
-
-- 修改 release 或 package 行为，更新 scripts tests、README install/release 相关说明。
-- 修改验证命令，更新 AGENTS、docs standards 和 CI / local command docs。
-
-## 跨层提交边界
-
-推荐提交按 claim 切分，而不是按目录机械切分。
-
-| Claim | 典型提交范围 |
+| Layer | Authority role |
 | --- | --- |
-| 公共叙事收口 | README、docs/product、docs/ssot、相关 skill |
-| Goal Proof schema / CLI 行为 | `packages/cli/**`、templates、checker refs、tests、README |
-| Skill source layout | `skills/**`、`docs/standards/skill-source-layout.md`、README |
-| Docs layer / architecture view | `docs/**` indexes、architecture / standards docs |
-| Harness / interface capability 方法 | 对应 skill、docs/interface-capabilities 或 docs/product-harness、README |
+| Product | product/method positioning |
+| SSoT | current terms, facts, invariants, owner boundaries |
+| Standards | executable rules and quality gates |
+| ADR | accepted technical tradeoffs and reasons |
+| Architecture | current structure、runtime views、technical fact writers 与 consistency boundaries |
+| Roadmap | future sequence, gates, Evidence links |
+| Review Plan | review ledger/evidence, not adopted Authority by itself |
+| Interface Capabilities | project interface trace |
+| Product Harness | project proof contract and coverage |
 
-提交前至少检查：
+`docs/README.md` and layer READMEs are multi-entry routers. Source paths, tests,
+ADRs, schemas, Harness Results, and direct artifact links are equally valid
+entry surfaces.
+
+## Co-located Goal Proof Experiment
 
 ```text
-python3 skills/tooling/suite_audit.py --suite skills
-docs audit
-bun run check
+experiments/goal-proof/skill/**
+experiments/goal-proof/dogfood/**
+packages/cli/**
 ```
 
-若只改 docs-only 且不影响 CLI / package / tests，可只跑 docs audit；但当 README / skill / templates 涉及 CLI 文案或 tests 断言时，跑完整 `bun run check`。
+The experiment owns its Goal Pack state protocol and CLI behavior. It is outside
+Core Suite membership, Router branches, core Evidence lifecycle, and core ZIP.
+Historical dogfood evidence remains append-only and may contain superseded paths.
+
+Repository checks keep claims separate:
+
+```text
+check:core                  core Skill source + project docs
+check:goal-proof-experiment experiment Skill + CLI
+check                       aggregate repo health only
+```
+
+## Verification And Distribution
+
+```text
+skills/VERSION                       bundle-local Core version
+skills/tooling/suite_audit.py         core source/schema/eval/golden/provenance audit
+skills/tooling/build_suite_release.py source-bound core-only deterministic ZIP + manifest
+skills/governance/docs-governance/scripts/** project docs audit
+experiments/goal-proof/scripts/**   experiment Skill self-check
+scripts/**                          npm release support
+```
+
+The Core ZIP contains only `skills/**`; `skills/VERSION`、bundle-local README、audit 和 builder 使其可在干净解压目录自检，`source_tree_sha256` 将 canonical audit 绑定到打包源码。Builder 将 canonical audit、manifest、change report 与 composition review 作为同目录 versioned sidecars 输出，并在 provenance hash 前规范化机器绝对路径与 compiler-dependent diagnostics。npm package 发布 Goal Proof CLI；Core 与 CLI 版本独立，任一通过都不建立另一 surface 的 claim。
+
+## Change Propagation
+
+| Changed meaning | Required neighboring checks |
+| --- | --- |
+| Core Skill name/invocation/owner | Core index, Router, contracts, evals, Suite audit, public docs |
+| Docs governance/network rule | Docs Skill/reference/template/scanner/tests, project Standards and routers |
+| Preset generated surface | Preset Skill/profile/renderer/schema/eval/golden、candidate claim 与 Suite audit |
+| Shared Proof/Evidence contract | Contract schema/examples/evals、targeted negative cases、Harness consumers、migration note |
+| Goal experiment schema/CLI | Experiment Skill/templates/self-check, CLI docs/tests; no Core roster update |
+| Core/Experiment distribution | release builder, package docs, manifest assertions, README/ADR |
+
+## Routes
+
+- Architecture index：[README.md](README.md)
+- SSoT：[../ssot/README.md](../ssot/README.md)
+- Standards：[../standards/README.md](../standards/README.md)
+- Core Skills：[../../skills/README.md](../../skills/README.md)
+- Experiment：[../../experiments/goal-proof/README.md](../../experiments/goal-proof/README.md)

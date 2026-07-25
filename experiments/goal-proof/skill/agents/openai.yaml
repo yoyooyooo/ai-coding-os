@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal Proof Experiment"
+  short_description: "User-invoked experimental Goal Pack method"
+  default_prompt: "Use $goal-proof for this explicitly selected durable objective. Preserve the goal contract, advance one falsifiable proof step, append bounded evidence, and avoid creating a parallel ledger when another execution method already owns the workstream."

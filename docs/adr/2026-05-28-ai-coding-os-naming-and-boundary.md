@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Superseded by [2026-07-25 Core Knowledge Network and Goal Proof Experiment Boundary](2026-07-25-core-knowledge-network-and-goal-proof-experiment.md).
 
 ## Context
 

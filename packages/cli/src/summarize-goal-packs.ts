@@ -1,6 +1,8 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import {
+  DEFAULT_GOALS_PATH,
+  LEGACY_GOALS_PATH,
   loadGoalPack,
   NEXT_ACTIONS,
   STATUS_VALUES,
@@ -175,9 +177,12 @@ function matchesCompletion(item, completion) {
 
 export function resolveGoalsRoot(target = ".", { cwd = process.cwd() } = {}) {
   const direct = resolve(cwd, target || ".");
-  const nested = join(direct, "docs", "goal-proof", "goals");
   if (isGoalsDirectory(direct)) return direct;
-  if (isGoalsDirectory(nested)) return nested;
+
+  for (const segments of [DEFAULT_GOALS_PATH, LEGACY_GOALS_PATH]) {
+    const nested = join(direct, ...segments);
+    if (isGoalsDirectory(nested)) return nested;
+  }
 
   const upward = findGoalsRootUpward(direct);
   if (upward) return upward;
@@ -188,8 +193,10 @@ export function resolveGoalsRoot(target = ".", { cwd = process.cwd() } = {}) {
 function findGoalsRootUpward(startDir) {
   let current = resolve(startDir);
   while (true) {
-    const candidate = join(current, "docs", "goal-proof", "goals");
-    if (isGoalsDirectory(candidate)) return candidate;
+    for (const segments of [DEFAULT_GOALS_PATH, LEGACY_GOALS_PATH]) {
+      const candidate = join(current, ...segments);
+      if (isGoalsDirectory(candidate)) return candidate;
+    }
     const parent = dirname(current);
     if (parent === current) return null;
     current = parent;

@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -20,9 +21,18 @@ try:
 except ImportError as exc:  # pragma: no cover
     raise SystemExit("PyYAML is required") from exc
 
-KIT_VERSION = "0.2.0-experimental.1"
+KIT_VERSION = "0.2.0-experimental.3"
 MANIFEST_REL = Path(".evo-kit/manifest.yaml")
 LOCK_REL = Path(".evo-kit/lock")
+DEFAULT_VERIFY_TIMEOUT_SECONDS = 120
+MAX_CAPTURE_CHARS = 4000
+
+
+class KitOperationError(RuntimeError):
+    def __init__(self, error_code: str, message: str, *, rolled_back: bool | None = None):
+        super().__init__(message)
+        self.error_code = error_code
+        self.rolled_back = rolled_back
 
 
 def sha256_text(text: str) -> str:
@@ -50,6 +60,20 @@ def validate_token(name: str, value: Any) -> str:
     return value
 
 
+def validate_relative_path(name: str, value: Any) -> str:
+    if not isinstance(value, str) or not value or Path(value).is_absolute() or ".." in Path(value).parts:
+        raise ValueError(f"{name} must be a safe relative path")
+    return value
+
+
+def validate_string_list(name: str, value: Any, *, non_empty: bool = False) -> list[str]:
+    if not isinstance(value, list) or not all(isinstance(item, str) and item.strip() for item in value):
+        raise ValueError(f"{name} must be an array of non-empty strings")
+    if non_empty and not value:
+        raise ValueError(f"{name} must not be empty")
+    return value
+
+
 def validate_spec(spec: dict[str, Any]) -> None:
     if spec.get("schema_version") != 1:
         raise ValueError("schema_version must be 1")
@@ -60,9 +84,7 @@ def validate_spec(spec: dict[str, Any]) -> None:
     if change.get("operation") != "add-slice":
         raise ValueError("only change.operation=add-slice is implemented")
     validate_token("host.name", host.get("name"))
-    host_path = host.get("path")
-    if not isinstance(host_path, str) or not host_path or Path(host_path).is_absolute() or ".." in Path(host_path).parts:
-        raise ValueError("host.path must be a safe relative path")
+    validate_relative_path("host.path", host.get("path"))
     for key in ("module", "subject", "operation"):
         validate_token(f"slice.{key}", slice_.get(key))
     if slice_.get("pressure") not in {"P0", "P1", "P2", "P3"}:
@@ -82,9 +104,26 @@ def validate_spec(spec: dict[str, Any]) -> None:
     http = spec.get("http")
     if http is not None and not isinstance(http, dict):
         raise ValueError("http must be object or null")
-    commands = ((spec.get("verification") or {}).get("commands") or [])
-    if not isinstance(commands, list) or not all(isinstance(c, str) and c.strip() for c in commands):
-        raise ValueError("verification.commands must be an array of non-empty strings")
+    verification = spec.get("verification") or {}
+    if not isinstance(verification, dict):
+        raise ValueError("verification must be an object")
+    commands = validate_string_list("verification.commands", verification.get("commands") or [])
+    if slice_["pressure"] == "P3":
+        if not commands:
+            raise ValueError("P3 requires at least one verification command")
+        harness = verification.get("harness")
+        if not isinstance(harness, dict):
+            raise ValueError("P3 requires verification.harness project binding")
+        validate_relative_path("verification.harness.entry", harness.get("entry"))
+        harness_command = harness.get("command")
+        if not isinstance(harness_command, str) or not harness_command.strip():
+            raise ValueError("verification.harness.command must be a non-empty string")
+        if harness_command not in commands:
+            raise ValueError("verification.harness.command must also appear in verification.commands")
+        validate_string_list("verification.harness.can_observe", harness.get("can_observe"), non_empty=True)
+        validate_string_list("verification.harness.does_not_cover", harness.get("does_not_cover"))
+        if not isinstance(harness.get("claim_ceiling"), str) or not harness["claim_ceiling"].strip():
+            raise ValueError("verification.harness.claim_ceiling must be a non-empty string")
 
 
 def pascal(token: str) -> str:
@@ -207,7 +246,29 @@ export const {camel(op)}{S} = (
     if pressure == "P3":
         files[str(base / f"{subject}.outbox.ts")] = header(change_id) + '''export type OutboxRecord = Readonly<{ id: string; topic: string; payload: unknown; committedAt: string }>\n'''
         files[str(base / f"{subject}.inbox.ts")] = header(change_id) + '''export type InboxReceipt = Readonly<{ messageId: string; receivedAt: string; duplicate: boolean }>\n'''
-        files[str(base / f"{subject}.{op}.recovery.harness.ts")] = header(change_id) + f'''export const {camel(subject)}{O}RecoveryHarnessDescriptor = {{\n  id: "{subject}.{op}.recovery",\n  surface: "headless",\n  exercises: ["restart", "replay", "duplicate", "unknown outcome"],\n  doesNotCover: ["production external provider"]\n}} as const\n'''
+        dependency_reality = ["replay", "real_local"] if persistence == "postgres" else ["fake", "replay"]
+        environment_class = "local_stack" if persistence == "postgres" else "isolated"
+        harness = spec["verification"]["harness"]
+        descriptor = {
+            "schema_version": 2,
+            "id": f"hp.{subject}.{op}.recovery",
+            "capability": f"{subject}.{op}.recovery",
+            "proof_surface": {
+                "surface_kind": "headless",
+                "dependency_reality": dependency_reality,
+                "environment_class": environment_class,
+                "proof_focus": ["restart_recovery", "duplicate_delivery", "unknown_outcome"],
+            },
+            "command": harness["command"],
+            "uses": {
+                "harness_entry": harness["entry"],
+                "binding": "project-provided",
+            },
+            "can_observe": harness["can_observe"],
+            "does_not_cover": harness["does_not_cover"],
+            "claim_ceiling": harness["claim_ceiling"],
+        }
+        files[str(base / f"{subject}.{op}.recovery.harness.yaml")] = dump_yaml(descriptor)
 
     http = spec.get("http") or {}
     if http.get("enabled"):
@@ -287,6 +348,11 @@ def inspect_repo(repo: Path) -> dict[str, Any]:
 
 def plan(repo: Path, spec: dict[str, Any]) -> dict[str, Any]:
     validate_spec(spec)
+    repo = repo.resolve()
+    if spec["slice"]["pressure"] == "P3":
+        harness_entry = spec["verification"]["harness"]["entry"]
+        if not (repo / harness_entry).is_file():
+            raise ValueError(f"P3 project Harness entry does not exist: {harness_entry}")
     manifest=load_manifest(repo)
     change_id=spec["change"]["id"]
     if change_id in manifest["slices"]:
@@ -306,6 +372,13 @@ def plan(repo: Path, spec: dict[str, Any]) -> dict[str, Any]:
         "pressure":spec["slice"]["pressure"],"persistence":spec["slice"]["persistence"],"effect_profile":spec["slice"]["effect_profile"],
         "files":sorted(files),"created_by":change_id,
     }
+    if spec["slice"]["pressure"] == "P3":
+        harness = spec["verification"]["harness"]
+        slice_entry["harness_binding"] = {
+            "entry": harness["entry"],
+            "command": harness["command"],
+            "descriptor": next(rel for rel in sorted(files) if rel.endswith(".recovery.harness.yaml")),
+        }
     next_manifest=json.loads(json.dumps(manifest))
     next_manifest["kit_version"]=KIT_VERSION
     next_manifest["slices"][change_id]=slice_entry
@@ -367,9 +440,9 @@ def apply_plan(repo: Path, p: dict[str, Any]) -> dict[str, Any]:
     validate_staged({rel:(stage/rel).read_text(encoding="utf-8") for rel in patch})
     fd=acquire_lock(repo)
     journal={"txid":txid,"change_id":p["change_id"],"status":"committing","targets":sorted(patch),"new_files":[],"backups":[]}
-    (tx/"journal.json").write_text(json.dumps(journal,indent=2)+"\n",encoding="utf-8")
     committed=[]
     try:
+        (tx/"journal.json").write_text(json.dumps(journal,indent=2)+"\n",encoding="utf-8")
         # Re-check create-only source conflicts under lock.
         for rel in p["source_files"]:
             if (repo/rel).exists(): raise FileExistsError(f"source appeared during apply: {rel}")
@@ -386,28 +459,115 @@ def apply_plan(repo: Path, p: dict[str, Any]) -> dict[str, Any]:
         journal["status"]="applied"; journal["completed_at"]=time.time()
         (tx/"journal.json").write_text(json.dumps(journal,indent=2)+"\n",encoding="utf-8")
     except Exception as exc:
+        rollback_errors=[]
         for rel in reversed(committed):
             dest=repo/rel; bp=backups/rel
-            if bp.exists():
-                dest.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(bp,dest)
-            else:
-                try: dest.unlink()
-                except FileNotFoundError: pass
-        journal["status"]="rolled-back"; journal["error"]=repr(exc); journal["completed_at"]=time.time()
-        (tx/"journal.json").write_text(json.dumps(journal,indent=2)+"\n",encoding="utf-8")
-        raise
+            try:
+                if bp.exists():
+                    dest.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(bp,dest)
+                else:
+                    try: dest.unlink()
+                    except FileNotFoundError: pass
+            except OSError as rollback_exc:
+                rollback_errors.append(f"{rel}: {rollback_exc}")
+        journal["status"]="rollback-failed" if rollback_errors else "rolled-back"
+        journal["error"]=str(exc); journal["rollback_errors"]=rollback_errors; journal["completed_at"]=time.time()
+        try:
+            (tx/"journal.json").write_text(json.dumps(journal,indent=2)+"\n",encoding="utf-8")
+        except OSError as journal_exc:
+            rollback_errors.append(f"journal: {journal_exc}")
+        raise KitOperationError(
+            "commit-failed",
+            str(exc),
+            rolled_back=not rollback_errors,
+        ) from None
     finally:
         release_lock(repo,fd)
         shutil.rmtree(stage,ignore_errors=True)
     return {"status":"applied","transaction":txid,"change_id":p["change_id"],"files":sorted(patch),"claim_ceiling":"files atomically applied; compile/test/HTTP only if separately executed"}
 
 
-def verify(repo: Path, run_commands: bool) -> dict[str, Any]:
+def terminate_process_tree(proc: subprocess.Popen[str]) -> tuple[str, str]:
+    if proc.poll() is None:
+        if os.name == "posix":
+            try: os.killpg(proc.pid, signal.SIGTERM)
+            except ProcessLookupError: pass
+        else:
+            proc.kill()
+    try:
+        return proc.communicate(timeout=1)
+    except subprocess.TimeoutExpired:
+        if os.name == "posix":
+            try: os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError: pass
+        else:
+            proc.kill()
+        return proc.communicate()
+
+
+def run_verification_command(command: str, repo: Path, timeout_seconds: int) -> dict[str, Any]:
+    proc = subprocess.Popen(
+        command,
+        shell=True,
+        cwd=repo,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        start_new_session=os.name == "posix",
+    )
+    try:
+        stdout, stderr = proc.communicate(timeout=timeout_seconds)
+        return {
+            "command": command,
+            "status": "completed",
+            "timeout_seconds": timeout_seconds,
+            "exit_code": proc.returncode,
+            "stdout": stdout[-MAX_CAPTURE_CHARS:],
+            "stderr": stderr[-MAX_CAPTURE_CHARS:],
+        }
+    except subprocess.TimeoutExpired:
+        stdout, stderr = terminate_process_tree(proc)
+        return {
+            "command": command,
+            "status": "timeout",
+            "timeout_seconds": timeout_seconds,
+            "exit_code": None,
+            "stdout": stdout[-MAX_CAPTURE_CHARS:],
+            "stderr": stderr[-MAX_CAPTURE_CHARS:],
+        }
+
+
+def verify(repo: Path, run_commands: bool, timeout_seconds: int = DEFAULT_VERIFY_TIMEOUT_SECONDS) -> dict[str, Any]:
     repo=repo.resolve(); findings=[]; results=[]
+    if timeout_seconds <= 0:
+        raise ValueError("timeout_seconds must be a positive integer")
     manifest=load_manifest(repo)
+    recorded_commands = manifest.get("verification_commands",[]) or []
     for cid, entry in manifest.get("slices",{}).items():
         for rel in entry.get("files",[]):
             if not (repo/rel).is_file(): findings.append({"severity":"error","rule":"missing-source","slice":cid,"path":rel})
+        binding = entry.get("harness_binding")
+        if binding is not None:
+            if not isinstance(binding, dict):
+                findings.append({"severity":"error","rule":"invalid-harness-binding","slice":cid})
+            else:
+                harness_entry = binding.get("entry")
+                descriptor_path = binding.get("descriptor")
+                harness_command = binding.get("command")
+                if not isinstance(harness_entry, str) or not (repo/harness_entry).is_file():
+                    findings.append({"severity":"error","rule":"missing-harness-entry","slice":cid,"path":harness_entry})
+                if not isinstance(descriptor_path, str) or not (repo/descriptor_path).is_file():
+                    findings.append({"severity":"error","rule":"missing-harness-descriptor","slice":cid,"path":descriptor_path})
+                else:
+                    try: descriptor = load_yaml(repo/descriptor_path)
+                    except (OSError, ValueError, yaml.YAMLError):
+                        findings.append({"severity":"error","rule":"invalid-harness-descriptor","slice":cid,"path":descriptor_path})
+                    else:
+                        uses = descriptor.get("uses") or {}
+                        if descriptor.get("command") != harness_command or uses.get("harness_entry") != harness_entry or uses.get("binding") != "project-provided":
+                            findings.append({"severity":"error","rule":"harness-binding-drift","slice":cid,"path":descriptor_path})
+                if harness_command not in recorded_commands:
+                    findings.append({"severity":"error","rule":"unrecorded-harness-command","slice":cid,"command":harness_command})
     reg=(manifest.get("managed") or {}).get("registry")
     if reg:
         p=repo/reg["path"]
@@ -424,12 +584,18 @@ def verify(repo: Path, run_commands: bool) -> dict[str, Any]:
             except Exception: findings.append({"severity":"error","rule":"invalid-journal","path":str(journal.relative_to(repo))}); continue
             if data.get("status")=="committing": findings.append({"severity":"error","rule":"incomplete-transaction","path":str(journal.relative_to(repo))})
     if run_commands and not findings:
-        for command in manifest.get("verification_commands",[]) or []:
-            proc=subprocess.run(command,shell=True,cwd=repo,text=True,capture_output=True)
-            results.append({"command":command,"exit_code":proc.returncode,"stdout":proc.stdout[-4000:],"stderr":proc.stderr[-4000:]})
-            if proc.returncode!=0: findings.append({"severity":"error","rule":"verification-command-failed","command":command,"exit_code":proc.returncode})
+        for command in recorded_commands:
+            result = run_verification_command(command, repo, timeout_seconds)
+            results.append(result)
+            if result["status"] == "timeout":
+                findings.append({"severity":"error","rule":"verification-command-timeout","command":command,"timeout_seconds":timeout_seconds})
+            elif result["exit_code"] != 0:
+                findings.append({"severity":"error","rule":"verification-command-failed","command":command,"exit_code":result["exit_code"]})
     summary={"error":sum(x["severity"]=="error" for x in findings),"warn":sum(x["severity"]=="warn" for x in findings),"total":len(findings)}
-    return {"summary":summary,"findings":findings,"commands":results,"claim_ceiling":"structural integrity" + (" plus recorded project commands" if run_commands else "; project commands not run")}
+    claim = "structural integrity; project commands not run"
+    if run_commands:
+        claim = "structural integrity plus recorded command exit/timeout observations; Descriptor claim coverage is not inferred"
+    return {"summary":summary,"findings":findings,"commands":results,"claim_ceiling":claim}
 
 
 def repair(repo: Path) -> dict[str, Any]:
@@ -454,7 +620,7 @@ def main() -> None:
     p=sub.add_parser("inspect"); p.add_argument("--repo",default=".")
     for name in ("plan","apply"):
         p=sub.add_parser(name); p.add_argument("--repo",default="."); p.add_argument("--change",required=True)
-    p=sub.add_parser("verify"); p.add_argument("--repo",default="."); p.add_argument("--run",action="store_true")
+    p=sub.add_parser("verify"); p.add_argument("--repo",default="."); p.add_argument("--run",action="store_true"); p.add_argument("--timeout-seconds",type=int,default=DEFAULT_VERIFY_TIMEOUT_SECONDS)
     p=sub.add_parser("repair"); p.add_argument("--repo",default=".")
     args=ap.parse_args(); repo=Path(args.repo)
     try:
@@ -463,13 +629,19 @@ def main() -> None:
             p=plan(repo,load_yaml(Path(args.change))); result={k:v for k,v in p.items() if k!="patch"}; result["patch_preview"]=[{"path":rel,"sha256":sha256_text(content),"bytes":len(content.encode())} for rel,content in sorted(p["patch"].items())]
         elif args.cmd=="apply": result=apply_plan(repo,plan(repo,load_yaml(Path(args.change))))
         elif args.cmd=="verify":
-            result=verify(repo,args.run); print(json.dumps(result,ensure_ascii=False,indent=2));
+            result=verify(repo,args.run,args.timeout_seconds); print(json.dumps(result,ensure_ascii=False,indent=2));
             if result["summary"]["error"]: raise SystemExit(1)
             return
         elif args.cmd=="repair": result=repair(repo)
         print(json.dumps(result,ensure_ascii=False,indent=2))
-    except (ValueError,FileExistsError,RuntimeError) as exc:
-        print(json.dumps({"status":"error","error":str(exc)},ensure_ascii=False,indent=2),file=sys.stderr)
+    except KitOperationError as exc:
+        print(json.dumps({"status":"error","error_code":exc.error_code,"rolled_back":exc.rolled_back,"message":str(exc)},ensure_ascii=False,indent=2),file=sys.stderr)
+        raise SystemExit(2)
+    except (ValueError,FileExistsError,RuntimeError,yaml.YAMLError) as exc:
+        print(json.dumps({"status":"error","error_code":"invalid-or-conflicting-input","rolled_back":None,"message":str(exc)},ensure_ascii=False,indent=2),file=sys.stderr)
+        raise SystemExit(2)
+    except OSError as exc:
+        print(json.dumps({"status":"error","error_code":"filesystem-error","rolled_back":None,"message":str(exc)},ensure_ascii=False,indent=2),file=sys.stderr)
         raise SystemExit(2)
 
 if __name__=="__main__": main()

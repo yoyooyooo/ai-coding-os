@@ -1,84 +1,65 @@
 # Product Harness
 
-本层保存项目级 harness 证明合同。它回答“怎么证明、证明到什么强度、证据和 gap 怎么追踪”。
+本层保存项目级 Harness proof contract：怎样观察一个产品属性、claim ceiling 到哪里、coverage 与 gaps 如何被长期发现。
 
 ## Owns
 
-- `HarnessScenario`：语义级 proof story。
-- `HarnessFixture` 引用：fixture / seed / replay / mock / runtime fixture 的 ID 和位置。
-- `HarnessRoute` / `HarnessComponent` 引用：UI Harness Surface 的运行入口和源码位置。
-- `HarnessEvidence` 引用：evidence record、report、test artifact 或外部证据位置。
-- `claim_ceiling`、`not_claimed`、`not_proven`、Harness Coverage Matrix。
-- harness lifecycle：`candidate | accepted | regression | retired`。
-- 从 Goal Pack `product-harness.yaml` promote 出来的稳定证明合同。
+- `HarnessScenario` 语义级 proof story。
+- Fixture/fake/replay、route/component 和 Evidence artifact refs。
+- Proof Surface、`claim_ceiling`、`not_claimed`、`not_proven` 和 Harness Coverage Matrix。
+- Harness lifecycle：`candidate | accepted | regression | retired`。
+- 从任意 source、proposal 或 execution method 显式 promote 的稳定 proof contract。
 
 ## Must Not Own
 
-- Product truth、domain authority、API schema、数据库事实。
-- `InterfaceCapability` 的用户能力语义。
-- 最终 UX / UI / IA / 视觉设计。
-- 可执行测试代码、fixture 数据本体、Playwright 脚本。
-- Goal Pack 运行状态、evidence record 原文或 completion review 原文。
+- Product/domain Authority、API schema、数据库事实或 InterfaceCapability 语义。
+- 最终 UX/UI/IA/visual design。
+- 可执行测试代码、fixture data、Playwright script 或 raw run output。
+- Tracker、ticket、Goal、release 或其他 execution state/completion。
 
 ## Boundary
 
-本层只能通过 `covers` 引用 capability，不能重新定义 capability 语义。
+Harness 通过 ID 引用 capability，不重新定义用户能力：
 
 ```yaml
 kind: HarnessScenario
 id: hs.channel.issue-from-message
 covers:
   interface_capability: ic.channel.issue-from-message
-claim_ceiling:
-  level: browser_visible
-  headless_sublevel: null
-  environment: local
+proof_surface:
+  surface_kind: browser
+  dependency_reality:
+    - real_local
+claim_ceiling: one browser-visible local-stack path
 not_claimed:
-  - final_visual_design_claim=false
-  - business_fact_claim=false unless paired with hp.channel.issue-from-message
+  - final visual approval
+  - backend fact correctness without paired headless proof
 not_proven: []
 ```
 
-`InterfaceCapability` 定义放 `docs/interface-capabilities/**`。
-
 ## Evidence Policy
 
-本层保存 evidence refs 和 coverage 状态，不保存每次运行的原始结果。
-
 ```text
-raw execution evidence -> Goal Pack evidence records / test artifacts / reports
-project-level proof contract -> docs/product-harness/**
+raw observations and run artifacts -> owning test/Harness/CI/report surface
+selected execution status          -> selected workflow owner
+project-level proof contract        -> docs/product-harness/**
 ```
+
+Evidence links preserve source and claim ceiling. Pure static proof uses `dependency_reality: [none]` and never mixes `none` with runtime dependencies. A passing run or completed ticket does not automatically accept this contract, Product intent, InterfaceCapability definition lifecycle, documentation lifecycle, or release status.
 
 ## Promotion / Demotion
 
-Goal Pack 可以先生成候选稿：
+Candidate proof material enters this layer only after documentation Authority accepts its durable discovery/regression value. Promotion keeps source/Evidence refs and drops workflow-specific state.
 
-```text
-docs/goal-proof/goals/<goal-id>/product-harness.yaml
-```
-
-完成时必须给 retention verdict：
-
-```text
-promote | keep-in-goal | split | retire | block
-```
-
-Promote 后，Goal Pack companion 应只保留 source / promoted_to / evidence
-link，不再作为长期权威。
-
-如果 harness 只证明一次性候选、已被正式测试覆盖、或 `claim_ceiling` 已失效，
-demote 到 Goal Pack source/report，或在本层标记 retired 后删除重复合同。
+One-off proof, replaced coverage, stale claim ceilings, and retired routes remain source/report evidence or are removed after retention review. The layer keeps one current proof contract per meaning.
 
 ## Conflict
 
-冲突时按本仓 `docs/README.md` 的顺序裁决。`docs/ssot/**`、`docs/standards/**`
-和已采纳 ADR 高于本层；执行证据可以证明本层过期；本层高于 roadmap /
-Goal Pack 中的候选稿。
+Product/SSoT define meaning; InterfaceCapability defines user-facing projection; this layer defines proof contract; executable Evidence can prove the contract stale. Resolve by question rather than a universal order.
 
-## Read Next
+## Routes
 
-- 界面能力合同：`../interface-capabilities/README.md`
-- 文档路由：`../README.md`
+- Interface Capability：`../interface-capabilities/README.md`
+- 文档网络：`../README.md`
 - 当前事实：`../ssot/README.md`
 - 文档治理：`../standards/docs-governance.md`

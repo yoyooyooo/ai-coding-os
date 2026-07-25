@@ -1,78 +1,61 @@
-# Source-Code and Docs Bidirectional Alignment
+# Source-Code Alignment
 
-## Goal
-
-Current docs should neither lag important public/domain changes nor describe capabilities that source and product paths do not support.
-
-## Source to Docs
-
-Review docs when code introduces or changes:
-
-```text
-public/domain object or authority owner
-typed command/query/commit
-schema or migration
-runtime/relay/protocol contract
-composition root/deployment profile
-permission/visibility/trust boundary
-product output lane or failure behavior
-scenario proof/claim ceiling
-```
-
-Minimum owners:
-
-- object/authority change -> SSoT and possibly ADR;
-- execution topology -> Architecture;
-- enforceable rule/command -> Standard;
-- wire contract -> Protocol;
-- user-visible semantic -> Product/Design/Interface capability;
-- future but not current -> Roadmap capsule.
+Current documentation and implementation evidence must be checked in both directions.
 
 ## Docs to Source
 
-For each current claim, find at least one anchor:
+For each current implementation claim, identify the owning evidence surface:
 
 ```text
-source file / type / function
-schema / migration
-command / route / DTO
-current test or fixture
-real runtime/product evidence, when availability is claimed
+source symbol or module
+schema or migration
+contract or generated artifact
+command/query/runtime path
+test or replay fixture
+release or operational evidence
 ```
 
-An accepted seam may be documented without full implementation, but must say what exists and what is not implemented.
+When the anchor is missing, choose one honest action:
 
-## Alignment Matrix
+- repair the anchor;
+- lower the claim to `accepted-target`;
+- move it to `future-candidate`;
+- mark it historical;
+- delete stale duplicate prose.
 
-For substantial convergence, produce a table:
+## Source to Docs
 
-| Claim | Class | Docs owner | Source/evidence anchor | Gap |
-|---|---|---|---|---|
-| ... | current-fact/current-binding/future | ... | ... | ... |
+Scan current public or shared implementation surfaces for objects, states, commands, contracts, security boundaries, or topology that lack a documentation owner.
 
-## Common Drift
+Code existence does not automatically create product authority or observed behavior. Route discovered implementation structure to the applicable owner; report runtime or reachability behavior as unproven until executed or observed Evidence exists.
+
+## Question Boundary
 
 ```text
-source object exists, docs omit authority owner
-SSoT still describes deleted object
-Architecture presents a library seam as production composition
-Product says feature is available when only fixture exists
-Standard has no current checker/command
-Roadmap duplicates Goal status
-Report/evidence is cited as current truth
-future capsule repeats formal authority after promotion
+source/schema evidence answers: what implementation structure and static properties exist
+executed/observed evidence answers: what happened on a bounded runtime path
+accepted product/requirement authority answers: what delivery must satisfy
+SSoT answers: what shared concepts and invariants mean
+ADR answers: why a technical choice was accepted
+Roadmap answers: what sequence or gate comes later
 ```
 
-## Audit Rules
+A mismatch becomes one of:
 
-- Validate relative Markdown links.
-- Validate referenced repo paths when written as code anchors.
-- Check duplicate current owners for the same term.
-- Check ADR numbering and status.
-- Check Future capsule names/indexes and shadow directories.
-- Check current docs for phrases that overclaim implementation or production readiness.
-- Check code concepts with no current docs owner; report, do not auto-invent product truth.
+```text
+documentation drift
+implementation gap
+unaccepted implementation
+obsolete source path
+missing authority owner
+```
 
-## Claim Ceiling
+Do not silently rewrite accepted intent from inherited code. Record the gap and resolve it through the owning decision path.
 
-A docs-only pass may claim documentation convergence and static consistency. It cannot claim compile/test/migration/browser/runtime/production success unless corresponding evidence was actually executed and recorded.
+## Anchors
+
+Prefer stable repository-relative paths and symbol names. Avoid line-number-only anchors. Label examples, generated paths, and future paths so the anchor scanner does not treat them as current evidence.
+
+## Evidence Claims
+
+A documentation audit may prove that anchors exist. It does not prove runtime correctness, test coverage, production deployment, security effectiveness, or migration success.

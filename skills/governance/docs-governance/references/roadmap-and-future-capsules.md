@@ -3,34 +3,37 @@
 ## Roadmap Owns
 
 ```text
-long-horizon product evolution sequence
+long-horizon evolution sequence
 capability prerequisites and promotion gates
-current launch/coverage gates
+launch and coverage gates
 future capability routes
 links to owning execution and evidence artifacts
 ```
 
-Roadmap does not own step-by-step implementation, current object authority or duplicated Goal progress.
+Roadmap does not own current object authority, step-by-step implementation, or copied tracker status.
 
-## Preserve Long-Horizon Value
+## Preserve Route Value
 
-Do not delete a Roadmap merely because it is not currently implemented. Retain it when it still:
+Retain a Roadmap when it still constrains sequence, prevents unsafe early implementation, defines a falsifiable promotion gate, links current foundations to a future objective, or routes readers to active proof.
 
-- constrains product evolution order;
-- prevents unsafe early implementation;
-- defines a falsifiable promotion gate;
-- links current foundations to a future objective;
-- is referenced by the active roadmap or capability matrix.
+Lack of current implementation is not itself a reason to delete a durable route.
 
-Examples such as Product Evolution Sequence are durable route documents, not stale execution plans.
+## Future Route Forms
 
-## Capability Capsule Home
+Use the thinnest route that preserves future value:
 
 ```text
-docs/roadmap/future/<capability>/README.md
+docs/roadmap/<capability>.md                 # lightweight route
+docs/roadmap/future/<capability>/README.md   # earned capability capsule
 ```
 
-Organize by capability, not by duplicated layers. Forbidden shadow homes include:
+The flat route is valid for one coherent future delta. Create a capsule only when multiple related materials, independent prerequisites, independent promotion gates, or sustained evolution value make co-location materially useful. `future/README.md`, fixed chapter counts, mandatory frontmatter, and `node_id` are optional.
+
+## Capability Capsule
+
+A capsule is a capability-oriented route, not a future copy of a formal authority layer. Its internal shape is earned and may contain only the sections that help a reader make a future decision.
+
+Never duplicate authority-shaped subtrees such as:
 
 ```text
 docs/roadmap/future/ssot
@@ -38,73 +41,24 @@ docs/roadmap/future/standards
 docs/roadmap/future/adr
 docs/roadmap/future/architecture
 docs/roadmap/future/product
-docs/roadmap/future/protocols
 ```
 
-`future/ssot` is a semantic contradiction and creates a second authority chain.
+A future capability may discuss candidate authority and architecture inside one capsule without pretending those are current layers.
 
-## Required Capsule Questions
+## Capsule Questions
 
-Every capsule should answer:
-
-```text
-Product Hypothesis
-Candidate Capability Boundary
-Reusable Current Foundations
-Current Non-authority
-Candidate Authority Model
-Candidate Architecture
-Prerequisites
-Promotion Gates
-First Falsifiable Proof
-Forbidden Early Implementations
-Promotion Targets
-Sources And Evidence
-```
-
-Use `templates/future-capability-capsule.md`.
-
-## Frontmatter
-
-Recommended:
-
-```yaml
----
-node_id: roadmap-future-<capability>
-artifact_type: roadmap
-status: open-candidate
-authority_scope: future-candidate
-objective: ...
-claim_limit: Future candidate only; no current availability claim.
-evidence_contract: ...
-next_action: ...
----
-```
+A durable capsule should make the future delta, boundary, foundations, prerequisites, promotion gates, first falsifiable proof, and sources/evidence discoverable, directly or through equivalent prose. It may answer fewer questions when the capsule is small. Use [the optional capsule template](../templates/future-capability-capsule.md) as a prompt, not a schema.
 
 ## Promotion
 
+When evidence and adoption gates succeed:
+
 ```text
-Future capsule
-  -> smallest falsifiable proof in the configured tracker/spec/evidence workflow
-  -> accepted ADR, when a tradeoff becomes binding
-  -> Product / SSoT / Architecture / Standard / Protocol
-  -> update capability matrix and indexes
-  -> remove promoted authority from capsule
+move accepted meaning to Product / SSoT / ADR / Architecture / Standards / Protocols
+link the owning implementation/evidence artifact
+remove promoted duplicate prose from the capsule
+retain only the future delta and remaining gates
+update indexes in the same change
 ```
 
-Promotion is a move, not a copy. After promotion, retain only remaining future delta, unmet gates and source/evidence backlinks.
-
-Goal Proof System may own that proof lifecycle when the repository explicitly
-adopts it. It is not a prerequisite for promotion; the selected workflow must
-still provide an executable scope, a claim ceiling and reviewable evidence.
-
-## Delete or Merge
-
-A capsule may be deleted or merged when:
-
-- it has been fully absorbed into formal current layers;
-- another capsule completely supersedes it;
-- product direction is explicitly rejected and the reason is retained in ADR/Report;
-- it has no route, gate, source, evidence or decision value.
-
-Do not delete simply because implementation has not started.
+Promotion changes authority; it does not prove completion unless the owning evidence does.

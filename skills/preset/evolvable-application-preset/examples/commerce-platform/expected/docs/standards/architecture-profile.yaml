@@ -1,8 +1,8 @@
 schema_version: 1
 preset:
   id: evolvable-application
-  version: 1.0.0-experimental.1
-  mode: resolved-snapshot
+  version: 1.3.1-experimental.1
+  mode: candidate-snapshot
 profiles:
 - agent-entry
 - monorepo-core
@@ -13,12 +13,39 @@ profiles:
 - verification-core
 - headless-product-harness
 - ui-product-harness
+profile_resolution:
+  requested:
+  - agent-entry
+  - monorepo-core
+  - typescript-node
+  - react
+  - effect
+  - effect-httpapi-v4
+  - verification-core
+  - headless-product-harness
+  - ui-product-harness
+  defaults_added: []
+  dependency_added: []
+  resolved:
+  - agent-entry
+  - monorepo-core
+  - typescript-node
+  - react
+  - effect
+  - effect-httpapi-v4
+  - verification-core
+  - headless-product-harness
+  - ui-product-harness
 decisions:
   repository_mode: monorepo
   backend_module_style: private-capability-module-first
   source_layout: bounded-semantic-flat
+  docs_shape: earned-semantic-layers
   package_promotion: pressure-driven
   deployable_promotion: pressure-driven
+  frontend_projection_ownership: single-owner-reconciliation
+  effect_runtime_ownership: per-host
+  proof_contract: orthogonal-proof-surface-v2
 resolved_standards:
   source_topology: ./source-topology-and-naming.md
   vocabulary: ./naming-vocabulary.yaml

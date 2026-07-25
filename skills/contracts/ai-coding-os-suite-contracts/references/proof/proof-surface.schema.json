@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Coding OS Proof Surface",
+  "description": "Orthogonal description of observation surface, dependency reality, environment, and proof focus. It does not select a test lane or completion policy.",
+  "type": "object",
+  "required": [
+    "surface_kind",
+    "dependency_reality"
+  ],
+  "properties": {
+    "surface_kind": {
+      "enum": [
+        "headless",
+        "interface_headless",
+        "render",
+        "browser",
+        "external_runtime"
+      ]
+    },
+    "dependency_reality": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "none",
+          "fixture",
+          "fake",
+          "replay",
+          "real_local",
+          "real_external"
+        ]
+      }
+    },
+    "environment_class": {
+      "enum": [
+        "isolated",
+        "local_process",
+        "local_stack",
+        "staging",
+        "production"
+      ]
+    },
+    "proof_focus": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "dependency_reality": {
+            "contains": {
+              "const": "none"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "dependency_reality": {
+            "maxItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

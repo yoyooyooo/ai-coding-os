@@ -1,21 +1,33 @@
 # Contributing
 
-Use Bun for all local development.
+Use Bun and the locked Python audit dependencies:
 
 ```bash
 bun install
+python3 -m pip install -r requirements-dev.txt
 bun run check
 ```
 
-Before opening a change:
+## Core Suite Changes
 
-- keep CLI source in `packages/cli/src/`;
-- keep Skill material in the owning grouped source under `skills/**`; `$goal-proof` lives at `skills/goal/goal-proof-system/`;
-- update README or skill references when command names, paths, or Goal Pack
-  fields change;
-- add or update tests for CLI behavior changes;
-- run `bun run check`;
-- for Skill or docs changes, also run `python3 skills/tooling/suite_audit.py --suite skills` and the Docs audit documented in `AGENTS.md`.
+- Keep core Skill source under the owning `skills/**` group.
+- Preserve independent installation and Skill-local relative links.
+- Treat Pass sections as owner-local coverage unless the owner has a real state machine, transaction, migration, safety protocol, or external protocol.
+- Update source, references, templates, evals, golden fixtures, public docs, and audits for the same semantic change.
+- Run `bun run check:core` and `bun run bundle:skills` when distribution boundaries change.
 
-Do not rewrite historical `evidence.jsonl` entries in real Goal Packs. Append a
-new evidence record when evidence or interpretation changes.
+## Goal Proof Experiment Changes
+
+- Keep the user-invoked Skill and schemas under `experiments/goal-proof/skill/**`.
+- Keep CLI source and tests under `packages/cli/**`.
+- Do not add Goal Proof back to the core Router, core contract enums, core Skill roster, or core ZIP.
+- Preserve historical `experiments/goal-proof/dogfood/**/evidence.jsonl`; corrections append evidence or update current experiment docs rather than rewriting history.
+- Run `bun run check:goal-proof-experiment`.
+
+## Documentation Changes
+
+- Use semantic Authority layers and multi-entry Routes rather than workflow or `Read First` sequences.
+- Keep one Current Home per meaning and retain useful source/Evidence backlinks.
+- Run the Docs audit through `bun run check:core`.
+
+PRs should state the bounded claim, Core/Experiment impact, user-visible contract or command changes, and actual verification commands.

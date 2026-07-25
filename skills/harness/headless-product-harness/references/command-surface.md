@@ -69,7 +69,7 @@ not_proven:
 - Can a new Agent infer the capability and exercised surface from the name?
 - Does the command drive the same formal path as production rather than a
   privileged Harness writer?
-- Are fixture, fake, replay, real-local, and real-external dependencies clear?
-- Does a pass avoid implying server, browser, DB, or external-runtime behavior
+- Are `none`, `fixture`, `fake`, `replay`, `real_local`, and `real_external` dependencies clear, with `none` reserved for pure static proof?
+- Does a pass avoid implying server, browser, DB, or `external_runtime` behavior
   that was not exercised?
 - Is failure structured enough for the Agent to inspect and continue?

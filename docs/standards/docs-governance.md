@@ -1,161 +1,130 @@
 # Docs Governance
 
-本标准规定 AI Coding OS 仓库的文档分层、权威顺序、生命周期和审计门。
-通用方法论由 `$docs-governance` 拥有；本文是本仓落地适配层。
+本标准是 `$docs-governance` 在本仓的项目适配：约束 docs layer、question-scoped Authority、multi-entry Routes、Earned Shape、生命周期和审计门。
 
 ## Owns
 
-- `docs/*` 顶层 layer 的准入、边界和冲突规则。
-- layer README 必须声明的治理字段。
-- 文档从候选、Goal Pack、report、source 到长期权威层的 promotion / demotion 路径。
-- 本仓 docs audit 的最低检查口径。
+- `docs/*` layer、partition、router 和 identity 的准入。
+- Current / accepted-target / future / historical classification。
+- 文档 promotion、demotion、retention 和 cleanup。
+- 从问题、code area、artifact、source 与 Evidence 到 Authority 的 Routes。
+- 本仓 Docs audit 最低机械检查口径。
 
 ## Must Not Own
 
-- AI Coding OS 的产品定位；归 `docs/product/**`。
-- 当前术语和方法论事实；归 `docs/ssot/**`。
-- 单个 Goal Pack 的运行状态、evidence record 或 completion review；归 `docs/goal-proof/**`。
-- skill source layout、触发名和旧入口退役；归 [Skill Source Layout](skill-source-layout.md)。
+- AI Coding OS 产品定位；归 `docs/product/**`。
+- 产品 requirements、acceptance 和 product decision；归项目 Product Authority。
+- 当前术语与方法事实；归 `docs/ssot/**`。
+- 技术取舍；归 `docs/adr/**`。
+- Tracker、ticket、实验方法、release process 或其他 execution state。
+- Skill source layout；归 [Skill Source Layout](skill-source-layout.md)。
+
+## Network Contract
+
+```text
+Authority  one canonical Current Home per claim, representation, and scope
+Route      discoverable edge, not mandatory sequence
+Shape      semantic layers and earned partitions
+Evidence   bounded support for current claims
+```
+
+`AGENTS.md`、`docs/README.md`、layer README、source anchors 和 direct artifact links 都可以是入口。不存在必须从根文件开始的统一阅读顺序。
+
+`docs/README.md` 可按 question、Authority、code area 或 artifact 提供并列投影视图。投影视图只保存 links 和 scope，不复制 current truth。
 
 ## Layer Contract
 
-`docs/<layer>` 必须表示文档类型，不表示阶段、个人习惯、临时计划、某个当前任务或工具偏好。
+`docs/<layer>` 表示 durable semantic Authority role，不表示阶段、团队、临时计划、工具或 workflow。
 
-文档治理采用 proof-path-first 原则。新增或保留 durable 文档时，应说明它如何帮助
-agent 更快完成 authority lookup、proof path、evidence review、handoff 或 overclaim 防护。
-文档本身不能成为实现前置障碍；docs-only first proof step 只在目标 delta 本身是
-承载 claim 的 doc / review authority surface，且 proof step 能检查 diff、交叉引用、
-authority conflict 或 static scan 时成立。
+| Layer | Owns | Must Not Own |
+| --- | --- | --- |
+| `product` | 产品/方法论定位、用户价值、非目标 | implementation status、工程规则 |
+| `ssot` | 当前共享对象、术语、状态、不变量 | future complete model、execution state |
+| `standards` | 可执行规则、命令、质量门和协作标准 | 未采纳愿景或一次性计划 |
+| `adr` | 已采纳技术取舍和后果 | Product decision，除非项目显式扩大范围 |
+| `architecture` | 当前拓扑、owner、boundary 和 accepted seam | Product behavior、task queue |
+| `roadmap` | future sequence、gate 和 Evidence links | tracker/ticket/experiment status 副本 |
+| `reports` | audit、delivery、experiment、migration、validation evidence | current Authority merely because recent |
+| `interface-capabilities` | InterfaceCapability trace | 产品事实、测试代码、execution state |
+| `product-harness` | Harness contract、coverage、claim ceiling、Evidence refs | 用户能力语义、runner code、workflow state |
 
-每个长期存在的 layer README 必须至少包含：
+Layer 可以省略。创建 top-level layer 需要独立 Authority role、未来可判断的语义名、清楚 Owns/Must Not Own 和实际 reader/lifecycle pressure。
 
-- `Owns`
-- `Must Not Own`
-- `Boundary` 或 `Conflict` / `Priority`
-- `Promotion` / `Demotion` 或等价生命周期规则
-- `Read Next`、`Homes` 或明确入口
+## Internal Shape And Identity
 
-新增 `docs/<layer>` 前必须同时满足：
+Layer 默认扁平。只有 durable ownership、安全、保留、生命周期、release、reader routing 或持续导航压力成立时才增加 partition。子目录继承父 Authority。
 
-- 该名称是长期文档类型。
-- 现有 layer 放不下，且会造成权威混淆。
-- 未来 agent 只看目录名也能判断大致放置位置。
-- 能写出清楚的 `Owns` / `Must Not Own` / conflict / promotion 规则。
-- 最近索引会被同步更新。
+普通 artifact 默认使用 semantic path。Sequential ID 只用于 ADR 等 append-only collection；requirement/control/test ID 由真实 traceability 触发；`node_id` 只用于 opt-in Artifact Graph。
 
-不得新增 `docs/specs/**`、`docs/tmp/**`、`docs/wip/**`、`docs/old/**`、
-`docs/archive/**`、`docs/phase-*`。实施规格放 root `specs/**`；Goal Pack
-材料放 `docs/goal-proof/**`；历史来源放 method source 或 evidence layer。
+数量、成熟度、对称性和美观只是 review signal，不是 admission rule。
 
-## Authority
+## Authority By Question
 
-默认意图权威顺序：
-
-```text
-docs/ssot/**
-  -> docs/standards/**
-  -> docs/adr/**
-  -> code + tests + generated evidence
-  -> docs/protocols/** when the question is wire/schema compatibility
-  -> docs/interface-capabilities/**
-  -> docs/product-harness/**
-  -> docs/architecture/**
-  -> docs/roadmap/**
-  -> docs/goal-proof/**
-  -> README / external notes
-```
-
-问题类型可收窄权威：
-
-| 问题 | 最高权威 |
+| Question | Primary Authority |
 | --- | --- |
-| 当前术语、对象含义、方法论事实 | `docs/ssot/**` |
-| 可执行规则、命令、质量门、协作 SOP | `docs/standards/**` |
-| 已采纳取舍及替代方案 | `docs/adr/**` |
-| 实际代码行为 | code + tests + generated evidence |
-| Goal Pack 状态、active work item、completion review | `docs/goal-proof/goals/<goal-id>/**` 与 `goal-proof` CLI 输出 |
-| InterfaceCapability 语义和 surface trace | `docs/interface-capabilities/**`，但不得覆盖 SSoT / standards / ADR |
-| HarnessScenario、`claim_ceiling`、Harness Coverage Matrix、evidence refs | `docs/product-harness/**`，但不得重定义 InterfaceCapability 或产品事实 |
-| 迁移顺序、当前 gate、证据链接 | `docs/roadmap/**` |
+| 系统应该做什么 | accepted product/business decision 或 baselined requirement |
+| 当前存在什么实现结构 | source、schema、migration、lockfile、generated artifact |
+| 哪些行为被实际观察 | executed tests、Harness、runtime、release 或 operational Evidence |
+| 共享 term/state/invariant 是什么 | SSoT 与 accepted decision |
+| 为什么这样决定 | Product Decision Record 或技术 ADR |
+| 接口接受什么 | adopted protocol/schema 与 contract evidence |
+| 当前 topology/owner 是什么 | source facts 与 Architecture view |
+| 当前 work status/complete 是什么 | repository-selected execution owner 与 release evidence |
 
-`docs/review-plan/**` 只拥有结构化计划 / proposal / SSoT contract 的 review ledger。
-它可以挑战计划并冻结 adopted candidate，但不拥有 implementation status、completion
-evidence、product truth、SSoT、standard 或 ADR。
+源码证明实现结构和静态属性；runtime、reachability、deployment 和 environment behavior 需要执行或观察 Evidence。它们都不能静默重定义 Product、SSoT、Standards 或 ADR。冲突按 question 和 scope 分类为 coexistence、supersession、documentation drift、implementation gap、unaccepted implementation、Evidence gap、obsolete source 或 missing Authority；这些不是全局状态机。
 
-代码和测试能证明“实际行为”，但不能静默重定义 SSoT、standard 或 ADR。发生冲突时，
-要么更新更高权威层，要么把差异记录为 gap。
+被接受的决定改变其他 Current Home 时，更新受影响 Home、记录暂时 drift、降低相关 claim，或说明影响不适用；本标准不规定处理顺序。
 
 ## Lifecycle
 
-文档状态按最小可保留价值判断：
-
-| 状态 | 放置 |
-| --- | --- |
-| current truth | `docs/ssot/**` |
-| executable rule | `docs/standards/**` |
-| accepted decision | `docs/adr/**` |
-| structure view | `docs/architecture/**` |
-| sequence / gate / evidence link | `docs/roadmap/**` |
-| Goal Pack lifecycle | `docs/goal-proof/**` |
-| interface capability trace | `docs/interface-capabilities/**` |
-| harness proof contract | `docs/product-harness/**` |
-| executable implementation spec | root `specs/**` |
-| evidence summary | `docs/reports/**` when the repo has that layer, otherwise method evidence |
-| consumed source | `docs/goal-proof/sources/**` or owning method source layer |
-
-默认 retention verdict：
-
-| Verdict | 含义 |
-| --- | --- |
-| `keep` | 当前权威、当前路由或必要证据 |
-| `promote` | 候选材料上升到 SSoT / standards / ADR / roadmap / interface / harness |
-| `demote` | 不是权威，但仍可作为 source、report、Goal Pack note 或 implementation spec |
-| `split` | 一个文件混合多个 layer 责任 |
-| `merge` | 多个文件重复同一职责 |
-| `archive-as-source` | 已被消费，只保留追溯 |
-| `delete` | 无当前价值且保留会误导 agent |
-| `block` | 需要人类或更高权威决策 |
-
-Goal Pack companion artifact 的完成 verdict 必须是：
-
 ```text
-promote | keep-in-goal | split | retire | block
+promote   accepted durable meaning enters its owner
+demote    non-authoritative material remains source/report/evidence
+split     mixed Authority or lifecycle separates
+merge     duplicate current meanings converge
+partition durable local boundary earns a child route
+flatten   redundant partition returns to semantic parent
+bridge    broken Route or traceability edge is repaired
+retain    source/evidence still affects future decisions
+delete    obsolete material has no Authority or evidence value
+block     higher-authority decision is required for the affected claim or mutation
 ```
 
-Promote 后，Goal Pack companion 只保留 source / promoted_to / evidence link，
-不再作为长期权威。
+`block` 默认局部化：保留 competing source 与 Evidence Route，标出所需外部决定，继续其他不受影响的 classification、link、layer 和 cleanup。只有 Evidence 无法保全或继续修改会造成不可逆仓库级损坏时，才停止整个 run。
+
+Execution artifacts remain with their selected method. A done ticket, workflow item, Goal, or release task does not automatically accept Product intent, document lifecycle, Standards, ADR, or Roadmap state. Durable decisions discovered during execution return to their semantic owner through an explicit decision.
 
 ## Scan Policy
 
-旧口径扫描分两层：
+默认 Docs audit 机械检查：
 
-- active scan：排除历史 evidence/source、ADR context、roadmap migration gate、
-  retired vocabulary registry 和负向测试。
-- historical scan：包含所有路径，只确认旧词只在允许区出现。
+```text
+declared routes and relative links
+layer ownership contracts
+explicit identity conflicts
+Earned Shape review signals
+Future route honesty
+AGENTS managed markers
+repository-root boundaries
+declared source anchors
+```
 
-旧入口允许区由 [Skill Source Layout](skill-source-layout.md) 定义。
+Scanner 只检查已声明 edge 是否可达，不规定阅读顺序，也不把语义判断自动化。可选 readability extension 检查 discovery surfaces 和 local Routes，不要求 `Read First`。
 
 ## Required Verification
 
-文档治理变更至少运行：
-
 ```bash
-bun run check
+bun run check:core
 python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo .
 git diff --check
 ```
 
-涉及 Goal Pack artifact 时，逐个运行：
+涉及共仓 experiment 时运行其 owner-local check，但不把 experiment pass 写成 core claim。
 
-```bash
-goal-proof check docs/goal-proof/goals/<goal-id>
-```
+## Routes
 
-涉及 skill source layout 或旧入口退役时，再执行
-[Skill Source Layout](skill-source-layout.md) 的 claim-level 验证。
-
-## Read Next
-
-- 文档路由：`../README.md`
+- 文档网络：`../README.md`
 - 当前事实：`../ssot/README.md`
+- Standards：`README.md`
 - Skill source layout：`skill-source-layout.md`
+- Core architecture：`../architecture/README.md`

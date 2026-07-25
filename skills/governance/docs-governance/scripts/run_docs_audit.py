@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run docs governance audits and print a single stdout JSON report."""
+"""Run the project-agnostic docs governance audit and explicit extensions."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from types import ModuleType
 sys.dont_write_bytecode = True
 
 
-def _load_module(path: Path, name: str) -> ModuleType:
+def _load(path: Path, name: str) -> ModuleType:
     spec = importlib.util.spec_from_file_location(name, path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"cannot load module: {path}")
@@ -24,88 +24,78 @@ def _load_module(path: Path, name: str) -> ModuleType:
     return module
 
 
-def _count_findings(findings: list[dict]) -> dict:
-    counts = {"blocker": 0, "warn": 0, "info": 0}
-    for finding in findings:
-        severity = str(finding.get("severity", "info"))
-        counts[severity] = counts.get(severity, 0) + 1
-    counts["total"] = len(findings)
-    return counts
+def _counts(findings: list[dict]) -> dict:
+    result = {"blocker": 0, "warn": 0, "info": 0}
+    for item in findings:
+        severity = str(item.get("severity", "info"))
+        result[severity] = result.get(severity, 0) + 1
+    result["total"] = len(findings)
+    return result
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run stdout-only docs governance audit")
+    parser = argparse.ArgumentParser(description="Run docs governance audits")
     parser.add_argument("--repo", default=".", help="Repository root")
     parser.add_argument(
-        "--queue",
-        default=None,
-        help="Optional method-specific queue markdown path for legacy/project-local queue consistency checks",
+        "--readability",
+        action="store_true",
+        help="Enable optional agent-readability heuristics",
     )
     parser.add_argument(
-        "--include-artifact-graph-findings",
+        "--artifact-graph",
         action="store_true",
-        help="Promote all artifact graph findings into top-level docs audit findings; default promotes blockers only",
+        help="Enable the opt-in artifact graph metadata audit",
     )
     args = parser.parse_args()
 
-    script_dir = Path(__file__).resolve().parent
+    scripts = Path(__file__).resolve().parent
     repo = Path(args.repo).resolve()
-    baseline = _load_module(script_dir / "scan_docs_baseline.py", "scan_docs_baseline")
-    readability = _load_module(script_dir / "scan_docs_agent_readability.py", "scan_docs_agent_readability")
-    artifact_graph = _load_module(script_dir / "artifact_graph.py", "artifact_graph")
-    future_capsules = _load_module(script_dir / "scan_future_capsules.py", "scan_future_capsules")
-    docs_links = _load_module(script_dir / "scan_docs_links.py", "scan_docs_links")
-    source_anchors = _load_module(script_dir / "scan_source_doc_anchors.py", "scan_source_doc_anchors")
-    agent_entry = _load_module(script_dir / "scan_agent_entry.py", "scan_agent_entry")
-
-    reports = {
-        "docsBaseline": baseline.scan(repo),
-        "docsAgentReadability": readability.scan(repo),
-        "futureCapsules": future_capsules.scan(repo),
-        "docsLinks": docs_links.scan(repo),
-        "sourceDocAnchors": source_anchors.scan(repo),
-        "agentEntry": agent_entry.scan(repo),
-        "artifactGraph": artifact_graph.command_audit(
-            argparse.Namespace(repo=repo, roots=list(artifact_graph.DEFAULT_ROOTS))
-        ),
-        "artifactGraphConsistency": artifact_graph.command_consistency(
-            argparse.Namespace(repo=repo, roots=list(artifact_graph.DEFAULT_ROOTS), include_audit_findings=False)
-        ),
-        "queueConsistency": (
-            artifact_graph.command_queue_consistency(
-                argparse.Namespace(repo=repo, roots=list(artifact_graph.DEFAULT_ROOTS), queue=args.queue)
-            )
-            if args.queue
-            else {
-                "version": "v1",
-                "summary": {"blocker": 0, "warn": 0, "info": 0, "total": 0},
-                "findings": [],
-                "skipped": True,
-                "reason": "queue checks require explicit --queue; queue state is owned by the repository's selected tracker/execution method",
-            }
-        ),
+    modules = {
+        "baseline": "scan_docs_baseline.py",
+        "structure": "scan_docs_structure.py",
+        "links": "scan_docs_links.py",
+        "sourceAnchors": "scan_source_doc_anchors.py",
+        "futureRoutes": "scan_future_capsules.py",
+        "agentEntry": "scan_agent_entry.py",
     }
-    findings: list[dict] = []
-    for report_name, report in reports.items():
-        for item in report.get("findings", []):
-            if report_name in {"artifactGraph", "artifactGraphConsistency", "queueConsistency"} and not args.include_artifact_graph_findings and item.get("severity") != "blocker":
-                continue
-            enriched = dict(item)
-            enriched.setdefault("source", report_name)
-            findings.append(enriched)
+    reports = {
+        name: _load(scripts / filename, f"docs_governance_{name}").scan(repo)
+        for name, filename in modules.items()
+    }
 
-    summary = _count_findings(findings)
+    if args.readability:
+        readability = scripts / "scan_docs_agent_readability.py"
+        if readability.is_file():
+            reports["docsAgentReadability"] = _load(readability, "docs_governance_readability").scan(repo)
+
+    graph_scanner_path = scripts / "scan_artifact_graph.py"
+    graph_scanner = _load(graph_scanner_path, "docs_governance_graph_scanner") if graph_scanner_path.is_file() else None
+    graph_enabled = bool(args.artifact_graph or (graph_scanner and graph_scanner.has_opt_in_metadata(repo)))
+    if graph_enabled and graph_scanner:
+        reports["artifactGraph"] = graph_scanner.scan(repo)
+
+    findings: list[dict] = []
+    for source, report in reports.items():
+        for finding in report.get("findings", []):
+            item = dict(finding)
+            item.setdefault("source", source)
+            findings.append(item)
+
     result = {
-        "version": "v1",
+        "version": "v3",
         "scannedAt": datetime.now(timezone.utc).isoformat(),
         "repoRoot": str(repo),
-        "summary": summary,
+        "extensions": {
+            "readability": bool(args.readability),
+            "artifactGraph": graph_enabled,
+        },
+        "summary": _counts(findings),
         "findings": findings,
         "reports": reports,
     }
-    print(json.dumps(result, ensure_ascii=True, indent=2))
-    if summary.get("blocker", 0) > 0:
-        sys.exit(1)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    if result["summary"].get("blocker", 0):
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

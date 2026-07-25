@@ -13,6 +13,8 @@ export const WORK_ITEM_STATUSES = ["queued", "active", "blocked", "done"];
 export const NEXT_ACTIONS = ["proof_step", "continue", "needs_plan", "blocked", "review", "done", "needs_human"];
 export const EVIDENCE_RESULTS = ["done", "blocked"];
 export const GOAL_RELATION_TYPES = ["successor_of", "depends_on", "supersedes", "related_to"];
+export const DEFAULT_GOALS_PATH = [".goal-proof", "goals"];
+export const LEGACY_GOALS_PATH = ["docs", "goal-proof", "goals"];
 
 export function loadGoalPack(goalRoot) {
   const root = resolveGoalPackRoot(goalRoot);
@@ -61,8 +63,10 @@ export function resolveGoalPackRoot(goalRoot, { cwd = process.cwd() } = {}) {
 function findGoalPackById(startDir, goalId) {
   let current = resolve(startDir);
   while (true) {
-    const candidate = join(current, "docs", "goal-proof", "goals", goalId);
-    if (existsSync(candidate)) return candidate;
+    for (const segments of [DEFAULT_GOALS_PATH, LEGACY_GOALS_PATH]) {
+      const candidate = join(current, ...segments, goalId);
+      if (existsSync(candidate)) return candidate;
+    }
     const parent = dirname(current);
     if (parent === current) return null;
     current = parent;
@@ -76,6 +80,7 @@ function looksLikePath(value) {
 export function parseGoal(text) {
   const engineeringGuidanceBody = blockText(text, "engineering_guidance", 0);
   const agentAuthorityBody = blockText(text, "agent_authority", 0);
+  const requiredEvidence = parseRequiredEvidence(text);
   return {
     schema_version: topScalar(text, "schema_version"),
     id: topScalar(text, "id"),
@@ -101,8 +106,9 @@ export function parseGoal(text) {
     stop_rules: listScalar(text, "stop_rules", 0),
     completion: {
       signal: pathScalar(text, ["completion"], "signal"),
-      required_evidence: pathScalar(text, ["completion"], "required_evidence"),
+      required_evidence: requiredEvidence.items,
     },
+    legacy_required_evidence_scalar: requiredEvidence.legacyScalar,
     claim_limit: parseClaimLimit(text),
     agent_authority: {
       continue_by_default: pathScalar(text, ["agent_authority"], "continue_by_default"),
@@ -111,6 +117,15 @@ export function parseGoal(text) {
     },
     evidence_mode: topScalar(text, "evidence_mode"),
   };
+}
+
+function parseRequiredEvidence(text) {
+  const completionBody = blockText(text, "completion", 0);
+  const items = listScalar(completionBody, "required_evidence", 2);
+  if (items.length > 0) return { items, legacyScalar: false };
+  const scalar = pathScalar(text, ["completion"], "required_evidence");
+  if (scalar === null || scalar === "[]") return { items: [], legacyScalar: false };
+  return { items: [scalar], legacyScalar: true };
 }
 
 function parseClaimLimit(text) {
@@ -339,6 +354,7 @@ export function validateGoalPack(pack) {
   }
   if (isWeak(goal.completion.signal)) warnings.push("completion.signal is missing or weak");
   if (isWeak(goal.completion.required_evidence)) warnings.push("completion.required_evidence is missing or weak");
+  if (goal.legacy_required_evidence_scalar) warnings.push("completion.required_evidence uses legacy scalar shape; migrate to a list when the Goal contract is next authoritatively revised");
   warnings.push(...claimLimitWarnings(goal.claim_limit));
   if (progress.work_items.length === 0) errors.push("progress.yaml work_items must contain at least one work item");
 
@@ -921,6 +937,7 @@ export function normalizePath(value) {
 
 export function isWeak(value) {
   if (value === null || value === undefined) return true;
+  if (Array.isArray(value)) return value.length === 0 || value.every((item) => isWeak(item));
   const normalized = String(value).trim().toLowerCase();
   return normalized === "" || normalized === "unknown" || normalized === "tbd" || normalized === "todo" || /^<.*>$/.test(normalized);
 }
@@ -1036,7 +1053,7 @@ function evidenceSchemaForWorkItem(item) {
       decision: "complete",
       completion_satisfied: true,
       recorded_at: "<ISO-8601-UTC>",
-      claim_evidence: [{ claim: "completion.required_evidence", evidence: ["<evidence/check reference>"] }],
+      claim_evidence: [{ claim: "<one completion.required_evidence list item>", evidence: ["<evidence/check reference>"] }],
       not_claimed: [],
       remaining_gaps: [],
       summary: "",

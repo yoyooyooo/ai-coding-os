@@ -1,25 +1,88 @@
 {
+  "schema_version": 1,
   "skill_name": "ai-coding-os-suite-contracts",
   "evals": [
     {
       "id": 1,
       "prompt": "I installed hundreds of Skills into one flat directory. Load the AI Coding OS shared naming vocabulary and tell me which Skill owns frontend state terms.",
-      "expected_output": "Uses $ai-coding-os-suite-contracts, reads only its local references, identifies $frontend-architecture as the semantic owner, and does not assume a grouped sibling path."
+      "expected_output": "Uses $ai-coding-os-suite-contracts, reads only its local references, identifies $frontend-architecture as the semantic owner, and does not assume a grouped sibling path.",
+      "expectations": [
+        "Produces a concrete portable contract, schema/vocabulary decision, or bounded handoff for the stated cross-Skill problem.",
+        "Keeps project-specific authority and execution lifecycle outside the portable Suite contract."
+      ]
     },
     {
       "id": 2,
       "prompt": "Use the AI Coding OS Harness Result contract to explain observed, supports, and not_proven.",
-      "expected_output": "Loads the local Harness vocabulary/schema, preserves the claim boundary, and names $product-harness-system as the owning doctrine when semantic judgment is needed."
+      "expected_output": "Loads the local Harness vocabulary/schema, preserves the claim boundary, and names $product-harness-system as the owning doctrine when semantic judgment is needed.",
+      "expectations": [
+        "Produces a concrete portable contract, schema/vocabulary decision, or bounded handoff for the stated cross-Skill problem.",
+        "Keeps project-specific authority and execution lifecycle outside the portable Suite contract."
+      ]
     },
     {
       "id": 3,
       "prompt": "Define this project's customer, workspace, and billing terminology inside the Suite contract registry.",
-      "expected_output": "Declines to make project product language a Suite default and places adopted terms in project-owned SSoT/Standards instead."
+      "expected_output": "Declines to make project product language a Suite default and places adopted terms in project-owned SSoT/Standards instead.",
+      "expectations": [
+        "Produces a concrete portable contract, schema/vocabulary decision, or bounded handoff for the stated cross-Skill problem.",
+        "Keeps project-specific authority and execution lifecycle outside the portable Suite contract."
+      ]
     },
     {
       "id": 4,
       "prompt": "List every AI Coding OS Skill installed on this machine from the contracts package.",
-      "expected_output": "Uses runtime discovery for the actual installed set and does not treat the contracts package as a static Skill roster."
+      "expected_output": "Uses runtime discovery for the actual installed set and does not treat the contracts package as a static Skill roster.",
+      "expectations": [
+        "Produces a concrete portable contract, schema/vocabulary decision, or bounded handoff for the stated cross-Skill problem.",
+        "Keeps project-specific authority and execution lifecycle outside the portable Suite contract."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Describe a browser test with a fake API and a local production-like stack using the shared Proof Surface contract.",
+      "expected_output": "Uses surface_kind: browser, dependency_reality: [fake], and the actual environment_class such as local_stack; it does not use production_near as a surface or imply real backend behavior.",
+      "expectations": [
+        "Produces a concrete portable contract, schema/vocabulary decision, or bounded handoff for the stated cross-Skill problem.",
+        "Keeps project-specific authority and execution lifecycle outside the portable Suite contract."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "A passing Harness Result should complete whichever tracker, ticket workflow, or release process consumes it.",
+      "expected_output": "When an actual consumer needs the shared shape, carries source_ref, claim_ceiling, observed, supports, not_proven, evidence_refs, and proof_surface through the direction-neutral version-2 Evidence Envelope while leaving completion to the selected execution owner.",
+      "expectations": [
+        "Does not emit translation or source-kind registry fields in a version-2 Envelope.",
+        "Preserves the Harness claim ceiling.",
+        "Does not import ticket, workflow, release, or document lifecycle into the shared envelope."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "An accepted Product Decision is being routed into Docs classification before implementation exists.",
+      "expected_output": "Allows accepted-target classification, preserves delivery as not-proven, and rejects automatic promotion to current-fact, verified implementation, released, or accepted documentation lifecycle.",
+      "expectations": [
+        "Produces a concrete portable contract, schema/vocabulary decision, or bounded handoff for the stated cross-Skill problem.",
+        "Keeps project-specific authority and execution lifecycle outside the portable Suite contract."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Require every collaboration between two Skills to emit the same Handoff YAML, even when no system stores or parses it.",
+      "expected_output": "Declines a mandatory Handoff shape, uses a concise natural-language settled/open/next-owner/claim-boundary handoff, and reserves structured persistence for a real machine consumer or durable review need.",
+      "expectations": [
+        "Applies the portable knowledge kernel without inventing a new handoff schema.",
+        "Keeps workflow state and project-specific decisions with their owners."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Write a Harness Descriptor v2 containing both does_not_cover and doesNotCover so an old consumer can choose either spelling.",
+      "expected_output": "Rejects the duplicate legacy alias, keeps the canonical snake_case field, and uses version-1 reader compatibility rather than dual-writing v2 facts.",
+      "expectations": [
+        "Produces one schema-valid v2 Descriptor without a second fact source.",
+        "Does not turn finite legacy reader compatibility into a permanent writer taxonomy."
+      ]
     }
   ]
 }

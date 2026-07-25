@@ -1,12 +1,62 @@
 id: monorepo-core
 version: 1
+suite_contract:
+  terms:
+    - command
+    - command-context
+    - query
+    - use-case
+    - policy
+    - projection
+    - port
+    - repository
+    - transaction
+    - idempotency
+    - contract
+    - schema
+    - mapper
+    - public
+    - wiring
+    - composition
+    - migration
+  guarded_terms:
+    - accepted
+    - authority
+    - contract
+    - model
+    - manager
+    - owner
+    - repository
+    - state
+    - workflow
+    - helper
+    - utils
+    - common
+    - core
+    - base
+    - types
+    - adapter
+    - impl
+    - api
+    - processor
+    - controller
+    - handler
+  qualifiers:
+    policy: true
+    host: [server, worker]
+    transport: [http, webhook, cli, consumer]
+    implementation: [memory, postgres, generated]
+    provider: true
 provides:
   - apps/packages/tooling/docs/specs topology
   - private capability module first
   - host-first capability-local backend reference
-  - bounded semantic flatness
+  - bounded semantic flatness for source topology
+  - earned semantic shape for docs layers
   - module to package to deployable promotion ladder
 rules:
   - repository package deployable authority and data boundaries are distinct
   - package sharing does not grant fact authority
   - one root docs authority chain for a workspace monorepo
+  - unused docs layers may be omitted; child partitions require durable pressure and inherit parent authority
+  - docs identity fields are opt-in and require traceability pressure

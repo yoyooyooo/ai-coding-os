@@ -12,7 +12,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "enum": [1, 2]
     },
     "harness": {
       "type": "string"
@@ -25,6 +25,13 @@
         "skipped",
         "unstable-pass"
       ]
+    },
+    "proof_surface": {
+      "$ref": "../proof/proof-surface.schema.json"
+    },
+    "claim_ceiling": {
+      "type": "string",
+      "minLength": 1
     },
     "observed": {
       "type": "object"
@@ -41,7 +48,18 @@
         "type": "string"
       }
     },
+    "verification_level": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "environment": {
+      "description": "Deprecated free-form v1 environment field.",
+      "deprecated": true,
       "type": "string"
     },
     "command": {
@@ -51,12 +69,8 @@
       "type": "array",
       "items": {
         "oneOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "object"
-          }
+          {"type": "string"},
+          {"type": "object"}
         ]
       }
     },
@@ -64,5 +78,27 @@
       "type": "object"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {"const": 2}
+        }
+      },
+      "then": {
+        "required": ["proof_surface", "claim_ceiling"],
+        "not": {
+          "anyOf": [
+            {"required": ["environment"]},
+            {"required": ["proofSurface"]},
+            {"required": ["claimCeiling"]},
+            {"required": ["notProven"]},
+            {"required": ["evidenceRefs"]},
+            {"required": ["verificationLevel"]}
+          ]
+        }
+      }
+    }
+  ],
   "additionalProperties": true
 }

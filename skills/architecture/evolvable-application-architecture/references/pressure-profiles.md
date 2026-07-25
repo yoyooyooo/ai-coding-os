@@ -95,7 +95,7 @@ separation of proposal, approval, execution, and acceptance
 least privilege and disclosure boundaries
 retention/redaction rules
 audit and forensic evidence
-failure injection and production-near proof
+failure injection and declared local-stack/staging proof
 explicit human stop lines
 ```
 
