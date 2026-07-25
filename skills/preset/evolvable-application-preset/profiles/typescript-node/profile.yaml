@@ -1,12 +1,16 @@
 id: typescript-node
-version: 1
+version: 2
 requires:
-  - monorepo-core
+  - application-core
+suite_contract:
+  filename_pattern_owners:
+    - evolvable-application-architecture
 provides:
   - TypeScript semantic filename patterns
-  - public/wiring import guidance
-  - package exports and deep-import checks
+  - public and wiring import guidance
+  - package exports and deep-import checks when packages exist
   - host entrypoint naming
 rules:
   - use-case and policy do not import live infrastructure
-  - package does not import app internals
+  - package does not import app internals when a package boundary exists
+  - selecting TypeScript does not select a monorepo

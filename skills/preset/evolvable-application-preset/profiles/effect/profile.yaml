@@ -2,6 +2,19 @@ id: effect
 version: 1
 requires:
   - typescript-node
+suite_contract:
+  term_owners:
+    - effect-best-practices
+  terms:
+    - fake
+  filename_pattern_owners:
+    - effect-best-practices
+  guarded_terms:
+    - runtime
+    - scope
+    - service
+  qualifiers:
+    implementation: [live, fake]
 provides:
   - live/fake/layer/runtime/scope vocabulary mapping
   - per-host runtime and Layer ownership

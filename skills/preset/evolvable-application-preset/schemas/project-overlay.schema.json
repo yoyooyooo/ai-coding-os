@@ -86,7 +86,7 @@
     "modules": {"type": "array", "items": {"$ref": "#/$defs/pathItem"}},
     "workflows": {"type": "array", "items": {"$ref": "#/$defs/pathItem"}},
     "domain_terms": {"type": "object", "additionalProperties": {"$ref": "#/$defs/domainTerm"}},
-    "authorities": {"type": "array", "items": {"$ref": "#/$defs/authority"}},
+    "authorities": {"description": "Technical fact-writer and consistency-boundary candidates rendered under docs/architecture; not global or product authority.", "type": "array", "items": {"$ref": "#/$defs/authority"}},
     "exceptions": {"type": "array", "items": {"$ref": "#/$defs/exception"}},
     "topology_notes": {"type": "array", "items": {"type": "string"}},
     "implementation_qualifiers": {"type": "object"},

@@ -1,16 +1,30 @@
-schema_version: 1
+schema_version: 2
 harness: order.checkout.retry
 status: pass
+proof_surface:
+  surface_kind: headless
+  dependency_reality:
+  - fake
+  - real_local
+  environment_class: local_stack
+  proof_focus:
+  - idempotent_retry
+  - persistence_restart
+claim_ceiling: local Postgres, single fact-authority host, restart exercised
 observed:
   order_version_before: 7
   order_version_after: 8
   duplicate_version_after: 8
 supports:
-  - duplicate retry did not create another committed transition
+- duplicate retry did not create another committed transition
 not_proven:
-  - concurrent multi-process retry
-  - real provider behavior
-environment: local-postgres
+- concurrent multi-process retry
+- real provider behavior
+verification_level: exercised-local-runtime
+evidence_refs:
+- artifacts/order-checkout-retry.jsonl
 artifacts:
-  - type: trace
-    ref: artifacts/order-checkout-retry.jsonl
+- type: trace
+  ref: artifacts/order-checkout-retry.jsonl
+does_not_decide:
+- whether product policy should allow another retry

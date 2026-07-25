@@ -35,13 +35,15 @@ status: ${status}
 objective: "Exercise the Goal Pack checker."
 guiding_principle: "Progress is evidence-backed."
 authority_refs:
-  - "skills/goal/goal-proof-system/SKILL.md"
+  - "experiments/goal-proof/skill/SKILL.md"
 engineering_guidance:
   standards:
     - "Goal Proof v2 schema."
 completion:
   signal: "Checker validates Goal Pack progress and evidence."
-  required_evidence: "Checker passes and completion review maps evidence to completion."
+  required_evidence:
+    - "Checker passes."
+    - "Completion review maps evidence to completion."
 claim_limit: "Only claims local checker behavior."
 stop_rules:
   - "Stop on schema mismatch."
@@ -101,6 +103,21 @@ test("accepts a running Goal Proof v2 pack with one active scoped implementation
     assert.equal(result.stdout.active_work_item, "W001");
     assert.equal(result.stdout.work_item_count, 1);
     assert.equal(result.stdout.evidence_count, 0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("accepts legacy scalar required_evidence with a migration warning", () => {
+  const goal = goalYaml().replace(
+    '  required_evidence:\n    - "Checker passes."\n    - "Completion review maps evidence to completion."',
+    '  required_evidence: "Legacy checker evidence."',
+  );
+  const root = makePack({ goal });
+  try {
+    const result = runChecker(root);
+    assert.equal(result.status, 0, result.stderr || JSON.stringify(result.stdout));
+    assert.match(result.stdout.warnings.join("\n"), /legacy scalar shape/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

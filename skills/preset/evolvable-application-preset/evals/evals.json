@@ -1,4 +1,5 @@
 {
+  "schema_version": 1,
   "skill_name": "evolvable-application-preset",
   "evals": [
     {
@@ -7,32 +8,91 @@
       "expected_output": "Inspects existing authority, invokes $docs-governance only if docs homes are missing or disputed, maps the smallest compatible profile slice, preserves local AGENTS.md content, and verifies a scoped diff without requiring a full repository re-render.",
       "files": [],
       "expectations": [
-        "Treats project files as current authority after rendering.",
+        "Treats render output as candidate; only explicitly merged content becomes project Authority.",
         "Does not overwrite existing AGENTS.md wholesale.",
         "Does not invent authority or product terms.",
-        "Uses a candidate-managed-file diff rather than dynamic inheritance or unrelated repository deletions."
+        "Uses a candidate-managed-file diff rather than dynamic inheritance or unrelated repository deletions.",
+        "Exposes unordered knowledge surfaces rather than a Read First sequence or mandatory docs tree.",
+        "Does not duplicate SSoT product meaning into generated source-naming standards."
       ]
     },
     {
       "id": 2,
       "prompt": "Show me what the preset produces for a commerce monorepo with web, api, worker, Orders, Billing, Checkout workflow, and headless/browser verification.",
-      "expected_output": "Uses the commerce-platform golden fixture and explains the separation between AGENTS entry, Standards, SSoT, Architecture, ADR, Harness coverage, and project-specific overlay.",
+      "expected_output": "Uses the commerce-platform golden fixture and explains that AGENTS, Standards, SSoT, Architecture, ADR, and Harness outputs are candidates; the technical fact-writer map lives under Architecture and none is accepted/current before project-owner adoption.",
       "files": [],
       "expectations": [
         "Most reusable standards live in Preset profiles/templates.",
-        "Project facts remain in resolved project docs.",
-        "Example is an optional broad render fixture, not a required incremental-adoption shape or second standard."
+        "Overlay facts remain candidate input; Product/SSoT/Architecture owners decide their Current Homes.",
+        "Example is an optional broad render fixture, not a required incremental-adoption shape or second standard.",
+        "Docs layers may be omitted; child partitions and identity fields require an earned-shape decision from $docs-governance."
       ]
     },
     {
       "id": 3,
       "prompt": "We already chose a pnpm monorepo, React, Effect v4 HttpApi, and headless verification. Initialize the useful Preset parts without asking us to choose the stack again.",
-      "expected_output": "Treats the choices as settled, follows profile requirements to the smallest closure, rejects conflicting versions, discovers existing project authority, and adopts only useful missing or compatible surfaces. Renderer input files remain optional unless repeatability justifies them."
+      "expected_output": "Treats the choices as settled, follows profile requirements to the smallest closure, rejects conflicting versions, discovers existing project authority, and adopts only useful missing or compatible surfaces. Renderer input files remain optional unless repeatability justifies them.",
+      "expectations": [
+        "Produces a concrete discovery, selected-profile, managed-surface, render, merge, or upgrade result.",
+        "Preserves project-owned Authority and does not present Preset defaults or staged candidates as adopted project truth."
+      ]
     },
     {
       "id": 4,
       "prompt": "This existing repository already has good SSoT and ADRs but lacks a naming standard and architecture check. Use the Preset incrementally.",
-      "expected_output": "Keeps project-owned SSoT and ADRs, selects only the compatible naming/check contribution plus required local context, avoids a full docs rewrite, and verifies the changed surfaces."
+      "expected_output": "Keeps project-owned SSoT and ADRs, selects only the compatible naming/check contribution plus required local context, avoids rendering empty Product/SSoT/Architecture/Harness layers, and verifies the changed surfaces.",
+      "expectations": [
+        "Produces a concrete discovery, selected-profile, managed-surface, render, merge, or upgrade result.",
+        "Preserves project-owned Authority and does not present Preset defaults or staged candidates as adopted project truth."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Render only monorepo-core. Do not adopt React, Effect, or Harness vocabulary.",
+      "expected_output": "Resolves monorepo-core plus the separately recorded agent-entry default, records requested/defaults-added/dependency-added/resolved provenance, includes only language-neutral topology/doctrine and explicit minimal application terms, and omits TypeScript filename patterns plus unselected Frontend, Effect, Harness, verification-policy, and architecture-check surfaces.",
+      "expectations": [
+        "Produces a concrete discovery, selected-profile, managed-surface, render, merge, or upgrade result.",
+        "Preserves project-owned Authority and does not present Preset defaults or staged candidates as adopted project truth.",
+        "Does not present agent-entry defaults or transitive profile requirements as user-requested profiles."
+      ]
+    },
+    {
+      "id": "knowledge-surfaces-not-read-first",
+      "prompt": "Generate the Preset AGENTS.md and docs router, but do not prescribe which file an Agent must read first or which workflow it must follow.",
+      "expected_output": "Emits marker-bounded stable rules and unordered Knowledge Surfaces/Routes while leaving exploration and execution strategy to the Agent.",
+      "expectations": [
+        "Generated AGENTS.md contains Knowledge Surfaces and no Read First heading.",
+        "Generated docs routers use Discovery Surfaces or Routes without numbering.",
+        "Managed markers and proposed commands remain intact without claiming project adoption."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Adopt the application architecture defaults in a single-crate Rust service. Do not introduce TypeScript filenames or a workspace merely for symmetry.",
+      "expected_output": "Resolves agent-entry + application-core + rust, keeps the Rust module tree private by default, chooses traits only for genuine capability pressure, and does not add monorepo-core unless workspace pressure exists.",
+      "expectations": [
+        "Rust does not inherit TypeScript filename patterns.",
+        "Rust does not imply Monorepo.",
+        "Memory ownership and crate boundaries are not treated as fact authority."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Use a Cargo workspace with several Rust crates and binaries. Apply both Rust and Monorepo profiles without treating crates as fact authorities.",
+      "expected_output": "Composes application-core, rust, and monorepo-core as independent profiles, records dependency provenance, and keeps crate/package/deployable/authority boundaries distinct.",
+      "expectations": [
+        "Profile closure is explicit and conflict-free.",
+        "The source standard uses Rust module/crate terminology and does not emit .ts patterns."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Render typescript-node for a single-package Node service. Do not force apps/packages workspace topology.",
+      "expected_output": "Resolves application-core + typescript-node without monorepo-core and emits the TypeScript source projection only.",
+      "expectations": [
+        "TypeScript no longer implies Monorepo.",
+        "Generic promotion and TypeScript filename guidance remain separate."
+      ]
     }
   ]
 }

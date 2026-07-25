@@ -1,4 +1,5 @@
 {
+  "schema_version": 1,
   "skill_name": "evolvable-application-architecture",
   "evals": [
     {
@@ -147,13 +148,13 @@
     },
     {
       "id": 101,
-      "prompt": "Choose a source topology for a medium Orders module. The team wants order.payment.* semantic filenames but is unsure when to create payment/, a workspace package, or a service.",
-      "expected_output": "Uses Bounded Semantic Flatness inside the Orders owner, treats order.payment.* as a lexical cluster, creates a submodule only for real ownership/dependency/lifecycle pressure, promotes to package for compile/reuse pressure, and to deployable for deployment/fault/trust pressure.",
+      "prompt": "Choose a source topology for a medium TypeScript Orders module. The team wants order.payment.* semantic filenames but is unsure when to create payment/, a workspace package, or a service.",
+      "expected_output": "Loads the TypeScript projection, uses semantic filenames as a lexical cluster, creates a private submodule only for ownership/dependency/lifecycle pressure, promotes to a package for compile/reuse pressure, and to a deployable for deployment/fault/trust pressure.",
       "files": [],
       "expectations": [
-        "States that dots are semantic compression, not isolation.",
-        "Separates module/package/deployable/authority boundaries.",
-        "Keeps files subject-qualified and avoids one-file directory chains.",
+        "States that TypeScript dot filenames are a projection and do not create isolation.",
+        "Separates module, package, deployable, authority, and data boundaries.",
+        "Keeps files subject-qualified without exporting private state.",
         "Does not grant fact-writing authority through package extraction."
       ]
     },
@@ -167,6 +168,110 @@
         "Updates project vocabulary aliases/deprecations.",
         "Avoids a full suffix/file set.",
         "Links filename roles to import boundaries."
+      ]
+    },
+    {
+      "id": 103,
+      "prompt": "Should this one external email sender sit behind an application-owned port? Answer only this narrow architecture question.",
+      "expected_output": "Returns a concise decision, core reason, ownership boundary, unproven assumptions, and smallest verification path. It adds no full architecture diagram, module inventory, migration plan, or large risk table unless repository pressure makes one material.",
+      "expectations": [
+        "Names a concrete authority, use-case/transaction, port/adapter, composition, migration, or claim-boundary outcome.",
+        "Separates current source behavior from accepted product intent and does not absorb frontend, Effect, or execution lifecycle ownership."
+      ]
+    },
+    {
+      "id": 104,
+      "prompt": "Product meaning, permissions, public API, and durable-data constraints are already accepted. Two internal modules could own the final Order writer. Decide the boundary without sending an ordinary technical choice back to a human.",
+      "expected_output": "Uses current source patterns and the smallest consistency domain to select one final writer, records the alternative and verification path, and escalates only if the choice would materially alter an accepted product, trust, durable-data, compatibility, policy, destructive, or irreversible-external boundary.",
+      "expectations": [
+        "Architecture itself decides the ordinary final-writer and consistency boundary.",
+        "If one slice remains genuinely undecidable, it isolates that slice and continues unaffected mapping rather than blocking the whole review."
+      ]
+    },
+    {
+      "id": 105,
+      "prompt": "A Rust compiler error is blocking access to internal state. The proposed fix is to make every module, field, and constructor pub.",
+      "expected_output": "Treats visibility pressure as a boundary-design signal, preserves private authority state, introduces the smallest facade or pub(crate) collaboration, and does not confuse visibility with authorization.",
+      "files": [],
+      "expectations": [
+        "Does not solve architecture by globally widening pub.",
+        "Separates module visibility from fact authority and product permission."
+      ]
+    },
+    {
+      "id": 106,
+      "prompt": "Our Rust API and worker import the same domain crate, so both write Order.status directly. Borrow checking and unit tests pass.",
+      "expected_output": "Explains that crate sharing and memory safety do not grant both hosts writer authority, restores governed use cases/transactions, and requires restart/concurrency evidence.",
+      "files": [],
+      "expectations": [
+        "Identifies a multi-writer authority violation.",
+        "Does not treat cargo test as sufficient behavioral proof."
+      ]
+    },
+    {
+      "id": 107,
+      "prompt": "Every Rust dependency is Arc<dyn Service + Send + Sync>. Review whether this is evolvable architecture.",
+      "expected_output": "Distinguishes internal collaboration from genuine capability ports, chooses concrete/generic composition when selection is fixed, retains dyn only for real runtime selection, and audits lifecycle ownership.",
+      "files": [],
+      "expectations": [
+        "Avoids trait and dynamic-dispatch proliferation.",
+        "Names async dyn-compatibility and resource-lifecycle costs."
+      ]
+    },
+    {
+      "id": 108,
+      "prompt": "One Rust struct derives Serialize, Deserialize, FromRow, and is used as the public API, database record, provider payload, and domain authority model.",
+      "expected_output": "Separates wire, persistence, provider, and authority representations at compatibility/trust boundaries and keeps mapping explicit.",
+      "files": [],
+      "expectations": [
+        "Does not let convenience derives collapse distinct contracts.",
+        "Preserves forward migration and public API compatibility decisions."
+      ]
+    },
+    {
+      "id": 109,
+      "prompt": "Design the same payment refund capability for a TypeScript/Effect host and a Rust/Tokio host.",
+      "expected_output": "Keeps one semantic authority/use-case/port/outcome-unknown/migration model and projects composition, lifecycle, type, and evidence idiomatically in each ecosystem.",
+      "files": [],
+      "expectations": [
+        "Does not mechanically translate directory or DI patterns.",
+        "Preserves equivalent claims while naming ecosystem-specific proof surfaces."
+      ]
+    },
+    {
+      "id": 110,
+      "prompt": "A public Rust enum used by downstream crates needs a new variant while persisted data and a wire protocol also change.",
+      "expected_output": "Separates Rust source/SemVer exhaustiveness, non-exhaustive API options, wire compatibility, persisted-data migration, and authority epoch/fencing.",
+      "expectations": [
+        "Does not treat #[non_exhaustive] as a data migration solution.",
+        "Names independent evidence and rollout boundaries for each compatibility class."
+      ]
+    },
+    {
+      "id": 111,
+      "prompt": "An API binary and worker binary import the same Rust domain crate, so the team says both may write Order.status directly.",
+      "expected_output": "Rejects crate sharing as writer permission, names allowed writer hosts and formal commands, and requires transaction/idempotency/fencing evidence if both execute the authority.",
+      "expectations": [
+        "Separates compile reuse from fact authority.",
+        "Does not require separate services if one authority can be safely executed by multiple hosts."
+      ]
+    },
+    {
+      "id": 112,
+      "prompt": "cargo test passes for an in-memory adapter. Claim the Rust payment integration is replaceable and production-ready.",
+      "expected_output": "Limits the claim to the exercised fake/local surface and asks for adapter conformance, realistic provider, timeout/reconciliation, lifecycle, and production-composition evidence.",
+      "expectations": [
+        "Uses an explicit claim ceiling and not_proven.",
+        "Does not equate interface implementation or compilation with behavioral replaceability."
+      ]
+    },
+    {
+      "id": 113,
+      "prompt": "Design a small pure Rust parsing library with no durable facts, external effects, runtime tasks, or product authority.",
+      "expected_output": "Keeps the architecture at a private module/public API and tests, marks application-specific authority/transaction/port/lifecycle branches not applicable, and avoids inventing a workspace of crates.",
+      "expectations": [
+        "Applies the low-pressure proportionality rule.",
+        "Does not force authority cells, capability ports, async runtime, or ADIR persistence onto a pure library."
       ]
     }
   ]

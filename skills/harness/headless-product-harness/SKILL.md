@@ -23,25 +23,27 @@ Owns:
   adapter and persistence proof
   restart and recovery paths
   architecture boundary checks
-  headless claim ceiling
+  empirical Probe Request and headless claim ceiling
 
-Adjacent owners:
-  product authority -> $evolvable-application-architecture
-  shared harness architecture -> $product-harness-system
+Adjacent Suite owners, when installed:
+  Product AC/UAT source semantics -> $product-definition
+  fact authority and production boundary -> $evolvable-application-architecture
+  shared proof architecture -> $product-harness-system
   UI/browser proof -> $ui-product-harness
-  docs placement -> $docs-governance
 ```
 
-## Headless Pass
+## Headless Coverage
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the property; the selected command path may have runtime order, but this table is not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Ground | Repository authority, existing commands/tests/descriptors, and the production entrypoint are identified. |
 | Name | One capability and one observable property determine the command name and result contract. |
 | Select | The lowest sufficient surface—boundary, fixture, replay, adapter conformance, projection, real DB, restart/recovery, or real external runtime—is chosen. |
 | Drive | The harness enters through the same command/use-case/materialization path as production; dependency reality is explicit. |
 | Observe | Failure returns non-zero; stdout follows the machine contract; diagnostics locate the failed boundary. |
-| Bound | `observed`, `supports`, `not_proven`, and `claim_ceiling` match the executed surface. |
+| Bound | `observed`, `supports`, `does_not_decide`, `not_proven`, and `claim_ceiling` match the executed surface. |
 
 Select any level directly when the property requires it. Real external paths
 remain explicit because credentials, cost, privacy, and irreversible effects
@@ -63,9 +65,16 @@ bounded slice and emits actionable diagnostics.
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "harness": "order.checkout.retry",
   "status": "pass",
+  "proof_surface": {
+    "surface_kind": "headless",
+    "dependency_reality": ["fake", "real_local"],
+    "environment_class": "local_stack",
+    "proof_focus": ["idempotent_retry", "persistence_restart"]
+  },
+  "claim_ceiling": "one local retry path under declared dependencies",
   "observed": {
     "order_version_before": 7,
     "order_version_after": 8,
@@ -73,6 +82,9 @@ bounded slice and emits actionable diagnostics.
   },
   "supports": [
     "duplicate retry produced no second committed transition"
+  ],
+  "does_not_decide": [
+    "whether product policy should allow another retry"
   ],
   "not_proven": [
     "multi-process contention",
@@ -90,8 +102,8 @@ human-oriented diagnostics to stderr.
 fixture       static deterministic data
 fake          deterministic capability implementation
 replay        recorded normalized sequence
-real-local    actual DB/queue/runtime in local or test environment
-real-external credentialed provider/device/runtime
+real_local    actual DB/queue/runtime in local or test environment
+real_external credentialed provider/device/runtime
 ```
 
 ## Boundary Checks
@@ -118,9 +130,10 @@ pure policy claim does not need a fresh database.
 capability
 formal_entrypoint
 command_contract
-dependency_reality
+proof_surface
 observed
 supports
+does_not_decide
 not_proven
 claim_ceiling
 new_or_reused_harness_files

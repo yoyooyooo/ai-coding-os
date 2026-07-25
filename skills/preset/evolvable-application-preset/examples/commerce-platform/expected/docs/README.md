@@ -1,8 +1,10 @@
 # Documentation Router
 
-## Owns
+> Preset 候选快照：本文件尚未成为项目 Authority，只有 semantic owner 显式采纳的内容才进入 Current Home。
 
-- 当前文档入口与层级路由
+## Proposed Ownership
+
+- 候选文档入口与层级路由
 
 ## Must Not Own
 
@@ -10,16 +12,20 @@
 
 ## Boundary / Conflict
 
-仓库当前权威优先；本层只拥有上面列出的语义。与其他层重复时，移动到唯一 owner 并保留必要链接。
+仓库当前权威优先；候选层只建议上面列出的语义。与项目 Current Home 重复时，不得形成平行 Authority。
 
 ## Promotion / Demotion
 
-候选内容只有在被采用并与源码/合同对齐后才能晋升为当前权威；过期内容应降级为 source/report 或删除。
+候选内容只有在对应 semantic owner 明确采用后才能进入 Current Home；源码或合同存在本身不足以完成晋升。
 
-## 最短阅读路径 / 下一步阅读
+## Internal Shape
 
-- [product/README.md](product/README.md)
-- [ssot/README.md](ssot/README.md)
+本层候选默认保持扁平。只有在 durable ownership、安全、保留、生命周期、读者路由或重复导航压力成立后才建议子目录。
+
+## Discovery Surfaces
+
 - [standards/README.md](standards/README.md)
-- [architecture/README.md](architecture/README.md)
 - [adr/README.md](adr/README.md)
+- [ssot/README.md](ssot/README.md)
+- [architecture/README.md](architecture/README.md)
+- [product-harness/README.md](product-harness/README.md)

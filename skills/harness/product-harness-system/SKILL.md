@@ -12,7 +12,7 @@ description: >-
 Design a harness layer that makes product capabilities runnable, observable,
 composable, and discoverable without creating a second product authority.
 
-> **Harnesses expose observations; project authority gives them meaning.**
+> **Harnesses expose observations; applicable product, fact, policy, and API contract authority gives them meaning.**
 
 ## Ownership
 
@@ -22,15 +22,17 @@ Owns:
   scenario and proof-surface discovery
   fixture/fake/replay distinctions
   cross-headless/UI trace and coverage
-  descriptive claim ceilings
+  empirical Unknown / Probe Request shaping
+  descriptive claim ceilings and `does_not_decide` boundaries
+  empirical Unknown / Probe Request framing
   harness asset lifecycle
 
-Adjacent owners:
-  command, DB, replay, recovery proof -> $headless-product-harness
-  component and browser proof -> $ui-product-harness
+Adjacent Suite owners, when installed:
+  Product AC/UAT source semantics -> $product-definition
+  InterfaceCapability source -> $interface-capability-planning
+  command, persistence, replay, and recovery proof -> $headless-product-harness
+  interface, render, and browser proof -> $ui-product-harness
   concrete frontend test lane -> $frontend-test-system
-  fact authority -> $evolvable-application-architecture
-  docs placement -> $docs-governance
 ```
 
 Product truth, concrete runners, active execution state, and completion decisions
@@ -42,9 +44,9 @@ remain outside this skill.
 Product Capability
   -> Harness Scenario
   -> Fixture / Fake / Replay when needed
-  -> Headless and/or UI Harness Surface
+  -> orthogonal Proof Surface + owner-local test lane
   -> structured observations
-  -> supported conclusion + not_proven
+  -> supports + does_not_decide + not_proven
 ```
 
 The portable Harness vocabulary and Descriptor/Result schemas are provided by
@@ -63,56 +65,50 @@ harness  runnable observation surface
 Guarded labels such as `mock`, `smoke`, `e2e`, `integration`, or `complete`
 carry a boundary and claim ceiling whenever used.
 
-## Harness Pass
+## Harness Coverage Decisions
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the claim; a proof ladder is a menu, not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
-| Ground | The bounded product capability, current property, project authority, and existing descriptors/commands are identified. |
+| Ground | The bounded product capability, current property, applicable product/fact/API contract authority, and existing descriptors/commands are identified. |
 | Discover | Existing proof surfaces are reused where they observe the required property without bypassing production boundaries. |
 | Split | Headless, UI, and concrete frontend test lanes are separated only where their semantics differ. |
-| Add | The thinnest missing scenario, fixture, fake, replay, driver, probe, or harness exists; no empty artifact family is generated. |
-| Observe | Result output distinguishes `observed`, `supports`, and `not_proven`, and identifies fake/local/real dependencies. |
+| Add | The thinnest missing scenario, fixture, fake, replay, driver, probe, or harness exists; empirical Unknowns become bounded Probe Requests and no empty artifact family is generated. |
+| Observe | Result output distinguishes `observed`, `supports`, `does_not_decide`, and `not_proven`, and identifies fake/local/real dependencies. |
 | Retain | Descriptor, lifecycle, and coverage are persisted only when they improve future discovery or regression use. |
 
 A proof ladder is a menu: select the surface required by the property.
 
 ## Descriptor and Result
 
-```yaml
-schema_version: 1
-id: order.checkout.retry
-capability: order.checkout
-surface: headless
-command: pnpm verify order.checkout.retry
-uses:
-  persistence: postgres
-  external_payment: fake
-can_observe:
-  - committed order version
-  - duplicate retry behavior
-does_not_cover:
-  - browser projection
-  - real payment provider
-claim_ceiling: local Postgres; one authority host; restart exercised
+An empirical Unknown may enter as a Probe Request naming the question, observable boundary, dependency reality, expected observations, decision it can inform, and decisions it cannot make.
+
+A Descriptor makes a scenario discoverable by naming its capability,
+`proof_surface.surface_kind`, dependency realities, environment, proof focus,
+entrypoint, observable properties, exclusions, and claim ceiling. A Result
+records the same Proof Surface plus direct `observed` values, bounded `supports`, explicit `does_not_decide`,
+and adjacent `not_proven` claims. Use `$ai-coding-os-suite-contracts` for the
+machine schema. Add its direction-neutral Evidence Envelope only when a real
+machine consumer or durable cross-owner citation earns it; receivers retain the
+claim ceiling and decide their own local sufficiency or classification.
+
+## Empirical Unknowns and Probe Requests
+
+When product and architecture meaning are settled but behavior is unknown, frame
+a bounded Probe Request:
+
+```text
+question
+proof surface and dependency reality
+observable values
+what the observation may support
+what it cannot decide
+remaining not_proven
 ```
 
-```yaml
-schema_version: 1
-harness: order.checkout.retry
-status: pass
-observed:
-  order_version_before: 7
-  order_version_after: 8
-  duplicate_version_after: 8
-supports:
-  - duplicate retry produced no second committed transition
-not_proven:
-  - concurrent multi-process retry
-  - real provider behavior
-```
-
-Add full provenance when evidence must survive a commit, execution context, CI
-run, release decision, or audit.
+A probe may close an empirical unknown. It cannot decide product policy, fact
+authority, architecture acceptance, execution completion, or release status.
 
 ## Lifecycle and Placement
 
@@ -136,11 +132,26 @@ Check that the harness:
 
 - reaches the formal use case instead of a privileged DB writer;
 - reuses product policy rather than copying a second algorithm;
-- labels fake, replay, local, browser, and external surfaces accurately;
+- keeps observation surface, dependency reality, environment, and proof focus orthogonal;
 - proves projection continuity rather than transport reconnection alone;
 - keeps assertions anchored to existing authority;
 - executes the product path before reporting success;
 - invalidates retained evidence when relevant surfaces change.
+
+## Output Contract
+
+Return only the harness architecture material needed for the claim:
+
+```text
+capability_and_property
+scenario_or_descriptor
+proof_surface_and_dependency_reality
+existing_or_missing_harness_assets
+observed / supports / does_not_decide / not_proven shape
+claim_ceiling
+coverage_and_lifecycle_decisions
+trace_refs
+```
 
 ## Read When Needed
 
@@ -148,3 +159,4 @@ Check that the harness:
 - Deciding retention or placement needs: [Lifecycle and Placement](references/lifecycle-and-placement.md)
 - Bounding conclusions: [Claim Ceilings](references/claim-ceilings.md)
 - Linking capabilities to surfaces: [Trace Contract](references/trace-contract.md)
+- Turning empirical Unknowns into bounded probes: [Empirical Unknowns and Probes](references/empirical-unknowns-and-probes.md)

@@ -1,194 +1,52 @@
 # Source Topology and Semantic Naming
 
-Use **Bounded Semantic Flatness**:
+The generic architecture owns semantic roles and boundary strength, not one
+language's filenames.
 
-> Coarse durable boundaries use directories and packages. Fine-grained local
-> responsibility uses semantic dot-separated filenames.
-
-```text
-folders own
-filenames explain
-packages enforce
-apps run
-```
-
-## Filename grammar
+## Promotion Ladder
 
 ```text
-<subject>[.<facet>...].<responsibility>[.<qualifier>...].<extension>
+local lexical grouping
+  -> private semantic module
+  -> enforceable compilation/public-API boundary
+  -> independently runnable host
+  -> independently deployed/trust/fault boundary
 ```
 
-Use kebab-case inside one semantic segment and dots between dimensions.
-Order from product meaning to implementation detail.
+Promote when ownership, dependency direction, public compatibility, resource
+lifecycle, compilation, trust, fault isolation, release, or deployment pressure
+becomes durable. File count and symmetry are review signals, not admission rules.
+
+## Naming Contract
+
+Names should reveal:
 
 ```text
-order.create.use-case.ts
-order.payment-gateway.stripe.live.ts
-channel.client.browser.live.ts
-order.checkout.restart.recovery.test.ts
+product subject
+operation or facet
+semantic responsibility
+implementation/provider/host qualifier when necessary
 ```
 
-Avoid splitting one phrase into multiple dot dimensions:
+Avoid generic buckets such as `service`, `manager`, `common`, `core`, `utils`,
+and `types` when a governed responsibility can be named.
+
+## Ecosystem Projections
 
 ```text
-use-case          # one semantic term
-view-model
-expected-version
+TypeScript
+  semantic dot filenames, private directory/module, package export, app entry
+  are available conventions; see the TypeScript projection and Preset profile
+
+Rust
+  module tree, restricted visibility, facade/re-export, crate, and binary are
+  the normal boundary surfaces; do not imitate TypeScript dot filenames
+
+Other ecosystems
+  use their idiomatic module/public API/build/deployable constructs while
+  preserving the same authority and dependency decisions
 ```
 
-Do not use:
-
-```text
-order.create.use.case.ts
-order.payment.expected.version.policy.ts
-```
-
-## Dot prefixes are lexical clusters
-
-```text
-order.payment.*
-```
-
-is a **lexical capability cluster**. It improves search, tabs, and Agent context,
-but it does not create privacy, dependency checks, lifecycle, fact authority,
-package exports, or deployment isolation.
-
-Promotion ladder:
-
-```text
-lexical cluster
-  -> private submodule
-  -> workspace package
-  -> deployable process
-```
-
-Promote only when the next level's real pressure exists.
-
-## Directory admission test
-
-Create a directory when at least one is true:
-
-```text
-it represents a real capability or authority owner
-it needs a different public/private import rule
-it has independent resource lifecycle or composition
-it can be replaced, tested, migrated, or promoted as a unit
-a framework/tool requires the directory
-it is a stable, growing, high-density lexical cluster
-```
-
-Do not create one-file directory chains for visual symmetry or because an
-architecture diagram contains another layer.
-
-A soft review signal:
-
-```text
-3-20 source files     semantic flat is usually readable
-20-40 source files    inspect repeated stable prefixes
-40+ source files      likely sub-capability pressure unless generated/protocol data
-```
-
-File count never decides authority by itself.
-
-## Semantic segment length
-
-Two to four semantic segments are common. Five is acceptable. More than five
-triggers review because the name may be compensating for a missing boundary or
-mixed responsibility. Test qualifiers and extensions are not counted as product
-segments.
-
-## Public and wiring surfaces
-
-Prefer subject-qualified names:
-
-```text
-order.public.ts
-order.wiring.ts
-```
-
-`order.public.ts` exposes ordinary collaboration: commands, queries, stable
-contracts, and projections. It does not expose ORM records, live providers,
-mutable state, or framework handlers.
-
-`order.wiring.ts` exposes constructors, Layers, adapter factories, and host-only
-assembly. Other business modules must not import it.
-
-## Vocabulary
-
-The portable Suite contract for canonical vocabulary, filename patterns, and
-guarded terms is `$ai-coding-os-suite-contracts`. Do not resolve it through a
-sibling repository path; installed Skill directories may be flat or otherwise
-reorganized.
-
-Architecture responsibility terms are relatively closed: an Agent should reuse
-them rather than silently invent a synonym. New long-lived responsibility terms
-must be registered with a definition and distinction.
-
-Technology/provider qualifiers are semi-open. Product terms are open across
-projects but canonical inside one project.
-
-Project-specific language belongs in:
-
-```text
-docs/ssot/product-language.md
-docs/standards/naming-vocabulary.yaml
-```
-
-## Naming and import rules are one standard
-
-Names are not decoration. Link suffixes to dependency checks:
-
-```text
-*.policy.ts
-  depends only on pure model/value/context contracts
-
-*.use-case.ts
-  may depend on model/policy/port/transaction contracts
-  must not depend on *.live.ts, HTTP framework, or provider SDK
-
-*.port.ts
-  is application-owned and must not expose provider SDK types
-
-*.live.ts
-  may depend on infrastructure and is selected by wiring/composition
-
-*.fake.ts
-  is explicit test/harness implementation, never silent production fallback
-
-*.http.*.ts
-  decodes/maps/calls use cases; it does not write persistence directly
-
-*.public.ts
-  is normal cross-module surface
-
-*.wiring.ts
-  is host-only construction surface
-```
-
-Use package exports, import rules, TypeScript project references where useful,
-and architecture tests to enforce the durable edges.
-
-## Avoid file explosion
-
-Do not mechanically create command/input/output/policy/mapper/use-case files for
-every operation. A simple P0/P1 operation may keep types and implementation in:
-
-```text
-order.create.use-case.ts
-```
-
-Split when reuse, independent change, boundary, or proof pressure appears.
-
-## Framework exceptions
-
-Framework-controlled paths may use framework names:
-
-```text
-route/layout/page files
-file-system routers
-generated clients
-database migrations
-*.d.ts
-```
-
-Keep framework adapters thin and move product logic into named capability files.
+A filename, directory, package, or crate never grants fact Authority by itself.
+Machine-readable filename patterns apply only when a selected ecosystem profile
+owns them.

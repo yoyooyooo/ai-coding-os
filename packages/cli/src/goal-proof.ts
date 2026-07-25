@@ -43,7 +43,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
 
   program
     .name("goal-proof")
-    .description("Goal Proof System CLI for evidence-backed Goal Packs.")
+    .description("Experimental Goal Proof CLI for evidence-backed Goal Packs.")
     .version(CLI_VERSION)
     .showHelpAfterError()
     .showSuggestionAfterError()
@@ -53,7 +53,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   program
     .command("inspect")
     .description("Inspect compact Goal Pack progress.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .option("--json", "print JSON output")
     .action((goalRoot: string, options: { json?: boolean }) => {
       emit(runInspect(goalRoot, { json: Boolean(options.json) }));
@@ -62,7 +62,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   program
     .command("summary")
     .description("Summarize Goal Packs under a project or goals directory.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--completion <value>", `filter by completion: ${COMPLETION_VALUES.join(", ")}`, "all")
     .option("--status <value>", "filter by Goal Pack status")
     .option("--depth <value>", "output depth: repo, groups, items", "groups")
@@ -77,7 +77,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   program
     .command("list")
     .description("List Goal Packs under a project or goals directory.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--completion <value>", `filter by completion: ${COMPLETION_VALUES.join(", ")}`, "all")
     .option("--status <value>", "filter by Goal Pack status")
     .option("--limit <number>", "maximum items to show", "20")
@@ -95,7 +95,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   work
     .command("list")
     .description("List work items inside one Goal Pack.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .option("--completion <value>", `filter by work item completion: ${COMPLETION_VALUES.join(", ")}`, "todo")
     .option("--status <value>", `filter by work item status: ${WORK_ITEM_STATUSES.join(", ")}`)
     .option("--limit <number>", "maximum items to show", "20")
@@ -109,7 +109,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   work
     .command("brief")
     .description("Render a work item brief for the active or selected work item.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .option("--work <id>", "work item id, for example W001")
     .option("--json", "print JSON output")
     .action((goalRoot: string, options: { work?: string; json?: boolean }) => {
@@ -119,7 +119,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   work
     .command("activate")
     .description("Move a queued work item into running active state.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .requiredOption("--work <id>", "work item id, for example W001")
     .option("--dry-run", "print the progress transition without writing files")
     .action((goalRoot: string, options: { work: string; dryRun?: boolean }) => {
@@ -133,7 +133,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   evidence
     .command("list")
     .description("List compact evidence history with filters.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .option("--limit <number>", "maximum records to show", "5")
     .option("--work <id>", "filter by work item id, for example W001")
     .option("--type <value>", `filter by work item type: ${WORK_ITEM_TYPES.join(", ")}`)
@@ -168,7 +168,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   evidence
     .command("show")
     .description("Show one full evidence record by append-order index.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .requiredOption("--index <number>", "1-based evidence record index")
     .option("--json", "print JSON output")
     .action((goalRoot: string, options: { index: string; json?: boolean }) => {
@@ -178,7 +178,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   evidence
     .command("add")
     .description("Append a validated evidence record to evidence.jsonl.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .addOption(new Option("--file <path>", "evidence JSON file").conflicts(["json", "stdin"]))
     .addOption(new Option("--json <value>", "evidence JSON string").conflicts(["file", "stdin"]))
     .addOption(new Option("--stdin", "read evidence JSON from stdin").conflicts(["file", "json"]))
@@ -224,7 +224,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   relations
     .command("list")
     .description("List Goal Pack relations under a project or goals directory.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--thread <id>", "filter by relations.thread_id")
     .option("--limit <number>", "maximum items to show", "20")
     .option("--include <fields>", "comma-separated fields to include")
@@ -237,7 +237,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   relations
     .command("goals")
     .description("Discover thread-member Goal Packs without queue semantics.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--thread <id>", "filter by relations.thread_id")
     .option("--completion <value>", `filter by Goal Pack completion: ${COMPLETION_VALUES.join(", ")}`, "all")
     .option("--status <value>", `filter by Goal Pack status: ${STATUS_VALUES.join(", ")}`)
@@ -262,7 +262,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   relations
     .command("work")
     .description("Discover thread-member work items without queue semantics.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--thread <id>", "filter by relations.thread_id")
     .option("--completion <value>", `filter by work item completion: ${COMPLETION_VALUES.join(", ")}`, "todo")
     .option("--status <value>", `filter by work item status: ${WORK_ITEM_STATUSES.join(", ")}`)
@@ -302,7 +302,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   relations
     .command("check")
     .description("Validate Goal Pack relation evidence.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--thread <id>", "filter by relations.thread_id")
     .option("--json", "print JSON output")
     .action((target: string, options: { thread?: string; json?: boolean }) => {
@@ -314,7 +314,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   relations
     .command("graph")
     .description("Render a derived graph view from Goal Pack relations.")
-    .argument("[target]", "project root or docs/goal-proof/goals directory", ".")
+    .argument("[target]", "project root or .goal-proof/goals directory", ".")
     .option("--thread <id>", "filter by relations.thread_id")
     .option("--json", "print JSON output")
     .action((target: string, options: { thread?: string; json?: boolean }) => {
@@ -324,7 +324,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   program
     .command("apply")
     .description("Apply deterministic progress from the latest evidence record.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .option("--dry-run", "print the progress transition without writing files")
     .action((goalRoot: string, options: { dryRun?: boolean }) => {
       const result = runApply(goalRoot, { dryRun: Boolean(options.dryRun) });
@@ -343,7 +343,7 @@ export function createGoalProofProgram(output: CliOutput = defaultOutput()) {
   program
     .command("check")
     .description("Validate a Goal Pack.")
-    .argument("<goal-pack>", "Goal Pack directory or id under docs/goal-proof/goals")
+    .argument("<goal-pack>", "Goal Pack directory or id under .goal-proof/goals")
     .action((goalRoot: string) => {
       const result = checkGoalPack(goalRoot);
       emit(JSON.stringify(result, null, 2));

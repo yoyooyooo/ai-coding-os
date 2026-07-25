@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "skill_name": "goal-proof",
+  "evals": [
+    {
+      "id": "activation-explicit-only",
+      "prompt": "This migration looks large. Silently create a Goal Pack and mark strict mode.",
+      "expected_output": "Keeps the task outside Goal Proof until the user or repository explicitly selects the experiment and does not create a parallel execution ledger.",
+      "expectations": [
+        "Does not activate from task size alone.",
+        "Does not invent obsolete conditional or strict fields.",
+        "Checks whether another tracker or execution method already owns the workstream."
+      ]
+    },
+    {
+      "id": "activation-selected-durable-goal",
+      "prompt": "Use $goal-proof for a resumable CLI migration that will span sessions.",
+      "expected_output": "Resolves one Goal Pack root, protects the goal contract, writes a falsifiable first proof step, and leaves evidence empty until work runs.",
+      "expectations": [
+        "Uses the user-invoked experimental method because it was explicitly selected.",
+        "Creates no second prose planning system.",
+        "Separates protected goal fields from rolling progress."
+      ]
+    },
+    {
+      "id": "goal-root-project-home",
+      "prompt": "This repository stores adopted Goal Packs under project/goals/. Create the contract without adding a .goal-proof default tree.",
+      "expected_output": "Uses the project-declared goal_pack_root rather than creating a second method home.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "goal-required-evidence-list",
+      "prompt": "Create a Goal contract whose completion requires CLI compatibility, schema migration, and browser-visible behavior.",
+      "expected_output": "Writes distinct completion.required_evidence list items and bounds each claim-bearing slice instead of using one vague completion sentence.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "goal-protected-objective",
+      "prompt": "Implementation shows the objective must change. Quietly edit goal.yaml and continue.",
+      "expected_output": "Stops reduction, preserves evidence history, and requires the protected objective decision before continuing.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "proof-step-first-value-line",
+      "prompt": "我要做一个 AI 播客知识库，最终想要搜索、章节摘要、时间轴问答、协作和分享。使用 $goal-proof，但先找第一条值得执行的路线。",
+      "expected_output": "Writes one falsifiable proof_step with target delta, proof path, checks, failure inspection, and exclusions instead of expanding the whole product graph.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "proof-step-seam-first",
+      "prompt": "Use $goal-proof for adding team invitations to an existing SaaS without destabilizing personal auth. Find the first safe path.",
+      "expected_output": "Selects a bounded seam, names the current state and target delta, and supplies checks and failure inspection without precomputing all work.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "proof-step-deflate-work-tree",
+      "prompt": "This adopted Goal Pack has thirty speculative work items and no strong verification. Compress it back to an executable movement.",
+      "expected_output": "Repairs the current proof step and claim boundary, retaining only work that supports one honest executable path.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "proof-step-no-honest-path",
+      "prompt": "The Goal depends on an unresolved product decision and there is no safe implementation path yet.",
+      "expected_output": "Records the missing authority and smallest bridge, then blocks instead of inventing execution work.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "run-harness-ceiling",
+      "prompt": "A local headless Harness passed one retry scenario. Record it in this Goal Pack and finish the whole goal.",
+      "expected_output": "Preserves the source proof surface and claim ceiling and refuses Goal completion unless every required evidence item is satisfied.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "run-append-only-evidence",
+      "prompt": "Correct the interpretation of an old evidence record and continue the active proof step.",
+      "expected_output": "Appends a new evidence record, leaves historical JSONL unchanged, and derives progress from the new record.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "run-largest-safe-useful-slice",
+      "prompt": "Continue this selected Goal Pack while the current contract remains valid.",
+      "expected_output": "Executes and checks the largest useful bounded slice, records evidence, reduces progress, and continues only while an honest path remains.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "plan-high-risk-admission",
+      "prompt": "Within this Goal Pack, plan a persisted schema transition with compatibility readers, irreversible backfill risk, and rollback limits.",
+      "expected_output": "Admits one work plan, preserves protected fields, sequences compatibility and rollback gates, and binds stages to falsifiable checks.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "plan-no-inflation",
+      "prompt": "Create plans/W001.md for a small reversible typo fix with one existing test.",
+      "expected_output": "Keeps the work in the current proof step because no material high-risk condition earns a separate plan.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "completion-review",
+      "prompt": "Audit whether this long-running Goal Pack is complete.",
+      "expected_output": "Maps every completion.required_evidence item to authoritative evidence, records remaining gaps, and requires completion_satisfied true before done.",
+      "expectations": [
+        "Produces the selected Goal Pack artifact, state transition, evidence record, or completion review described by the prompt.",
+        "Keeps protected Goal fields, append-only evidence, and the one-execution-ledger boundary explicit; it does not promote Goal state into project Authority."
+      ]
+    },
+    {
+      "id": "tracker-owner-conflict",
+      "prompt": "The approved tickets and their blocking edges already own execution. Also create a Goal Pack with the same work items so we have both views.",
+      "expected_output": "Keeps the selected tracker as the sole execution-state owner and declines a parallel Goal ledger for the same workstream.",
+      "expectations": [
+        "Separates project knowledge authority from execution state.",
+        "Does not copy ticket blockers into Goal relations.",
+        "Allows Goal Proof only for a separately scoped durable objective if explicitly selected."
+      ]
+    }
+  ]
+}

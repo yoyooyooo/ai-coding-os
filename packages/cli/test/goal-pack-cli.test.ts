@@ -17,6 +17,13 @@ function makePack({ goal = goalYaml(), progress = progressYaml(), evidence = "" 
 
 function makeProjectPack(goalId = "cli-test-goal", options = {}) {
   const project = mkdtempSync(join(tmpdir(), "goal-proof-project-"));
+  const root = join(project, ".goal-proof", "goals", goalId);
+  writePack(root, options);
+  return { project, root };
+}
+
+function makeLegacyProjectPack(goalId = "cli-test-goal", options = {}) {
+  const project = mkdtempSync(join(tmpdir(), "goal-proof-legacy-project-"));
   const root = join(project, "docs", "goal-proof", "goals", goalId);
   writePack(root, options);
   return { project, root };
@@ -49,13 +56,14 @@ status: ${status}
 objective: "Exercise the Goal Proof command surface."
 guiding_principle: "Progress is evidence-backed."
 ${relations}authority_refs:
-  - "skills/goal/goal-proof-system/SKILL.md"
+  - "experiments/goal-proof/skill/SKILL.md"
 engineering_guidance:
   standards:
     - "Command scripts mutate only evidence and deterministic progress."
 completion:
   signal: "CLI can inspect, brief, activate, add evidence, apply progress, and check packs."
-  required_evidence: "Bun tests pass."
+  required_evidence:
+    - "Bun tests pass."
 claim_limit: "Only proves local CLI behavior."
 stop_rules:
   - "Stop on schema mismatch."
@@ -258,6 +266,7 @@ test("inspect and check read Goal Proof v2 artifacts", () => {
     assert.equal(payload.evidence_count, 1);
     assert.equal(payload.last_evidence_record.evidence_id, "E000");
     assert.equal(payload.can_continue, true);
+    assert.deepEqual(payload.completion.required_evidence, ["Bun tests pass."]);
 
     const check = run(["check", root]);
     assert.equal(check.status, 0, check.stderr);
@@ -267,7 +276,7 @@ test("inspect and check read Goal Proof v2 artifacts", () => {
   }
 });
 
-test("commands resolve bare goal id under docs/goal-proof/goals", () => {
+test("commands resolve bare goal id under .goal-proof/goals", () => {
   const { project } = makeProjectPack();
   const nested = join(project, "apps", "web", "src");
   mkdirSync(nested, { recursive: true });
@@ -280,9 +289,20 @@ test("commands resolve bare goal id under docs/goal-proof/goals", () => {
   }
 });
 
+test("commands retain reader compatibility for legacy docs/goal-proof/goals", () => {
+  const { project } = makeLegacyProjectPack();
+  try {
+    const inspect = run(["inspect", "cli-test-goal", "--json"], { cwd: project });
+    assert.equal(inspect.status, 0, inspect.stderr);
+    assert.equal(JSON.parse(inspect.stdout).goal_id, "cli-test-goal");
+  } finally {
+    rmSync(project, { recursive: true, force: true });
+  }
+});
+
 test("summary and list count goals, work items, and evidence", () => {
   const { project } = makeProjectPack("cli-active-goal");
-  const doneRoot = join(project, "docs", "goal-proof", "goals", "cli-done-goal");
+  const doneRoot = join(project, ".goal-proof", "goals", "cli-done-goal");
   writePack(doneRoot, {
     goal: goalYaml({ id: "cli-done-goal", status: "done" }),
     progress: doneProgressYaml("cli-done-goal"),
@@ -303,7 +323,7 @@ test("summary and list count goals, work items, and evidence", () => {
     assert.equal(list.status, 0, list.stderr);
     assert.equal(JSON.parse(list.stdout).items[0].goal_id, "cli-done-goal");
 
-    const text = run(["summary", join(project, "docs", "goal-proof", "goals")]);
+    const text = run(["summary", join(project, ".goal-proof", "goals")]);
     assert.match(text.stdout, /work_items: total=3 done=1 todo=2/);
   } finally {
     rmSync(project, { recursive: true, force: true });
@@ -546,13 +566,11 @@ test("help is structured at every official command layer", () => {
   }
 });
 
-test("relations command family is documented in root, package, and skill docs", () => {
+test("relations command family is documented in experiment package and skill docs", () => {
   const docs = [
-    readFileSync(join(repoRoot, "README.md"), "utf8"),
-    readFileSync(join(repoRoot, "README.zh-CN.md"), "utf8"),
     readFileSync(join(packageRoot, "README.md"), "utf8"),
     readFileSync(join(packageRoot, "README.zh-CN.md"), "utf8"),
-    readFileSync(join(repoRoot, "skills/goal/goal-proof-system/SKILL.md"), "utf8"),
+    readFileSync(join(repoRoot, "experiments/goal-proof/skill/references/cli.md"), "utf8"),
   ].join("\n");
 
   assert.match(docs, /goal-proof relations list/);

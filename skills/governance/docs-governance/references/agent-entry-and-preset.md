@@ -1,107 +1,132 @@
 # Agent Entry and Preset Adoption
 
-## AGENTS.md purpose
-
-`AGENTS.md` is the tool-neutral operational entry for Agents. It tells an Agent
-what to read, which current commands exist, which language policy applies, and
-where project authority lives. It is not the location for the full architecture
-or Skill Suite.
-
-Recommended maximum responsibility:
+## Three Discovery Surfaces
 
 ```text
-project/Preset adoption statement
-repository-local authority precedence
-Read First links
+Skill Router       -> which specialist knowledge owns the current concern
+Repository Entry   -> stable project constraints, commands, and available routes
+Docs Router        -> links among project documentation Authorities
+```
+
+These surfaces may point to one another but form no required traversal order.
+`AGENTS.md` owns only the Repository Entry role. A Skill Router never becomes
+project Authority; a Docs Router never becomes a second copy of current truth.
+
+## Repository Entry
+
+A thin `AGENTS.md` or host-equivalent may contain:
+
+```text
+project adoption statement
+repository-local Authority links
+available discovery surfaces
 small stable working rules
 resolved commands
 language policy
-thin Skill routing pointer
-local exceptions/restricted paths
+local restrictions and exceptions
 ```
+
+It is not the Home for Product, SSoT, Standards, Architecture, contracts,
+execution state, full Skill registries, or private tool configuration.
+
+A useful project-level statement is:
+
+```text
+Project authorities and evidence surfaces are indexed by docs/README.md when it
+exists. Agents may enter from the current question, code area, artifact, or
+owner and follow only relevant Authority, Evidence, and source links.
+```
+
+This advertises the knowledge network without prescribing a reading workflow.
 
 ## Ownership
 
 ```text
 $docs-governance
-  owns generic placement, thinness, lifecycle, conflict, and nested-entry rules
+  entry thinness, placement, lifecycle, route integrity, nested-entry admission
 
-$evolvable-application-preset
-  owns the architecture-specific template/managed section and merge logic
+$evolvable-application-preset or another specialist
+  one explicitly declared managed section and its merge/render logic
 
 project
-  owns the merged final file and current command/path values
+  final AGENTS.md, current paths, commands, and constraints; semantic Authority remains in its question-scoped Home
 
 $ai-coding-os
-  consumes the entry and routes knowledge; it does not write project authority
+  knowledge-owner selection for ambiguous or cross-cutting intent
 ```
 
-## New repository
+The project owns the final file. No generator replaces the whole entry.
 
-Create only the minimum useful entry and docs router. Do not fabricate authority
-maps or module facts that do not exist. Use explicit placeholders such as
-`not-yet-established` where required.
+## Multi-entry Discovery
 
-## Existing repository
+An Agent may begin from any relevant surface:
 
 ```text
-inspect existing AGENTS.md and host-specific instruction files
--> identify canonical tool-neutral entry
--> classify the requested surface as adopt / merge / keep-project / skip / conflict
--> preserve project-specific instructions
--> add or update only the compatible managed Preset section
--> link host-specific files back to canonical entry when useful
--> audit the changed surface
+current question
+source or package path
+canonical term
+product or architecture artifact
+ADR, schema, test, Harness result, report
+repository entry or docs router
 ```
 
-Do not overwrite an existing entry wholesale or require full Preset adoption.
+Resolve only the neighborhood needed for the claim. A source change may reach
+Architecture, SSoT, Product, contracts, or Evidence directly; a docs cleanup may
+begin at the conflicting files. Missing optional layers and entries are normal.
 
-## Preset adoption
+Portable Skill output paths are defaults. Existing project Authority wins, and
+an equivalent current Home prevents creation of a parallel artifact.
 
-Depending on the discovered slice, the Preset may contribute:
+## Existing Repository
+
+Classify each proposed Preset surface independently:
 
 ```text
-AGENTS.md managed section
-docs/standards/architecture-profile.yaml
-docs/standards/source-topology-and-naming.md
-docs/standards/naming-vocabulary.yaml
-docs/ssot/product-language.md
-docs/ssot/authority-map.md
-docs/architecture/repository-topology.md
-docs/adr/<adoption>.md
+adopt | merge | keep-project | skip | conflict
 ```
 
-Templates and candidates are not current project authority. After selective adoption, project files are
-a resolved snapshot. Record:
+Inspect current files and Authority, preserve project-specific instructions,
+and update only compatible managed content. The classification set is coverage,
+not a required project workflow.
 
-```yaml
-schema_version: 1
-preset:
-  id: evolvable-application
-  version: <version>
-  mode: resolved-snapshot
-profiles:
-  - <resolved-profile>
-```
+## Managed Sections
 
-## Upgrade
+A managed section is safe only when:
 
-An upgrade stages or displays a semantic diff only for candidate-managed
-surfaces. Preserve local extensions and deviations; unrelated project files are
-never candidate deletions. Do not make a project dynamically inherit the latest
-installed Preset.
+- one stable begin marker and one stable end marker exist;
+- replacement is confined to bytes between the markers;
+- repeated rendering is idempotent;
+- drift is visible as a diff before adoption;
+- removing the section leaves surrounding human content intact;
+- content outside the section is preserved.
 
-## Nested AGENTS.md admission
+Malformed or repeated markers are a conflict and block automated replacement.
 
-Create a nested entry only when local differences are durable:
+## Preset Adoption
+
+A Preset contributes a `candidate-snapshot` or one proposed managed section. It
+does not create dynamic inheritance or self-assert adoption. Only content merged
+by the applicable project owner becomes current Authority; the Preset remains a
+reusable source. Legacy resolved snapshots remain readable during migration.
+
+Generated entries expose applicable knowledge surfaces without requiring every
+Product, SSoT, Standards, Architecture, ADR, Roadmap, or proof layer. A missing
+optional entry is a review signal only when a declared route depends on it.
+
+## Nested AGENTS.md
+
+Create a nested entry only for a durable local delta such as different commands,
+host lifecycle, security/write restrictions, framework-reserved paths, or a
+distinct verification surface. It links to repository Authority and describes
+only the local delta.
+
+Classify topology from workspace declarations, manifests, commands, and actual
+ownership rather than directory names alone:
 
 ```text
-different commands
-host-specific lifecycle
-security or write restrictions
-framework-reserved paths
-distinct verification surface
+single-project
+workspace-monorepo
+aggregate-root
+nested-independent-project
+unknown
 ```
-
-Nested files link to root and describe deltas. They do not repeat global Skill
-routing, language policy, or full standards.

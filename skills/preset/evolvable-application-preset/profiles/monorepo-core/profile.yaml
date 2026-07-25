@@ -1,12 +1,13 @@
 id: monorepo-core
-version: 1
+version: 2
+requires:
+  - application-core
 provides:
-  - apps/packages/tooling/docs/specs topology
-  - private capability module first
-  - host-first capability-local backend reference
-  - bounded semantic flatness
-  - module to package to deployable promotion ladder
+  - workspace repository topology for apps packages tooling docs and specs
+  - package and deployable promotion guidance for monorepositories
+  - one root documentation knowledge network with local routes
 rules:
   - repository package deployable authority and data boundaries are distinct
   - package sharing does not grant fact authority
-  - one root docs authority chain for a workspace monorepo
+  - apps packages and tooling are project topology choices not cross-language doctrine
+  - unused docs layers may be omitted and child partitions require durable pressure

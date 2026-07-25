@@ -1,44 +1,28 @@
 # SSoT
 
-## Owns
+> Preset 候选快照：本文件尚未成为项目 Authority，只有 semantic owner 显式采纳的内容才进入 Current Home。
 
-- 当前事实、对象所有权与不变量
+## Proposed Ownership
+
+- 共享术语、对象、状态与不变量的候选 Current Home
 
 ## Must Not Own
 
-- 未来候选、目录规范、运行日志
+- 技术 writer/transaction 规则、目录规范、运行日志或所有 claim 的全局最高权威
 
 ## Boundary / Conflict
 
-仓库当前权威优先；本层只拥有上面列出的语义。与其他层重复时，移动到唯一 owner 并保留必要链接。
+仓库当前权威优先；候选层只建议上面列出的语义。与项目 Current Home 重复时，不得形成平行 Authority。
 
 ## Promotion / Demotion
 
-候选内容只有在被采用并与源码/合同对齐后才能晋升为当前权威；过期内容应降级为 source/report 或删除。
+候选内容只有在对应 semantic owner 明确采用后才能进入 Current Home；源码或合同存在本身不足以完成晋升。
 
-## Read Next
+## Internal Shape
+
+本层候选默认保持扁平。只有在 durable ownership、安全、保留、生命周期、读者路由或重复导航压力成立后才建议子目录。
+
+## Routes
 
 - [product-language.md](product-language.md)
-- [authority-map.md](authority-map.md)
 - [../standards/README.md](../standards/README.md)
-
-## Authority Resolution
-
-权威按 claim 类型解析，而不是使用一条无条件文件排序：
-
-```text
-host instructions and repository AGENTS.md
-  -> adopted project authority for the claim
-     current facts -> docs/ssot/**
-     executable rules -> docs/standards/**
-     accepted tradeoffs -> docs/adr/**
-     wire compatibility -> project protocol/schema contract
-  -> executable reality for implementation claims
-     source, lockfiles, tests, command evidence
-  -> unadopted Preset source/candidate
-  -> specialist doctrine and router recommendation
-```
-
-已采用的 Preset 输出归入对应项目 docs layer，不是第二套 Preset authority。
-项目 authority 与 executable reality 冲突时，记录 stale-doc 或 implementation-drift，
-不能静默选择一方。

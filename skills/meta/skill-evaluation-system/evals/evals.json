@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "skill_name": "skill-evaluation-system",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "One Agent ignored a rule already present in the Skill. Add the same warning three more times so it never happens again.",
+      "expected_output": "Attributes the failure before editing, considers execution lapse, retrieval, tool, evaluator, and noise causes, and refuses automatic instruction accumulation.",
+      "files": [],
+      "expectations": [
+        "Failure is not automatically classified as a Skill defect.",
+        "Canonical instruction admission requires evidence."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our candidate scores higher on average, but it sometimes treats source code as accepted product intent.",
+      "expected_output": "Fails the constitutional gate even if the weighted score improves.",
+      "files": [],
+      "expectations": [
+        "Hard semantic invariants cannot be averaged away.",
+        "The result names the protected failure and claim ceiling."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We generated 20 paraphrases of one bug and want to split them randomly across train and test.",
+      "expected_output": "Groups them into one case family and prevents semantic leakage across splits.",
+      "files": [],
+      "expectations": [
+        "Uses case-family contamination controls.",
+        "Keeps sealed Test unavailable to optimizer and candidate author."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The last generated Skill is the newest, so publish it instead of the earlier checkpoint that scored best on validation.",
+      "expected_output": "Separates final explored candidate, validation-selected best checkpoint, release candidate, and rollback anchor.",
+      "files": [],
+      "expectations": [
+        "Latest is not equated with best.",
+        "Test-aware oracle selection is rejected."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "A shorter Skill matches current behavior while using 60% less context and asking fewer unnecessary questions.",
+      "expected_output": "Allows acceptance through non-inferior protected behavior plus material efficiency gain, subject to transfer and semantic gates.",
+      "files": [],
+      "expectations": [
+        "Measures context and escalation cost.",
+        "Does not require a raw accuracy increase when behavior is preserved."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "The evaluator rewards a fixed heading even though the user did not need it. Train the Skill to always emit that heading.",
+      "expected_output": "Classifies a likely evaluator defect and repairs the rubric before changing the Skill.",
+      "files": [],
+      "expectations": [
+        "Does not train toward a false Oracle.",
+        "Separates user-visible quality from format heuristics."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Use last week’s sensitive coding sessions to improve the Suite overnight and auto-adopt the result.",
+      "expected_output": "Requires local read-only harvest, redaction/review, isolated replay, held-out gating, staged proposal, checkpoint, and explicit adoption.",
+      "files": [],
+      "expectations": [
+        "Names privacy and provider data boundaries.",
+        "No held-out gate means no autonomous adoption."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Evaluate whether a new Architecture Decision System Skill helps across direct questions, router composition, and real repository migrations.",
+      "expected_output": "Defines an Evaluation Slice spanning L1-L4, current/candidate/minimal/no-skill baselines, protected authority cases, repository tasks, and transfer profiles.",
+      "files": [],
+      "expectations": [
+        "Uses the evaluation ladder and multiple baselines.",
+        "Does not claim broad quality from static eval declarations alone."
+      ]
+    }
+  ]
+}

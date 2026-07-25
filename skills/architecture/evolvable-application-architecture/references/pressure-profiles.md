@@ -1,57 +1,70 @@
 # Pressure Profiles
 
-Select architecture intensity per vertical slice, not once for the whole
-repository. A product may contain P0 and P4 slices at the same time.
+Select architecture intensity per vertical slice, not once for the repository.
+A product may contain P0 and P4 slices at the same time.
+
+Record the **pressure signals** first; the P-level is a derived minimum profile,
+not the source of truth.
+
+```yaml
+pressure_signals:
+  - durable_fact
+  - concurrent_update
+  - external_effect
+  - retry
+  - process_restart
+  - outcome_unknown
+  - money
+minimum_profile: P4
+```
+
+Different slices at the same level may require different mechanisms because the
+signals differ.
 
 ## P0 — Simple / Local
 
-Use when one process and one trusted writer own low-risk state.
+Signals: local, reversible, process-private state; no durable accepted fact or
+external lifecycle.
 
 Minimum shape:
 
 ```text
-private module state
-explicit command/query functions
+private semantic module
+explicit command/query functions when useful
 clear dependency direction
-basic tests
+proportionate tests
 ```
 
-Usually avoid ports for internal helpers, event buses, candidate ledgers,
-plugins, sagas, outbox, and microservices.
-
-Promote when durable concurrency, an external capability, or independent
-lifecycle appears.
+Usually avoid ports for internal helpers, event buses, candidates, sagas,
+outbox, or independent deployables.
 
 ## P1 — Transactional
 
-Use when accepted durable facts, concurrent updates, or restart correctness
-matter.
+Signals: durable accepted facts, concurrent updates, restart correctness, or
+material audit identity.
 
-Add:
+Add as applicable:
 
 ```text
-named authority cell
+named authority and consistency domain
 transaction / unit of work
 expected version or lock policy
 durable idempotency
 specific outcome + CommitReceipt
-fact + event/audit atomicity when events represent accepted change
+fact + event/audit/outbox atomicity when the side record represents acceptance
 ```
-
-Do not add a candidate pipeline unless the input is genuinely
-non-authoritative.
 
 ## P2 — External Capability
 
-Use when a provider, gateway, device, external executor, plugin, model, or
-remote system influences behavior.
+Signals: provider, gateway, device, external executor, plugin, model, remote
+system, vendor lifecycle, or realistic fake/replay seam.
 
 Add:
 
 ```text
-application-owned capability port
+application-owned capability contract
 adapter normalization and stable error taxonomy
-Observation/Candidate/Receipt boundary
+Observation / Candidate / Receipt / OutcomeUnknown boundary
 external call outside database transaction
 materialization or reconciliation transaction
 capability conformance evidence
@@ -62,28 +75,28 @@ application remains authoritative for local product meaning.
 
 ## P3 — Distributed / Replayable
 
-Use when work spans processes, retries, queues, partial failure, or
-independently deployed clients.
+Signals: multiple processes, queues, retries, partial failure, independent
+clients, partitions, or independently owned lifecycle.
 
 Add as required:
 
 ```text
-durable intent/outbox/inbox
+durable intent / outbox / inbox
 retry and dedupe semantics
 ordering or causal frontier
 timeout and unknown-outcome handling
 reconciliation / compensation
 restart and replay proof
-partition and backpressure model
-short, explicit compatibility epochs
+partition, backpressure, cancellation, and shutdown model
+short compatibility epochs
 ```
 
-Do not infer exactly-once execution from exactly-once materialization.
+Exactly-once materialization does not imply exactly-once external execution.
 
 ## P4 — Governed / High-Risk
 
-Use for money, permissions, safety, privacy, regulated data, irreversible
-external effects, multi-party approval, adversarial participants, or high-cost
+Signals: money, permissions, safety, privacy, regulated data, irreversible
+external effect, multi-party approval, adversarial participant, or high-cost
 automation.
 
 Add:
@@ -91,31 +104,33 @@ Add:
 ```text
 policy and schema versions
 provenance and decision records
-separation of proposal, approval, execution, and acceptance
+proposal / approval / execution / acceptance separation
 least privilege and disclosure boundaries
-retention/redaction rules
-audit and forensic evidence
-failure injection and production-near proof
-explicit human stop lines
+retention and redaction
+forensic evidence
+failure injection and realistic environment proof
+explicit human or external-authority stop lines
 ```
 
 ## Selection Rules
 
-1. Choose the highest *real* pressure for the traced slice.
-2. Apply lower-level requirements cumulatively only when relevant.
-3. Record `not_applicable` for branches the slice does not use.
-4. Do not treat anticipated scale, vendor marketing, or folder count as
-   pressure evidence.
-5. Upgrade a boundary when observed failures, ownership, deployment, trust,
-   data, or proof needs justify it.
-6. Downgrade recommendations when the complexity cost exceeds the pressure.
+1. Choose the highest real signal for the traced slice.
+2. Apply lower-level requirements only when their signal is present.
+3. Record `not_applicable` instead of fabricating mechanisms.
+4. Do not treat anticipated scale, framework fashion, vendor marketing, file
+   count, or model confidence as pressure evidence.
+5. Upgrade or downgrade when observed ownership, lifecycle, trust, data,
+   failure, or proof pressure changes.
+6. Generate blind-spot probes from signals: restart, duplicate delivery,
+   timeout-after-start, stale writer, cursor gap, cancellation, migration, or
+   irreversible action.
 
-## Quick Decision Table
+## Quick Signals
 
 | Signal | Minimum profile |
-|---|---|
-| local draft or settings | P0 |
+| --- | --- |
+| local draft/settings | P0 |
 | durable business transition | P1 |
-| payment gateway, LLM, device, plugin, remote API | P2 |
+| payment/LLM/device/plugin/remote API | P2 |
 | queue/retry/restart/partial failure | P3 |
-| permission, money, safety, privacy, irreversible action | P4 |
+| permission/money/safety/privacy/irreversible action | P4 |

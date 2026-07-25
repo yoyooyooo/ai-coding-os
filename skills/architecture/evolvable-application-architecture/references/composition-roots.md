@@ -14,7 +14,7 @@ Composition roots may:
 - bind clocks, IDs, transaction factories, and publishers;
 - load configuration and secrets;
 - start servers, workers, daemons, CLIs, or frontend runtimes;
-- select fake, replay, local, hosted, or real-external profiles.
+- select fake, replay, local, hosted, or `real_external` profiles.
 
 They must not own product transitions, permission decisions, settlement,
 workflow completion, or direct canonical event-spine writes.

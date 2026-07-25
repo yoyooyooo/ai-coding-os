@@ -1,0 +1,1691 @@
+{
+  "manifest_version": 1,
+  "distribution": "AI Coding OS Skill Suite with governed project Docs",
+  "distribution_version": "0.5.0-experimental.1",
+  "source_layout": "grouped",
+  "source_scope": {
+    "includes": [
+      "README.md",
+      "CHANGELOG.md",
+      "VERSION",
+      "AGENTS.md",
+      "docs/**",
+      "skills/**"
+    ],
+    "excludes_from_source_identity": [
+      "release/**"
+    ]
+  },
+  "source_tree_sha256": "e2051eb779b86ed1a5ec8fa0350a7a2a53cb657f556aa2b2d4656eb7efa6e8d0",
+  "source_file_count": 326,
+  "docs_markdown_count": 26,
+  "skill_count": 17,
+  "skills_source_tree_sha256": "152cffefc06a4786291ed3a6178b18980f91d27c8e7f357edcd22c0aee41df33",
+  "versions": {
+    "suite": "0.5.0-experimental.1",
+    "contracts": "3.0.0",
+    "preset": "1.4.0-experimental.1",
+    "product_definition": "2.3.0-experimental.1"
+  },
+  "verification": {
+    "suite_audit": {
+      "report": "release/suite-audit.json",
+      "sha256": "a44d5f50268c0d703db9b0620bfa005eace6826a54a4bd1a7b9a39bd98ad81cc",
+      "summary": {
+        "error": 0,
+        "warn": 0,
+        "info": 0,
+        "total": 0
+      }
+    },
+    "docs_audit": {
+      "report": "release/docs-audit.json",
+      "sha256": "661948bf289f40868e0381f95652f2810ccad7167b7f3a106ea9274c116ebf01",
+      "summary": {
+        "blocker": 0,
+        "warn": 0,
+        "info": 0,
+        "total": 0
+      }
+    },
+    "composition_eval_review": "release/composition-eval-review.json",
+    "core_builder_evidence": "release/core-builder-evidence.json",
+    "self_checks": [
+      "docs-governance self-check: pass",
+      "product-definition self-check: pass"
+    ]
+  },
+  "claim_ceiling": "This manifest binds the governed Markdown Docs, all grouped Skill source, and portable offline audit sidecars. It does not prove independent model-run quality, SkillOpt optimization gain, real Rust migration, runtime installation, production behavior, or autonomous release adoption.",
+  "source_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "2e725a507247af3305d734923b5e29190a4a30ee6d4b7a5fafb156a53508af6f",
+      "size_bytes": 1592
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "eb67b0e3b4b712062deaf67a0222538c406ff29406407097586cec5150608997",
+      "size_bytes": 2484
+    },
+    {
+      "path": "README.md",
+      "sha256": "578128e6f86f9ef93c1eaa77d2e9b750b0bb63dffdaabee4e830d96919cc5b69",
+      "size_bytes": 1211
+    },
+    {
+      "path": "VERSION",
+      "sha256": "f33bac750a46745e444082ea9dd6b49ae327dbd4445e410530937c8c0e72bb33",
+      "size_bytes": 21
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "b86946e9d3a90ec6d83d14f84af0e33cc62addf8271c8c04da00773252cd1c24",
+      "size_bytes": 2675
+    },
+    {
+      "path": "docs/adr/2026-05-28-ai-coding-os-naming-and-boundary.md",
+      "sha256": "08d4f5371a1890517c9eb40b8ea15468043ed954c81adf475ad8f5d665ed1f0c",
+      "size_bytes": 997
+    },
+    {
+      "path": "docs/adr/2026-07-25-core-knowledge-network-and-goal-proof-experiment.md",
+      "sha256": "2d82ae301ccc5872bdef6ae9305a131e6fed4917e2f7803ea7020fded6cccbf5",
+      "size_bytes": 1053
+    },
+    {
+      "path": "docs/adr/2026-07-26-agent-legible-ai-coding-os.md",
+      "sha256": "e1f3efd894f6c87cddb2387e72ac6328c21f3bcfbda83a6c6de87c7c921b47c5",
+      "size_bytes": 2033
+    },
+    {
+      "path": "docs/adr/2026-07-26-agent-legible-project-adir-and-suite-evolution.md",
+      "sha256": "ce4c1aa5ac9df8490228437c6d1abf7a40c66893600854f91d667407a0b1fb4d",
+      "size_bytes": 1653
+    },
+    {
+      "path": "docs/adr/2026-07-26-cross-language-eaa-and-adir.md",
+      "sha256": "11a2ec4d589e95839265f58d67cfb5bbb4be6402d745c082738c1340b3c4f778",
+      "size_bytes": 2255
+    },
+    {
+      "path": "docs/adr/2026-07-26-evidence-driven-skill-evolution.md",
+      "sha256": "bd1ab02ebbe534e6728d261b9d2c513152145e3379acb48cffeb8e89139d0449",
+      "size_bytes": 2157
+    },
+    {
+      "path": "docs/adr/README.md",
+      "sha256": "f361352698cf7e119f1a8de3c41e8d20a7d862d4fa1e541434ab2b20e9c99a34",
+      "size_bytes": 1056
+    },
+    {
+      "path": "docs/adr/_template.md",
+      "sha256": "8accc8ca74ac354009595bcb38529ad72f91e8d0dbad387cc64ab31ea4c38fa9",
+      "size_bytes": 264
+    },
+    {
+      "path": "docs/architecture/README.md",
+      "sha256": "a84e2f17c5572c18280dae446bba77fb551e80a416329362807e29423cfc7a0d",
+      "size_bytes": 1503
+    },
+    {
+      "path": "docs/architecture/agent-legibility-and-decision-control-plane.md",
+      "sha256": "207bb1a5a6067ae6bb72a649ca788de0569c7013815fc7277ced96b62b1c1d95",
+      "size_bytes": 3302
+    },
+    {
+      "path": "docs/architecture/architecture-decision-system.md",
+      "sha256": "c84d1579e899880904ae745ffd59a9cfae7eb326f49ddea45491a5791d7b4e46",
+      "size_bytes": 3573
+    },
+    {
+      "path": "docs/architecture/skill-evaluation-and-evolution.md",
+      "sha256": "cd6c69907b2878b2f5eb2f3faa0160e6d4486833037d95d1a666141b43f795aa",
+      "size_bytes": 3044
+    },
+    {
+      "path": "docs/architecture/suite-topology.md",
+      "sha256": "ee82648200006bc8ded52b2249c15ed08bcde47f9adadd2652a70ef10a768e83",
+      "size_bytes": 3117
+    },
+    {
+      "path": "docs/product/README.md",
+      "sha256": "a47cc6aae8e177f706993dbe975fbce54096bf2d9e175573ea29cf317c9de0b7",
+      "size_bytes": 2902
+    },
+    {
+      "path": "docs/reports/2026-07-26-skill-suite-0.5.0-upgrade-audit.md",
+      "sha256": "6d9f11b5f81c55c2a9a4ac7bb67f6c19695662f0c76e69ada35ffa7f50896fbc",
+      "size_bytes": 2000
+    },
+    {
+      "path": "docs/reports/2026-07-26-snapshot-convergence.md",
+      "sha256": "1e21a20550515fed01936d5b93e828399f1866ca2668c5941445ef556a57cf82",
+      "size_bytes": 2558
+    },
+    {
+      "path": "docs/reports/README.md",
+      "sha256": "006a5fdbfa0a3802230b0a020e34cd9cd2769972f21792fb978d678615235162",
+      "size_bytes": 752
+    },
+    {
+      "path": "docs/roadmap/README.md",
+      "sha256": "60757685105e19be2ac25d14afe60f380e468ba8edce8fe12d6b8bf601683249",
+      "size_bytes": 2783
+    },
+    {
+      "path": "docs/ssot/README.md",
+      "sha256": "27c8ac15172c038edd3c1c4c5befcfadc3ff979ffd528a19667ad3fbc6114324",
+      "size_bytes": 5101
+    },
+    {
+      "path": "docs/ssot/core-doctrine.md",
+      "sha256": "7674e8dc335ae85345b3769ef158e084da47031f0bfb9d947e0bfb830df07b63",
+      "size_bytes": 3259
+    },
+    {
+      "path": "docs/standards/README.md",
+      "sha256": "3b596b6bcac6cf696976e24f230f6f07140eef8d0a8d538adfea925f115a9b41",
+      "size_bytes": 1319
+    },
+    {
+      "path": "docs/standards/architecture-decision-and-uncertainty.md",
+      "sha256": "c93e9ef21980319e6b0e564a678bcff26794c9c2f2c7e70e97656e8cd3ed5ddd",
+      "size_bytes": 2329
+    },
+    {
+      "path": "docs/standards/docs-governance.md",
+      "sha256": "eb17ac764bb6b9c0903b2b152c4552ffb7d110be384a7887e3288cc788a038da",
+      "size_bytes": 3145
+    },
+    {
+      "path": "docs/standards/skill-evaluation-and-release.md",
+      "sha256": "4d541d77ffb5db3165017d6c5240d6ff03937124d0b76298ba540a2733023ed8",
+      "size_bytes": 2399
+    },
+    {
+      "path": "docs/standards/skill-source-layout.md",
+      "sha256": "bb4e34592d32ed40462b5600887c8aa54c952edd7d2f610ccb1573b5a4ecc6ca",
+      "size_bytes": 3108
+    },
+    {
+      "path": "skills/README.md",
+      "sha256": "1f5b12506495641350b8f685b22be07bcbbd0cd2b2ca3ada942e8af17468b67f",
+      "size_bytes": 1598
+    },
+    {
+      "path": "skills/VERSION",
+      "sha256": "f33bac750a46745e444082ea9dd6b49ae327dbd4445e410530937c8c0e72bb33",
+      "size_bytes": 21
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/SKILL.md",
+      "sha256": "69ad972c32c2b9d016d4d90f3a3b52bf6d519dfd7d7c5f5918adafffaa3e336b",
+      "size_bytes": 6673
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/evals/evals.json",
+      "sha256": "0830939d3c2923660c41c480c01a4856a2f9816d9e7c6d683ea914b967050407",
+      "size_bytes": 5780
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/architecture-decision-ir.md",
+      "sha256": "bc3fe2fe90a8c62fefb5c018b15a597aa2342146c6c0a522e13a8902f13ad8b2",
+      "size_bytes": 2196
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/architecture-health.md",
+      "sha256": "6797ac17fab8c241415bfcb2f5b33746590c4867bf165a3324bc8b38aa12d141",
+      "size_bytes": 1813
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/decision-calculus.md",
+      "sha256": "8a53585aac563020b1d83623e1fa2f623da037d70d1aa6c651d8c82c64c33b30",
+      "size_bytes": 1759
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/decision-trace-and-autonomy.md",
+      "sha256": "88045653ace96736e50805ab2695484c3a537936e0176081e269c1f6ee95b893",
+      "size_bytes": 1094
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/extension-contract.md",
+      "sha256": "1550657da7fa0e52517c12826a60dadddf7722a2c8b5ea839f2bc3fca326179b",
+      "size_bytes": 955
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/issue-and-uncertainty-model.md",
+      "sha256": "e9820d980f7e82f8c427305c99c3f855039148ef14b5cedb68d2ac2aec5d0bf2",
+      "size_bytes": 2438
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/map-territory-and-health.md",
+      "sha256": "9542198a7db017a7eb49f5ab37336f9674e84f288a10766a6f442be72cc14f10",
+      "size_bytes": 1503
+    },
+    {
+      "path": "skills/architecture/architecture-decision-system/references/project-materialization.md",
+      "sha256": "f7cd33200e4602471169dbdbdcceeea78664bd367189936e3a35824c7b306734",
+      "size_bytes": 1103
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/SKILL.md",
+      "sha256": "a9cc168a64f651bc0bf079f8068481156479b1f4c1975ed4752136fa11b58090",
+      "size_bytes": 5000
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/SKILL.toml",
+      "sha256": "495bd4d5d90c8ae7e373600c7610a7167823b6f68d2d4a4fcb94262302fdfd16",
+      "size_bytes": 419
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/evals/evals.json",
+      "sha256": "1ee2042bacfc269a062a9a66f4d89fab49b5456b0dda9155a35ad41a03b54197",
+      "size_bytes": 4771
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/examples/effect-v3-runtime-client.example.ts",
+      "sha256": "f774f0b5392879e197519e661d4d15c344df4d728fb6bb968edb4a1cd61f44a7",
+      "size_bytes": 1392
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/examples/effect-v4-runtime-client.example.ts",
+      "sha256": "485a0fb53823589f54ec959fd55c41bcd9ff7559e73021a8f233652c7ad9c961",
+      "size_bytes": 1396
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/examples/tsconfig.json",
+      "sha256": "7f2990c85ff435f593fb9437b994f54b6c0651e1307e66ca6bcc80ea6f299be6",
+      "size_bytes": 312
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/package-lock.json",
+      "sha256": "e770b548729a83a762ea7b58be879669a07d8016598491a28402d67a7f00bf80",
+      "size_bytes": 14385
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/package.json",
+      "sha256": "10114949d735c7b9509e5c489394e4a65cac4ed1986ac9d4f71c5234da45d835",
+      "size_bytes": 307
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/adoption-ladder.md",
+      "sha256": "436f86490fe6ecb00053a54086bea1d17ec5e3beece4ade25188a6b2899ddc17",
+      "size_bytes": 2487
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/advanced-index.md",
+      "sha256": "0a9e5416c41f6e2453b8bfd2eb50c7b15a5679f9f60ec0e8ec890b9231769f17",
+      "size_bytes": 959
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/async-scenario-templates.md",
+      "sha256": "17221318485b1fdaf82ae20c45efdbae37e9728cdf91eba58db0af59977aa21b",
+      "size_bytes": 2074
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/backend-capability-slice.md",
+      "sha256": "df2d9dc1bc5c3c98168717cd44fb0ee2956f4ed9354a3f26fcc509f1ace6ea71",
+      "size_bytes": 2080
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/build-and-release.md",
+      "sha256": "69b22ba34191770cc973be11e9829ba14b99569bd325546ef12d8c8c044d0e0a",
+      "size_bytes": 4176
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/cheatsheet.md",
+      "sha256": "039ad116aace79ae718daee1cbcf48942d14b4bd394a0695cbfb5e60c9522070",
+      "size_bytes": 2349
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/cli-contract.md",
+      "sha256": "e50103e681f51134cf52f8155de6eeba54074ea293d4e1d7533e45b5b167fef7",
+      "size_bytes": 19418
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/config-schema-advanced.md",
+      "sha256": "389259893cfa9ab8359f92e8e16b5b273390153b99144af68b85877dd9f19ea6",
+      "size_bytes": 3951
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/core-doctrine.md",
+      "sha256": "b8ed94191a2d68cb36688931d412c3aeb7ca88c56c5b0ee6136915718d48966b",
+      "size_bytes": 2813
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/errors-and-boundaries.md",
+      "sha256": "4c87074013edf18b9ca604ad93d8d80a1b58daddd443ac70e015b2fc69099230",
+      "size_bytes": 2101
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/frontend-react-integration.md",
+      "sha256": "f074bc13f184a08d7bc0bc095d76aad8abede5404393bbbaf95ccf981ea87e70",
+      "size_bytes": 2155
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/httpapi.md",
+      "sha256": "bf68d0f6b2d7bf9be43982b893b2cb60565347675b7a734d09b55a9a6b222a8c",
+      "size_bytes": 4194
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/module-organization-coordination.md",
+      "sha256": "07a28469e9233e874a485b3d4ad8fde24cf3208d48047e504a8ebd9d269f659a",
+      "size_bytes": 2155
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/observability.md",
+      "sha256": "1c7ea300795128cc8a268d8262a5c417b9e83449ea93e5d3f4b4b5dd406a0fae",
+      "size_bytes": 4504
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/portable-kernel-and-actors.md",
+      "sha256": "8d45179a9e3975a79eadd774841e5190c5ac20a8fb4c662e69d51ec90c8e70c5",
+      "size_bytes": 3075
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/repo-and-db-optional.md",
+      "sha256": "1617b9a5966424bd8fcb9248367c7d4331b587e7c18a1c5e5f1157d9c8b32b3a",
+      "size_bytes": 2047
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/scope-resources.md",
+      "sha256": "2bacc578979a0525df09914096555b722014d4542116889d35504c25aa292bae",
+      "size_bytes": 2389
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/service-layer-runtime.md",
+      "sha256": "5c9d21b826f7e94ab1a985cd83f48b3b9b9245748c4c08cd128a7458b3b2665c",
+      "size_bytes": 2636
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/stream-queue-concurrency.md",
+      "sha256": "b2f9c9a0b2c399f6efbf2e19c8bd1dc42c722e8e7e6ba0f71bb05a409a516fd4",
+      "size_bytes": 1972
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/testing-effect.md",
+      "sha256": "9d0c233b66bb1413aa88a6d6b18482132379c8d0f0209d550eee5d58cc3b01d5",
+      "size_bytes": 1947
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/version-v3-stable.md",
+      "sha256": "3297b86ff22f4e07d809340495be18f2aed3fa162bc91530405bea54c2108c67",
+      "size_bytes": 794
+    },
+    {
+      "path": "skills/architecture/effect-best-practices/references/version-v4-beta.md",
+      "sha256": "896b5a68d2d41e319215942feb82ed0857ddf8b0e3d16d15a7bed1b37efde69d",
+      "size_bytes": 1445
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/SKILL.md",
+      "sha256": "a67364b203fc0202c32ad4baa5acc07ea0c28e3d4f751578c9a6f4bcb6ec8916",
+      "size_bytes": 8822
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/evals/evals.json",
+      "sha256": "9e9bc964c9570606b92c415766447033ca1572aeab3e784d4cce56b23497c545",
+      "size_bytes": 19232
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/adapter-authoring-template.md",
+      "sha256": "fbb0cebd86c2c7d1386bb5c7195be4436e0c8b69cc6b19b32212c64f137a68c2",
+      "size_bytes": 1379
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/adapter-frontend.md",
+      "sha256": "6aa4614d78d452d011a5166eb5ae764ec6d0e05d80053549b009c288a371afdd",
+      "size_bytes": 1684
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/adapter-rust.md",
+      "sha256": "7c2b51d530850759a60d106f905196ea40b7466956c9363fe6f34145e3b95bd7",
+      "size_bytes": 6459
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/adapter-typescript-backend.md",
+      "sha256": "807c4fca27a3f38efd936db2f81b64fe4093eab517e0af686519038739035558",
+      "size_bytes": 4486
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/ai-coding-change-protocol.md",
+      "sha256": "6798cb13d6277cc06791a76eac8684748e01f9dc6447ad8b320b3b4e8b6e68ed",
+      "size_bytes": 1804
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/audit-playbook.md",
+      "sha256": "bedbab9d30a62f3bd1fbdd350a76f6630a75b779c73c0f1760ae2c135d82ca3c",
+      "size_bytes": 4640
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/authority-model.md",
+      "sha256": "f0481e0da35701a2c408b09a6be997d0b87ce1a3b410b3af05798ee2a0539d05",
+      "size_bytes": 5368
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/capability-ports.md",
+      "sha256": "ada8d80f7dce3aeb9ee703882197d34a9c6c89ff4bb8ad3a2e35113e88698c92",
+      "size_bytes": 3887
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/composition-roots.md",
+      "sha256": "30085db9ff13fd9bdf23b344c41c19cba99226b33b00ab7672068f96ab066eae",
+      "size_bytes": 2829
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/consistency-and-authority-topologies.md",
+      "sha256": "ce18c67d52132e88c60cad4ba57e1edc146a9d8ded680fc5cdb6161019bc3cdd",
+      "size_bytes": 3884
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/core-doctrine.md",
+      "sha256": "6e347958adf34540eabdde91eb130caa9baf31f061ed5c80adb297e0d4cf6a44",
+      "size_bytes": 5498
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/evidence-harness.md",
+      "sha256": "978561a2c18203d7638286a01f9da332f1182787a53e9ac1d5b0df1ceefc51c1",
+      "size_bytes": 4923
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/evolutionary-modularity.md",
+      "sha256": "799a5463dd5f3a325a20dee9af11f8d407c66d7aac5d18de23cc1f1f4f7027e3",
+      "size_bytes": 3797
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/forward-evolution.md",
+      "sha256": "4d6ab6b2883110d7bac3d545345e8c57b26dc8f8079e3d4a1c0a01dd7ad79164",
+      "size_bytes": 3174
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/mvp-takeover.md",
+      "sha256": "558da0ffe52922e8a950f1b047b16804b792def6d772f869a8608741431e80c8",
+      "size_bytes": 2487
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/persistence-and-events.md",
+      "sha256": "2eb1b2c66be667625740c6d20b85b070179e8481880d551e3bc95ce104e8b010",
+      "size_bytes": 3542
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/pressure-profiles.md",
+      "sha256": "0e537d98cbf7d9a05bc74d2dce84fe74bae39165fc9a89492ca760708d5a1285",
+      "size_bytes": 3852
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/repository-topology-and-packaging.md",
+      "sha256": "a53322bea0f59051646a6f162d8836c80a35f2f3534be852aaf794f1849219a7",
+      "size_bytes": 1873
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/scenario-agentic-systems.md",
+      "sha256": "f00f68dd8e12f116e932b64ece405111a2cc82e866829dea2b8a8eeade7b5ad2",
+      "size_bytes": 3685
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/scenario-mappings.md",
+      "sha256": "43f20787823e2d7f2be91c611693a95dfd4a0555478f07d4f858c3006a284fd8",
+      "size_bytes": 3261
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/source-topology-and-semantic-naming.md",
+      "sha256": "e3292b5878c64eafed1dc3d079f2f3aa0027778d57585a1550a906882da0bc6d",
+      "size_bytes": 1582
+    },
+    {
+      "path": "skills/architecture/evolvable-application-architecture/references/use-case-kernel.md",
+      "sha256": "43849306d0a867b1e810f1d8ef2814c8e9cc3ace4cd3b3f7f97b2411cd392299",
+      "size_bytes": 4346
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/SKILL.md",
+      "sha256": "d30fdef3e7a64f169b40854b3851c80791f51a192c5b1eb15ea8f924de993287",
+      "size_bytes": 4967
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/evals/evals.json",
+      "sha256": "2f74d88ef5fae38dec8c31ea5564932a77c13958c54b7683d5db8c7bb5467c05",
+      "size_bytes": 3771
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/audit-checklist.md",
+      "sha256": "93d0ba8c412cbb1cd46d08479fbc7a5dde12aaba951d22df2c234cd8826a3f41",
+      "size_bytes": 2433
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/client-contract-evolution.md",
+      "sha256": "55e5941f17eca06246851df1ad249afed1ebbb110f07d230d92d67918f9cb60b",
+      "size_bytes": 1791
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/core-doctrine.md",
+      "sha256": "6e5fa7a31f8c51a4a9b9e2f0d9eb6a449344e93c8dd3c1286434d05e526628b4",
+      "size_bytes": 3548
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/naming-semantics.md",
+      "sha256": "ab9be293b0c550369aee2473ed286f626558d7ef947eba1e1b3a73eb7feaa9cb",
+      "size_bytes": 2732
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/react-adapter.md",
+      "sha256": "ec805e041ca902c98b57df5eac4f18469807bf1a7c88ef6d58933f1ba95b22c3",
+      "size_bytes": 3348
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/realtime-capability.md",
+      "sha256": "aec6b3c3cc410e844af8b5e46115121c94297e10bfdbb3b09b39e5814ce5c7ce",
+      "size_bytes": 2368
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/reference-profiles.md",
+      "sha256": "80b050a8f219f565aabd7e4a779fb1adb8ca301e9afe81ae86587ec6391fbf6e",
+      "size_bytes": 2194
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/state-and-consistency.md",
+      "sha256": "f6b9f36edcd34972afe96a40fecab7ac93e996550a61591734310abb83acddeb",
+      "size_bytes": 3620
+    },
+    {
+      "path": "skills/architecture/frontend-architecture/references/topology-and-composition.md",
+      "sha256": "4d11c6e576b4d000ce55ed4c0d989a53ccdaf5e1a06e3aec201c512d9c0375ad",
+      "size_bytes": 3005
+    },
+    {
+      "path": "skills/capability/interface-capability-planning/SKILL.md",
+      "sha256": "fe75618574ef6d09e0bd6f2f3af81abcb2e15c9131dab1e926e2dd715dcea02f",
+      "size_bytes": 3767
+    },
+    {
+      "path": "skills/capability/interface-capability-planning/evals/evals.json",
+      "sha256": "e8ee2b2a0f6a4387ed64432fb0ea575e779c442ae4853e14dbae4e9fd9a7486d",
+      "size_bytes": 3011
+    },
+    {
+      "path": "skills/capability/interface-capability-planning/references/planning-workflow.md",
+      "sha256": "d61b3d05b9f648ab22b35879c603c2eb9e9ab03eb70ccdeaacc6c75ae83cd075",
+      "size_bytes": 9283
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/SKILL.md",
+      "sha256": "9a518f3a66cfab7aa4880a9726b912cda07bb1242a238b4e6d156adc6ced90c2",
+      "size_bytes": 4176
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/VERSION",
+      "sha256": "2985be8b28d3ade858e8d8fb4bc22f565b1bf6020dff982dce141f7721b9999c",
+      "size_bytes": 6
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/evals/evals.json",
+      "sha256": "5c1a38c5031fccc6ec3a2a3e0709f11af732d019c833c500856c90e5bfee3874",
+      "size_bytes": 5638
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/decision-and-uncertainty-contract.md",
+      "sha256": "82045caaa0259215af65ab8b46495e49cab395ee6ab0689545edfcedb77bfa42",
+      "size_bytes": 1519
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evals/README.md",
+      "sha256": "f265837cd27a3802e2b94009f9fb77d85628d69335fdd2207ba633ec7b28e494",
+      "size_bytes": 870
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evals/skill-evals.schema.json",
+      "sha256": "03aad10e2789840c9ede022c686dec150496c4bf0ee97d089f34a8b1b2572a0b",
+      "size_bytes": 1461
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evidence/evidence-envelope.md",
+      "sha256": "41ab36f3c7cd37efc37dbbd14745d484f9834999c672d67f0658d57f4f289a78",
+      "size_bytes": 2540
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evidence/evidence-envelope.schema.json",
+      "sha256": "3f552af9c049ce592842c087db837c1691f325325fe6aa972fce358a1995e70a",
+      "size_bytes": 5553
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evidence/examples/execution-completion-evidence.yaml",
+      "sha256": "dd1db4e63d9c21bc4a0dd44e5dce54f29ee504e370f8a86618feb660e892744f",
+      "size_bytes": 579
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evidence/examples/forbidden-promotions.yaml",
+      "sha256": "16a8ea68e195b2e2e2b063d0772bd216b992b6076302b29d47389de926038ea9",
+      "size_bytes": 1584
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evidence/examples/harness-retry-observation.yaml",
+      "sha256": "69a95935865b6c5fd6280fd25a5444c87c502dbb296347417acc4d1e6e7042af",
+      "size_bytes": 652
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/evidence/examples/product-decision-evidence.yaml",
+      "sha256": "296abbea7bb50f479b49ebd9430cb1b435add7d068669f4ecd84a02c4bb46c96",
+      "size_bytes": 455
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/filename-patterns.yaml",
+      "sha256": "4b1c794baa8233c6d18526e4033fb5ee70980a2ecbebe5b28998d562bec7c0a6",
+      "size_bytes": 2949
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/guarded-terms.yaml",
+      "sha256": "afa10f00ce0e5ec542909055aa7a31b610f851b5de58b9bbe0386d6a2f30b952",
+      "size_bytes": 5060
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/harness/README.md",
+      "sha256": "5a32c4f2a1eb68e0973fb52fded40c56d1dbfe0085c49af9834f023cb0c3db37",
+      "size_bytes": 1634
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/harness/examples/order-checkout-retry.descriptor.yaml",
+      "sha256": "215613bb6c12d043276c5ec51e36573f70d62db2ad01083e1d87874785e55491",
+      "size_bytes": 586
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/harness/examples/order-checkout-retry.result.yaml",
+      "sha256": "4147c5cd74f5484655c958f126da32012f5a7597c7eb57af7b47480f1b78840a",
+      "size_bytes": 785
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/harness/harness-descriptor.schema.json",
+      "sha256": "e35f3af5ea152508a7b567aacf88da1712795b5c35fc789e392c79bd8f0fc42f",
+      "size_bytes": 1909
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/harness/harness-result.schema.json",
+      "sha256": "e444d14c99652f0ba90ae9e775c1bc91e4637c63a4e2fedd766034182efe6e2b",
+      "size_bytes": 2617
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/harness/harness-vocabulary.yaml",
+      "sha256": "9afd4d65834bc545972f5c31042893a9190f9e2ffddeb58aed55aa94c5c9fb27",
+      "size_bytes": 1260
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/migrations/v2-proof-evidence.md",
+      "sha256": "95b5d9283e689b60f82ecb38506169037f878254862d8928d2571fdf26f19fab",
+      "size_bytes": 2416
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/proof/proof-surface.md",
+      "sha256": "0d23fdef1051e2fdaefac5eaa9bc42d85791f77eb4be83582b48ab76c7f45bb5",
+      "size_bytes": 2196
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/proof/proof-surface.schema.json",
+      "sha256": "39e62e10518286f8f579690573e4f6b22ba613c0e23edf351c61782f8696a360",
+      "size_bytes": 1536
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/semantic-vocabulary.schema.json",
+      "sha256": "58d567d0b2a2bea25ffc2feb74bb20ad7cdd6e3d775482069ba0ba4d204709b5",
+      "size_bytes": 1192
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/semantic-vocabulary.yaml",
+      "sha256": "f51dc7845d9e85d8b64e24ac8e4c71e517d885bb393aa56eeb5115e234ed1b72",
+      "size_bytes": 12075
+    },
+    {
+      "path": "skills/contracts/ai-coding-os-suite-contracts/references/skill-coordination.md",
+      "sha256": "4dc5fea9ec6ba0d4835011aaad4209216e9863e0fe5fd4457da9969159ac646a",
+      "size_bytes": 5527
+    },
+    {
+      "path": "skills/governance/docs-governance/CHANGELOG.md",
+      "sha256": "0eab5f2c36c57b02b4315c8c2e9474d49c42333a6e34b0a5b36e77d5e308b1c1",
+      "size_bytes": 4223
+    },
+    {
+      "path": "skills/governance/docs-governance/README.md",
+      "sha256": "290b1dc76e733a9e1a3493d49089e57c05379332a6af61f6e5d3247fdd756129",
+      "size_bytes": 2329
+    },
+    {
+      "path": "skills/governance/docs-governance/SKILL.md",
+      "sha256": "cbf189b40b1d412ae8ff148f3baddcb1a3cff3316305c0c100873ba5fece716e",
+      "size_bytes": 9652
+    },
+    {
+      "path": "skills/governance/docs-governance/agents/openai.yaml",
+      "sha256": "869d68d621324085d349573e1f2cc73907a4687cd2b37daf48e24473d116083a",
+      "size_bytes": 492
+    },
+    {
+      "path": "skills/governance/docs-governance/evals/evals.json",
+      "sha256": "aa36c98211a5f4aef556621a697d3506fa632718ac66acd2765720d04f9fcfa0",
+      "size_bytes": 21745
+    },
+    {
+      "path": "skills/governance/docs-governance/references/agent-entry-and-preset.md",
+      "sha256": "70733507f1afbf2aa791ebf2f274907f695a415466cd36b9429a2fbbd4ff4d3c",
+      "size_bytes": 4318
+    },
+    {
+      "path": "skills/governance/docs-governance/references/artifact-graph.md",
+      "sha256": "13d4d2542f53b0ed92b933e433df39cad8ee77b026a3a4f654b7a18637887780",
+      "size_bytes": 2447
+    },
+    {
+      "path": "skills/governance/docs-governance/references/current-vs-future.md",
+      "sha256": "0d4e22089597921f148c9be0eb140b95d67832e68f0af53f8cddb1d7c0c72afa",
+      "size_bytes": 4554
+    },
+    {
+      "path": "skills/governance/docs-governance/references/docs-layer-model.md",
+      "sha256": "467117879a3afceb57bc36543c6190dafbd3d9ba772a8c37128c004ba020d471",
+      "size_bytes": 7636
+    },
+    {
+      "path": "skills/governance/docs-governance/references/elastic-shape-and-identity.md",
+      "sha256": "924ed76a42e260d9fdd6f4ab16890defe5355cf6f387945522cd5cfea5ce640a",
+      "size_bytes": 6486
+    },
+    {
+      "path": "skills/governance/docs-governance/references/knowledge-freshness-and-context-legibility.md",
+      "sha256": "650288d8b9e15f5dc7821352968985f8f65704c7e23eb25589e60fcface6cac7",
+      "size_bytes": 1562
+    },
+    {
+      "path": "skills/governance/docs-governance/references/lifecycle-cleanup.md",
+      "sha256": "d9a8c712f6ef253ddfa365471f4903fe680054f944ec53ea21cb5e89214c2a43",
+      "size_bytes": 4229
+    },
+    {
+      "path": "skills/governance/docs-governance/references/roadmap-and-future-capsules.md",
+      "sha256": "4f8f426dfe179e6a44e98534f985a4b59be5559aba5ef8bb2aeab039c127cc34",
+      "size_bytes": 2596
+    },
+    {
+      "path": "skills/governance/docs-governance/references/source-code-alignment.md",
+      "sha256": "c40918b26ff2c9308d1eebec11deda8249e27e885cab0d5897eb15c673b00c90",
+      "size_bytes": 2133
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/common.py",
+      "sha256": "65ecbf0a43732136c4e6ee38aae60f3d38eed9b8265261ac9f3dc4dc03dab56e",
+      "size_bytes": 3729
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/run_docs_audit.py",
+      "sha256": "8be1f3e2bd8deb32c782baa541ac628fc68388a094f34fc40d4d063115ea4896",
+      "size_bytes": 3391
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_agent_entry.py",
+      "sha256": "071b262398d68bb3da0e1c656733ae4b2cb7940b233966bdec22abf8236115f1",
+      "size_bytes": 9564
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_artifact_graph.py",
+      "sha256": "9c07bba89806c0b671068b088d5351c5de9534e68b82629c792183a5ccce27ae",
+      "size_bytes": 5206
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_docs_agent_readability.py",
+      "sha256": "49dd6578aa7f00518c99a3d0d9eaa5baf3408584f3ca9ac22168ab4d6052f75f",
+      "size_bytes": 4674
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_docs_baseline.py",
+      "sha256": "c781f81d37298b52a7017ab9782199fa5ada71fb0d3cdc270de7d164cec91e28",
+      "size_bytes": 4157
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_docs_links.py",
+      "sha256": "8393477b4c863698a36ea1d963630aab16d2e14d1a3197ddfd2a2bb0c6a903c1",
+      "size_bytes": 7247
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_docs_structure.py",
+      "sha256": "baed16aec18a7f1e03c2bb2533cf27b909b44d790747a701130f049ae2dce206",
+      "size_bytes": 7983
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_future_capsules.py",
+      "sha256": "9cc96d0dc8ae2ea5959d9e8518a61806eb2e4740d60a501febd8a3568d580b86",
+      "size_bytes": 6597
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/scan_source_doc_anchors.py",
+      "sha256": "eecb33640f786b1c1da8b8320484c9d26bfa46dcf678c84bed965bacc56e6039",
+      "size_bytes": 3079
+    },
+    {
+      "path": "skills/governance/docs-governance/scripts/self_check.py",
+      "sha256": "0173364a5f939833ec051081dbdf252274aecdcc9fb4181ba6f973dd29c550ef",
+      "size_bytes": 2498
+    },
+    {
+      "path": "skills/governance/docs-governance/templates/decision-record.md",
+      "sha256": "1aa0e79d1175159acfdbada335dd86ae1b79dc4a1b7afa48cfde4714e4d38ced",
+      "size_bytes": 487
+    },
+    {
+      "path": "skills/governance/docs-governance/templates/future-capability-capsule.md",
+      "sha256": "49848a2cf4488b201b24a3ef97ce1875382f3ee4d8a6a10c8a43ec1b78449b17",
+      "size_bytes": 924
+    },
+    {
+      "path": "skills/governance/docs-governance/templates/layer-readme.md",
+      "sha256": "bbb76cb3f43b05cd9d33eb5edea4c045a2109b9f073e42f6b9ef8f4c22aec88a",
+      "size_bytes": 801
+    },
+    {
+      "path": "skills/governance/docs-governance/tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "skills/governance/docs-governance/tests/test_scanners.py",
+      "sha256": "72d915c367f640b739ac272303662b45c8e8e97df359c0cc12d5e63f8651a773",
+      "size_bytes": 9348
+    },
+    {
+      "path": "skills/harness/frontend-test-system/README.md",
+      "sha256": "751aee0acf7f31cd1dd334c20bd838784be79b230217825f526da22cb649ec6e",
+      "size_bytes": 2614
+    },
+    {
+      "path": "skills/harness/frontend-test-system/SKILL.md",
+      "sha256": "10c5da97c93b0bbf2ec9a6178cdd114aeacafbd5e3858d0ae0142c2a92f2b4af",
+      "size_bytes": 3813
+    },
+    {
+      "path": "skills/harness/frontend-test-system/evals/evals.json",
+      "sha256": "352c23c780d28f9ac13c31718ff5361bc99fa92c96311030353059f322f77f44",
+      "size_bytes": 2645
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/claim-discovery.md",
+      "sha256": "210420954775be50d2c52a1c48ca7d69d1dc999452803c56586608d28db152e4",
+      "size_bytes": 3067
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/contract.md",
+      "sha256": "b6e73f7a5f11711e296677fcbbc2e98a7095e200e2d89b1598a3ce486e954c28",
+      "size_bytes": 2419
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/e2e-playwright.md",
+      "sha256": "09d24f659ab4ae3ba6e4a72c9793e750e6d69d0141cc91abebb551d726b501fa",
+      "size_bytes": 3048
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/evidence.md",
+      "sha256": "6cf0cbc66ba3ff2057c07a0d221fca0f27c93cea336eb930724e92268eb6ff41",
+      "size_bytes": 2904
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/quality-gates.md",
+      "sha256": "cc699b24c407be2f96fa5028548d1c1450c482810f7bb405a295427e053d855b",
+      "size_bytes": 3334
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/unit-integration.md",
+      "sha256": "16fb6c4137949043d804c51870dee8c5eafaf84e57a80d9e10c3d648c9b92ccd",
+      "size_bytes": 3017
+    },
+    {
+      "path": "skills/harness/frontend-test-system/references/upstream-sources.md",
+      "sha256": "c8271e499393ca71434ef9643c4250b9f06f2b9674f4e6a1439f28dbcccd225e",
+      "size_bytes": 1571
+    },
+    {
+      "path": "skills/harness/headless-product-harness/SKILL.md",
+      "sha256": "771c2a5894de5567db4d13d88945eac65cfe7274469e88c52e3ea2b96041b788",
+      "size_bytes": 4830
+    },
+    {
+      "path": "skills/harness/headless-product-harness/agents/openai.yaml",
+      "sha256": "7189f61044b71ce4e2a63e4e3ce3ecf476c1532b04b4303b818ec89882445e63",
+      "size_bytes": 222
+    },
+    {
+      "path": "skills/harness/headless-product-harness/evals/evals.json",
+      "sha256": "7f492cd6bd64ce2bfd96f2cf79d2b2639e236a0c6942b59b8501f025f543eccc",
+      "size_bytes": 3259
+    },
+    {
+      "path": "skills/harness/headless-product-harness/references/boundary-check.md",
+      "sha256": "fb3d0e34e6b91f96f623e819c3977efd41b4010b4e9331fb571e9308ae5f1dd5",
+      "size_bytes": 1337
+    },
+    {
+      "path": "skills/harness/headless-product-harness/references/command-surface.md",
+      "sha256": "0b0827f9f25dc83f0d7e2819c7005f7f130134a5995a297df8e50ab6d06112a5",
+      "size_bytes": 2021
+    },
+    {
+      "path": "skills/harness/headless-product-harness/references/evidence-envelope.md",
+      "sha256": "2872a0b29b932457a103caa99f24cbd687756d7e114abd4f06a119fdae84ed1c",
+      "size_bytes": 1728
+    },
+    {
+      "path": "skills/harness/headless-product-harness/references/fixture-replay-ladder.md",
+      "sha256": "da9f79f76241f327a7eba1c00cd7fc8331af00b876e7c4f6bacccaa6e80fb8e2",
+      "size_bytes": 2185
+    },
+    {
+      "path": "skills/harness/product-harness-system/SKILL.md",
+      "sha256": "5933fb0bc5b28f61af2614b112852de7c8b9f93aa0a865369080131528d1b9c7",
+      "size_bytes": 6661
+    },
+    {
+      "path": "skills/harness/product-harness-system/evals/evals.json",
+      "sha256": "44b648819ac8229c84e17e48a6e18177dfd8cdc66caa6eba7b71d8087dd2301e",
+      "size_bytes": 4249
+    },
+    {
+      "path": "skills/harness/product-harness-system/references/artifact-model.md",
+      "sha256": "5f52ac9defc26321fe33dabc3449ab4a6da05eaca85842ad005f41049dd819cf",
+      "size_bytes": 1687
+    },
+    {
+      "path": "skills/harness/product-harness-system/references/claim-ceilings.md",
+      "sha256": "25bb3d0b10fa0da1fa25479adfb7fc98219c3a96b9d2631999a54f6cd9beb115",
+      "size_bytes": 1445
+    },
+    {
+      "path": "skills/harness/product-harness-system/references/empirical-unknowns-and-probes.md",
+      "sha256": "5a78b7fa055952c4f17b7c05a83cc162719bb5fb5192697f4cbd3b0a32a855ea",
+      "size_bytes": 795
+    },
+    {
+      "path": "skills/harness/product-harness-system/references/lifecycle-and-placement.md",
+      "sha256": "c1f6f4f0c6228bae9b1c8e285f49a7d714e025375d0c28e77a56479d26beec46",
+      "size_bytes": 1966
+    },
+    {
+      "path": "skills/harness/product-harness-system/references/trace-contract.md",
+      "sha256": "ee3f54db4c4cd222b833c7fb9f89b2eb2612fc0b1b22f4ba8e943f702553097c",
+      "size_bytes": 1707
+    },
+    {
+      "path": "skills/harness/ui-product-harness/SKILL.md",
+      "sha256": "fdcae4a208f42c7a8021fa6f8a08d2055288ced5e8865c96dccca88eca345389",
+      "size_bytes": 4791
+    },
+    {
+      "path": "skills/harness/ui-product-harness/evals/evals.json",
+      "sha256": "2b3a5ba9967d8b765af7a98553031091d07d25cb91f79f66722beda89bb9e134",
+      "size_bytes": 3390
+    },
+    {
+      "path": "skills/harness/ui-product-harness/references/adapter-discovery.md",
+      "sha256": "1cf187f9d38dbfab019858712204477bc587c08c0f6cccc5c3e92fd9d063efdc",
+      "size_bytes": 2489
+    },
+    {
+      "path": "skills/harness/ui-product-harness/references/frontend-boundary-model.md",
+      "sha256": "cabb26530e75b80af3f303c77726a5e59230777a9bf763f184ffca66591654f0",
+      "size_bytes": 2938
+    },
+    {
+      "path": "skills/harness/ui-product-harness/references/harness-ladder.md",
+      "sha256": "f9be93280063d8a2fd3fb133f98400bea5071d88e94092c2eb6b8aeb6bfdff86",
+      "size_bytes": 2297
+    },
+    {
+      "path": "skills/harness/ui-product-harness/references/interface-trace-dsl.md",
+      "sha256": "c79e2c6817eb516ba419441434b788f4273bbebd9960919125948bae299f8a65",
+      "size_bytes": 5732
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/SKILL.md",
+      "sha256": "ca66b915a9aaa6f609e79fe0f0a2ae0107eb14e734df205aea641b6caac36943",
+      "size_bytes": 6574
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/evals/evals.json",
+      "sha256": "79af0864ae8f40f2acc05a9de9c77b94e15bbcef06efb423e598b466a6fab540",
+      "size_bytes": 4221
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/candidate-synthesis.md",
+      "sha256": "0721044d47fef987d3881e63d681b903f721a7167fabb72a19266c96390d1ebf",
+      "size_bytes": 548
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/capability-profile-and-epoch.md",
+      "sha256": "1d91ee6f38c83ced32f4ebe2ecd4922cea9bddfe4ec15d4ae7c073155a4104d6",
+      "size_bytes": 549
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/compatibility-and-support-envelope.md",
+      "sha256": "416de58694bd0260862d5b6899b68e9cb3ae441f58839a273611655794c7d15d",
+      "size_bytes": 513
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/fresh-context-review.md",
+      "sha256": "3e7c77649bf74f886c4f8a9bce2386479b1997da3aceeed0f55c4fff36bbf97b",
+      "size_bytes": 638
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/instruction-admission-and-ablation.md",
+      "sha256": "70acae949d220b10a94b3b5613988d231b73d126712abb3467bbeb95e2ab9e97",
+      "size_bytes": 584
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/protected-failure-corpus.md",
+      "sha256": "2c5c6c01d7695bb3aa1865fdbe45e7d57ab757de66efb474407652a723681865",
+      "size_bytes": 694
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/release-and-rollback.md",
+      "sha256": "7fb9fb5032c863d724f31a0c6c33d1d38d2fef2db731d4659ec391987ee885f2",
+      "size_bytes": 575
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/self-application.md",
+      "sha256": "04dad330aa24bdfe84734a397c21ffaef66c4e8d96e869b5ae70584e17582233",
+      "size_bytes": 543
+    },
+    {
+      "path": "skills/meta/ai-coding-os-evolution/references/suite-evolution-cycle.md",
+      "sha256": "097f5bdf7f33b6431f6d31351b6cc924213e6adad8df707d2b0f216cb906a28e",
+      "size_bytes": 438
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/SKILL.md",
+      "sha256": "cfb4944b6d10eea38070ec109f704b0b37571a9678c22268b59675acc5715111",
+      "size_bytes": 5062
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/evals/evals.json",
+      "sha256": "8b58f8c49b18dc4ec34fe44d46a69cf3adb86714cdc6a7d4b6bbfa5ae1781387",
+      "size_bytes": 3910
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/ablation-and-transfer.md",
+      "sha256": "0b17c023cae0417aca792f294f141110673d18354f2b368104faba921d31a73c",
+      "size_bytes": 953
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/bounded-optimization.md",
+      "sha256": "6f789bc73180b535479c151ffff3ce0eec90c2d8ed2042cfcb934aaaa3a5dbcd",
+      "size_bytes": 858
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/corpus-and-split-integrity.md",
+      "sha256": "2a450f396365e421a7e81d642a959fc53400b31529bc6e09851ec0242d6b9314",
+      "size_bytes": 872
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/evaluation-ladder.md",
+      "sha256": "11aefedee84f25a8a482d131ac29b41faba5322c88f9932533b6495f3874317c",
+      "size_bytes": 722
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/experience-intake.md",
+      "sha256": "8175c96101113824f5787b023b3f0975afd0988cb8d14d05a1df4a5e31bb2daa",
+      "size_bytes": 625
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/failure-attribution.md",
+      "sha256": "be42ce2490e5c46697568539a608883c82677fbfd5ad7a5b2d5ace41bf5d51eb",
+      "size_bytes": 995
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/hierarchical-gates.md",
+      "sha256": "e8d6f2b955b107e01b3cc580ba4007d97b8e8a0af32aed5d98442aa2b558c4d0",
+      "size_bytes": 844
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/model-run-evidence.md",
+      "sha256": "f14619cb1bd551f8979c70eadb9a5275099909a3d0c4534f7986a03053aedd8b",
+      "size_bytes": 721
+    },
+    {
+      "path": "skills/meta/skill-evaluation-system/references/skillopt-derived-principles.md",
+      "sha256": "a8a17db40fd975be3f3119c46f3b9e4dd0c251366a255b9d5e4f475aa4a20c00",
+      "size_bytes": 1008
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/SKILL.md",
+      "sha256": "de1f224efc50d79128204fa55001a39a84d0d064db09cc3d1c30aa78463776e4",
+      "size_bytes": 10615
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/VERSION",
+      "sha256": "6ef0c5c410cbd8aade33ab25ce7ad08b59e7e9e02c0d5e2d26748bd15f9daa08",
+      "size_bytes": 21
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/evals/evals.json",
+      "sha256": "db12633ff2648724e4b24e7b85d958da3af437ee38395f2d10adc23b58b9f8aa",
+      "size_bytes": 6933
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/README.md",
+      "sha256": "e18f4e252caf2b55cf9c9755648c596b7f1798d2a6fd8125053ffba9e6cf6af9",
+      "size_bytes": 1159
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/AGENTS.md",
+      "sha256": "32fff58f7826edab6e34b8230bd144c5e27437073b97999324ecedb2bc3eec8e",
+      "size_bytes": 2529
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/README.md",
+      "sha256": "406206778c9f61052699ae0f843c08ab21d5c4950e76656c5d537fbc1aa41c32",
+      "size_bytes": 1036
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/adr/0001-adopt-evolvable-application-preset.md",
+      "sha256": "1694c2b505f82e83d169145415293c2141786257c4a9ebcd42448c81fa5116d5",
+      "size_bytes": 1083
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/adr/0002-next-app-router.md",
+      "sha256": "24327c6886c97d8ec96c74706fddd89bf0eff99e34b602d7af9e411a0f8caeba",
+      "size_bytes": 536
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/adr/README.md",
+      "sha256": "02e10fc26b038228badb44b64d9234c18e5fc32f90ee389ca5c1c9ba9f8aba86",
+      "size_bytes": 1021
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/adr/_template.md",
+      "sha256": "bfbbe84f3459bc9c3ceea786b539c7d57e956c9064cfcf623e83ee439dad5ac9",
+      "size_bytes": 179
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/architecture/README.md",
+      "sha256": "dcc76f4c390bc2820944eb7bd70ac3dbc07d0ddeeca9c23c03638d574878f5bb",
+      "size_bytes": 1069
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/architecture/fact-authority-map.md",
+      "sha256": "972b6a3c052b5298fecb565f7b373c7bb779b8158549b3f4082095c52f77c11f",
+      "size_bytes": 744
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/architecture/repository-topology.md",
+      "sha256": "37bd2547c64698a7375d78b4427dd096af534b01b19e49bf3480eb448263f439",
+      "size_bytes": 1115
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/product-harness/README.md",
+      "sha256": "cd09c473811dcdb2b1d9d3eff2a74f9d9f2972e3c0c80c9610a70718c8a04aca",
+      "size_bytes": 965
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/product-harness/coverage.yaml",
+      "sha256": "abeaad473d5aa8a8fffd4cd511a38d991a94be1491163907555e31b0e09924db",
+      "size_bytes": 158
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/ssot/README.md",
+      "sha256": "08b06f5345290a1d13d7cc5012c2b44667968f5f4bc3c29ccf1ef92161b58dd7",
+      "size_bytes": 965
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/ssot/product-language.md",
+      "sha256": "977ab339043e784d7c0de9c5ae55cc463a8576bc1e5565cfa9d7842eb07c5a8d",
+      "size_bytes": 529
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/standards/README.md",
+      "sha256": "67edc93623f67b3d6614a79440312c46361c6878409e0badc5dbb8aa3d71e7f5",
+      "size_bytes": 1041
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/standards/architecture-profile.yaml",
+      "sha256": "7711d28821a9553d370d3530a08cffadfe1b862577b2e97d1ba11874522165dc",
+      "size_bytes": 1676
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/standards/naming-vocabulary.yaml",
+      "sha256": "ec9a792226b9ba9ce0a53f018ef6834648249802793f937d5977f1cdacc4cbef",
+      "size_bytes": 20444
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/standards/source-topology-and-naming.md",
+      "sha256": "3f6d2676c928acbde3ff6a3623a62ca4d07c0205b4246f9c32753b9c1031448c",
+      "size_bytes": 3073
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/docs/standards/verification-policy.md",
+      "sha256": "fe7cb8fe061f478eac9f3d374004698e247b6e7b47dfc4e8ba3bc67d568b70ad",
+      "size_bytes": 941
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/tooling/architecture_check.py",
+      "sha256": "c2176652568a02b775116f10ec0788431d963146f222cbd8192352554d9b5b37",
+      "size_bytes": 2834
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/preset-input.yaml",
+      "sha256": "e7ef15979124185c6162792248b5464d67d148da4f0fc9c4045fc184a79e5afa",
+      "size_bytes": 199
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/examples/commerce-platform/project-overlay.yaml",
+      "sha256": "4b83104f8934f1f3eb253209a60e9a6b7b8857abefb2755ba48eb5affff11290",
+      "size_bytes": 3435
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/agent-entry/profile.yaml",
+      "sha256": "718ee5bde2bedfa3fef0d6669a536f771c10a13e9a3009e777a4bd61eb7d8505",
+      "size_bytes": 338
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/application-core/profile.yaml",
+      "sha256": "eb99d5daadb48adc4d3c1430c4e6a153a5708be0d2f281238c94127b34443975",
+      "size_bytes": 1100
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/effect/profile.yaml",
+      "sha256": "bfae87c6dac05ea0fc3bb2f273ecd3bcf313442f7f55dacdbc3ea520daac0083",
+      "size_bytes": 523
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/effect-httpapi-v3/profile.yaml",
+      "sha256": "571e9eadac04492549aa32a69b26efa5968b4319f5e937062fda422f786e3bf4",
+      "size_bytes": 310
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/effect-httpapi-v4/profile.yaml",
+      "sha256": "3a877dcd3da7e92af43ca0e3fdd3854e3bf879e8c314fae2013b45b5a1c1f504",
+      "size_bytes": 311
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/headless-product-harness/profile.yaml",
+      "sha256": "f086c2f6f832ce280c9dbd67b0e1878e0ff574e491a3927f32d2f7bc03c76394",
+      "size_bytes": 266
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/monorepo-core/profile.yaml",
+      "sha256": "597805c68aa742b9bd1c048ad35691f599e187887afea23fb4a8bc7c80e72585",
+      "size_bytes": 580
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/react/profile.yaml",
+      "sha256": "505a745de5a967d492f92adb9c9bf985b90614c2636c2caff71c1379c756a0ab",
+      "size_bytes": 508
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/rust/profile.yaml",
+      "sha256": "f5431257803676a55fdb9b5cdd9d2db3849c7444ee9cfe8a942e11e36f3c655f",
+      "size_bytes": 843
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/typescript-node/profile.yaml",
+      "sha256": "bfa3fd4f0a02e576b790dd31c06735f4bb4b31239d5be16e02da324e3432f2b4",
+      "size_bytes": 516
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/ui-product-harness/profile.yaml",
+      "sha256": "49a6e8bb1257722246e1569f0b53701fb537193a4d1534d7c491a3dff8f801dd",
+      "size_bytes": 300
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/profiles/verification-core/profile.yaml",
+      "sha256": "58eb86301b555e1b5c424e2084d2f7c4a8cf39889291743fd70a4d021e04f246",
+      "size_bytes": 549
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/references/suite-contract-snapshot/README.md",
+      "sha256": "544d03b9af4099befbc8cd8fb8feceeaf2ff23e257a70724355aa5617fb392be",
+      "size_bytes": 411
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/references/suite-contract-snapshot/filename-patterns.yaml",
+      "sha256": "4b1c794baa8233c6d18526e4033fb5ee70980a2ecbebe5b28998d562bec7c0a6",
+      "size_bytes": 2949
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/references/suite-contract-snapshot/guarded-terms.yaml",
+      "sha256": "afa10f00ce0e5ec542909055aa7a31b610f851b5de58b9bbe0386d6a2f30b952",
+      "size_bytes": 5060
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/references/suite-contract-snapshot/semantic-vocabulary.yaml",
+      "sha256": "f51dc7845d9e85d8b64e24ac8e4c71e517d885bb393aa56eeb5115e234ed1b72",
+      "size_bytes": 12075
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/schemas/architecture-profile.schema.json",
+      "sha256": "bf1b5d0386c3e530ed48ee0542f9c4e7ff4b5550b452ab339e88491a23285b66",
+      "size_bytes": 1590
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/schemas/naming-vocabulary.schema.json",
+      "sha256": "d69d89c5fd6c3455f81ee8f851da4b8316f8cf4c4d952b9d94fc80b9ccfb4836",
+      "size_bytes": 1774
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/schemas/preset-input.schema.json",
+      "sha256": "87577bfca45bf9b466e071cbc6a7377726d620e576e3fe9d448e84bcac36e4fc",
+      "size_bytes": 405
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/schemas/project-overlay.schema.json",
+      "sha256": "c3c45fd365218e542fdbb3a46f4e9504ff1c05ddeecbc88f6ea73baaab953b78",
+      "size_bytes": 3665
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/scripts/preset.py",
+      "sha256": "0fa5fe57c4b448f51ffdaa56e6259ae22db4cd1b932bea41d8c40da652038cb8",
+      "size_bytes": 69657
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/templates/agent-entry/AGENTS.evolvable-application.section.md",
+      "sha256": "54765151362d648b3a09476c04c7542562c60d1eb3b749d71ea4785692b33407",
+      "size_bytes": 408
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/templates/agent-entry/AGENTS.local-section.template.md",
+      "sha256": "01e20799ba0bb43829118b352c08e0d18a7c608ea2a4578b3805ecf0aeda3f29",
+      "size_bytes": 162
+    },
+    {
+      "path": "skills/preset/evolvable-application-preset/templates/agent-entry/AGENTS.md.new",
+      "sha256": "77e47be354bb761a22ffa60683705f0e49c2fb1e295182c73ea4f10ba840c107",
+      "size_bytes": 1371
+    },
+    {
+      "path": "skills/product/product-definition/CHANGELOG.md",
+      "sha256": "44172f43cfc126faf28b266b0f46dd9dfa477d9092d57128bab74e1948733910",
+      "size_bytes": 4240
+    },
+    {
+      "path": "skills/product/product-definition/README.md",
+      "sha256": "c9ed9de75a8e5eb860d88ba2c95585d985253e25241040e06203810f83782fd1",
+      "size_bytes": 3253
+    },
+    {
+      "path": "skills/product/product-definition/SKILL.md",
+      "sha256": "37fde12c94804851d9b04f3eb8490cbdbbd527a6ddd17331bc849e2cbbc250cd",
+      "size_bytes": 11827
+    },
+    {
+      "path": "skills/product/product-definition/VERSION",
+      "sha256": "9f8780a99501a2f04c2d85d8d798b5964ba14d7619eff5ca433a0649b3d8ca6c",
+      "size_bytes": 21
+    },
+    {
+      "path": "skills/product/product-definition/agents/openai.yaml",
+      "sha256": "e5304dbdab8fb37a5e1d1d1aaa69e96ebc899866e6d96b2d83523526d27a985a",
+      "size_bytes": 590
+    },
+    {
+      "path": "skills/product/product-definition/evals/evals.json",
+      "sha256": "1c7cda3de97e829b59a02632f3980659e9f08539b8e29142ed671ccaece5eaa6",
+      "size_bytes": 20556
+    },
+    {
+      "path": "skills/product/product-definition/references/alignment-and-facilitation.md",
+      "sha256": "199095c09ee77aacebcf13fc519efba850f3521e2010f4ae24485925b103bb81",
+      "size_bytes": 2745
+    },
+    {
+      "path": "skills/product/product-definition/references/artifact-selection-and-readiness.md",
+      "sha256": "f9ee055e0ef6c1a0e9e4ccd557a2898197f51eca02eecd8d264f80a4072904a9",
+      "size_bytes": 4124
+    },
+    {
+      "path": "skills/product/product-definition/references/challenge-and-decide.md",
+      "sha256": "39bb31a3e0cc4337837d516dafae0776bec376e56f5326709a60d6bab56fb0df",
+      "size_bytes": 5258
+    },
+    {
+      "path": "skills/product/product-definition/references/prd-and-acceptance.md",
+      "sha256": "a3cf42d27e3b9cbb1a645c436fc0e8d153e2a2cc054408500813e4092fc6f532",
+      "size_bytes": 4274
+    },
+    {
+      "path": "skills/product/product-definition/references/product-modeling.md",
+      "sha256": "5d67047e51425ac26fbcbcebbd61ad137d787790e7744bd98bc3c39084c61071",
+      "size_bytes": 5095
+    },
+    {
+      "path": "skills/product/product-definition/references/product-technical-boundary.md",
+      "sha256": "8af263d1168576f6372d51cf5942dbed4a1e3288e9c457760ae6668b5224aed6",
+      "size_bytes": 4050
+    },
+    {
+      "path": "skills/product/product-definition/references/rules-permissions-metrics-quality.md",
+      "sha256": "b464254ff728d57a097dbdf9ef33ca94ee618d07ae70dc882d3c7410f70367ff",
+      "size_bytes": 4233
+    },
+    {
+      "path": "skills/product/product-definition/references/scope-and-version-baselines.md",
+      "sha256": "62c0adacb4432e1d59c6803cce282ea3de7397fbd45a172b5503a8a71a91d3ea",
+      "size_bytes": 3433
+    },
+    {
+      "path": "skills/product/product-definition/references/source-to-product-truth.md",
+      "sha256": "693446a013fa74c376862590aaa48a6d8c7a7d80ca866a28fad4fe2460f58d46",
+      "size_bytes": 5728
+    },
+    {
+      "path": "skills/product/product-definition/references/tacit-expectation-and-blind-spots.md",
+      "sha256": "612bb14e40ce07ad35cd9a67b159ff657a3daae57786b5fdc20c47e11cfe8ac9",
+      "size_bytes": 1354
+    },
+    {
+      "path": "skills/product/product-definition/references/traceability-and-change-impact.md",
+      "sha256": "967b815940f38ec8dd2c6dc2533a5dde257ab4111afd3baaf8820501f5339e88",
+      "size_bytes": 4227
+    },
+    {
+      "path": "skills/product/product-definition/references/workflow-and-exception-modeling.md",
+      "sha256": "55fd425b946ec9e19000c992039e6f2b84e33925d1614c15259c83e0f42afffb",
+      "size_bytes": 3680
+    },
+    {
+      "path": "skills/product/product-definition/scripts/scan_product_artifacts.py",
+      "sha256": "0240a915b6b5a4c10344aa2cb2e768b19dfeed02465cca906bc4e882484c4a3c",
+      "size_bytes": 13880
+    },
+    {
+      "path": "skills/product/product-definition/scripts/self_check.py",
+      "sha256": "3b9075360277cd77a6569efb8e675e9c74d35fb9e009a333b969971c224128f1",
+      "size_bytes": 7342
+    },
+    {
+      "path": "skills/product/product-definition/templates/README.md",
+      "sha256": "48903d1094a6d8e7c0800b138fcdcf8a406416a0836faa3cd9abbd999033f4a0",
+      "size_bytes": 2107
+    },
+    {
+      "path": "skills/product/product-definition/templates/acceptance-criteria.md",
+      "sha256": "55922b4f756f81cdfc008678a76f2e97e1d9aa4692c1031f2f40750511206a7d",
+      "size_bytes": 1231
+    },
+    {
+      "path": "skills/product/product-definition/templates/alignment-meeting-pack.md",
+      "sha256": "fc5ccefbaff669bb38c58838e2cc611488d2d75d0da3ffcae72e8bebdc6e7008",
+      "size_bytes": 1488
+    },
+    {
+      "path": "skills/product/product-definition/templates/business-rule-catalog.md",
+      "sha256": "0fd710f3b15344b05e0cca103e91fd250cb6c9fc646db8c6cb98522c1717e75a",
+      "size_bytes": 1459
+    },
+    {
+      "path": "skills/product/product-definition/templates/change-impact-assessment.md",
+      "sha256": "b51eda0f701ee98e60200e7f3073b8a95370f7f1127e6108624e4f628137b61a",
+      "size_bytes": 1445
+    },
+    {
+      "path": "skills/product/product-definition/templates/clarification-register.md",
+      "sha256": "d3007eaaf85f189c2262b6be4a242ee8181bd47f77a992a2865b0b4aaf674f25",
+      "size_bytes": 896
+    },
+    {
+      "path": "skills/product/product-definition/templates/decision-packet.md",
+      "sha256": "a685ac98495baba419e79c37746dff7a5487e215849c84b4cb3d088685291f0e",
+      "size_bytes": 1512
+    },
+    {
+      "path": "skills/product/product-definition/templates/design-handoff.md",
+      "sha256": "672fd212fc9bfc71991946256158136703417f90fa72fe6e4a83cdf4ab6fe4c7",
+      "size_bytes": 2178
+    },
+    {
+      "path": "skills/product/product-definition/templates/metric-dictionary.md",
+      "sha256": "3c0228e56049e9462803b090843b2a988e604cd5c4195601220819a1cc7efd93",
+      "size_bytes": 1008
+    },
+    {
+      "path": "skills/product/product-definition/templates/module-prd.md",
+      "sha256": "f1b1b94149fb7c5ead5678cfd66b1e1353d552887bb452822f5ad88741ff62eb",
+      "size_bytes": 2458
+    },
+    {
+      "path": "skills/product/product-definition/templates/product-brief.md",
+      "sha256": "3ceac09c50716212637018b51572303c35f05cce4b0581d805a9a9d7bd0bed62",
+      "size_bytes": 1349
+    },
+    {
+      "path": "skills/product/product-definition/templates/product-decision-record.md",
+      "sha256": "d20cda71e3302ebf69b758f6c7d78667474e0313bf12567a1850aabb04a0077b",
+      "size_bytes": 846
+    },
+    {
+      "path": "skills/product/product-definition/templates/product-model.md",
+      "sha256": "b372b33574f6f11848ce69fca9ce9c1f789f026a666fdcdb12e02c8136a4fe9c",
+      "size_bytes": 1925
+    },
+    {
+      "path": "skills/product/product-definition/templates/quality-attribute-requirements.md",
+      "sha256": "046f4fc07a21617f6b156b21e993131f72760bd3ce2810937b5df70abd49297b",
+      "size_bytes": 1240
+    },
+    {
+      "path": "skills/product/product-definition/templates/raci-permission-matrix.md",
+      "sha256": "6f9d59ba3623b03fabc928babbbe585201c3fd2a381b2d7292c9e425fef225a1",
+      "size_bytes": 1873
+    },
+    {
+      "path": "skills/product/product-definition/templates/requirements-traceability-matrix.md",
+      "sha256": "a2aa3f63e188513e8a5780af5585741b07303d1c71a45c5509b7900a88199407",
+      "size_bytes": 1438
+    },
+    {
+      "path": "skills/product/product-definition/templates/scope-baseline.md",
+      "sha256": "021e2b03f8f9b474e1a78f375719b759f1b13d609bf4e6d3813879f2c3e16dd4",
+      "size_bytes": 1493
+    },
+    {
+      "path": "skills/product/product-definition/templates/source-synthesis.md",
+      "sha256": "76755941a7695b689d686afb500f7083ad6e44f6ab4ac7fe7d8a57ae1c80b0b3",
+      "size_bytes": 1933
+    },
+    {
+      "path": "skills/product/product-definition/templates/state-machine.md",
+      "sha256": "a069554c06be5f28a81f3b266fefc8f9b00f847d7f309af0e9f6463d9c81f16d",
+      "size_bytes": 1242
+    },
+    {
+      "path": "skills/product/product-definition/templates/uat-scenario.md",
+      "sha256": "0ed95f7edb2b7281e5ed186b45aa0a44049559115efe28a3852aa713503a2307",
+      "size_bytes": 762
+    },
+    {
+      "path": "skills/product/product-definition/templates/workflow-specification.md",
+      "sha256": "123f837b41fa12b45e5ec705a480d6edd4176b5b3db041c9268a88ee6a382162",
+      "size_bytes": 1558
+    },
+    {
+      "path": "skills/product/product-definition/tests/__init__.py",
+      "sha256": "e96d23c538a458aff463c0bcd051387e1765b778c361954ce6251684049224c3",
+      "size_bytes": 54
+    },
+    {
+      "path": "skills/product/product-definition/tests/test_scan_product_artifacts.py",
+      "sha256": "067aef02e20c76c2500c1b245bc6a3e0d5ae8413d40e9d7f1f77d9f951a3d6b3",
+      "size_bytes": 4079
+    },
+    {
+      "path": "skills/requirements-audit.txt",
+      "sha256": "0b0709dc3105d98b29f4fc6a870c15c0cf42191498384ef8a2a32d3fcf5f34ed",
+      "size_bytes": 33
+    },
+    {
+      "path": "skills/router/ai-coding-os/SKILL.md",
+      "sha256": "04e4e90c1bd925b1c2f6a5aae483d5170a29ddc249b1b2a30a4afd228c40030e",
+      "size_bytes": 6278
+    },
+    {
+      "path": "skills/router/ai-coding-os/evals/composition.evals.json",
+      "sha256": "90378185b299bac718eb3e75b6bf6da02c44d7c9803a5d41a413907ceac333e2",
+      "size_bytes": 11041
+    },
+    {
+      "path": "skills/router/ai-coding-os/evals/evals.json",
+      "sha256": "ba0e2f2bdeff95335837e50a38a30ff35624adc1a0e37f5a10b9836e3b0628cf",
+      "size_bytes": 5872
+    },
+    {
+      "path": "skills/tooling/README.md",
+      "sha256": "2361c95de0e24dd9cc96525e9baeec7bfb7ebcaaed32c76d3fe45bd6f3cb717f",
+      "size_bytes": 1250
+    },
+    {
+      "path": "skills/tooling/build_suite_release.py",
+      "sha256": "3da0ac42c288bb2ef32e3d3f0321caeb0d9426254cd739b9bc919cbd24c2e323",
+      "size_bytes": 14997
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/SKILL.md",
+      "sha256": "71eb94869308f42c5cb5285630ed8302294e34130d11588ed39e2efc0e936b50",
+      "size_bytes": 4313
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/evals/evals.json",
+      "sha256": "3394565c9a33945a742018adba713737d97ea5652ad32409ca008ab3244bfb58",
+      "size_bytes": 2836
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/examples/add-order-create.yaml",
+      "sha256": "6ee3b0a81732fa18478809a3d431710ce347c251fa064b2213045cfaf8da59f3",
+      "size_bytes": 432
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/profiles/effect-v3.yaml",
+      "sha256": "b6f2ab77edc44b31249571f6d675dad897ed238dde1299c4d098f37ebe20bbc1",
+      "size_bytes": 258
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/profiles/effect-v4.yaml",
+      "sha256": "5849723608adf72c5a2db7ddbc0f730212fd4e35b1d2184e7ee0fb1a32150c07",
+      "size_bytes": 255
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/references/atomic-patch-protocol.md",
+      "sha256": "c6c14722f11ee18758e677c83704ea69a272508b5e2f86e4374f0073f4d58775",
+      "size_bytes": 760
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/references/generated-shape.md",
+      "sha256": "1ad422bfa30d89ce6d5a1d967e7329125c0d719543c3f52287cafe32fbb06344",
+      "size_bytes": 1544
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/schemas/change-spec.schema.json",
+      "sha256": "b1e8dfc726cbd8aa9bf701843bb985d750be0e4226e41c25e348c357331a12a1",
+      "size_bytes": 2872
+    },
+    {
+      "path": "skills/tooling/effect-api-app-kit/scripts/kit.py",
+      "sha256": "1c6589e4a3d49ee832a8334f8a36353a16f6d2e82c95926a16af340a2033c514",
+      "size_bytes": 34927
+    },
+    {
+      "path": "skills/tooling/suite_audit.py",
+      "sha256": "f0c954cb4eab158198e3add5b75aba704ddd7391b4f314c6a5d546708f2a015b",
+      "size_bytes": 85361
+    }
+  ]
+}

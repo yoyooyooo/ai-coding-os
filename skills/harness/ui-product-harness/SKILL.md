@@ -1,9 +1,9 @@
 ---
 name: ui-product-harness
 description: >-
-  UI product proof across interface-headless state, render wiring, and real
+  UI product proof across interface_headless state, render focus, and real
   browser paths. Use when validating interaction states, frontend
-  reconciliation, routes, reload/focus/navigation, browser-visible behavior, or
+  reconciliation, routes, reload/focus/navigation, browser behavior, or
   an InterfaceCapability's proof surfaces.
 ---
 
@@ -21,56 +21,59 @@ comes from `$frontend-test-system`.
 
 ```text
 Owns:
-  interface-headless proof
+  interface_headless proof
   harnessable component and surface design
-  render-wiring proof
-  browser-visible proof
+  render proof with render_wiring focus
+  browser proof and visible observations
   frontend adapter/state/query/realtime observation points
   UI claim ceilings and gaps
 
-Adjacent owners:
-  interface capability contract -> $interface-capability-planning
+Adjacent Suite owners, when installed:
+  InterfaceCapability source -> $interface-capability-planning
   frontend topology -> $frontend-architecture
+  shared proof axes and claim ceilings -> $product-harness-system
   backend fact proof -> $headless-product-harness
   concrete test lane -> $frontend-test-system
-  docs placement -> $docs-governance
 ```
 
-## UI Proof Pass
+## UI Proof Coverage
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the property; proof surfaces are selectable peers, not a fixed ladder.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Ground | Interface capability, frontend owner map, route tree, host composition, state/query/realtime code, and existing tests/harnesses are identified. |
 | Trace | One user intent and its authoritative projection are named from dispatch through reconciliation and render. |
-| Select | Interface-headless, render-wiring, browser-visible, or production-near is the smallest surface that can observe the property. |
+| Select | `surface_kind`, `dependency_reality`, optional `environment_class`, and any proof focus such as `render_wiring` form the smallest honest Proof Surface. |
 | Reuse | Product clients, Query/store/realtime boundaries, commands, and resource owners remain the harness path. |
 | Observe | Required pending/success/error/recovery, projection, route, reload/focus/navigation, console/network, accessibility, or layout observations are collected. |
-| Bound | Fake/live conditions, supported conclusion, backend dependencies, `not_proven`, and claim ceiling match the executed surface. |
+| Bound | Fake/live conditions, supported conclusion, backend dependencies, `does_not_decide`, `not_proven`, and claim ceiling match the executed surface. |
 
 ## Surface Model
 
-### Interface-headless
+### `interface_headless`
 
 Use for pure mapper/view-model, client/query/store, optimistic reconciliation,
 realtime decode/dedupe/cursor/gap/backfill, and router-state properties. It
 supports no browser reachability or backend-materialization claim.
 
-### Render wiring
+### `render` with `render_wiring` focus
 
 Use a thin component or surface harness to observe control dispatch, accessible
 affordances, and bounded rendered states. Real reload, backend, and visual
 approval remain separate claims.
 
-### Browser-visible
+### `browser`
 
 Use a real browser for user paths, focus and keyboard, navigation and deep
 links, reload, console/network, hydration, responsive spots, and visible
 recovery. Pair with backend proof before claiming accepted product facts.
 
-### Production-near
+### Environment and dependency reality
 
-Use real local or staged dependencies when the property requires them. Name
-every fake, local, excluded, credentialed, and externally deployed boundary.
+Use `environment_class: local_stack | staging | production` and explicit
+`none | fixture | fake | replay | real_local | real_external` dependencies when the
+property requires them. Environment proximity is not another surface.
 
 ## Topology
 
@@ -107,11 +110,11 @@ assertion weakened instead of implementation repaired
 ```text
 capability
 frontend_owner_map
-selected_surface
+proof_surface
 entry_route_or_component
-fake_live_reality
 observed
 supports
+does_not_decide
 not_proven
 claim_ceiling
 headless_or_contract_refs

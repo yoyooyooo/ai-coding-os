@@ -1,6 +1,8 @@
 <!-- evolvable-application-preset:begin -->
 ## Evolvable Application Profile
 
-This repository adopts `docs/standards/architecture-profile.yaml`.
-Read the resolved topology/naming standard, vocabulary, current topology, and authority map before applying generic Skill defaults.
+This section is a Preset candidate; it does not adopt
+`docs/standards/architecture-profile.yaml` or establish project Authority.
+Project owners may merge selected topology, naming, and agent constraints into
+their Current Homes after review; source and executed Evidence remain separate.
 <!-- evolvable-application-preset:end -->

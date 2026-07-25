@@ -10,8 +10,8 @@ Use this reference when deciding how much harness is enough.
 3. Normalized replay
 4. Adapter/source import smoke
 5. Projection/facts smoke
-6. DB backed restart/rebuild smoke
-7. Real external runtime opt-in smoke
+6. `real_local` persistence restart/rebuild smoke
+7. `real_external` runtime opt-in smoke
 ```
 
 Start at the lowest level that can falsify the claim. Move up only when the
@@ -26,8 +26,8 @@ current claim requires integration behavior.
 | `replay` | Sanitized or normalized trace handling | Raw capture authority |
 | `adapter` | External/source mapping into canonical candidates | Persisted domain facts |
 | `projection` | Product facts exposed through view/query/read surfaces | Mutation authority |
-| `db_backed` | Persistence, restart, rebuild, migration path | Production deploy readiness |
-| `real_runtime_opt_in` | Explicit external process/API path | Default CI safety or whole-product completion |
+| `real_local` + `persistence_restart` focus | Persistence, restart, rebuild, migration path | Production deploy readiness |
+| `real_external` + `external_runtime` surface | Explicit external process/API path | Default CI safety or whole-product completion |
 
 ## Fixture Rules
 

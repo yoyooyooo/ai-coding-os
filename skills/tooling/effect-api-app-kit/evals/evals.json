@@ -1,4 +1,5 @@
 {
+  "schema_version": 1,
   "skill_name": "effect-api-app-kit",
   "evals": [
     {
@@ -22,6 +23,26 @@
         "Managed hash drift is an error.",
         "Project-owned source is not silently regenerated.",
         "Repair only rebuilds managed files from a valid manifest."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Add a P3 recovery slice and publish its Harness Descriptor, but no project Harness entry has been selected.",
+      "expected_output": "Refuses the incomplete P3 Change Spec until an existing project Harness entry and its command, observables, exclusions, and claim ceiling are supplied; then emits a canonical Descriptor v2 that records the project-provided binding rather than fabricating recovery coverage.",
+      "expectations": [
+        "The P3 descriptor validates against the shared Harness Descriptor v2 schema.",
+        "The Harness entry exists and its command is one of the recorded verification commands.",
+        "Schema validity and command exit status remain distinct from evidence that every declared recovery claim was exercised."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Run recorded verification commands, but one command hangs and a later apply hits a commit-time filesystem error.",
+      "expected_output": "Terminates the hanging process tree at the configured timeout, returns a verification-command-timeout finding with bounded output, and reports the apply failure as parseable JSON with commit-failed and rolled_back rather than a Python traceback.",
+      "expectations": [
+        "Verification timeout is finite and configurable.",
+        "Expected filesystem failure preserves the repository and lock cleanup.",
+        "Machine output remains parseable on failure."
       ]
     }
   ]

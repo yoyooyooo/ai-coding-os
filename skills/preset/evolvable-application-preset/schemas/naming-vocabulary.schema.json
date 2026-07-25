@@ -5,6 +5,7 @@
   "required": [
     "schema_version",
     "preset_snapshot",
+    "contract_selection",
     "syntax",
     "canonical_terms",
     "canonical_qualifiers",
@@ -18,6 +19,18 @@
     },
     "preset_snapshot": {
       "type": "object"
+    },
+    "contract_selection": {
+      "type": "object",
+      "required": ["term_owners", "extra_terms", "filename_pattern_owners", "guarded_terms", "qualifiers"],
+      "properties": {
+        "term_owners": {"type": "array", "items": {"type": "string"}},
+        "extra_terms": {"type": "array", "items": {"type": "string"}},
+        "filename_pattern_owners": {"type": "array", "items": {"type": "string"}},
+        "guarded_terms": {"type": "array", "items": {"type": "string"}},
+        "qualifiers": {"type": "object"}
+      },
+      "additionalProperties": false
     },
     "syntax": {
       "type": "object"
@@ -38,6 +51,7 @@
       "type": "object"
     },
     "project_terms": {
+      "description": "Source naming mappings that reference the project SSoT for meaning instead of redefining product language.",
       "type": "object"
     },
     "implementation_qualifiers": {

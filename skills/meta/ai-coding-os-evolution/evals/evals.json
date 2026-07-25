@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "skill_name": "ai-coding-os-evolution",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A new frontier model launched today. Rewrite every Skill immediately to exploit it.",
+      "expected_output": "Treats the release as a Capability Probe trigger, freezes the current Suite and profile, forms hypotheses, and requires evaluation before change or adoption.",
+      "files": [],
+      "expectations": [
+        "Model release is not change Authority.",
+        "No unmeasured wholesale rewrite is recommended."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The new model can infer fact authority correctly in our evals. Delete the Fact Authority doctrine.",
+      "expected_output": "Distinguishes semantic constitution from capability scaffolding; considers shortening explanation but preserves the project decision invariant unless its semantic owner changes it.",
+      "files": [],
+      "expectations": [
+        "Preserves semantics while re-earning scaffolding.",
+        "Uses ablation on expression, not benchmark authority over doctrine."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Open five fresh contexts, but give all of them the same current Suite and ask whether it is good.",
+      "expected_output": "Diversifies information conditions into clean-room, failure archaeology, first-principles, capability, adversarial, and project simulation coverage rather than redundant opinions.",
+      "files": [],
+      "expectations": [
+        "Fresh contexts have independent evidence roles.",
+        "The number and workflow remain dynamic."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The candidate Suite says it is better and its own audit passes. Publish it automatically.",
+      "expected_output": "Rejects circular self-authorization and requires external held-out evidence, semantic-owner review where applicable, release Authority, staging, and rollback.",
+      "files": [],
+      "expectations": [
+        "Self-audit is not release proof.",
+        "Candidate and current Authority remain distinct."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Support both a frontier Agent and a much weaker legacy Agent by keeping every old step-by-step rule in the canonical Skills.",
+      "expected_output": "Selects a primary capability baseline and proposes an earned compatibility overlay instead of polluting the canonical context.",
+      "files": [],
+      "expectations": [
+        "Compatibility is explicit and bounded.",
+        "Primary context does not inherit all legacy scaffolding."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "A candidate removes 80% of instructions and performs equally on direct evals. Is that sufficient for release?",
+      "expected_output": "Requires protected composition, repository, long-horizon, efficiency, and transfer gates plus semantic review before release, while recognizing context reduction as a valid gain.",
+      "files": [],
+      "expectations": [
+        "Equal direct score alone is insufficient.",
+        "Context reduction is treated as evidence when protected behavior holds."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "The Architecture Decision System has become a required intermediary for every architecture question. Review the Suite.",
+      "expected_output": "Identifies centralization and unnecessary routing/context as a Suite defect, preserves owner-local direct invocation, and narrows ADS to cross-owner/diff/health/durable-IR pressure.",
+      "files": [],
+      "expectations": [
+        "Protects question-scoped ownership.",
+        "Prefers interfaces and progressive disclosure over a central workflow."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Use real human corrections from the last month to improve the Suite and keep the old test set unchanged forever.",
+      "expected_output": "Routes corrections into a new Discovery pool, protects privacy, prevents contamination of prior sealed tests, and requires rotation or new release-test material.",
+      "files": [],
+      "expectations": [
+        "Field feedback does not silently contaminate evaluation.",
+        "The release retains provenance and rollback."
+      ]
+    }
+  ]
+}

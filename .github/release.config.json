@@ -3,7 +3,6 @@
   "remote": "git@github.com:yoyooyooo/ai-coding-os.git",
   "tagPrefix": "v",
   "versionFiles": [
-    "package.json",
     "packages/cli/package.json"
   ],
   "lockfiles": [
@@ -14,7 +13,7 @@
     "install",
     "--lockfile-only"
   ],
-  "checkCommand": [
+  "localCheckCommand": [
     "bun",
     "run",
     "check"

@@ -20,13 +20,14 @@ function makeReleaseRepo(branch = "main"): string {
   mkdirSync(join(root, "packages/cli"), { recursive: true });
   copyFileSync(releaseScript, join(root, "scripts/release.ts"));
   writeFileSync(join(root, "package.json"), `${JSON.stringify({ version: "1.2.3" }, null, 2)}\n`);
-  writeFileSync(join(root, "packages/cli/package.json"), `${JSON.stringify({ version: "1.2.3" }, null, 2)}\n`);
+  writeFileSync(join(root, "packages/cli/package.json"), `${JSON.stringify({ name: "goal-proof", version: "1.2.3" }, null, 2)}\n`);
+  writeFileSync(join(root, "bun.lock"), `{\n  "workspaces": {\n    "packages/cli": {\n      "name": "goal-proof",\n      "version": "1.2.3",\n    },\n  },\n}\n`);
   writeFileSync(join(root, ".github/release.config.json"), `${JSON.stringify({
     defaultBranch: "main",
     remote: "origin",
     tagPrefix: "v",
     versionFiles: ["package.json", "packages/cli/package.json"],
-    lockfiles: [],
+    lockfiles: ["bun.lock"],
     lockfileCommand: null,
     localCheckCommand: null,
     commitMessage: "chore: release {tag}",
@@ -105,6 +106,10 @@ test("release no-push tags a temporary release commit without mutating main", ()
     const tagVersion = spawnSync("git", ["show", "v1.2.4:package.json"], { cwd: root, encoding: "utf8" });
     assert.equal(tagVersion.status, 0, tagVersion.stderr);
     assert.equal(JSON.parse(tagVersion.stdout).version, "1.2.4");
+
+    const tagLock = spawnSync("git", ["show", "v1.2.4:bun.lock"], { cwd: root, encoding: "utf8" });
+    assert.equal(tagLock.status, 0, tagLock.stderr);
+    assert.match(tagLock.stdout, /"packages\/cli"[\s\S]*"version": "1\.2\.4"/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -125,7 +130,7 @@ test("release can push a tag to a direct repository URL", () => {
     const result = runRelease(root, ["patch"]);
 
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /v1\.2\.4 pushed\. CI publish workflow should start\./);
+    assert.match(result.stdout, /v1\.2\.4 pushed\. Publishing remains a separately configured release step\./);
 
     const remoteTag = spawnSync("git", ["--git-dir", remote, "rev-parse", "-q", "--verify", "refs/tags/v1.2.4^{}"], {
       encoding: "utf8",

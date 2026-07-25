@@ -78,6 +78,10 @@ directory_admission:
 - stable high-density lexical cluster has emerged
 promotion_ladder:
 - lexical capability cluster
-- private submodule
-- workspace package
+- private TypeScript module/directory
+- workspace package when selected
+- runnable host
 - deployable process
+scope: typescript-and-frontend-source-projections
+note: These patterns are selected only by TypeScript/React/Effect profiles; they are
+  not cross-language architecture doctrine.

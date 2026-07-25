@@ -1,0 +1,16 @@
+schema_version: 2
+source_ref: PDR-042
+claim_ceiling: Accepted product target for checkout retry behavior in version 2.
+observed:
+  product_decision_status: accepted
+  requirement_refs:
+    - REQ-118
+    - AC-071
+supports:
+  - The stated behavior is an accepted target for version 2.
+not_proven:
+  - The behavior is implemented.
+  - Acceptance criteria pass in any runtime.
+  - The feature is released.
+evidence_refs:
+  - docs/product/decisions/PDR-042.md

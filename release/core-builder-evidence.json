@@ -1,0 +1,146 @@
+{
+  "manifest_version": 2,
+  "suite_version": "0.5.0-experimental.1",
+  "source_layout": "grouped",
+  "source_tree_sha256": "152cffefc06a4786291ed3a6178b18980f91d27c8e7f357edcd22c0aee41df33",
+  "archive_scope": {
+    "includes": [
+      "skills/**"
+    ],
+    "excludes": [
+      "docs/**",
+      "project-source/**",
+      "repository-shell/**",
+      "release/**",
+      "generated-distribution/**"
+    ]
+  },
+  "skills": [
+    {
+      "name": "architecture-decision-system",
+      "version": null,
+      "sha256": "4c5a802d4cfe8278433865b800f02789e4bf07feb4fd74c70ba49b373d033234"
+    },
+    {
+      "name": "effect-best-practices",
+      "version": null,
+      "sha256": "41e3d0b7d3600112b62044e8eaa803373c08308322fa97241a52ce8588a11654"
+    },
+    {
+      "name": "evolvable-application-architecture",
+      "version": null,
+      "sha256": "3c6bc367aa0f30c813d3749fa483bf40601b59ae3f93c833a9f086c0144af37c"
+    },
+    {
+      "name": "frontend-architecture",
+      "version": null,
+      "sha256": "e8f5b47ba7b912f9dd9cba0c49569eca7ddccb4d16ddbac9b16356bf72631be0"
+    },
+    {
+      "name": "interface-capability-planning",
+      "version": null,
+      "sha256": "d0b2627f94bb97d5408ea4cbc3a42fa64e51ba49cae0521accf526025d5ab6a4"
+    },
+    {
+      "name": "ai-coding-os-suite-contracts",
+      "version": "3.0.0",
+      "sha256": "bf8f2cc4cfdaf77a3a0ba821af67c1789e417f76d9baf81e8d3fb8d79d6b3d17"
+    },
+    {
+      "name": "docs-governance",
+      "version": null,
+      "sha256": "ff38756f88be33d1833b4c02331cd52f2368b441001472987375f632158737b6"
+    },
+    {
+      "name": "frontend-test-system",
+      "version": null,
+      "sha256": "14ba9f8841a45010e2b15e4e147efd2c099849c841256b24a206df7ee2294904"
+    },
+    {
+      "name": "headless-product-harness",
+      "version": null,
+      "sha256": "40ee0cdc9db05c7aabb19340e0964d5895a2c45b203a90912a49facc48e62857"
+    },
+    {
+      "name": "product-harness-system",
+      "version": null,
+      "sha256": "4e15ddf53060e15bc39f30d9b6d3256b47b844e4372c766fad70147137d00787"
+    },
+    {
+      "name": "ui-product-harness",
+      "version": null,
+      "sha256": "7930964b5f6e9e949865694f5e6186667b762fff9b277d3246fd652c0e23aeaf"
+    },
+    {
+      "name": "ai-coding-os-evolution",
+      "version": null,
+      "sha256": "d34dd81001cc6ba58bcf43bd1e1b774edb3fd09730694bb4cdbecfff9ca29cd8"
+    },
+    {
+      "name": "skill-evaluation-system",
+      "version": null,
+      "sha256": "550c4afbaa0290bec773c9c1ac3f363ac6699a2a3c5eb9cb159cb9447598750f"
+    },
+    {
+      "name": "evolvable-application-preset",
+      "version": "1.4.0-experimental.1",
+      "sha256": "f2ef0aa6164c70b499b986dea9fb536970efe7ce9c792fc8fe5f029bbf8928b6"
+    },
+    {
+      "name": "product-definition",
+      "version": "2.3.0-experimental.1",
+      "sha256": "811a535522c1dd2f40f58b16c031df7bf31eea6051adc330a60f4eec880b2e19"
+    },
+    {
+      "name": "ai-coding-os",
+      "version": null,
+      "sha256": "884869224b5232bfd541061f8aabff7c7aa7f24d90a72c022ce1f2e9377e3da7"
+    },
+    {
+      "name": "effect-api-app-kit",
+      "version": null,
+      "sha256": "3df6f7507c0b25aac469c26dbdbbf7914ad428cc2a13c05d9610335816438451"
+    }
+  ],
+  "contracts_version": "3.0.0",
+  "preset_version": "1.4.0-experimental.1",
+  "audit": {
+    "status": "pass",
+    "report": "ai-coding-os-skill-suite-0.5.0-experimental.1.audit.json",
+    "sha256": "a44d5f50268c0d703db9b0620bfa005eace6826a54a4bd1a7b9a39bd98ad81cc",
+    "summary": {
+      "error": 0,
+      "warn": 0,
+      "info": 0,
+      "total": 0
+    },
+    "source_tree_sha256": "152cffefc06a4786291ed3a6178b18980f91d27c8e7f357edcd22c0aee41df33"
+  },
+  "archive": {
+    "filename": "ai-coding-os-skill-suite-0.5.0-experimental.1.zip",
+    "sha256": "fb7f2b6020f04920625af5310ba2d52fccdb511a780a897f60c8a037b36391cb",
+    "size_bytes": 511583
+  },
+  "reports": {
+    "change_report": {
+      "filename": "ai-coding-os-skill-suite-0.5.0-experimental.1-change-report.md",
+      "sha256": "9142f53c8b83b99a20a8c4b5a01dcdf507cebc99c87303b7c2baab5ab86798e4"
+    },
+    "composition_eval_review": {
+      "filename": "ai-coding-os-skill-suite-0.5.0-experimental.1-composition-eval-review.json",
+      "sha256": "56098df1cdce6eba1b190c4c1bcc19d30ca6bf5c383d1868722b0be66eacfcd0"
+    }
+  },
+  "archive_sha256": "fb7f2b6020f04920625af5310ba2d52fccdb511a780a897f60c8a037b36391cb",
+  "notes": [
+    "Per-Skill version is null when that Skill is not independently versioned; sha256 is the source identity.",
+    "The sidecar is authoritative for archive_sha256 because a ZIP cannot contain its own final hash without a circular definition.",
+    "The ZIP contains only skills/**; project docs and complete-source packaging remain separate Authority/distribution surfaces.",
+    "The canonical audit sidecar normalizes machine-local path and compiler-dependent diagnostics before hashing.",
+    "The audit and archive are bound to the same canonical skills/** source_tree_sha256."
+  ],
+  "artifact_availability": {
+    "core_archive": "verification-only; intentionally not nested in the complete-source distribution",
+    "portable_source": "skills/** is included directly in the complete-source distribution"
+  }
+}

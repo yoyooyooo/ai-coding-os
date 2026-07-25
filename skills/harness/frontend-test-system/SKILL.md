@@ -1,10 +1,10 @@
 ---
 name: frontend-test-system
 description: >-
-  Frontend test-lane selection for a bounded property using the repository's
-  existing unit, component, MSW, contract, Playwright, accessibility, visual,
-  or browser-inspection surfaces. Use for concrete frontend verification; use
-  $ui-product-harness for reusable UI harness architecture.
+  Frontend test-lane selection for a bounded property. Use when concrete
+  frontend behavior needs the smallest honest unit, component, MSW, contract,
+  Playwright, accessibility, visual, or browser-inspection lane; reusable UI
+  proof architecture stays with $ui-product-harness.
 ---
 
 # Frontend Test System
@@ -12,15 +12,30 @@ description: >-
 Match one changed property to the smallest test lane that can observe it. Reuse
 the repository's runner, fixtures, clients, and nearby conventions.
 
-## Test Pass
+## Ownership
 
-| Step | Completion criterion |
+```text
+Owns:
+  concrete frontend test-lane and runner selection for one bounded property
+  repository-native execution and durable regression judgment
+
+Adjacent Suite owners, when installed:
+  InterfaceCapability source -> $interface-capability-planning
+  reusable UI proof surface and claim ceiling -> $ui-product-harness
+  cross-surface proof architecture -> $product-harness-system
+```
+
+## Test Coverage
+
+Cover applicable decisions in the order exposed by the property and repository; this is lane selection, not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Ground | `AGENTS.md`, scripts, lockfile, runner config, app start path, contracts/clients/mocks, and nearby tests establish the available lanes. |
 | Property | The bounded property is stated in ordinary language with the relevant fake/live environment. |
 | Lane | One primary lane can fail on the property for the right reason; additional lanes cover distinct claims only. |
 | Execute | Repository-native commands or browser actions run and produce direct observations. |
-| Interpret | The report separates observation, supported conclusion, artifacts, and adjacent `not_proven` surfaces. |
+| Interpret | The report separates observation, supported conclusion, `does_not_decide`, artifacts, and adjacent `not_proven` surfaces. |
 | Retain | A durable regression test is added only when its future signal exceeds maintenance cost; exploratory inspection may remain an observation. |
 
 ## Lane Selection
@@ -31,7 +46,7 @@ the repository's runner, fixtures, clients, and nearby conventions.
 | Component, hook, form, local state | component behavior |
 | Frontend handles modeled HTTP | MSW integration |
 | API/client/provider compatibility | contract |
-| Browser-visible journey | Playwright E2E |
+| Browser journey | Playwright E2E |
 | Current rendered debugging | browser inspection |
 | Keyboard or focus | browser or Playwright |
 | Automated accessibility | installed browser scanner |
@@ -72,9 +87,11 @@ visual screenshot
 property
 test_lane
 commands_or_browser_actions
-environment_and_fake_live_boundary
+proof_surface
+test_environment
 observed
 supports
+does_not_decide
 not_proven
 artifacts
 ```

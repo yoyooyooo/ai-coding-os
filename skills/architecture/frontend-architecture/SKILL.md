@@ -14,9 +14,11 @@ Treat the frontend as a host that expresses intent, consumes authoritative
 projections, owns local interaction, and reconciles asynchronous change.
 Ownership and dependency direction are the architecture; folders carry them.
 
-Inherit Bounded Semantic Flatness and the shared vocabulary from
-`$evolvable-application-architecture`. This skill owns frontend meanings such as
-`client`, `query`, `store`, `realtime`, `view-model`, `page`, and `surface`.
+Use the self-contained frontend form of Bounded Semantic Flatness in this
+Skill. When `$evolvable-application-architecture` is installed, align shared
+source terms without making it a runtime dependency. This Skill owns frontend
+meanings such as `client`, `query`, `store`, `realtime`, `view-model`, `page`,
+and `surface`.
 
 ## Ownership
 
@@ -31,18 +33,20 @@ Owns:
   optimistic and realtime reconciliation
   frontend harnessability
 
-Adjacent owners:
+Adjacent Suite owners, when installed:
+  InterfaceCapability and surface/state obligations -> $interface-capability-planning
   backend fact authority/transactions/migrations -> $evolvable-application-architecture
+  cross-owner ADIR, architecture diff, and health -> $architecture-decision-system
   Effect Service/Layer/Scope/API -> $effect-best-practices
-  shared harness language -> $product-harness-system
   reusable UI proof surfaces -> $ui-product-harness
   concrete test lane -> $frontend-test-system
-  docs placement -> $docs-governance
 ```
 
-## Frontend Pass
+## Frontend Coverage
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the current frontend concern; this is not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Ground | Project authority, route tree, package graph, host wiring, state/query ownership, contracts, realtime path, and nearby tests are identified. |
 | Trace | One user intent reaches command acknowledgement, authoritative projection, reconciliation, and render; every temporary proposal is marked. |
@@ -67,24 +71,9 @@ feature boundaries follow product capability
 
 ## Source Topology
 
-Inside a feature owner, semantic flat files are the default:
-
-```text
-features/orders/
-  order.client.ts
-  order.client.browser.live.ts
-  order.query.ts
-  order.store.ts
-  order.realtime.ts
-  order.wire-to-projection.mapper.ts
-  order.view-model.ts
-  order.page.tsx
-  order.surface.tsx
-```
-
-A repeated prefix is a lexical cluster. Promote it only for real ownership,
-dependency, lifecycle, reuse, compile, or host pressure. Framework-controlled
-route files keep framework names and remain thin.
+Keep feature-owned source semantically flat. Promote a repeated-prefix cluster
+only for real ownership, dependency, lifecycle, reuse, compile, or host
+pressure; framework route files keep their reserved names and stay thin.
 
 ## Read When Needed
 
@@ -102,21 +91,9 @@ route files keep framework names and remain thin.
 
 ## Output
 
-```text
-classification
-sources_read
-intent_projection_trace
-state_ownership_map
-dependency_graph
-host_composition
-capability_profile
-findings_by_severity
-target_topology
-contract_evolution
-reconciliation_rules
-realtime_recovery
-migration_steps
-verification_surfaces
-not_proven
-not_claimed
-```
+Return the smallest decision-bearing frontend view. Make the frontend ownership
+boundary, reconciliation path, material `not_proven`, and smallest useful
+verification surface explicit when they affect the decision. Use fixed fields,
+full intent/projection traces, state maps, dependency graphs, host composition,
+contract evolution, realtime recovery, migration steps, or persistent ADIR only
+when a real consumer or the requested branch benefits from them.

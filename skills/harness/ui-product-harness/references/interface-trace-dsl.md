@@ -25,7 +25,7 @@ project authority
 ```
 
 An explicitly adopted tracker or execution method may reference these IDs. This
-DSL does not depend on Goal Proof or any other execution method.
+DSL does not depend on any selected execution method.
 
 ## Goals
 
@@ -61,7 +61,7 @@ what Harness records may reference.
 ```yaml
 kind: InterfaceCapability
 id: ic.<domain>.<action>
-status: sketch | candidate | accepted | regression
+status: sketch | candidate | accepted | retired
 intent: ...
 authority_refs: {}
 surface_refs: []
@@ -100,16 +100,22 @@ repository-selected equivalent. Executable code remains near the feature or
 Harness host.
 
 ```yaml
-schema_version: 1
+schema_version: 2
 kind: HarnessDescriptor
 id: uh.<domain>.<scenario>
 capability: ic.<domain>.<action>
-surface: browser
+proof_surface:
+  surface_kind: browser
+  dependency_reality:
+    - fake
+  environment_class: local_stack
+  proof_focus:
+    - reload_consistency
 command: pnpm verify <domain>.<scenario>
 entrypoint:
   route: /example
 uses:
-  backend: fake | real-local | real-external
+  backend: fake
   browser: chromium
 can_observe:
   - visible success and error states
@@ -118,16 +124,24 @@ can_observe:
 does_not_cover:
   - backend materialization unless paired with a headless/database Harness
   - production authentication
-claim_ceiling: local browser-visible behavior under the declared dependencies
+claim_ceiling: local browser behavior under the declared dependencies
 ```
 
 ## UI Harness Result
 
 ```yaml
-schema_version: 1
+schema_version: 2
 kind: HarnessResult
 harness: uh.<domain>.<scenario>
 status: pass | fail | blocked | skipped
+proof_surface:
+  surface_kind: browser
+  dependency_reality:
+    - fake
+  environment_class: local_stack
+  proof_focus:
+    - reload_consistency
+claim_ceiling: local browser behavior under the declared dependencies
 observed:
   success_affordance_visible: true
   reload_state_consistent: true
@@ -149,16 +163,23 @@ result must survive across Agents, commits, release decisions, or audits.
 ## Example
 
 ```yaml
-schema_version: 1
+schema_version: 2
 kind: HarnessDescriptor
 id: uh.issue-intake.browser
 capability: ic.issue-intake.from-channel-message
-surface: browser
+proof_surface:
+  surface_kind: browser
+  dependency_reality:
+    - fake
+    - real_local
+  environment_class: local_stack
+  proof_focus:
+    - reload_consistency
 command: pnpm verify issue-intake.browser
 entrypoint:
   route: /channels/demo
 uses:
-  backend: real-local
+  backend: real_local
   external-provider: fake
 can_observe:
   - issue affordance on the source message
@@ -176,8 +197,10 @@ claim_ceiling: local browser plus real local backend; external provider remains 
 
 - Link conclusions to an executed result or mark the surface unproven.
 - Record visual details only when they are test-relevant.
-- Keep unstable descriptors `candidate`; promote to `regression` only when the
-  entrypoint semantics and command are stable.
+- InterfaceCapability status describes definition lifecycle only; Product/design
+  authority accepts it, and Harness evidence does not change that status automatically.
+- Keep proof requirements and executed Harness Results in separate references;
+  do not encode delivery or regression state into InterfaceCapability status.
 - Do not duplicate test code, selectors, or transient logs in the DSL.
 - Do not use the DSL to invent product objects, API schemas, facts, or writers.
 - Do not report browser proof as backend materialization or provider proof.

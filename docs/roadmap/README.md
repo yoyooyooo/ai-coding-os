@@ -1,86 +1,52 @@
 # Roadmap
 
-本层保存顺序、状态、证据链接和迁移波次。
-
 ## Owns
 
-- 已选择的迁移顺序。
-- 当前状态摘要。
-- 证据链接。
-- 待执行 Goal Pack 或 roadmap 级 gap。
+- 尚未成为 Current Suite 的长期能力候选、前提、晋升门和首个可证伪步骤。
 
 ## Must Not Own
 
-- 逐步实施任务清单。
-- evidence record 细节。
-- 产品事实。
+- 当前事实、已接受架构、执行状态或完成声明。
 
-## Boundary
+## Future Candidates
 
-本层只保存迁移顺序、当前 gate、证据链接和后续波次。它不是任务系统，
-也不是 Goal Pack 状态的手写副本。Goal Pack ready / running / done、active work item、
-evidence record 和 completion review 由 `docs/goal-proof/**` 与 CLI 输出拥有。
+### Machine-consumable ADIR
 
-## Promotion / Demotion
+- **Current foundation:** `$architecture-decision-system` 的语义模型、Decision Trace、Health 与项目 materialization contract。
+- **Not current:** 全局 Schema、Registry、CI graph 和自动架构数据库。
+- **Promotion gate:** 至少两个独立机器消费者需要稳定读写同一 IR，并证明 Markdown/reference 路由不足。
+- **First proof:** 在两个真实项目上用同一最小 Schema 完成 architecture diff 与 drift check，且不制造第二 Current Home。
 
-- 被验证为稳定规则的 roadmap gate，promote 到 standards。
-- 变成当前事实的迁移结果，promote 到 SSoT。
-- 需要解释长期取舍的迁移决策，promote 到 ADR。
-- 详细执行计划 demote 到 Goal Pack `plans/<work_id>.md` 或 root `specs/**`。
-- 已完成且只剩追溯价值的材料，demote 到 evidence/source 或删除。
+### Model-run Skill Evaluation Tooling
 
-## Conflict
+- **Current foundation:** `$skill-evaluation-system` 的 Evaluation Ladder、split integrity、attribution 和 hierarchical gates。
+- **Not current:** 通用 runner、dashboard、自动 optimizer 或 nightly Suite rewrite。
+- **Promotion gate:** 已有可执行 Oracle、Protected Corpus、重复运行预算和明确数据边界。
+- **First proof:** 对一个 Skill 比较 Current/Candidate/Minimal/No-Skill，并保留完整 manifest、held-out Gate 和 rollback。
 
-若 roadmap 状态与 Goal Pack evidence、CLI 输出、SSoT 或 standards 冲突，
-roadmap 视为过期索引。修正链接和 gate 摘要，不复制 evidence 原文。
+### SkillOpt Backend Adapter
 
-## 当前状态
+- **Current foundation:** 已吸收 rollout、bounded update、held-out gate、checkpoint 和 staged adoption 语义。
+- **Not current:** 未 vendoring SkillOpt，也未声称兼容其所有 Harness。
+- **Promotion gate:** 真实 Suite Eval 证明外部 Backend 能复用项目 Harness，且不会将语义 Constitution 当作普通 Prompt 权重训练。
+- **First proof:** 一个隔离的单 Skill E1 候选优化实验。
 
-已完成：
+### Rust Skill Promotion
 
-- v2 Goal Pack schema 迁移：`goal.yaml`、`progress.yaml`、`evidence.jsonl`、`proof_step`、`work_items`、`evidence_id`、`work_id`、`next_action`、`claim_limit`、`claim_evidence`。
-- CLI / checker / renderer / tests / README / skills / templates / dogfood Goal Pack 主路径同步到 v2 口径。
-- 仓库定位升级为 AI Coding OS 方法套件仓。
-- Skill Suite 已扩展为 interface capability、shared product harness、UI/headless harness 和 frontend test lane：由 `$interface-capability-planning`、`$product-harness-system`、`$ui-product-harness`、`$headless-product-harness` 与 `$frontend-test-system` 分别拥有。
-- Repo shell 已收敛：GitHub repo / remote URL 为 `github.com/yoyooyooo/ai-coding-os`。
-- 公开 skill suite 源码布局已收敛：canonical suite 使用本仓 `skills/**` grouped layout，公开触发名由 `SKILL.md` frontmatter `name` 决定，旧入口不保留 active alias。
-- 顶层叙事已收敛为 authority-and-concern routing；`intent-to-evidence state transition` 仅属于显式采用的 `$goal-proof` 方法，不再作为整个 Suite 的默认控制流。
-- Goal Proof owner-local Skill delta 已落地：`$goal-contracts` 承载 `minimum sufficient horizon`，`$proof-step-implementation` 承载 evidence-to-progress 归约，`$ai-coding-os` 仅保留轻路由。
-- 整仓 architecture view 已补齐：`docs/architecture/repository-layer-breakdown.md` 描述 public shell、method source、execution engine、authority docs、long-running artifacts、verification / release support 的分层边界。
-- 应用架构主 doctrine 已收敛到 `$evolvable-application-architecture`；源码新增 `$ai-coding-os-suite-contracts`、`$evolvable-application-preset`、`$effect-api-app-kit` 与 grouped source audit，不保留兼容入口或 Flat source。
+- **Current foundation:** EAA Rust Projection、Rust Evals、Preset `rust` Profile。
+- **Not current:** 独立 `$rust-application-architecture`。
+- **Promotion gate:** Rust 形成稳定独立用户意图、完整模块/crate/trait/async/API/release/proof 决策面和独立 Corpus。
+- **First proof:** 两个结构不同的真实 Rust 项目使用同一投影，暴露出 EAA Reference 无法清晰拥有的独立决策。
 
-已完成 Goal Pack 状态由 `../goal-proof/goals/` 下 evidence records 保留。当前没有 active Goal Pack。
+### Compatibility Overlays
 
-## 后续波次
+- **Current foundation:** Canonical Suite 面向默认 Agent Capability Baseline，脚手架定期 re-earn。
+- **Not current:** 为所有模型在主 Skill 内堆叠多套指导。
+- **Promotion gate:** 次级 Agent Profile 有真实部署需求，且 Protected Evals 证明需要额外显式约束。
+- **First proof:** Overlay 相对 Canonical 保持语义一致并显著减少该 Profile 的失败。
 
-- 如果后续继续 polish product / SSoT 叙事，只采纳 artifact ownership 和用户价值表述；不得新增 workflow、schema、CLI 或公共 Check 名。
-- 如果未来决定重命名 CLI / npm package，再单独开 Goal Pack；当前明确保留 `goal-proof`。
-- 如果 OS 入口未来承载 CLI 或更重 artifact lifecycle，再重新评估 CLI / npm package 命名。
+## Routes
 
-## 当前治理 Gate
-
-本仓当前处于 `old-entry-retired` 状态：公开 repo shell、`skills/**` source layout、
-README / docs / templates / tests 已按 `AI Coding OS` / `$ai-coding-os` /
-`Goal Proof System` 口径收敛。后续不再扩散新命名。
-
-下游 runtime 安装、同步脚本和外部 skill 管理仓不属于本仓公开状态。
-
-## Evidence
-
-- 顶层目标口径：`../../README.zh-CN.md`
-- 文档路由：`../README.md`
-- 当前事实：`../ssot/README.md`
-- 命名 ADR：`../adr/2026-05-28-ai-coding-os-naming-and-boundary.md`
-- Skill source layout 标准：`../standards/skill-source-layout.md`
-- 顶层叙事 delta proposal：`../goal-proof/sources/2026-05-31-ai-coding-os-compiler-narrative-delta-proposal.md`
-- 顶层叙事 review ledger：`../review-plan/runs/2026-05-31-compiler-narrative-delta-proposal-review.md`
-- v2 迁移记录：`../goal-proof/goals/2026-05-24-goal-proof-v2-dogfood-migration/`
-- Repo shell evidence：`gh repo view yoyooyooo/ai-coding-os`、`git remote -v`
-
-## Read Next
-
-- 文档路由：`../README.md`
-- 当前事实：`../ssot/README.md`
-- 文档治理：`../standards/docs-governance.md`
-- Skill 源码布局：`../standards/skill-source-layout.md`
-- Goal Pack 状态：`../goal-proof/README.md`
+- [Current SSoT](../ssot/README.md)
+- [Current Architecture](../architecture/README.md)
+- [Skill Evaluation Standard](../standards/skill-evaluation-and-release.md)

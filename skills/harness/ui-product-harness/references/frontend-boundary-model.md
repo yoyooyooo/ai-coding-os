@@ -15,8 +15,8 @@ Classify every UI-related state into one of these categories:
 | Realtime event state | decoded event, cursor, connection, dedupe, gap detection | business truth by itself |
 | URL/navigation state | resource identity, shareable view state, deep link | transient draft, hover, non-shareable UI detail |
 | Derived view model | display-ready projection from accepted inputs | wire contract or product authority |
-| Render wiring | controls, roles, labels, intent wiring, visible state | business logic |
-| Browser-visible proof | actual reachability, layout, console/network, reload, focus | domain proof without paired headless evidence |
+| Render ownership | controls, roles, labels, intent wiring, visible state | business logic |
+| Browser observation | actual reachability, layout, console/network, reload, focus | domain proof without paired headless evidence |
 
 ## Boundary Rules
 

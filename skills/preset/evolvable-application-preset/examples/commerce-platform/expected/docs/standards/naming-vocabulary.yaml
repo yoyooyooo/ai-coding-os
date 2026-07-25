@@ -1,9 +1,10 @@
 schema_version: 1
 preset_snapshot:
   id: evolvable-application
-  version: 1.0.0-experimental.1
+  version: 1.4.0-experimental.1
   profiles:
   - agent-entry
+  - application-core
   - monorepo-core
   - typescript-node
   - react
@@ -12,7 +13,67 @@ preset_snapshot:
   - verification-core
   - headless-product-harness
   - ui-product-harness
-  note: Resolved copy. Project standards are current authority; Suite files are provenance, not dynamic inheritance.
+  note: Candidate owner-declared source-naming copy. Project Standards and SSoT own meaning only after explicit adoption; Suite files remain provenance, not dynamic inheritance.
+contract_selection:
+  term_owners:
+  - effect-best-practices
+  - evolvable-application-architecture
+  - frontend-architecture
+  - product-harness-system
+  extra_terms:
+  - fake
+  filename_pattern_owners:
+  - effect-best-practices
+  - evolvable-application-architecture
+  - frontend-architecture
+  guarded_terms:
+  - accepted
+  - adapter
+  - api
+  - assumption
+  - authority
+  - blocked
+  - complete
+  - confidence
+  - contract
+  - done
+  - e2e
+  - handler
+  - health
+  - integration
+  - mock
+  - model
+  - owner
+  - ready
+  - repository
+  - resolved
+  - runtime
+  - scope
+  - service
+  - smoke
+  - state
+  - unknown
+  - workflow
+  qualifiers:
+    policy: true
+    host:
+    - browser
+    - server
+    - worker
+    transport:
+    - http
+    - webhook
+    - cli
+    - consumer
+    - websocket
+    - sse
+    implementation:
+    - memory
+    - postgres
+    - generated
+    - live
+    - fake
+    provider: true
 syntax:
   segment_case: kebab-case
   segment_separator: .
@@ -28,8 +89,9 @@ canonical_terms:
   authority:
     category: architecture
     owner: evolvable-application-architecture
-    means: The rule or component with final power to accept and materialize a fact within a declared consistency domain and epoch.
+    means: In this owner-declared source vocabulary, authority means fact authority with final power to accept and materialize a fact within a declared consistency domain and epoch; cross-Skill prose must qualify other authority kinds.
     does_not_mean:
+    - product decision authority, documentation authority, execution authority, or policy authority
     - the only machine that may propose a change
     - a folder or package by itself
   command:
@@ -75,9 +137,10 @@ canonical_terms:
   model:
     category: responsibility
     owner: evolvable-application-architecture
-    means: Cohesive domain data and ordinary TypeScript behavior for a bounded subject.
+    means: Cohesive domain data and behavior for a bounded subject in the selected ecosystem.
     does_not_mean:
-    - ORM record
+    - product model, persistence model, view model, or model-provider integration
+    - ORM record or wire DTO
     - generic types bucket
   projection:
     category: responsibility
@@ -143,6 +206,7 @@ canonical_terms:
     owner: evolvable-application-architecture
     means: Stable cross-boundary or public shape with explicit compatibility expectations.
     does_not_mean:
+    - an execution-method contract, product contract, or suite coordination contract without an explicit qualifier
     - all local types
   schema:
     category: responsibility
@@ -403,18 +467,6 @@ filename_patterns:
 - id: frontend-surface
   pattern: <subject>.surface.tsx
   owner: frontend-architecture
-- id: harness
-  pattern: <subject>.<case>.harness.ts
-  owner: product-harness-system
-- id: test-contract
-  pattern: <subject>.<role>.contract.test.ts
-  owner: product-harness-system
-- id: test-integration
-  pattern: <subject>.<role>.integration.test.ts
-  owner: product-harness-system
-- id: test-recovery
-  pattern: <subject>.<case>.recovery.test.ts
-  owner: product-harness-system
 directory_admission:
 - distinct capability or authority owner
 - different public/private dependency policy
@@ -424,57 +476,55 @@ directory_admission:
 - stable high-density lexical cluster has emerged
 promotion_ladder:
 - lexical capability cluster
-- private submodule
-- workspace package
+- private TypeScript module/directory
+- workspace package when selected
+- runnable host
 - deployable process
 guarded_terms:
+  authority:
+    questions:
+    - Does this mean fact authority, product decision authority, documentation authority, execution authority, or policy authority?
+    - Which claim and decision surface does the owner control?
+  accepted:
+    questions:
+    - Product target, document lifecycle, Harness reuse status, execution completion, or release acceptance?
+    - Which owner performed the acceptance and for what scope?
+  owner:
+    questions:
+    - Semantic owner, binding-policy owner, state owner, resource owner, execution owner, or file maintainer?
+  repository:
+    questions:
+    - Version-control repository/workspace, persistence Repository capability, or package/source home?
+  state:
+    questions:
+    - Product lifecycle state, authoritative fact, remote projection, local interaction state, runtime state, or execution status?
+  workflow:
+    questions:
+    - Product/business workflow, cross-capability application orchestration, or selected execution method?
+  runtime:
+    questions:
+    - Effect Runtime, process/host, deployment environment, or the currently observed system?
+  scope:
+    questions:
+    - Product/version scope, claim scope, permission/data scope, or Effect resource lifetime Scope?
+  contract:
+    questions:
+    - Is this an API contract, execution-method contract, product contract, suite coordination contract, or a local type?
+  model:
+    questions:
+    - Is this a domain model, product model, persistence model, view model, or model-provider integration?
   service:
     questions:
     - Is this a use-case, port, client, policy, workflow, or Effect Service key?
     allowed_when:
     - an established external/framework contract uses the term
     - a genuine Effect Service key is intentionally exposed
-  manager:
-    questions:
-    - What resource, authority, or lifecycle does it actually own?
-  helper:
-    questions:
-    - Can the product subject and pure responsibility be named?
-  utils:
-    questions:
-    - Is there one narrow coherent public API?
-    - Would mapper, decoder, policy, fixture, or testkit be more precise?
-  common:
-    questions:
-    - Which named capability owns this?
-  core:
-    questions:
-    - Is this a tiny stable kernel or a dependency magnet?
-  base:
-    questions:
-    - Is inheritance actually required?
-  types:
-    replacement_candidates:
-    - model
-    - contract
-    - schema
-    - projection
-    - errors
   adapter:
     questions:
     - Which capability and provider/transport does it adapt?
-  impl:
-    questions:
-    - Can live/fake/provider/host express the variant?
   api:
     questions:
     - Does this mean product contract, HTTP transport, public module surface, or vendor API?
-  processor:
-    questions:
-    - Is this a use-case, workflow, worker, consumer, or policy?
-  controller:
-    questions:
-    - Is this framework-required transport code? Keep it thin and subject-qualified.
   handler:
     allowed_patterns:
     - <subject>.http.handlers.ts
@@ -500,15 +550,42 @@ guarded_terms:
   complete:
     questions:
     - Which claim and observed surfaces justify this term?
+  unknown:
+    questions:
+    - Unknown to whom and about which claim?
+    - Would different answers materially change product meaning, Authority, durable data, public compatibility, or irreversible behavior?
+    - Is it semantic, architectural, empirical, environmental, or external-policy?
+  confidence:
+    questions:
+    - 'What is the basis: accepted decision, source observation, execution evidence, inference, or model self-report?'
+    - Which claim remains not_proven?
+  ready:
+    questions:
+    - Ready for exploration, reversible implementation, commitment, claim, release, or production?
+    - Which residual unknowns and stop lines remain?
+  resolved:
+    questions:
+    - Resolved by which owner, for which scope and version?
+    - Were affected Current Homes and claims updated?
+  blocked:
+    questions:
+    - Which exact claim or commitment is blocked?
+    - What unaffected work may continue?
+  assumption:
+    questions:
+    - Who owns it, what is its scope, and when does it expire or invalidate?
+    - Which commitment may it not cross?
+  health:
+    questions:
+    - Which dimensions and evidence basis are evaluated?
+    - Is this a point-in-time derived finding or an unsupported scalar score?
 project_terms:
   order:
     status: canonical
     product_term: Order
     source_token: order
     kind: authority
-    meaning: 已被系统接受的购买流程事实
-    not_the_same_as:
-    - Checkout draft
+    meaning_ref: ../ssot/product-language.md
     aliases:
       purchase:
         status: forbidden
@@ -518,18 +595,14 @@ project_terms:
     product_term: Checkout
     source_token: checkout
     kind: workflow
-    meaning: 用户跨 Orders/Billing 完成购买的交互与应用流程
-    not_the_same_as:
-    - authority module
+    meaning_ref: ../ssot/product-language.md
     aliases: {}
   payment-attempt:
     status: canonical
     product_term: PaymentAttempt
     source_token: payment-attempt
     kind: authority
-    meaning: 一次具有稳定 identity 的 provider 支付尝试
-    not_the_same_as:
-    - database transaction
+    meaning_ref: ../ssot/product-language.md
     aliases:
       transaction:
         status: forbidden

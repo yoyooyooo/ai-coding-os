@@ -1,30 +1,88 @@
 {
+  "schema_version": 1,
   "skill_name": "ai-coding-os",
   "evals": [
     {
       "id": 1,
       "prompt": "Add an order status button that changes a durable backend fact, updates optimistic UI, and requires a database migration.",
-      "expected_output": "Routes $evolvable-application-architecture as Lead because fact authority/transaction/migration are the highest semantic authority, with $frontend-architecture and relevant Harness/Docs specialists supporting."
+      "expected_output": "Routes $evolvable-application-architecture as Lead because fact authority/transaction/migration are the highest semantic authority, with $frontend-architecture and relevant Harness/Docs specialists supporting.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
     },
     {
       "id": 2,
       "prompt": "Fix an Effect Scope finalizer leak in a clearly identified module.",
-      "expected_output": "Allows direct routing to $effect-best-practices without loading the full Suite or forcing the router into the implementation path."
+      "expected_output": "Allows direct routing to $effect-best-practices without loading the full Suite or forcing the router into the implementation path.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
     },
     {
       "id": 3,
-      "prompt": "This task is large and may take many iterations. Automatically create a Goal Pack and choose worker/reviewer models.",
-      "expected_output": "Does not infer Goal Proof or model orchestration from complexity. Goal Proof is routed only when explicitly selected or declared by repository authority."
+      "prompt": "This task is large and may take many iterations. Pick a workflow, create its ledger, and choose worker/reviewer models for me.",
+      "expected_output": "Keeps workflow, model selection, decomposition, and execution state outside the core Router; it returns only relevant knowledge owners and external boundaries.",
+      "expectations": [
+        "Does not choose a tracker, ticket method, Goal experiment, or model orchestration from task size.",
+        "Does not add an external workflow to the core roster.",
+        "Still identifies relevant project knowledge owners."
+      ]
     },
     {
       "id": 4,
       "prompt": "A generic Preset default conflicts with this repository's accepted ADR and Standards.",
-      "expected_output": "Reads and follows repository-local authority, reports the deviation, and treats the Preset and router recommendation as lower-priority sources."
+      "expected_output": "Reads and follows repository-local authority, reports the deviation, and treats the Preset and router recommendation as lower-priority sources.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
     },
     {
       "id": 5,
-      "prompt": "Which AI Coding OS Skill provides the cross-Skill handoff shape and Harness Result schema? My installed Skill folders are flat.",
-      "expected_output": "Routes to $ai-coding-os-suite-contracts by canonical Skill name and does not construct a repository-relative sibling path."
+      "prompt": "Which AI Coding OS Skill provides the Proof Surface and Harness Result schemas? My installed Skill folders are flat. Return the route as machine-readable YAML.",
+      "expected_output": "Routes to $ai-coding-os-suite-contracts by canonical Skill name, emits structured output because it was explicitly requested, and does not construct a repository-relative sibling path.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Turn contradictory stakeholder notes into a PRD, then place the accepted artifact in this repository's existing docs tree.",
+      "expected_output": "Routes $product-definition as Lead for synthesis, decisions, PRD, and acceptance semantics. Adds $docs-governance only for the established artifact home, lifecycle, and router/link updates.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Plan the app shell, navigation, routes, empty/loading/error states, and proof needs before choosing React state libraries.",
+      "expected_output": "Routes $interface-capability-planning as Lead for user work, surfaces, interaction states, and proof needs. Leaves implementation topology and library choices to $frontend-architecture when that later decision is in scope.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Choose the smallest existing test lane for one optimistic-update regression. We do not need a reusable harness route or coverage model.",
+      "expected_output": "Routes directly to $frontend-test-system for the bounded property and existing lane, without expanding the request into $ui-product-harness or $product-harness-system architecture.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "This repository already chose React and Effect v4. Adopt only the missing naming standard and architecture check from the reusable defaults.",
+      "expected_output": "Routes $evolvable-application-preset as Lead for discovery and selective adoption. Project authority wins, and $docs-governance is added only if canonical docs homes or placement are disputed.",
+      "expectations": [
+        "Names the smallest lead and supporting knowledge owners plus their distinct bounded contributions.",
+        "Does not choose an execution workflow, create durable state, or turn a Router recommendation into project Authority."
+      ]
     }
   ]
 }

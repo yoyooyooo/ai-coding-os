@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Definition"
+  short_description: "Turn ambiguous inputs into product baselines, models, decisions, PRDs, acceptance, and traceability"
+  default_prompt: "Use $product-definition to separate sources, implementation or observed behavior, decisions, specifications, and delivery proof; infer ordinary reversible details from current Authority; isolate only authority-changing uncertainty; model the product pressure that matters; and produce the minimum decisions, PRDs, acceptance, UAT, change-impact, and traceability artifacts justified by the request."

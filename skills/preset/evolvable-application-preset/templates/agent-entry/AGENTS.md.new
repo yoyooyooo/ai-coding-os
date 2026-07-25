@@ -1,21 +1,19 @@
 # Repository Agent Guide
 
 <!-- evolvable-application-preset:begin -->
-This repository adopts the profile declared in `docs/standards/architecture-profile.yaml`.
+This section is a Preset candidate and does not establish project Authority.
+Only content explicitly adopted into repository-local Product, SSoT, Standards,
+ADRs, contracts, or agent instructions becomes current; source, lockfiles, and
+executed Evidence answer their own questions.
 
-Repository-local SSoT, standards, ADRs, contracts, source code, lockfiles, and executable evidence take precedence over generic Skill defaults.
+## Knowledge Surfaces
 
-## Read First
+- `docs/README.md`, when present, indexes project Authority by question and artifact.
+- The current question, code area, artifact, owner, or direct Evidence may be an entry.
+- App/package/module READMEs and local `AGENTS.md` describe only real local deltas.
+- Portable Skill output paths are candidate defaults; existing project Current Homes win.
 
-1. `docs/README.md`
-2. `docs/ssot/README.md`
-3. `docs/standards/README.md`
-4. `docs/standards/architecture-profile.yaml`
-5. `docs/standards/source-topology-and-naming.md`
-6. `docs/standards/naming-vocabulary.yaml`
-7. The nearest app/package/module README or local `AGENTS.md`
-
-## Working Rules
+## Candidate Working Rules
 
 - Reuse canonical project terms.
 - Respect public/wiring and fact-writer boundaries.
@@ -28,7 +26,7 @@ Repository-local SSoT, standards, ADRs, contracts, source code, lockfiles, and e
 
 ## Skill Routing
 
-Use `$ai-coding-os` for ambiguous or cross-cutting work when the Suite is available. Clear tasks may use the owning specialist directly. Skill guidance never overrides repository-local authority.
+Use `$ai-coding-os` for ambiguous or cross-cutting knowledge-owner discovery when the Suite is available. Clear concerns may use the owning specialist directly. Skill guidance never overrides repository-local Authority.
 
 ## Language
 

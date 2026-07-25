@@ -10,7 +10,8 @@ Default inline output:
 
 ```text
 Inputs And Authority Links
-Product Capability Summary
+  Product Requirement / Rule / AC IDs
+Accepted Product Obligation Summary
 Interface Capability Map
   Capability ID
   Intent
@@ -30,11 +31,11 @@ State And Data Contract
   Realtime State
   URL / Navigation State
   Derived View Model
-Testability Plan
-  Interface Headless
-  Render Wiring
-  Browser Visible
-  Production Near
+Proof Needs
+  surface_kind
+  dependency_reality
+  environment_class when material
+  proof_focus such as render_wiring
 Harness Handoff
 Concept And Label Mapping
 Visual Constraints
@@ -48,14 +49,9 @@ Default durable artifact:
 docs/interface-capabilities/<surface>.yaml
 ```
 
-When the work is inside a Goal Pack, use the optional companion:
+A selected execution method may keep a local candidate companion in its own artifact space. That companion is not a second Current Home: it references the durable capability ID and is promoted only when project Authority accepts it.
 
-```text
-docs/goal-proof/goals/<goal-id>/interface-capabilities.yaml
-```
-
-Do not place the full Interface Capability DSL inside `goal.yaml`; the Goal
-Pack should reference it by ID.
+Do not embed the full Interface Capability DSL into workflow metadata, tickets, plans, or status records; reference capability IDs instead.
 
 ## Decomposition Depth
 
@@ -97,7 +93,8 @@ Headless Capability -> User Work Item -> Interface Capability -> Surface
 ```
 
 Preserve headless `claim_ceiling`. A headless proof can prove facts; it does not
-prove projection consumption, render wiring, or browser-visible behavior.
+prove projection consumption, `render` with `render_wiring` focus, or `browser`
+behavior.
 
 ### existing-interface-increment
 
@@ -159,6 +156,12 @@ intent: >
 authority_refs:
   product:
     - docs/product/contract.md
+  product_requirements:
+    - REQ-012
+  product_rules:
+    - RULE-004
+  acceptance_criteria:
+    - AC-009
   object_authority:
     - docs/ssot/core-object-authority.md
   headless:
@@ -216,12 +219,27 @@ data_contract:
   invalidation_or_backfill: channel and issue projection
   idempotency_key: optional clientMutationId
 
-coverage_intent:
-  required_levels:
-    - interface_headless
-    - render_wiring
-    - browser_visible
-  optional_levels:
+proof_needs:
+  - proof_surface:
+      surface_kind: interface_headless
+      dependency_reality:
+        - fixture
+      proof_focus:
+        - projection_reconciliation
+  - proof_surface:
+      surface_kind: render
+      dependency_reality:
+        - fake
+      proof_focus:
+        - render_wiring
+  - proof_surface:
+      surface_kind: browser
+      dependency_reality:
+        - fake
+      environment_class: local_stack
+      proof_focus:
+        - reload_consistency
+  optional_focus:
     - realtime_patch
     - mobile_layout
 
@@ -236,12 +254,15 @@ agent_freedom:
   may_add_stable_testids: true
   may_reduce_visual_assertions_to_functional_layout: true
 
-promotion_gate:
-  accepted_when:
-    - headless proof passes
-    - browser harness proves visible success and reload consistency
-    - not_claimed recorded
+evidence_links: []
 ```
+
+`status` expresses definition lifecycle only: `sketch | candidate | accepted |
+retired`. Product/design authority accepts the definition. `proof_needs` names
+required observation surfaces, while executed Harness Results stay separate in
+`evidence_links`; a passing proof does not promote the definition automatically.
+Do not add a delivery status machine until a real project needs durable delivery
+state.
 
 Keep the DSL thin. If a field can be derived from source, tests, or route code,
 do not encode it unless it is part of the contract.
@@ -306,7 +327,8 @@ downstream skill/tool is invoked.
 The planning work is complete when another agent can answer:
 
 ```text
-What capability is being planned?
+Which accepted Product Requirement, Rule, and AC IDs supply the obligations?
+What capability is being planned without redefining those obligations?
 Where does the user do it?
 What state changes?
 Which state owner owns each piece?

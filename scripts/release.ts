@@ -75,6 +75,7 @@ function main(): void {
     if (Array.isArray(config.lockfileCommand) && config.lockfileCommand.length > 0) {
       run(config.lockfileCommand[0]!, config.lockfileCommand.slice(1));
     }
+    syncBunWorkspaceVersions(packages, config.lockfiles);
     if (!options.skipLocalCheck && Array.isArray(config.localCheckCommand) && config.localCheckCommand.length > 0) {
       run(config.localCheckCommand[0]!, config.localCheckCommand.slice(1));
     }
@@ -94,8 +95,10 @@ function main(): void {
     }
 
     run("git", ["switch", originalBranch], { quiet: true });
-    run("git", ["branch", "-D", tempBranch], { quiet: true });
-    console.log(options.noPush ? `${tag} created locally. No tag was pushed.` : `${tag} pushed. CI publish workflow should start.`);
+    // Keep an unmerged temporary branch rather than force-delete it. A caller
+    // may remove it later through the repository's safe Git policy.
+    execCommand("git", ["branch", "-d", tempBranch], false);
+    console.log(options.noPush ? `${tag} created locally. No tag was pushed.` : `${tag} pushed. Publishing remains a separately configured release step.`);
   } catch (error) {
     if (originalBranch.length > 0) {
       execCommand("git", ["switch", originalBranch], false);
@@ -117,7 +120,7 @@ function readConfig(): Config {
     lockfiles: [],
     lockfileCommand: null,
     checkCommand: null,
-    localCheckCommand: null,
+    localCheckCommand: parsed.localCheckCommand ?? parsed.checkCommand ?? null,
     commitMessage: "chore: release {tag}",
     publishMode: "npm",
     publishPackage: null,
@@ -329,6 +332,28 @@ function shortSha(): string {
 
 function writeJson(path: string, value: Record<string, unknown>): void {
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function syncBunWorkspaceVersions(packages: PackageFile[], lockfiles: string[]): void {
+  for (const lockfile of lockfiles.filter((value) => value.endsWith("bun.lock"))) {
+    const path = resolve(repoRoot, lockfile);
+    let text = readFileSync(path, "utf8");
+    for (const pkg of packages) {
+      const workspacePath = dirname(pkg.relPath).replaceAll("\\", "/");
+      const packageName = typeof pkg.value.name === "string" ? pkg.value.name : null;
+      if (workspacePath === "." || packageName === null) continue;
+      const pattern = new RegExp(
+        `(\\"${escapeRegExp(workspacePath)}\\"\\s*:\\s*\\{\\s*\\"name\\"\\s*:\\s*\\"${escapeRegExp(packageName)}\\"\\s*,\\s*\\"version\\"\\s*:\\s*\\")[^\\"]+(\\")`,
+      );
+      if (!pattern.test(text)) fail(`${lockfile} is missing workspace version metadata for ${workspacePath}`);
+      text = text.replace(pattern, `$1${pkg.value.version}$2`);
+    }
+    writeFileSync(path, text);
+  }
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function run(command: string, args: string[], options: { quiet?: boolean } = {}): string {

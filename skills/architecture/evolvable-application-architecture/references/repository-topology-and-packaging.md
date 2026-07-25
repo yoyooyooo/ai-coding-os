@@ -1,144 +1,67 @@
 # Repository Topology and Packaging
 
-Use a Monorepo-first reference profile without turning Monorepo into doctrine.
-The architecture must remain valid in a single-package repository or a
-multi-repository deployment.
-
-## Five boundaries
+Repository shape is a projection of semantic and operational pressure.
 
 ```text
-repository boundary
-  collaboration, version, and change-set boundary
-
-package boundary
-  compile/import/public-API boundary
-
-deployable boundary
-  process, lifecycle, fault, scaling, and release boundary
-
-authority boundary
-  final accepted-fact materialization boundary
-
-data boundary
-  transaction and consistency boundary
+version-control repository
+workspace / aggregate root
+source module
+compilation and public-API unit
+runnable host
+independently deployed process
+fact authority and consistency domain
+data store / schema boundary
 ```
 
-They may align, but they are never equivalent by default.
+These boundaries may coincide, but none implies another.
 
-## Reference monorepo
+## Default
+
+Start with the repository structure already accepted by the project. Within it,
+prefer private modules and explicit host composition. Do not introduce a
+Monorepo, workspace package, crate, or microservice merely to make the diagram
+symmetrical.
+
+## Promotion Signals
+
+Promote a module to a compilation/package unit when one or more durable pressures
+exist:
 
 ```text
-repo/
-  apps/
-    web/
-    api/
-    worker/
-    migrator/        # only when a distinct runnable owner is justified
-  packages/
-    contracts/       # wire schemas or generated public contracts
-    client/          # typed product client when multiple hosts consume it
-    testkit/         # business-neutral reusable test primitives only
-    <named-capability>/
-  tooling/
-  docs/
-  specs/
+enforced dependency direction
+independent public API or SemVer
+real reuse by multiple hosts
+separate ownership or release cadence
+build isolation or toolchain boundary
 ```
 
-`apps` contains runnable hosts. `packages` contains admitted compile/reuse
-boundaries. Product authority modules do not automatically belong in
-`packages`.
-
-## Host-first, capability-local backend
+Promote to a deployable when pressure is operational:
 
 ```text
-apps/api/src/
-  host/
-    api.main.ts
-    api.config.ts
-    api.composition.ts
-    api.shutdown.ts
-  modules/
-    orders/
-      order.public.ts
-      order.wiring.ts
-      ...private semantic files...
-    billing/
-  workflows/
-    checkout/
+independent scaling or failure isolation
+trust/security boundary
+separate runtime/resource lifecycle
+independent deployment or rollback
+network protocol already required by product/organization constraints
 ```
 
-`host/` owns runtime construction, config, resources, HTTP server, consumers,
-and shutdown. It does not own product transitions.
+## Monorepo Profile
 
-A private module owns cohesive product state, invariants, commands, queries,
-ports, projections, and nearby tests. Cross-module callers use the module's
-public surface. Host composition may additionally use the wiring surface.
+A Monorepo is a reusable repository topology profile, not the generic doctrine.
+When selected, keep repository, package, deployable, fact Authority, and data
+boundaries explicit. Package sharing does not grant writer Authority; an app
+entry does not become product logic.
 
-A workflow coordinates public commands/queries across modules. It cannot write
-another module's storage directly.
+## Polyglot Workspaces
 
-## Module to package admission
-
-Start in the host-private module. Promote only when one or more pressures are
-real:
+Use the same semantic map across languages, then project locally:
 
 ```text
-multiple hosts need the capability
-compile-time isolation materially reduces risk
-package exports are needed to enforce public/private boundaries
-independent ownership, trust, or security boundary exists
-independent build/test/release has operational value
-long-lived public API is deliberate
+TypeScript package exports and project references
+Rust Cargo workspace crates and visibility
+JVM modules/packages
+Go modules/internal packages
 ```
 
-Package extraction does not grant authority. If both API and Worker import a
-domain package, they still require an explicit allowed-writer model and shared
-transaction/fencing semantics.
-
-## Package to deployable admission
-
-Promote only for deployment pressure:
-
-```text
-independent scaling
-independent fault containment
-independent lifecycle/resource ownership
-network or trust boundary
-independent release cadence
-regulatory or security isolation
-```
-
-Do not use service extraction to compensate for unclear module ownership.
-
-## Shared kernel admission
-
-A small kernel may contain stable protocols such as:
-
-```text
-CommandContext
-FactRef
-IdempotencyKey
-ExpectedVersion
-CommitReceipt
-```
-
-It must not become a shared domain model, BaseEntity hierarchy, generic
-repository framework, universal result type, or dependency dumping ground.
-
-## Multiple writer warning
-
-For each durable fact, project SSoT should record:
-
-```text
-fact
-authority module
-allowed writer hosts
-formal entrypoints
-transaction owner
-authority epoch / fencing when relevant
-forbidden direct writers
-```
-
-A Worker may issue a command without becoming the fact authority. If multiple
-hosts can materialize one authority, prove idempotency, concurrency, transaction
-ownership, and old-writer fencing explicitly.
+Generated wire contracts may connect ecosystems. They are compatibility
+boundaries, not a shared domain Authority.

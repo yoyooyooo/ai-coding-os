@@ -13,7 +13,7 @@ Plan user-facing capabilities as traceable interface contracts rather than a
 page list.
 
 ```text
-Product Capability
+Accepted Product Obligation + source IDs
   -> InterfaceCapability
      -> IA / Surface / Region
      -> Interaction State Contract
@@ -31,20 +31,22 @@ Owns:
   technology-neutral frontend ownership needs
   testability and harness handoff needs
 
-Adjacent owners:
+Adjacent Suite owners, when installed:
+  product obligations, Requirement/Rule/AC IDs, and Product Design Handoff -> $product-definition
   frontend implementation topology -> $frontend-architecture
-  shared harness language -> $product-harness-system
-  browser and render proof -> $ui-product-harness
+  shared proof language -> $product-harness-system
+  UI proof -> $ui-product-harness
   product-fact proof -> $headless-product-harness
-  durable placement -> $docs-governance
 ```
 
 Product/domain/API/database truth, concrete test code, evidence lifecycle, and
 brand/visual-system decisions remain with their owners.
 
-## Capability Pass
+## Capability Coverage
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the current interface concern; this is not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Ground | Relevant Product, SSoT, Architecture, Standards, interface/design material, and existing harnesses are identified. |
 | Start from work | The user's job and owning product capability are stated before any page or component decomposition. |
@@ -56,18 +58,22 @@ brand/visual-system decisions remain with their owners.
 ## Rules
 
 - Use `InterfaceCapability` and `InterfaceSurface` as stable object kinds.
+- Reference accepted Product Requirement, Rule, and AC IDs when they exist;
+  map their obligations without redefining product rules.
 - Reference Harness IDs; retain execution evidence with its owning harness or
   evidence method.
 - Distinguish local interaction, remote projection, async command, realtime,
-  URL, derived view model, render wiring, and browser-visible state.
+  URL, derived view model, and canonical Proof Surface fields. `render_wiring`
+  is a render proof focus; browser is an observation surface.
 - Keep selectors and framework internals in implementation artifacts.
 - Interface proof supports interface claims; backend fact correctness requires
   a backend proof surface.
 - A provisional `interaction-island` may remain `sketch` or `candidate` with
   explicit gaps.
 
-When a repository explicitly uses `$goal-proof`, a Goal Pack may reference the
-InterfaceCapability artifact; this skill remains independently usable.
+A repository-selected execution method may reference the InterfaceCapability
+artifact; execution state remains with that method and this skill stays
+independently usable.
 
 ## Output
 
@@ -78,7 +84,7 @@ entrypoints
 surfaces_and_regions
 interaction_states
 frontend_owner_map
-headless_and_ui_harness_needs
+proof_needs
 trace_refs
 gaps
 not_proven

@@ -2,14 +2,21 @@
 
 **English** | [中文](README.zh-CN.md)
 
-CLI for inspecting Goal Proof System Goal Packs, reading the active work item,
+Experimental CLI for inspecting Goal Proof Goal Packs, reading the active work item,
 recording evidence, applying deterministic progress, and checking consistency.
+Goal Proof is a co-located early experiment, not part of the AI Coding OS core
+Skill Suite or Router. See the repository's `experiments/goal-proof/` boundary documentation.
 
-Use it inside any project that stores Goal Pack folders under
-`docs/goal-proof/goals/<goal-id>`.
+Use it with any Goal Pack directory. Bare goal IDs resolve under the writer
+fallback `.goal-proof/goals/`; projects with another artifact home pass the
+resolved `goal_pack_root` explicitly. CLI 0.2.x also reads the former
+`docs/goal-proof/goals/` location for finite migration compatibility.
+
+Goal Pack schema v2 templates require CLI `>=0.2.0 <0.3.0` for list-shaped
+`completion.required_evidence`; 0.2.x keeps legacy scalar reader compatibility.
 
 ```bash
-npm install -g goal-proof
+npm install -g goal-proof@^0.2.0
 ```
 
 ## Common Flow
@@ -57,9 +64,9 @@ goal-proof apply <goal-pack> [--dry-run]
 goal-proof check <goal-pack>
 ```
 
-`<goal-pack>` may be a directory or a bare goal id under
-`docs/goal-proof/goals/`. `summary` accepts a project root or a
-`docs/goal-proof/goals` directory, defaulting upward from the current directory.
+`<goal-pack>` may be the explicit `goal_pack_root` directory or a bare goal id
+under `.goal-proof/goals/`. `summary` accepts a project root or
+a goals directory, defaulting upward from the current directory.
 
 Read JSON commands share output controls. `--limit` bounds visible collections,
 `--include path,objective,links` restores omitted detail, and `--show-empty`
@@ -101,9 +108,10 @@ bun run release 0.2.0
 ```
 
 `bun run release:check` validates release git readiness without changing files.
-`bun run release` writes the version on a temporary local release branch, tags
-that commit, and pushes only the tag. GitHub Actions publishes through npm
-Trusted Publishing.
+`bun run release` writes the CLI version on a temporary local release branch,
+keeps `packages/cli/package.json` and the `bun.lock` workspace version aligned,
+tags that commit, and pushes only the tag. Actual npm publishing is a separately
+configured release step and is not claimed by this repository.
 
 ## Development
 

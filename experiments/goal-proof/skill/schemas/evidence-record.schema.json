@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Goal Proof Evidence Record v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "work_id",
+    "type",
+    "result",
+    "recorded_at",
+    "summary",
+    "next_action"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "evidence_id": {"type": "string", "pattern": "^E[0-9]{3}$"},
+    "work_id": {"type": "string", "pattern": "^W[0-9]{3}$"},
+    "type": {"enum": ["discovery", "decision", "implementation", "coordination", "review", "planning"]},
+    "result": {"enum": ["done", "blocked"]},
+    "recorded_at": {"type": "string", "minLength": 1},
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "checks": {"type": "array", "items": {"type": "object"}},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "claims": {"type": "array", "items": {"type": "string"}},
+    "not_claimed": {"type": "array", "items": {"type": "string"}},
+    "remaining_gaps": {"type": "array", "items": {"type": "string"}},
+    "blocked_by": {"type": "array", "items": {"type": "string"}},
+    "decision": {"type": "string"},
+    "completion_satisfied": {"type": "boolean"},
+    "claim_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim", "evidence"],
+        "properties": {
+          "claim": {"type": "string"},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "source_ref": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "object"}]},
+    "proof_surface": {"type": "object"},
+    "claim_ceiling": {"type": "string"},
+    "observed": {"type": "object"},
+    "supports": {"type": "array", "items": {"type": "string"}},
+    "not_proven": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "verification_level": {"type": "string"},
+    "summary": {"type": "string"},
+    "next_action": {"enum": ["proof_step", "continue", "needs_plan", "blocked", "review", "done", "needs_human"]}
+  },
+  "additionalProperties": true
+}

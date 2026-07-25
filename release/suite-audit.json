@@ -1,0 +1,154 @@
+{
+  "suite_root": "skills",
+  "source_tree_sha256": "152cffefc06a4786291ed3a6178b18980f91d27c8e7f357edcd22c0aee41df33",
+  "summary": {
+    "error": 0,
+    "warn": 0,
+    "info": 0,
+    "total": 0
+  },
+  "checks": [
+    {
+      "name": "skill-frontmatter",
+      "status": "pass",
+      "detail": {
+        "count": 17
+      }
+    },
+    {
+      "name": "suite-contracts",
+      "status": "pass",
+      "detail": {
+        "owners": [
+          "effect-best-practices",
+          "evolvable-application-architecture",
+          "frontend-architecture",
+          "product-harness-system"
+        ],
+        "skills": 17
+      }
+    },
+    {
+      "name": "json-yaml-parse",
+      "status": "pass",
+      "detail": {
+        "files": 68
+      }
+    },
+    {
+      "name": "schema-validation",
+      "status": "pass",
+      "detail": {
+        "positive_cases": 15,
+        "negative_cases": 9,
+        "evidence_examples": 3,
+        "forbidden_promotions": 6
+      }
+    },
+    {
+      "name": "skill-evals",
+      "status": "pass",
+      "detail": {
+        "files": 18,
+        "cases": 196,
+        "composition_cases": 15
+      }
+    },
+    {
+      "name": "markdown-links",
+      "status": "pass",
+      "detail": {
+        "links": 167
+      }
+    },
+    {
+      "name": "skill-portability",
+      "status": "pass",
+      "detail": {
+        "relative_links": 167,
+        "skills": 17
+      }
+    },
+    {
+      "name": "suite-contract-snapshot",
+      "status": "pass",
+      "detail": {
+        "files": [
+          "semantic-vocabulary.yaml",
+          "filename-patterns.yaml",
+          "guarded-terms.yaml"
+        ]
+      }
+    },
+    {
+      "name": "source-conventions",
+      "status": "pass",
+      "detail": {
+        "skills": 17
+      }
+    },
+    {
+      "name": "python-compile",
+      "status": "pass",
+      "detail": {
+        "files": 22
+      }
+    },
+    {
+      "name": "preset-golden",
+      "status": "pass",
+      "detail": {
+        "example": "preset/evolvable-application-preset/examples/commerce-platform/expected"
+      }
+    },
+    {
+      "name": "effect-api-app-kit",
+      "status": "pass",
+      "detail": {
+        "p3_harness_binding": "project-provided",
+        "verification_command_timeout": "pass",
+        "structured_rollback": "pass",
+        "template_typecheck": "excluded-environment-dependent"
+      }
+    },
+    {
+      "name": "core-bundle-builder",
+      "status": "pass",
+      "detail": {
+        "skills": 17,
+        "isolated": true,
+        "source_bound": true,
+        "canonical_audit_sidecar": true,
+        "cross_machine_deterministic": true
+      }
+    },
+    {
+      "name": "subprocess-timeout",
+      "status": "pass",
+      "detail": {
+        "default_seconds": 120
+      }
+    },
+    {
+      "name": "suite-version",
+      "status": "pass",
+      "detail": {
+        "version": "0.5.0-experimental.1"
+      }
+    },
+    {
+      "name": "source-hygiene",
+      "status": "pass"
+    }
+  ],
+  "findings": [],
+  "claim_ceiling": "Deterministic grouped-source structure, portable links, schema/eval assets, Preset/Kit fixtures, bounded subprocess handling, and source-bound bundle checks. Machine-local paths and compiler-dependent template typecheck status are excluded from release provenance; no model-run, runtime installation, or production behavior is claimed.",
+  "release_canonicalization": {
+    "version": 1,
+    "suite_root": "relative",
+    "excluded": [
+      "machine-absolute-suite-root",
+      "compiler-dependent-template-typecheck-status"
+    ]
+  }
+}

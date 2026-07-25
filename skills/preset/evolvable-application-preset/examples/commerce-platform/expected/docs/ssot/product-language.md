@@ -1,6 +1,6 @@
-# Product Language
+# Product Language Candidate
 
-本文件记录产品 canonical terms。它拥有产品词义，不拥有源码目录规则。
+本文件是产品 canonical terms 的候选输入，不是项目 SSoT；产品 owner 采纳后才拥有当前词义。
 
 | Canonical term | Meaning | Kind | Not the same as |
 | --- | --- | --- | --- |

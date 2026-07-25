@@ -1,7 +1,15 @@
-schema_version: 1
+schema_version: 2
 id: order.checkout.retry
 capability: order.checkout
-surface: headless
+proof_surface:
+  surface_kind: headless
+  dependency_reality:
+    - fake
+    - real_local
+  environment_class: local_stack
+  proof_focus:
+    - idempotent_retry
+    - persistence_restart
 command: pnpm verify order.checkout.retry
 uses:
   persistence: postgres
@@ -13,4 +21,4 @@ can_observe:
 does_not_cover:
   - browser projection
   - real payment provider
-claim_ceiling: local Postgres, single authority host, restart exercised
+claim_ceiling: local Postgres, single fact-authority host, restart exercised

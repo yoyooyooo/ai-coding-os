@@ -13,6 +13,7 @@ Capability ports isolate external powers.
 Composition profiles select implementations.
 Evidence bounds claims.
 Forward migration preserves durable facts without preserving every old API.
+Architecture makes the project legible to Agent judgment; it does not script one workflow.
 ```
 
 A hexagon is not a folder diagram. The meaningful boundaries are:
@@ -98,6 +99,15 @@ Event / outbox / audit / provenance
 
 Objects, workflows, classifications, policies, and projections may evolve
 behind this kernel.
+
+## Material Unknowns and Decision Rights
+
+Architecture does not require every unknown to disappear before work begins. It
+forbids silent assumptions that can change product meaning, authority,
+consistency, permissions, durable data, public compatibility, irreversible
+migration, external effects, or proof. Resolve ordinary reversible technical
+choices inside accepted constraints; route only the affected material decision
+to its semantic or policy owner and continue unrelated work.
 
 ## Abstraction Restraint
 

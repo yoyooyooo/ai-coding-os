@@ -9,7 +9,7 @@ description: >-
 
 # Effect Best Practices
 
-Use Effect as an execution and resource model. Product authority and source
+Use Effect as an execution and resource model. Product decision authority and source
 boundaries remain upstream decisions. Choose the lowest adoption level that
 solves real pressure; keep pure domain calculation ordinary TypeScript.
 
@@ -25,16 +25,19 @@ Owns:
   Effect tests and runtime-bound facades
   Effect-specific mapping of live/fake implementations to Layers, runtimes, and scopes
 
-Adjacent owners:
-  authority/ports/transactions/modules/source topology -> $evolvable-application-architecture
+Adjacent Suite owners, when installed:
+  fact authority, ports, transactions, modules, and source topology -> $evolvable-application-architecture
+  cross-owner ADIR, architecture diff, and health -> $architecture-decision-system
   frontend topology/state/query/store/realtime -> $frontend-architecture
-  managed HttpApi scaffold -> $effect-api-app-kit
-  docs placement -> $docs-governance
+  managed HttpApi generation after Effect choices settle -> $effect-api-app-kit
+  documentation authority -> $docs-governance
 ```
 
-## Effect Pass
+## Effect Coverage
 
-| Step | Completion criterion |
+Cover applicable decisions in the order exposed by the current Effect pressure; this is not a project workflow.
+
+| Decision | Completion criterion |
 | --- | --- |
 | Version gate | `package.json`, lockfile, installed `effect` declarations, and host runtime establish the exact API surface. |
 | Pressure | Typed failure, replacement, lifetime, cancellation, concurrency/backpressure, retry/timeout, observability, or deterministic-test pressure is named. |
@@ -60,32 +63,6 @@ expected failures, defects, and interruption remain distinguishable
 version-specific syntax follows installed declarations
 ```
 
-## Topology and Naming
-
-Application naming comes from `$evolvable-application-architecture`:
-
-```text
-<subject>.<operation>.use-case.ts
-<subject>.<capability>.port.ts
-<subject>.public.ts
-<subject>.wiring.ts
-<host>.composition.ts
-```
-
-Effect adds qualifiers only where they carry runtime meaning:
-
-```text
-<subject>.<capability>.<provider>.live.ts
-<subject>.<capability>.memory.fake.ts
-<host>.runtime.ts
-<subject>.<purpose>.stream.ts
-```
-
-A genuine Effect-native library may use `.service.ts` for a Service key;
-`service` remains guarded elsewhere. Each deployable host owns its runtime and
-live Layer graph. Reusable packages export contracts, normalized errors,
-programs, or Layer factories rather than an unowned global runtime.
-
 ## Read When Needed
 
 | Condition | Reference |
@@ -109,20 +86,9 @@ programs, or Layer factories rather than an unowned global runtime.
 
 ## Output
 
-```text
-installed_version
-adoption_level
-pressure
-pure_core
-capability_services
-layer_graph
-runtime_and_scope_owner
-error_model
-cancellation_and_backpressure
-source_naming_mapping
-frontend_or_backend_mapping
-tests_and_harnesses
-migration_steps
-not_proven
-not_claimed
-```
+Return the smallest decision-bearing Effect view. Make the installed version or
+version gap, runtime/Scope owner, material lifecycle unknowns, `not_proven`, and
+smallest verification surface explicit when they change the answer. Use fixed
+fields, full Service/Layer graphs, error models, concurrency/backpressure design,
+source mapping, migration steps, or persistent ADIR only when a real consumer or
+the selected branch needs them.

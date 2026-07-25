@@ -7,18 +7,23 @@ active engineering context.
 ## Core distinction
 
 ```text
+Empirical Unknown / Probe Request
+  -> bounded scenario and observation target
+
 Harness execution
   -> structured observations
 
 Agent interpretation against project authority
-  -> bounded supported conclusions
+  -> bounded supported conclusions and does_not_decide
 
 unexercised adjacent properties
   -> not_proven / not_claimed
 ```
 
 The same Agent may execute and interpret. Keep the epistemic distinction between
-what ran and what is inferred; do not require a separate verifier by default.
+what ran, what it supports, and what the observation cannot decide. A probe can
+close an empirical unknown but cannot seize product, policy, architecture, or
+release Authority; do not require a separate verifier by default.
 
 ## Evidence ladder
 
@@ -37,7 +42,7 @@ transport, queue, and projection proof
 browser or interface proof
 real external adapter opt-in
 failure injection / partition proof
-load, soak, and production-near smoke
+load, soak, and local-stack or staging smoke
 ```
 
 A lower level supports but does not prove a higher-level claim. Functional tests
@@ -59,6 +64,8 @@ observed:
   duplicate_version_after: 8
 supports:
   - duplicate retry did not create a second committed transition
+does_not_decide:
+  - whether product policy should allow another retry
 not_proven:
   - multi-process contention
   - real provider behavior
@@ -130,7 +137,7 @@ accepted facts through a privileged alternate path when the claim concerns
 production materialization.
 
 Do not copy a second business algorithm into test utilities. Do not report fake,
-replay, headless, render, or local production-near evidence as a stronger real
+replay, headless, render, or declared local-stack/staging evidence as a stronger real
 surface than actually exercised.
 
 ## Deletion proof
