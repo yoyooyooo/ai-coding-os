@@ -1,21 +1,27 @@
-# <Decision Title>
+# ADR-<number>: <Decision title>
 
-> Use this template for a technical or architectural decision only. Product/business decisions belong in the repository-selected product decision home.
-
-- Status: proposed | accepted | superseded | rejected
-- Date:
-- Owner:
-- Supersedes:
-- Related artifacts:
+> Use only for a durable accepted technical decision that benefits from stable citation. Delete unused sections.
 
 ## Context
 
+<The current pressure, constraints, and facts that make a decision necessary.>
+
 ## Decision
 
-## Alternatives
+<The accepted choice and its scope.>
+
+## Reasons and alternatives
+
+<Why this option was selected; what credible alternatives were considered.>
 
 ## Consequences
 
-## Evidence / Follow-up
+<New capabilities, costs, constraints, risks, and follow-up obligations.>
 
-Use sequence numbers only when this directory is an append-only decision collection that benefits from immutable citation.
+## Invalidates when
+
+<New facts or conditions that should reopen the decision.>
+
+## Related Current Homes
+
+- <architecture, Standard, protocol, or product route that must remain aligned>

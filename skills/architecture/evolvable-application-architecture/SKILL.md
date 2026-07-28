@@ -1,169 +1,116 @@
 ---
 name: evolvable-application-architecture
-description: >-
-  Cross-language authority-first application architecture for durable facts and
-  change. Use when deciding or auditing fact ownership, use cases,
-  transactions, consistency, capability ports, composition, boundary promotion,
-  forward migration, MVP takeover, replaceability, or architecture evidence.
-  Frontend, Effect, and cross-owner decision-system details stay with their
-  owning Skills.
+description: Design and evolve applications when small changes cross many modules, no one can name the final fact writer, business code calls databases or providers directly, replacing a dependency rewrites product logic, old writers cannot be fenced during migration, or an AI-generated MVP looks complete but cannot explain ownership and recovery.
 ---
 
 # Evolvable Application Architecture
 
-Use an **authority-first application hexagon**:
+Architecture is not a static layer diagram. It is a set of relationships that lets the next real change be found, understood, implemented locally, observed, migrated, and eventually removed.
 
 ```text
-accepted facts live behind governed use cases
-external powers cross application-owned capability boundaries
-composition selects implementations and owns resources
-forward evolution preserves accepted facts and fences old writers
-evidence bounds every architecture claim
+accepted fact changes through a governed use case
+external power enters through an application-owned capability boundary
+composition roots choose live implementations and own their lifetimes
+before authority moves, old writers are fenced
+an observation supports only the path it actually exercised
 ```
 
-The doctrine is language-, runtime-, repository-, and deployment-neutral.
-Ecosystem projections decide idiomatic modules, types, traits/interfaces,
-resource lifecycles, and package shapes after the semantic boundary is known.
+## Semantic anchors
 
-## Ownership
+- **The Project Should Explain Itself.** A fresh Agent should be able to recover accepted meaning, the governed entry, the final writer, external capabilities, live composition, verification, and removal path.
+- **One Fact, One Final Writer.** Within one consistency scope, each accepted fact has one final materialization authority, even when many processes can propose or observe it.
+- **Candidates Propose; Authorities Materialize.** Commands, provider responses, imports, model output, drafts, and realtime frames remain candidates or observations until a governed use case accepts them.
+- **Ports Describe Capabilities, Not Providers.** Application-owned boundaries name what the product needs and contain provider protocol, credentials, failure, and lifetime details.
+- **Composition Chooses; It Does Not Decide.** A composition root selects live implementations and owns resources; it does not become product transition logic.
 
-```text
-Owns:
-  fact authority, consistency domain, and authority epoch
-  Commands, Observations, Candidates, Decisions, and materialization
-  use-case, transaction, idempotency, event, inbox/outbox, and reconciliation shape
-  capability ports, receipts, outcome-unknown, and adapter conformance
-  composition profiles, resource owners, and host boundaries
-  repository / compilation / deployable / authority / data distinctions
-  pressure-based boundary promotion and ecosystem projection contract
-  forward migration, bridge fencing, deletion gates, and replaceability
-  architecture claim ceilings
+Ports, packages, Services, events, Actors, registries, deployables, and new layers must be earned by real change, failure, lifetime, trust, or reuse pressure.
 
-Adjacent Suite owners, when installed:
-  product semantics, requirements, and acceptance -> $product-definition
-  cross-owner ADIR, architecture diff, health, and commitment boundaries -> $architecture-decision-system
-  frontend state, topology, realtime, and reconciliation -> $frontend-architecture
-  Effect Service, Layer, Scope, API, and Runtime -> $effect-best-practices
-  managed Effect API generation after decisions settle -> $effect-api-app-kit
-  proof architecture and empirical probes -> $product-harness-system
-```
+## Permanent questions
 
-The project or accountable external owner retains product truth, security,
-privacy, legal/policy, public compatibility, retention, and destructive-decision
-Authority.
+### Who owns the accepted fact?
 
-## Architecture Coverage
+For every persistent fact, identify the final materialization authority, the relevant consistency scope, and any forbidden or legacy writers. Shared code or infrastructure does not grant write authority.
 
-Cover only the decisions exposed by the current pressure; this is not a project
-workflow.
+### How does a proposed change become authoritative?
 
-| Decision | Completion criterion |
+A Command requests change. Provider responses, model output, realtime frames, imported files, and user drafts are candidates or observations. They become accepted facts only through a governed use case.
+
+### Which external powers deserve an application-owned boundary?
+
+Create a capability boundary when callers should not know provider protocols, credentials, failures, or lifetime details. An interface alone does not prove replaceability; substitutes need behavioral evidence.
+
+### Who assembles and closes the live system?
+
+A host composition root selects implementations, constructs resources, supervises background work, and closes them. Bootstrap does not own product transitions.
+
+### How are failure, time, concurrency, permissions, and unknown outcomes contained?
+
+Make writer, ordering, deadline, retry, interruption, partial failure, recovery, trust, and privilege visible where consequences occur. A timeout does not prove that an external effect did not happen.
+
+### Can the next real change stay local?
+
+Independent change axes should not force unrelated product meaning, database, worker, frontend, and deployment changes. Migrations need source of truth, bridge, fencing, divergence observation, and deletion conditions.
+
+These are peer questions, not architecture steps.
+
+## Enter from the current pressure
+
+| Current pressure | Continue into |
 | --- | --- |
-| Ground | Project Authority, accepted decisions, current source/schema/runtime evidence, relevant language/runtime versions, and Suite defaults are distinguishable. |
-| Authority | Each accepted durable fact has one final materialization authority inside a named consistency domain and epoch; forbidden writers are visible. |
-| Change | Authoritative intent and non-authoritative inputs take separate paths through authorize/validate/decide/materialize/commit. |
-| Capability | Genuine outer powers have application-owned contracts; timeout, cancellation, retry, receipt, unknown outcome, and conformance are explicit where pressure exists. |
-| Composition | One owned host/profile selects implementations, constructs resources, and closes lifecycle without moving product transitions into bootstrap code. |
-| Boundaries | The smallest sufficient lexical, module, compilation, host, trust, or deployable boundary is chosen from observed pressure. |
-| Evolution | A vertical slice can migrate forward; any bridge has source of truth, divergence handling, fencing, and deletion conditions. |
-| Proof | Proof surface matches the claim; source observation, execution evidence, inference, `not_proven`, and `not_claimed` remain distinct. |
+| a fresh Agent cannot recover the complete change path for one capability | [Agent-legible change surface](references/agent-legible-change-surface.md) |
+| final fact writer, candidate fact, or import relationship is unclear | [Fact authority and candidate boundaries](references/fact-authority-and-candidate-boundaries.md) |
+| Commands, transactions, idempotency, outbox, or unknown outcome are unclear | [Use cases, transactions, and idempotency](references/use-cases-transactions-and-idempotency.md) |
+| it is unclear whether a provider, database, model, filesystem, or plugin deserves a Port | [Capability boundaries and adapters](references/capability-boundaries-and-adapters.md) |
+| Runtime, resources, background work, or live implementations lack an owner | [Composition roots and lifetimes](references/composition-roots-and-lifetimes.md) |
+| multiple writers, events, shared state, CRDT, Saga, or imported facts need a consistency choice | [Consistency, events, and shared state](references/consistency-events-and-shared-state.md) |
+| module, directory, package, repository, host, and deployable boundaries are being conflated | [Changeability, modularity, and repository shape](references/changeability-modularity-and-repository-shape.md) |
+| a new project needs stable source and filename conventions | [Source topology and semantic naming](references/source-topology-and-semantic-naming.md) |
+| a greenfield repository needs a compatible default application profile | [Default repository profile](references/default-repository-profile.md) |
+| durable architecture knowledge needs stable project-owned filenames | [Default architecture knowledge shape](references/default-architecture-knowledge-shape.md) |
+| authority, schema, API, or provider must move without a flag day | [Forward evolution and migration](references/forward-evolution-and-migration.md) |
+| only a final symptom is visible and the causal boundary is unclear | [Causal diagnosis and the first wrong state](references/causal-diagnosis-and-first-wrong-state.md) |
+| an existing or AI-generated system must be understood before redesign | [Reading and taking over existing systems](references/reading-and-taking-over-existing-systems.md) |
+| product, frontend, architecture, and observed reality disagree | [Cross-owner reconciliation](references/cross-owner-reconciliation.md) |
+| TypeScript backend shape is needed | [TypeScript backend projection](references/typescript-backend-projection.md) |
+| Rust module/crate/host shape is needed | [Rust projection](references/rust-projection.md) |
+| Agent runtime, activity, revision, artifact, or tool authority is being designed | [Agentic systems projection](references/agentic-systems-projection.md) |
+| concrete mappings would help | [Scenario examples](references/scenario-examples.md) |
 
-Within accepted product semantics and binding constraints, choose ordinary
-reversible writer, transaction, port, module, and composition details without
-escalation. Escalate when materially different answers change product meaning,
-permissions/trust, irreversible data, public compatibility, binding policy,
-destructive migration, or irreversible external effects. Localize undecidable
-slices and continue unaffected work.
+## Portable source defaults
 
-## Core Invariants
+Use [Source topology and semantic naming](references/source-topology-and-semantic-naming.md) for path grammar and [Default repository profile](references/default-repository-profile.md) for greenfield topology. A coherent existing repository remains authoritative; expose its local mapping rather than renaming it without material benefit.
 
-```text
-canonical accepted fact
-  -> one final materialization authority
-     within a declared consistency domain and authority epoch
-
-authoritative intent
-  -> Command -> authorize/validate -> transition -> commit
-
-non-authoritative output
-  -> Observation/Candidate -> governed Decision -> materialize -> commit
-
-external call outside the database transaction
-accepted fact + required audit/event/outbox inside one transaction
-adapter cannot silently materialize product facts
-composition chooses implementations; use cases own product transitions
-replaceability requires conformance evidence, not an interface alone
-
-repository boundary != compilation boundary != deployable boundary
-package/crate sharing does not grant fact-writing authority
-memory ownership != product fact authority
-visibility != authorization
-successful compilation != behavioral evidence
-```
-
-## Pressure and Boundary Promotion
-
-Start with the least committed semantic boundary that preserves ownership and
-legibility. Promote only when real pressure appears:
+## Invariants
 
 ```text
-lexical discoverability
-  -> private semantic module
-  -> enforceable compilation/public-API boundary
-  -> independently runnable host
-  -> independently deployed/trust/fault boundary
+one accepted fact -> one final materialization authority within a consistency scope
+Command           -> intent, not proof of change
+provider result   -> candidate/observation until governed materialization
+external detail   -> isolated where replacement, trust, or failure semantics matter
+composition       -> selects implementations and owns lifecycle, not product meaning
+migration         -> old writer fenced before authority promotion
 ```
 
-Pressure signals include durable facts, concurrent updates, external effects,
-restart/replay, public compatibility, independent lifecycle, trust/fault
-isolation, reuse, compilation enforcement, money, permissions, privacy, and
-irreversible migration. A P-level is a summary; the raw pressure signals drive
-the mechanism.
+## Common smells
 
-## Ecosystem Projection
+- transport handlers write product facts directly;
+- provider SDK or ORM types leak through the application core;
+- every helper gets an interface or Service for symmetry;
+- package boundaries are treated as fact authority;
+- a host creates resources in feature modules or hooks;
+- timeout is reported as failure without operation identity or reconciliation;
+- events are used to hide ownership rather than express it;
+- a rewrite is called a migration without a bridge, fence, or deletion condition;
+- the repository has many layers but a fresh Agent still cannot find the writer, use case, composition root, or reproduction command.
 
-The core expresses semantic roles, boundary strength, lifecycle ownership, and
-proof obligations. A language/runtime projection maps them idiomatically.
+## Adjacent owners
 
-```text
-TypeScript -> private module / package export / bootstrap / deployable
-Rust       -> module visibility / crate facade / binary composition / process
-Effect     -> Service / Layer / Runtime / Scope projection
-Frontend   -> intent / projection / local interaction / reconciliation projection
-```
+- Product meaning and quality belong to `$product-definition`.
+- Frontend projection and interaction ownership belong to `$frontend-architecture`.
+- Effect execution and resource mechanics belong to `$effect-best-practices`.
+- Runtime proof and diagnosis belong to `$product-harness-system`.
+- Documentation placement and local routing belong to `$docs-governance`.
 
-Do not translate directory templates mechanically across ecosystems.
+## Output principle
 
-## Read When Needed
-
-| Condition | Reference |
-| --- | --- |
-| Establishing the baseline | [Core Doctrine](references/core-doctrine.md) |
-| Sizing mechanisms to pressure | [Pressure Profiles](references/pressure-profiles.md) |
-| Assigning fact ownership | [Authority Model](references/authority-model.md) |
-| Promoting module/package/host/deployable boundaries | [Repository Topology and Packaging](references/repository-topology-and-packaging.md) |
-| Deciding source shape without leaking one ecosystem | [Source Topology and Semantic Naming](references/source-topology-and-semantic-naming.md) |
-| Taking over an MVP | [MVP Takeover](references/mvp-takeover.md) |
-| Governing AI-generated changes | [AI Coding Change Protocol](references/ai-coding-change-protocol.md) |
-| Designing commands and materialization | [Use-Case Kernel](references/use-case-kernel.md) |
-| Isolating providers, devices, or plugins | [Capability Ports](references/capability-ports.md) |
-| Handling federation, CRDT, saga, or leader epochs | [Consistency and Authority Topologies](references/consistency-and-authority-topologies.md) |
-| Repairing modularity | [Evolutionary Modularity](references/evolutionary-modularity.md) |
-| Designing persistence and outbox | [Persistence and Events](references/persistence-and-events.md) |
-| Building composition roots | [Composition Roots](references/composition-roots.md) |
-| Migrating public or durable state | [Forward Evolution](references/forward-evolution.md) |
-| Choosing architecture evidence | [Evidence Harness](references/evidence-harness.md) |
-| Auditing an existing repository | [Audit Playbook](references/audit-playbook.md) |
-| Architecting LLM/agent products | [Agentic Systems Profile](references/scenario-agentic-systems.md) |
-| Implementing in Rust | [Rust Projection](references/adapter-rust.md) |
-| Implementing a TypeScript backend | [TypeScript Backend Projection](references/adapter-typescript-backend.md) |
-| Handing off to frontend architecture | [Frontend Projection](references/adapter-frontend.md) |
-| Adding another ecosystem | [Projection Authoring Contract](references/adapter-authoring-template.md) |
-
-## Output
-
-Return only the decision-bearing architecture view. Make fact authority,
-change/capability/composition boundary, material unknowns, and proof limit
-explicit when relevant. Add full maps, persistent ADIR, source topology,
-migration ledgers, or risk tables only when they materially improve the task or
-the user requests that branch.
+Describe the minimum architecture that makes the current authority, change path, failure, lifetime, and verification surface legible. Apply portable naming and repository defaults only where the project is silent. Do not create a complete pattern set, package family, or service layer for symmetry.

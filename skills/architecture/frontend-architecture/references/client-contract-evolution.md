@@ -1,74 +1,63 @@
 # Client Contract Evolution
 
-Wire contracts, feature projections, and view models have different lifecycles.
-Keep them distinct so backend and frontend can evolve without permanent DTO
-mirrors.
+A frontend product client is a typed capability facade, not a dumping ground for React hooks, Query policy, stores, or view models.
 
-## Layers
+## Client responsibilities
 
-```text
-wire schema / generated client contract
-  -> decoded transport value
-  -> feature projection/model
-  -> view model
-  -> surface
-```
-
-Generated contracts may be replaced. Feature projection and view-model naming
-should follow product language rather than transport field layout.
-
-## Change classification
+A client may own:
 
 ```text
-additive
-  optional field, new endpoint, compatible event variant
-
-behavioral
-  same shape but different meaning, ordering, auth, retry, or completion semantics
-
-breaking
-  removed/renamed required field, narrowed enum, protocol/version change
+transport/protocol invocation
+runtime decoding
+authentication and headers
+timeout, cancellation, and transport retry
+provider/transport error translation
+subscription entry points
+host-specific live implementations
 ```
 
-Behavioral changes deserve the same care as shape-breaking changes.
+It should return normalized product/application representations or typed outcomes, not raw HTTP, SDK, or generated-wire types.
 
-## Long-lived clients
-
-For browsers, desktop clients, offline workers, or cached tabs, plan a bounded
-overlap when needed:
+## Contract layers
 
 ```text
-server supports old/new read shape
-client understands unknown enum/event fallback
-new client stops producing old writes
-telemetry proves old callers are gone
-old shape is removed with deletion evidence
+wire/generated contract     external representation
+client capability contract  frontend-owned typed operation surface
+projection model            remote state used by features
+view model                  surface-specific composition
 ```
 
-Avoid indefinite dual writes or silent fallback.
+Do not collapse all four into one generated type.
 
-## Frontend migration
+## Version evolution
+
+When the backend contract changes:
 
 ```text
-characterize current behavior
--> add decoder/mapper compatibility at the edge
--> keep one feature projection owner
--> migrate query/realtime readers
--> stop new writes to old local mirrors
--> delete obsolete DTO/view state
+expand decode support when compatibility is required
+normalize old/new wire forms inside the client/mapper boundary
+migrate feature consumers to one stable client contract
+remove old decode paths after no live producer remains
 ```
 
-## Evidence
+Avoid leaking version branches through every component.
 
-Use the smallest relevant surface:
+## Error and outcome mapping
 
-```text
-schema/client compile
-mapper test
-query/store/realtime headless test
-render wiring
-browser path with real backend when required
-```
+Keep meaningful distinctions such as validation, authorization, conflict, pending, timeout, and unknown outcome. Do not map every failure to `Error` with a message string.
 
-Do not claim backend fact correctness from a frontend mock, or browser
-continuity from a reducer-only test.
+## Splitting clients
+
+Split a large client by cohesive product capability when ownership, replacement, permission, lifetime, or test pressure is real. Do not create one interface per endpoint.
+
+## Fakes
+
+A `.client.fake.ts` is explicit deterministic behavior for tests or demos. It should not silently activate in production when configuration is missing.
+
+## Related knowledge
+
+- Use [Default frontend source conventions](default-frontend-source-conventions.md) for filenames.
+- Use [Intent, acknowledgement, and reconciliation](intent-acknowledgement-and-reconciliation.md) for typed outcomes.
+- Use [Topology, composition, and hosts](topology-composition-and-hosts.md) for live client construction.
+- Use `$evolvable-application-architecture` for backend Port and protocol evolution.
+- Return to the [Frontend Architecture map](../SKILL.md).

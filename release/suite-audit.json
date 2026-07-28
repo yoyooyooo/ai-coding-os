@@ -1,6 +1,6 @@
 {
   "suite_root": "skills",
-  "source_tree_sha256": "152cffefc06a4786291ed3a6178b18980f91d27c8e7f357edcd22c0aee41df33",
+  "source_tree_sha256": "766c41fe0580d9cb37ec366d0f8547a42f9d04951831ccc8af08a348f755c826",
   "summary": {
     "error": 0,
     "warn": 0,
@@ -12,7 +12,28 @@
       "name": "skill-frontmatter",
       "status": "pass",
       "detail": {
-        "count": 17
+        "count": 12
+      }
+    },
+    {
+      "name": "model-invocation-budget",
+      "status": "pass",
+      "detail": {
+        "canonical_skills": 12,
+        "default_semantic_owners": [
+          "docs-governance",
+          "effect-best-practices",
+          "evolvable-application-architecture",
+          "frontend-architecture",
+          "product-definition",
+          "product-harness-system"
+        ],
+        "user_invoked_tools": [
+          "effect-api-app-kit",
+          "evolvable-application-preset"
+        ],
+        "model_visible_total": 6,
+        "user_invoked_total": 6
       }
     },
     {
@@ -25,48 +46,71 @@
           "frontend-architecture",
           "product-harness-system"
         ],
-        "skills": 17
+        "owner_local_sources": 4,
+        "generated_terms": 47,
+        "skills": 12
       }
     },
     {
       "name": "json-yaml-parse",
       "status": "pass",
       "detail": {
-        "files": 68
+        "files": 61
       }
     },
     {
       "name": "schema-validation",
       "status": "pass",
       "detail": {
-        "positive_cases": 15,
+        "positive_cases": 19,
         "negative_cases": 9,
         "evidence_examples": 3,
         "forbidden_promotions": 6
       }
     },
     {
-      "name": "skill-evals",
+      "name": "engineering-doctrine-current-home",
       "status": "pass",
       "detail": {
-        "files": 18,
-        "cases": 196,
-        "composition_cases": 15
+        "home": "contracts/ai-coding-os-suite-contracts/references/engineering-operating-doctrine.md",
+        "lenses": [
+          "Authority",
+          "Changeability",
+          "Containment",
+          "Feedback",
+          "Operability",
+          "Outcome",
+          "Reality",
+          "Responsibility"
+        ]
+      }
+    },
+    {
+      "name": "owner-map-and-retired-references",
+      "status": "pass",
+      "detail": {
+        "router_skills": 12,
+        "retired_names": [
+          "frontend-test-system",
+          "headless-product-harness",
+          "interface-capability-planning",
+          "ui-product-harness"
+        ]
       }
     },
     {
       "name": "markdown-links",
       "status": "pass",
       "detail": {
-        "links": 167
+        "links": 179
       }
     },
     {
       "name": "skill-portability",
       "status": "pass",
       "detail": {
-        "relative_links": 167,
-        "skills": 17
+        "relative_links": 179,
+        "skills": 12
       }
     },
     {
@@ -84,14 +128,14 @@
       "name": "source-conventions",
       "status": "pass",
       "detail": {
-        "skills": 17
+        "skills": 12
       }
     },
     {
       "name": "python-compile",
       "status": "pass",
       "detail": {
-        "files": 22
+        "files": 23
       }
     },
     {
@@ -99,6 +143,18 @@
       "status": "pass",
       "detail": {
         "example": "preset/evolvable-application-preset/examples/commerce-platform/expected"
+      }
+    },
+    {
+      "name": "preset-example-coverage",
+      "status": "pass",
+      "detail": {
+        "examples": [
+          "minimal-existing-repo",
+          "single-surface-adoption",
+          "small-greenfield",
+          "commerce-platform"
+        ]
       }
     },
     {
@@ -115,11 +171,12 @@
       "name": "core-bundle-builder",
       "status": "pass",
       "detail": {
-        "skills": 17,
+        "skills": 12,
         "isolated": true,
         "source_bound": true,
         "canonical_audit_sidecar": true,
-        "cross_machine_deterministic": true
+        "cross_machine_deterministic": true,
+        "zip_envelope_hygiene": true
       }
     },
     {
@@ -133,7 +190,7 @@
       "name": "suite-version",
       "status": "pass",
       "detail": {
-        "version": "0.5.0-experimental.1"
+        "version": "0.6.0-experimental.1"
       }
     },
     {
@@ -142,7 +199,7 @@
     }
   ],
   "findings": [],
-  "claim_ceiling": "Deterministic grouped-source structure, portable links, schema/eval assets, Preset/Kit fixtures, bounded subprocess handling, and source-bound bundle checks. Machine-local paths and compiler-dependent template typecheck status are excluded from release provenance; no model-run, runtime installation, or production behavior is claimed.",
+  "claim_ceiling": "Deterministic 12-Skill grouped-source structure, six model-visible semantic owners, portable links, owner-local/generated contract parity, schema and fixture checks, Preset/Kit smoke checks, bounded subprocess handling, source-bound provenance, and ZIP hygiene. Machine-local paths and compiler-dependent template typecheck status are excluded; no model-run, downstream migration, runtime installation, or production behavior is claimed.",
   "release_canonicalization": {
     "version": 1,
     "suite_root": "relative",

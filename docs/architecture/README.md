@@ -2,35 +2,27 @@
 
 ## Owns
 
-- 当前 AI Coding OS Suite 的 Skill 分层、语义 Owner、组合和发布结构。
-- Architecture Decision IR、Skill evaluation 与 Suite evolution 的结构关系。
-- Core 与语言/生态投影之间的边界。
+- 八个语义 Skill 的当前拓扑、局部关系和边界。
+- Self-navigating knowledge、Agent-legible project、Progressive Disclosure 和 cross-owner reconciliation。
 
 ## Must Not Own
 
-- 产品价值、单个项目业务语义、未来候选或模型运行结论。
+- 产品 Quality Boundary、单个项目业务事实、一次运行结论或通用执行 Workflow。
 
-## Current Views
+## Current views
 
-- [Agent Legibility And Decision Control Plane](agent-legibility-and-decision-control-plane.md)：认知控制面、双闭环与 federated ownership。
-- [Suite Topology](suite-topology.md)：Core、投影、Harness、Preset、Tooling 与 Meta Skills。
-- [Architecture Decision System](architecture-decision-system.md)：ADIR、Decision Forest、Unknown、Commitment 与 Health。
-- [Skill Evaluation And Evolution](skill-evaluation-and-evolution.md)：SkillOpt 吸收方式、评估 Gate 与 Capability Epoch。
+- [Skill Network](skill-network.md) — 八个 Owner 如何组合且保持独立。
+- [Project Legibility](project-legibility.md) — 项目怎样通过工程表面解释自身。
+- [Progressive Disclosure](progressive-disclosure.md) — 主 Skill、Reference、Template 与 Contextual Edge 的形状。
+- [Cross-owner Reconciliation](cross-owner-reconciliation.md) — Accepted Meaning、Source Reality、Observed Reality 和多个 Owner 如何局部对账。
 
-## Architectural Invariants
+## Architectural invariants
 
 ```text
 semantic owner != documentation home != fact authority != evidence owner
-repository boundary != package/crate boundary != deployable boundary != authority boundary
-memory ownership != product fact authority
-source observation != accepted decision
-candidate target != current implementation
-successful local test != broad behavioral proof
+repository directory != package/crate != host != deployable != authority boundary
+intent != proposal != projection != accepted fact
+Service/Layer/Runtime != product meaning
+successful local observation != broad behavioral proof
+portable default != universal mandate
 ```
-
-## Routes
-
-- [当前事实](../ssot/README.md)
-- [架构决策与未知标准](../standards/architecture-decision-and-uncertainty.md)
-- [Skill 评估与发布标准](../standards/skill-evaluation-and-release.md)
-- [关键 ADR](../adr/README.md)

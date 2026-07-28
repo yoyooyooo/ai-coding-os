@@ -1,0 +1,29 @@
+schema_version: 1
+
+architecture:
+  application_style: authority-first
+  module_style: private-semantic-boundary-first
+  boundary_promotion: pressure-driven
+  docs_shape: earned-semantic-homes
+  claim_policy: evidence-bounded
+
+repository:
+  topology: single-host # single-host | multi-host | workspace | project-defined
+  source_standard: ./source-topology-and-naming.md
+  naming_vocabulary: ./naming-vocabulary.yaml
+  verification_policy: ./verification-policy.md
+
+selected_defaults:
+  fact_writes: governed-use-cases
+  external_capabilities: application-owned-ports-when-earned
+  live_implementation_selection: host-composition-root
+  resource_lifetime: host-owned
+  frontend_state: role-separated
+
+exceptions: []
+# Example item:
+# - default: private-semantic-boundary-first
+#   local_choice: framework-owned-module-layout
+#   scope: apps/web
+#   reason: framework routing and build constraints
+#   protected_invariant: feature-private imports remain enforceable

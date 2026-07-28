@@ -1,77 +1,47 @@
-# Product Brief Template
+# Product Brief
 
-Remove sections that do not carry product meaning. Use the repository's lifecycle vocabulary.
+> Use when product-wide outcome, scope, and Quality Boundary need a durable home. Delete sections that do not carry meaning.
 
-```markdown
----
-doc_type: product-brief
-status: <repository-defined status>
-owner:
-business_owner:
-version_horizon:
-effective_version:
-source_inputs: []
-decisions: []
-related_artifacts: []
----
+## Outcome and why now
 
-# <Product / Capability>
+<Whose result should improve, what problem exists, and why the work matters now.>
 
-## 1. Executive framing
-
-### Problem
-
-### Why now
-
-### Product outcome
-
-### Non-goals
-
-## 2. Users and stakeholders
+## Users and context
 
 | Actor / stakeholder | Goal or responsibility | Current pain | Decision authority |
 | --- | --- | --- | --- |
 
-## 3. Evidence and source inputs
+## Product capability
 
-| Source ID | Evidence or claim | Treatment | Open issue |
-| --- | --- | --- | --- |
+<What durable ability the product provides, independent of one interface or implementation.>
 
-## 4. Scope baseline
+## Scope
 
 ### In scope
 
-### Out of scope
+### Explicit non-goals
 
 ### Future candidates
 
-### Current behavior retained temporarily
+### Legacy behavior temporarily retained or intended for retirement
 
-### Behavior to retire or migrate
+## Product language
 
-## 5. Product model summary
+<Link to `docs/ssot/product-language.md` or define the few terms needed here.>
 
-### Core objects
+## Quality Boundary
 
-### Key workflows
+<Correctness, data loss, performance, accessibility, privacy, safety, recovery, and acceptable roughness.>
 
-### Important states, rules, and permissions
+## Success and guardrails
 
-## 6. Success measures
-
-| Metric / outcome | Baseline | Target | Time horizon | Owner |
+| Outcome / metric | Definition | Baseline | Target or decision use | Owner |
 | --- | --- | --- | --- | --- |
 
-## 7. Product quality and constraints
+## Assumptions and invalidating feedback
 
-## 8. Dependencies and assumptions
+<What evidence would materially change the product model.>
 
-| Item | Owner | Needed by | Impact if absent | Fallback | Status |
-| --- | --- | --- | --- | --- | --- |
+## Current capability routes
 
-## 9. Decisions and open questions
-
-## 10. Risks
-
-## 11. Readiness and next handoffs
-```
+- `<capability>.md` — <capability route>

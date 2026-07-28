@@ -1,13 +1,15 @@
 # Release Evidence
 
-This directory contains portable offline evidence for the complete source distribution.
+> Historical pre-import evidence. These files do not describe or verify the current content-only 8-Skill network.
 
-- `manifest.json`: complete source identity, versions, counts, and verification routes.
-- `verification-summary.json`: executed checks, supported claims, and explicit `not_proven`.
-- `suite-audit.json`: canonical mechanical audit of `skills/**`.
-- `docs-audit.json`: canonical Docs Governance audit of `docs/**` and project routes.
-- `composition-eval-review.json`: declared cross-Skill composition contracts; independent model run remains `not_run`.
-- `core-builder-evidence.json`: evidence from the deterministic Core builder; its temporary Core ZIP is intentionally not nested here.
-- `SHA256SUMS`: hashes every delivered file except itself.
+`release/` intentionally contains only five files:
 
-The SHA-256 of the complete outer ZIP is reported externally because an archive cannot contain its own final hash without circularity.
+- `manifest.json`: source identity、12/6 invocation surface、verification routes、Core archive hash 和 Claim Ceiling。
+- `suite-audit.json`: canonical mechanical audit of `skills/**`。
+- `docs-audit.json`: canonical Docs Governance audit。
+- `SHA256SUMS`: delivered source and sidecar hashes。
+- `README.md`: this boundary。
+
+Static Eval corpora、per-case migration maps、coverage matrices、unexecuted behavior
+plans and duplicate change reports are not release Evidence. `behavior_evidence`
+remains `not_run` in the manifest unless a claim-bounded model run actually exists.

@@ -1,213 +1,120 @@
 ---
 name: docs-governance
-description: >-
-  Converges repository documentation Authority, Routes, Earned Shape, and
-  Evidence. Use when current homes compete, claims need current/target/future
-  classification, docs layers or partitions need admission, AGENTS.md or docs
-  routers need convergence, documentation must be migrated or cleaned up, or
-  source/evidence alignment needs audit.
+description: Govern project knowledge Current Homes, discovery routes, freshness, documentation topology, naming, and cleanup when documents compete for authority, Agents cannot discover knowledge from code/tests/errors, docs conflict with source or runtime reality, working notes look authoritative, or documentation structure drifts across projects.
 ---
 
 # Docs Governance
 
-Use four leading words:
+Docs Governance makes project knowledge discoverable from the Agent's current location and gives each scoped meaning one Current Home. It does not require a universal reading sequence or a metadata schema on every file.
+
+## Semantic anchors
+
+- **One Scoped Meaning, One Current Home.** A scoped current claim has one authoritative home; maps, reports, and local notes route to it instead of cloning it.
+- **Route Is an Edge, Not a Sequence.** Documentation should be enterable from source, failure, term, command, or repository entry without imposing one reading order.
+- **Freshness Is Part of Meaning.** Knowledge is incomplete when readers cannot tell which decisions, versions, environments, observations, or dates can invalidate it.
+- **Build Documentation In; Do Not Bolt It On.** Keep durable knowledge close to the decisions, interfaces, commands, and code that keep it alive.
+- **Shape Must Be Earned.** New homes, partitions, identifiers, registries, and schemas need real authority, ownership, lifecycle, navigation, or machine-consumer pressure.
 
 ```text
-Authority    one canonical Current Home per claim, representation, and scope
-Route        a discoverable edge to Authority, never a mandatory reading sequence
-Earned Shape stable semantic layers, flat by default, structure under real pressure
-Evidence     code, tests, runtime, schema, release, or other owning proof
+Authority     who currently owns a scoped meaning
+Route         a low-cost edge from a real entry point to that authority
+Freshness     what the knowledge depends on and what invalidates it
+Default shape the portable topology and naming used when the project is silent
+Earned shape  whether additional structure solves a real navigation, ownership, or policy problem
+Cleanup       removing, lowering, merging, or relocating misleading and obsolete knowledge
 ```
 
-A target is not Evidence. A review signal is not a migration order. An execution
-artifact may cite Authority without becoming Authority.
+## Enter from the current pressure
 
-## Operating Contract
+| Current pressure | Continue into |
+| --- | --- |
+| two documents both claim to be current, or source/observation is mistaken for product authority | [Current Home and knowledge roles](references/current-home-and-knowledge-roles.md) |
+| the repository needs a deterministic first-level documentation topology | [Default documentation topology](references/default-documentation-topology.md) |
+| file names, README routers, numbering, or depth are inconsistent | [Document naming and local routing](references/document-naming-and-local-routing.md) |
+| adopted cross-project source, architecture, naming, or verification rules need stable project-owned files | [Default project Standard surfaces](references/default-project-standard-surfaces.md) |
+| the Agent needs stable project authority routes, commands, constraints, or language policy | [Repository Agent entry](references/repository-agent-entry.md) |
+| knowledge cannot be found from source, tests, errors, terms, or repository entry points | [Multi-entry discovery](references/multi-entry-discovery.md) |
+| a document may become stale when code, version, environment, decisions, or runtime behavior changes | [Freshness and invalidation](references/freshness-and-invalidation.md) |
+| a new folder, identifier, registry, graph, or schema is being proposed | [Earned shape and identifiers](references/earned-shape-and-identifiers.md) |
+| important knowledge exists only in chat, GUI, personal memory, or far from the work | [Knowledge near work and plain text](references/knowledge-near-work-and-plain-text.md) |
+| documentation and implementation need explicit alignment without confusing authority | [Source-document alignment](references/source-document-alignment.md) |
+| knowledge must be merged, moved, lowered, retained as history/future, or deleted | [Cleanup, history, and future](references/cleanup-history-and-future.md) |
+
+These are independent surfaces. Fixing one broken route does not require redesigning the entire docs tree.
+
+## Minimum distinctions
+
+Prefer ordinary prose. Add metadata only when physical placement or a real machine consumer needs it.
 
 ```text
-Owns:
-  documentation layer and partition placement
-  current / accepted-target / future classification
-  multi-entry routes, indexes, and source alignment
-  Earned Shape and identity admission
-  retention, migration, cleanup, and resolved Preset placement
-  context legibility, knowledge freshness, and stale-map disposition
-  durable-assumption owner, scope, and invalidation hygiene
-  thin AGENTS.md knowledge-network governance
-
-Hands off:
-  product, technical, security, legal, policy, release, and delivery decisions
-  execution dependency, assignment, frontier, status, and completion lifecycle
-
-Adjacent Suite owners, when installed:
-  product semantics, decisions, requirements, acceptance -> `$product-definition`
-  technical facts and target architecture -> the applicable architecture Skill
-  reusable defaults, candidate snapshots, and adopted legacy snapshots -> `$evolvable-application-preset`
-
-Block only the affected convergence, promotion, cleanup, or Current Home change when:
-  two plausible Authorities remain unresolved
-  cleanup risks unlinking Evidence
-  resolution requires a new product, security, public-contract, or legal decision
-
-Preserve competing sources and Evidence Routes, name the external decision, and
-continue unaffected layer, link, classification, and cleanup work. Stop the
-whole run only when Evidence cannot be preserved or continued mutation risks
-irreversible repository-wide damage.
+current authority  accepted meaning or binding constraint
+source / evidence  implementation structure or bounded observation
+working material   investigation, draft, plan, or temporary synthesis
+future              accepted target or unaccepted candidate, visibly separated
+history             a decision or explanation that used to be current
 ```
 
-## Reasoning and Automation Boundary
+A file may contain more than one role, but each current claim still needs an owner and a reachable route.
 
-The Agent decides semantic ownership, claim classification, admission, conflict
-resolution, and promotion/demotion. Scripts exhaustively check declared
-identities, links, markers, routes, repository boundaries, and source-path
-existence. A script finding is review evidence, not semantic judgment. A registry
-or schema appears only after durable routing, identity, or automation pressure
-earns it. Ordinary reversible placement and route repairs follow current project
-Authority directly. A durable unresolved-decision record belongs in an existing
-project decision home and is created only when review or handoff pressure earns it.
+## Portable documentation default
 
-## Governance Coverage
-
-Cover every applicable decision below. The Agent may enter from a question,
-code area, term, document, source, evidence result, repository entry, or docs
-router and revisit decisions in any order.
-
-### Discover
-
-Locate the affected artifacts, project policy, semantic owner, direct Evidence,
-competing current homes, and the smallest context route that exposes them. Follow only relevant edges; `AGENTS.md` and
-`docs/README.md` are useful entry surfaces when present, not required traversal
-nodes.
-
-Use [Agent Entry and Preset](references/agent-entry-and-preset.md) for entry
-ownership and [Docs Layer Model](references/docs-layer-model.md) for placement.
-
-**Completion criterion:** every affected meaning has enough local context to
-identify candidate Authority, Evidence, conflicts, freshness, and invalidation
-without loading unrelated layers.
-
-### Classify
-
-For each affected meaning:
+When durable project documentation exists:
 
 ```text
-claim class: source-input | current-fact | current-binding | accepted-target | future-candidate | historical-evidence
-lifecycle: draft | in-review | accepted | superseded | archived
-delivery/evidence: not-proven | partial | verified | released
-semantic owner: one current Authority
-knowledge basis: accepted | observed | source-derived | inferred | assumed | unknown
-invalidates when: source, version, decision, migration, or time condition when material
+docs/README.md is required as the documentation router.
 ```
 
-Keep active execution state with the repository-selected execution method.
-When Product, Harness, or execution evidence crosses into documentation, cite
-its owning artifact directly unless a real machine consumer or durable repeated
-handoff earns the optional claim-bounded `$ai-coding-os-suite-contracts`
-Evidence Envelope. The source owner still decides source meaning; documentation
-authority decides placement and lifecycle.
+The default first-level vocabulary is defined in [Default documentation topology](references/default-documentation-topology.md). Core homes are reserved defaults and are created when their role first gains durable content; conditional homes appear only under explicit pressure. Do not create empty folders for symmetry.
+When `docs/standards/` exists, use [Default project Standard surfaces](references/default-project-standard-surfaces.md) before inventing parallel filenames for source topology, architecture profile, naming vocabulary, or verification policy.
 
-**Completion criterion:** claim class, lifecycle, knowledge basis, Evidence level,
-semantic owner, and any material invalidation condition are honest and
-non-equivalent.
+## Multi-entry project knowledge
 
-### Admit
-
-Apply three independent gates:
-
-- **Layer Admission:** a top-level layer needs a durable Authority role that no
-  existing layer can own clearly.
-- **Partition Admission:** a child needs durable ownership, security, retention,
-  lifecycle, release, reader routing, or sustained navigation pressure.
-- **Identity Admission:** stable keys, sequential IDs, atomic IDs, or graph IDs
-  need real citation, traceability, or automation pressure.
-
-Use [Earned Shape](references/elastic-shape-and-identity.md). Candidate layer
-vocabulary is a menu, not an initialization list.
-
-**Completion criterion:** every new layer, partition, route, metadata field, and
-identifier has a concrete Authority, reader, lifecycle, security, release, or
-Evidence reason.
-
-### Converge
-
-Choose the smallest semantic change that restores one canonical Current Home for the affected claim, representation, and scope:
+Healthy projects support routes such as:
 
 ```text
-promote | demote | split | merge | partition | flatten
-bridge | retain | delete | block
+failing test -> affected invariant/capability -> owning product/architecture knowledge
+source module -> formal use case -> fact writer / external capability / composition root
+runtime error -> reproduction command -> first wrong state -> owning contract or decision
+product term -> accepted meaning -> source / projection / proof routes
+ADR or Standard -> source/evidence that can confirm or challenge it
 ```
 
-Preserve useful source and Evidence backlinks. A stale map is re-grounded,
-lowered, marked drifted, or superseded; it cannot silently retain current
-Authority. A durable assumption keeps an owner, scope, and invalidation point. Routers expose edges and inherit
-parent Authority; they do not copy current truth. Roadmap routes preserve future
-delta and promotion gates without cloning Product, SSoT, Standards, ADR,
-Architecture, or protocol authority. When an accepted decision changes another
-Current Home, update it, record temporary drift, lower the affected claim, or
-state why the impact does not apply; Docs Governance does not prescribe the
-owners' implementation order.
+`AGENTS.md`, the root README, and `docs/README.md` are maps, not mandatory roots.
 
-Use [Lifecycle and Cleanup](references/lifecycle-cleanup.md) and, when future
-material is involved, [Roadmap and Future Capsules](references/roadmap-and-future-capsules.md).
+## Structure must be earned
 
-**Completion criterion:** each affected claim, representation, and scope has one canonical Current Home; retained source and
-Evidence remain reachable, and no shadow Authority or unearned structure remains.
-
-### Verify
-
-Update affected routes and links. Check that discovery surfaces expose the
-owners and current claims with proportionate context cost, and that stale claims
-carry a disposition. Run the default audit when documentation
-changed, convergence is claimed, or repository-wide mechanical coverage matters.
-Run branch extensions only when the repository adopts them. Report blockers,
-warnings, review signals, deliberate exceptions, and unproven claims.
-
-**Completion criterion:** every declared route resolves, no unexplained blocker
-remains, review signals have a disposition, and current claims have owning
-Evidence or a lower classification.
-
-## Local Claim Distinctions
+Add partitions only when they protect durable:
 
 ```text
-what implementation exists -> source, schema, migration, lockfile, generated artifact
-what behavior was observed -> executed tests, Harness, runtime, release, operations
+independent ownership or permission
+retention or lifecycle
+reader audience and update cadence
+repeated navigation pressure
+machine consumption or stable citation
 ```
 
-Product intent, shared semantics, binding rules, protocols, implementation, and
-observed behavior remain question-scoped. A disagreement becomes documentation
-drift, implementation gap, unaccepted implementation, obsolete source, or
-missing Authority; it is not resolved by a universal file order.
+Visual symmetry, maturity labels, project phases, and "we may need it later" are not reasons.
 
-## Optional References
+## Domain meaning remains with domain owners
 
-- Current versus accepted-target/future classification: [Current vs Future](references/current-vs-future.md)
-- Implementation-supported claims: [Source-Code Alignment](references/source-code-alignment.md)
-- Explicit graph metadata or relation audit: [Artifact Graph](references/artifact-graph.md)
-- Future capability routes: [Roadmap and Future Capsules](references/roadmap-and-future-capsules.md)
-- Context cost, freshness, assumptions, and invalidation: [Knowledge Freshness and Context Legibility](references/knowledge-freshness-and-context-legibility.md)
+- Product outcomes, rules, permissions, and quality belong to `$product-definition`.
+- Fact writing, transactions, modules, and migration belong to the relevant architecture owner.
+- Runtime observations, reproduction, and regression belong to `$product-harness-system` or the project's test/operations surface.
+- Docs Governance owns the Current Home, route, freshness, naming, and lifecycle of that knowledge, not its domain meaning.
 
-## Default Audit
+## Blocking boundary
 
-```bash
-python3 scripts/run_docs_audit.py --repo <repo>
-```
-
-The audit is read-only and only blockers fail. Read the [package README](README.md)
-for optional Artifact Graph/readability branches. Semantic Authority remains
-Agent-reviewed.
-
-## Output Contract
+Stop only the affected knowledge change when:
 
 ```text
-classification table
-question-scoped Authority decisions
-Route / Layer / Partition / Identity admissions
-moves, merges, flattening, retention, deletion, or blocks
-current / accepted-target / future changes
-source and Evidence backlinks
-route and link updates
-audits, exceptions, stale-map dispositions, invalidation triggers, unproven claims, and remaining decisions
+two plausible Current Homes cannot be distinguished
+cleanup would lose important source/evidence or break the only route
+resolution requires a new product, safety, legal, policy, or public-contract decision
+the repository operation may be irreversible
 ```
 
-Documentation convergence proves routing, ownership, and terminology. Runtime,
-test, migration, release, and production claims require their owning Evidence.
+Preserve the conflict, identify the smallest external decision, and continue unrelated routing, naming, freshness, or cleanup work.
+
+## Output principle
+
+Make the smallest change that restores one Current Home and low-cost discovery: link, clarify, lower, merge, move, flatten, retain, rename, or delete. Apply the portable default when the project is silent. Add metadata, a new home, a registry, or a durable graph only when simpler forms cannot solve the real problem.

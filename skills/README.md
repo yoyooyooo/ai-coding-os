@@ -1,70 +1,71 @@
-# AI Coding OS Core Skill Suite
+# AI Coding OS Skill Network
 
-当前 Core Suite 面向能够自主判断和验证的 AI Coding Agent。它提供语义 Owner、局部决策接口、可发现 Reference、Proof Surface 与演进机制，而不规定统一阅读、规划、Ticket 或执行 Workflow。
+This directory is a portable, self-navigating knowledge network for high-capability coding Agents. It is not an orchestrator, a stage model, or a universal project template.
 
-## Core Doctrine
+## Network anchors
+
+| Anchor | Compressed meaning |
+| --- | --- |
+| **Project Authority First.** | Accepted project meaning and evidence outrank portable guidance and model guesswork. |
+| **Source Is Not Decision.** | Source describes current implementation; it does not silently become accepted product or architecture intent. |
+| **Evidence Bounds Claims.** | An observation supports only the property, path, dependencies, environment, and time it actually exercised. |
+| **Route Is an Edge, Not a Sequence.** | A link exposes relevant knowledge; it does not prescribe a mandatory reading or execution order. |
+| **Local Agency, Bounded Authority.** | The Agent owns reversible local choices, but not silent changes to accepted meaning, durable data, permissions, public contracts, or material risk. |
+| **No Silent Material Assumption.** | Unknowns that can change accepted meaning, authority, durable data, public compatibility, permissions, or irreversible effects must remain visible and owned. |
+| **Strong Invariants, Weak Choreography.** | Freeze meaning, authority, safety, and proof boundaries; leave ordinary reversible strategy to the Agent. |
+| **Minimal Context, Maximal Legibility.** | Load only knowledge that can change the current judgment while making project entry points and causal surfaces easy to recover. |
+| **Shape Must Be Earned.** | New folders, packages, Ports, Services, schemas, registries, and Skills need real change, ownership, failure, lifetime, trust, reuse, or machine-consumer pressure. |
+| **Portable Defaults Standardize the Boring Choices.** | When the project is silent, use stable owner-local defaults instead of inventing another dialect. |
+| **The Project Should Explain Itself.** | Product meaning, source boundaries, commands, tests, logs, and local knowledge should let a fresh Agent recover the change surface. |
+| **Feedback Horizon Sets the Safe Step Size.** | Safe autonomy depends on how quickly errors become visible and how easily work can stop or recover. |
+| **Preserve Semantics; Re-earn Scaffolding and Conventions.** | Keep distinctions that still change decisions; periodically re-test the forms that carry them. |
+
+These anchors are intentionally few. Specialist Skills decompress them in the context where they change a real judgment.
+
+## Semantic owners
+
+| Current question | Owner |
+| --- | --- |
+| user outcome, accepted product meaning, rules, permissions, quality, acceptance | `$product-definition` |
+| Current Home, routes, freshness, documentation topology, naming, cleanup | `$docs-governance` |
+| fact authority, use cases, transactions, capability boundaries, composition, migration | `$evolvable-application-architecture` |
+| intent, projection, local interaction state, realtime continuity, frontend hosts | `$frontend-architecture` |
+| Effect failure, Scope, resources, structured concurrency, Runtime, installed API semantics | `$effect-best-practices` |
+| runnability, observation, diagnosis, recovery evidence, regression placement | `$product-harness-system` |
+| ambiguous cross-domain routing only | `$ai-coding-os` |
+| maintenance of the knowledge network itself | `$ai-coding-os-evolution` |
+
+Any specialist may be the first entry. Use the smallest owner set that can change the current decision.
+
+## Progressive disclosure
+
+Each `SKILL.md` exposes:
 
 ```text
-Project Authority First
-Question-scoped Ownership
-One Scoped Meaning, One Current Home
-Source Is Not Decision
-No Silent Material Assumption
-Evidence Bounds Claims
-Route Is an Edge, Not a Sequence
-Strong Invariants, Weak Choreography
-Minimal Context, Maximal Legibility
-Earned Persistence
-Preserve Semantics; Re-earn Scaffolding
+owned question
+semantic anchors
+recognizable pressures
+critical boundaries
+owner-local defaults
+routes to deeper knowledge
+adjacent owners only where the relationship changes the judgment
 ```
 
-## Skill Groups
+References answer one stable problem or causal relation. Templates and examples provide compatible defaults without becoming mandatory artifacts.
+
+## Portable convention precedence
 
 ```text
-architecture/
-  architecture-decision-system
-  evolvable-application-architecture
-  frontend-architecture
-  effect-best-practices
-
-capability/
-  interface-capability-planning
-
-contracts/
-  ai-coding-os-suite-contracts
-
-governance/
-  docs-governance
-
-harness/
-  product-harness-system
-  headless-product-harness
-  ui-product-harness
-  frontend-test-system
-
-meta/
-  skill-evaluation-system
-  ai-coding-os-evolution
-
-preset/
-  evolvable-application-preset
-
-product/
-  product-definition
-
-router/
-  ai-coding-os
-
-tooling/
-  effect-api-app-kit
+1. accepted project authority
+2. coherent adopted project convention
+3. owner-local portable default
+4. free invention
 ```
 
-`$ai-coding-os` 只在意图含混或跨 Owner 时选择最小知识 Owner 集；它不保存项目状态，也不控制执行循环。
+A project override remains valid when it is discoverable, protects the relevant invariant, and explains the local pressure that makes the default unsuitable.
 
-## Verification
+## Language
 
-```bash
-python3 tooling/suite_audit.py --suite . --out ../release/suite-audit.json
-```
-
-该审计只证明离线源码结构、链接、Schema/Eval 合同、Preset/Kit fixture 和发布 provenance；不证明模型运行质量或生产行为。
+- Portable Skill prose: English.
+- Paths, commands, protocols, schemas, and code symbols: English unless an external contract requires otherwise.
+- Project narrative prose: decided by the project.

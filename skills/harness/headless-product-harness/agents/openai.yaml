@@ -1,4 +1,0 @@
-interface:
-  display_name: "Headless Product Harness"
-  short_description: "Design headless-first command evidence"
-  default_prompt: "Use $headless-product-harness to design a headless-first xtask smoke evidence ladder."

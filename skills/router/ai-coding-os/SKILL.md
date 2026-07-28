@@ -1,132 +1,90 @@
 ---
 name: ai-coding-os
-description: Project knowledge-owner map for ambiguous or cross-cutting AI coding work.
+description: Use only when an AI-coding concern is genuinely ambiguous, cross-domain, or difficult to assign to a specialist owner. Provides a thin semantic map; any specialist Skill may be the first entry.
 disable-model-invocation: true
 ---
 
-# AI Coding OS Router
+# AI Coding OS
 
-Use this Router only as an Owner Map:
+This is a map legend, not a gate, reading order, or execution plan.
 
-> **Router selects knowledge; Agent selects strategy.**
+> **Route Is an Edge, Not a Sequence.** A route exposes relevant knowledge; it is not a stage the task must pass through.
 
-A route is an edge to relevant knowledge, not a reading, planning, or execution
-sequence. Clear concerns go directly to their owner. Ambiguous or cross-cutting
-concerns use the smallest owner set whose decision surfaces actually change.
+## Semantic anchors
 
-## Owner Map
+- **Project Authority First.** Accepted project meaning and direct evidence outrank portable guidance and model guesswork.
+- **Source Is Not Decision.** Source can reveal drift or implementation reality, but cannot silently accept product or architecture intent.
+- **Evidence Bounds Claims.** An observation supports only the property and path it actually exercised; it cannot accept quality or residual risk.
+- **Route Is an Edge, Not a Sequence.** Enter through the node closest to the current question and follow only relationships that can change the judgment.
+- **Local Agency, Bounded Authority.** The Agent owns reversible local choices, not silent changes to accepted meaning, durable data, permissions, public contracts, or material risk.
+- **Portable Defaults Standardize the Boring Choices.** When the project is silent, use the owning Skill's default before inventing another dialect.
 
-| Concern | Lead | Add only for a distinct decision surface |
-| --- | --- | --- |
-| Documentation Authority, Routes, Earned Shape, freshness, cleanup | `$docs-governance` | semantic owner of affected content |
-| Product framing, source synthesis, business model, rules, permissions, acceptance | `$product-definition` | docs, architecture, interface, or proof owner |
-| Shared vocabulary, guarded terms, Proof/Evidence/Harness/Eval contracts | `$ai-coding-os-suite-contracts` | owner named by the contract |
-| Fact authority, use cases, transactions, ports, consistency, migration | `$evolvable-application-architecture` | ecosystem, frontend, Effect, or proof owner |
-| Ordinary Rust application architecture projection | `$evolvable-application-architecture` | `$architecture-decision-system` only for cross-owner Health/Diff/IR |
-| Cross-owner architecture conflict, ADIR, Current/Target reconciliation, Health, Diff | `$architecture-decision-system` | relevant semantic architecture owners |
-| Frontend state, feature topology, Query/store/realtime | `$frontend-architecture` | interface or UI proof owner |
-| Effect Service/Layer/Runtime/Scope/failure/concurrency | `$effect-best-practices` | surrounding architecture owner |
-| Discover or adopt reusable project defaults | `$evolvable-application-preset` | `$docs-governance` for Home conflicts |
-| Generate a settled Effect API slice | `$effect-api-app-kit` | architecture and Effect owners for unsettled decisions |
-| Cross-surface Harness vocabulary and coverage | `$product-harness-system` | headless or UI proof owner |
-| Headless command, fixture, replay, DB/restart proof | `$headless-product-harness` | fact-authority owner |
-| Component, surface, or browser proof | `$ui-product-harness` | `$frontend-architecture` |
-| Concrete frontend test lane | `$frontend-test-system` | `$ui-product-harness` for reusable proof design |
-| User-facing capability and interaction trace | `$interface-capability-planning` | product, frontend, and proof owners |
-| Skill behavior Eval, corpus, attribution, ablation, held-out gate | `$skill-evaluation-system` | domain Harness/evaluator owner |
-| New Agent capability epoch, Suite-wide redesign, candidate release/rollback | `$ai-coding-os-evolution` | `$skill-evaluation-system` and affected semantic owners |
+## Project-facing owners
 
-## Unknown Routing
+| The current question changes... | Owner |
+| --- | --- |
+| user outcomes, accepted product meaning, scope, rules, permissions, quality, or acceptance | `$product-definition` |
+| where project knowledge is current, how it is found, when it becomes stale, or whether a new documentation shape is justified | `$docs-governance` |
+| who writes persistent facts, how use cases and transactions form, how external capabilities are isolated, or how implementations migrate | `$evolvable-application-architecture` |
+| user intent, remote projection, local interaction state, URL, query/store/realtime ownership, or frontend host composition | `$frontend-architecture` |
+| Effect-specific failure, Scope, resource, concurrency, Runtime, or installed-version semantics | `$effect-best-practices` |
+| how a property is run, observed, reproduced, diagnosed, and protected by the lowest correct regression layer | `$product-harness-system` |
 
-Unknown is not one central domain. Route by the claim it can change:
+Choose the smallest owner set. A large task does not automatically require every Skill.
+
+## Common adjacent relationships
 
 ```text
-product meaning, workflow, state, rule, permission
-  -> $product-definition
+$product-definition
+  <-> $docs-governance
+      accepted meaning and its Current Home
 
-writer, transaction, consistency, port, migration, lifecycle
-  -> applicable architecture owner; use $architecture-decision-system when cross-owner
+$product-definition
+  <-> $evolvable-application-architecture
+      product rules and authoritative fact transitions
 
-document Current Home, target/future classification, stale route
-  -> $docs-governance
+$product-definition
+  <-> $frontend-architecture
+      user-operable obligations and concrete frontend ownership
 
-actual source structure
-  -> source plus applicable architecture owner
+$evolvable-application-architecture
+  <-> $frontend-architecture
+      fact, projection, intent, acknowledgement, and reconciliation
 
-empirical behavior, retry, timeout, restart, browser or provider outcome
-  -> Harness/Test owner
+$evolvable-application-architecture
+  <-> $effect-best-practices
+      semantic capability and Effect execution mechanism
 
-Skill behavior or evaluator quality
-  -> $skill-evaluation-system
+all owners
+  <-> $product-harness-system
+      claimed properties and observed reality
 
-security, legal, privacy, production operations
-  -> accountable external Authority
+$docs-governance
+  <-> all owners
+      routes, freshness, naming, and durable placement without taking over meaning
 ```
 
-Do not create a global Unknown Registry or let one undecidable slice block
-unrelated reversible work.
-
-## Routing Decisions
-
-Resolve only what the concern needs:
+## Authority legend
 
 ```text
-concern             decision-bearing question
-lead                semantic owner of that question
-supporting owners   orthogonal decisions, not extra reviewers by default
-project authority   adopted facts, rules, decisions, contracts, and evidence
-material unknowns   only unknowns that can change the result
-safe boundary       what can proceed before the next commitment
-external boundary   accountable owner outside the Suite
+what should it do?            -> accepted product/business/policy authority
+what implementation exists?   -> source, schema, configuration, dependency lockfile
+what happened this time?       -> executed test, runtime, browser, provider, operations
+what does a shared term mean?  -> project glossary, SSoT, or accepted semantic decision
+why was this choice accepted?  -> applicable product or technical decision
+what is still unknown?         -> the owner whose decision could change because of the unknown
 ```
 
-One Lead is preferred. Multiple Leads are justified only when orthogonal
-Authorities change. A supporting owner contributes a bounded decision or
-artifact; it does not create a central workflow.
+Source may challenge stale knowledge, but it does not silently become accepted intent. Evidence limits a claim; it does not accept quality or residual risk.
 
-## Authority by Question
+## Local agency boundary
 
-```text
-what should it do             -> accepted product/business decision or requirement
-what implementation exists    -> source, schema, migration, lockfile, generated artifact
-what behavior was observed    -> executed tests, Harness, runtime, release, operations
-what does a shared term mean  -> project SSoT or accepted decision
-why was it decided            -> product decision record or technical ADR
-what does an interface accept -> adopted protocol/schema and contract evidence
-what is in progress/complete  -> selected execution method and release evidence
-```
+An Agent should make reversible, local choices that preserve accepted semantics and the project's adopted conventions. Escalate only when the decision changes product meaning, public compatibility, persistent data semantics, permissions, irreversible external effects, or acceptance of material risk.
 
-When adopted Authority conflicts with executable reality, expose stale docs,
-implementation drift, unaccepted implementation, or Evidence gap. Do not rank
-sources by recency alone and do not let source silently become intent.
+## Portable defaults
 
-## Source Takeover
+When a project is silent, follow the owning Skill's invariant and default references. A coherent project override remains authoritative; use `$ai-coding-os-evolution` when a portable default itself needs admission, revision, or retirement.
 
-Inherited business material and AI-generated source may require product,
-documentation, architecture, and Harness owners. Select only applicable owners.
-Source can prove implementation structure and static properties; executed or
-observed Evidence is required for runtime/reachability claims; neither decides
-accepted product intent.
+## Response principle
 
-## External Execution Methods
-
-Trackers, ticketing Skills, release processes, and other execution systems stay
-outside the Core roster. They may consume project Authority and bounded Evidence
-while retaining decomposition, dependency, assignment, status, and completion.
-They do not become Product, SSoT, ADR, Architecture, Contract, or documentation
-Authority.
-
-## Output
-
-Default to a short natural-language route:
-
-```text
-Lead Owner and reason
-necessary adjacent Owners
-applicable Project Authority / Evidence
-material unknown or external boundary
-safe-to-proceed boundary when relevant
-```
-
-Emit structured data only for a real consumer. Durable state belongs to the
-selected project, semantic, evidence, or execution owner.
+Enter through the owner closest to the current symptom. Expose only the authority, assumptions, tradeoffs, observations, defaults, and adjacent knowledge that can change the current judgment. Do not manufacture a cross-Skill handoff protocol or turn this map into an orchestrator.

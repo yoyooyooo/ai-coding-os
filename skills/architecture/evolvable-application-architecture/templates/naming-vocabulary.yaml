@@ -1,0 +1,35 @@
+schema_version: 1
+
+syntax:
+  path_case: kebab-case
+  semantic_segment_separator: "."
+  typical_segment_order:
+    - product-subject
+    - operation-or-facet
+    - responsibility
+    - implementation-or-host-qualifier
+
+canonical_terms:
+  # Example:
+  # case:
+  #   means: A product-owned investigation or review unit.
+  #   does_not_mean:
+  #     - a database row type
+  #     - a generic task
+  #   owner: docs/ssot/product-language.md
+  {}
+
+implementation_qualifiers:
+  # postgres: PostgreSQL-backed live implementation
+  # stripe: Stripe provider implementation
+  {}
+
+aliases:
+  # old-term: canonical-term
+  {}
+
+deprecated_terms:
+  # manager:
+  #   replace_with: <specific responsibility>
+  #   reason: Hides ownership and change axis.
+  {}

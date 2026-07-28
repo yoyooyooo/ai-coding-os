@@ -1,77 +1,93 @@
 # Docs Governance Standard
 
-本标准是 `$docs-governance` 在本仓的 adopted project surface。
+本标准是 `$docs-governance` 在本项目中的 adopted surface。
 
-## Owns
-
-- `docs/**` 的 Authority、Routes、Earned Shape、生命周期、freshness 和 cleanup。
-- Current / accepted-target / future / historical 分类。
-- Durable assumption 的 owner、scope、safe boundary 与 invalidation point。
-- Context Legibility 与最小充分发现路径。
-
-## Must Not Own
-
-- Product、Architecture、安全、法律、发布或执行决定本身。
-- Tracker、Ticket、Agent loop 和 Workflow state。
-- Skill 领域语义；归相应 Skill Owner。
-
-## Core Contract
+## Core anchors
 
 ```text
-Authority  one canonical Current Home per claim, representation, and scope
-Route      discoverable edge, never mandatory reading order
-Earned Shape
-           layers, partitions, identities, registries and schemas appear under real pressure
-Evidence   source/runtime/test/release evidence bounds current claims
+One Scoped Meaning, One Current Home.
+Route Is an Edge, Not a Sequence.
+Freshness Is Part of Meaning.
+Build Documentation In; Do Not Bolt It On.
+Shape Must Be Earned.
 ```
 
-## Claim Classification
+## Default first-level Homes
 
-关键 claim 至少区分：
+当项目拥有持久文档时，必须有：
 
 ```text
-claim class      current-fact | current-binding | accepted-target |
-                 future-candidate | source-input | historical-evidence
-knowledge basis  accepted | observed | source-derived | inferred | assumed | unknown
-evidence state   not-proven | partial | verified | released
-semantic owner   one current owner for the scoped meaning
-invalidates when source/version/decision/migration/environment/time condition
+docs/README.md  documentation router
 ```
 
-这些字段不必机械出现在每份 Markdown，但治理时必须保持语义非等价。
+默认保留的一级 Home 名称：
 
-## Layer Admission
+| Home | Owns | Creation rule |
+| --- | --- | --- |
+| `product/` | 产品结果、范围、规则、质量、验收 | 首次产生持久产品知识时创建 |
+| `ssot/` | 共享语言、对象、状态、不变量和跨域当前事实 | 首次出现跨多个 Owner 的共享意义时创建 |
+| `standards/` | 当前真正绑定工作的工程或政策规则 | 首次接受长期约束时创建 |
+| `architecture/` | 当前架构、边界、Host、Runtime、Composition 与变化关系 | 首次需要持久架构知识时创建 |
 
-当前层只有：Product、SSoT、Architecture、Standards、ADR、Roadmap 和 Reports。不存在当前内容的分类外壳不保留。新增 layer 需要独立 Authority role；新增 partition 需要 ownership、安全、保留、生命周期、发布或持续路由压力；新增 ID/Registry 需要引用、追踪或机器消费压力。
-
-## Convergence
+条件 Home 只有在独立语义长期成立时出现：
 
 ```text
-promote | demote | split | merge | partition | flatten
-bridge | retain | delete | block
+adr/  design/  features/  protocols/  runbook/  security/
+data/ research/ roadmap/ reports/ product-harness/ evals/
 ```
 
-- Stale map 必须 re-ground、标记 drift、降级或 supersede；不能因文件仍存在而继续持有 Authority。
-- Durable assumption 必须有 owner、scope、不能跨越的 commitment、expiry/invalidation 与 next probe/decision。
-- `block` 只阻塞受影响 claim 或 mutation；无关工作继续。
-- Router 只保存 Route，不复制 Current Truth。
-- 点时 Report 不能仅因“最新”成为 Current Home。
+本项目当前的 `adr/` 与 `roadmap/` 分别由稳定引用和真实 Future Candidate 压力赚得。不得为了对称创建空 Home。
 
-## Context Legibility
+## Naming and depth
 
-每个高频入口应以低 Context Cost 暴露：用途、scope、owner、Current/Target/Future、直接 Evidence、失效条件和下一跳。主 `SKILL.md` 保留稳定 Owner、不变量、Stop Line 和 Reference 路由；边缘知识下沉并按需加载。
-
-## Audit
-
-```bash
-python3 skills/governance/docs-governance/scripts/run_docs_audit.py --repo . --readability
+```text
+ordinary paths and files       kebab-case
+local router                   README.md
+ordinary durable document      no numeric prefix
+ordered stable decisions       0001-short-title.md
+default depth                   docs/<home>/<optional-partition>/file.md
 ```
 
-Scanner 证明路径、链接、形状和声明式规则的机械一致性；不自动决定产品或架构语义。
+一级 Home 存在时应有 `README.md` 说明 scope、Current routes 和局部形状。一个层级默认只使用一个主要分类轴；子目录继承父 Home 的语义角色。
 
-## Routes
+避免把生命周期或杂物状态当稳定 Home：
 
-- [文档网络](../README.md)
-- [当前事实](../ssot/README.md)
-- [Skill Source Layout](skill-source-layout.md)
-- [Snapshot Report](../reports/2026-07-26-snapshot-convergence.md)
+```text
+old/  tmp/  misc/  phase-1/  final/  latest/
+```
+
+## Knowledge roles
+
+```text
+current authority  accepted meaning or binding constraint
+source / evidence  implementation structure or bounded observation
+working material   draft, investigation, plan, temporary synthesis
+future             accepted target or unaccepted candidate, visibly separated
+history            a decision or explanation that used to be current
+```
+
+一个文件可以包含多个角色，但每个 current claim 仍需清楚 Owner、scope 和 route。
+
+## Freshness
+
+重要文档应能让读者发现：支持它的 Authority 或 Source、适用 scope/environment、失效条件、更新责任以及可以确认或挑战它的 Evidence。可以用自然语言和链接表达，不要求所有文件拥有统一 frontmatter。
+
+## Multi-entry discovery
+
+项目知识应能从 Source、Failure、Product term、Command、ADR/Standard 和 Repository entry 进入。`AGENTS.md`、根 README 与 `docs/README.md` 是地图，不是必经根。
+
+## Cleanup
+
+当文档误导 Authority 或增加搜索成本时，选择最小动作：
+
+```text
+clarify | link | lower | merge | move | flatten | retain as history | delete
+```
+
+**A Tolerated Ambiguity Becomes a Copied Convention.** 明显冲突或破窗应被修复或明确隔离，不能让未来 Agent 把它当成项目惯例。
+
+## Language
+
+- `skills/**` canonical prose：English。
+- `docs/**` narrative prose：中文；Canonical terms、路径、命令和代码符号保留英文。
+- 同一 Home 内保持一致，不用语言混杂制造同义词漂移。

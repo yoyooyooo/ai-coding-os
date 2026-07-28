@@ -1,149 +1,85 @@
 ---
 name: ai-coding-os-evolution
-description: >-
-  Re-baselines and evolves the AI Coding OS Skill Suite when Agent capabilities,
-  real usage, or protected failures change. Use for capability-epoch review,
-  cross-Skill simplification, fresh-context audits, instruction/context
-  ablation, candidate Suite synthesis, compatibility decisions, release, or
-  rollback.
+description: Maintain the AI Coding OS knowledge network when instructions, Skills, roles, templates, conventions, frameworks, or artifacts may have lost marginal value; nodes always co-trigger; failures look like missing project affordances; or instruction ablation and anti-cargo-cult judgment are needed.
 disable-model-invocation: true
 ---
 
 # AI Coding OS Evolution
 
-The Suite must evolve with the Agent, but it must not circularly authorize its
-own replacement.
-
 ```text
-Preserve semantics; re-earn scaffolding.
-Self-observing and self-revising, not self-authorizing.
+Preserve semantics; re-earn scaffolding and conventions.
 ```
 
-A model release is a probe trigger, not a Suite change Authority.
+As Agent capability and project affordances improve, the Suite should become quieter. The goal is not to accumulate rules. Preserve distinctions and defaults that still change important decisions, and move preventable burden into more reliable owners such as project structure, types, tests, commands, logs, and tools.
 
-## Ownership
+## Semantic anchors
 
-```text
-Owns:
-  Agent Capability Profile and capability-epoch triggers
-  Suite-level health, overlap, context cost, and marginal-utility review
-  fresh-context and first-principles review design
-  instruction admission, deletion, relocation, and ablation
-  cross-Skill candidate synthesis and compatibility envelopes
-  protected failure preservation and release recommendation
-  canonical Suite versioning, staged adoption, rollback, and post-release intake
+- **Preserve Semantics; Re-earn Scaffolding and Conventions.** Stable distinctions survive capability shifts; the forms carrying them must continue to justify their cost.
+- **A Strong Agent Does Not Make Defaults Obsolete.** Keep short owner-local defaults when they repeatedly reduce cross-project invention, search, review, or tooling ambiguity.
+- **Mechanisms Must Earn Their Keep.** A Skill, reference, template, schema, registry, role, or framework needs a protected meaning, real consumer, or repeatable failure.
+- **One Failure, One Lowest Reliable Owner.** Put the lesson into the lowest layer that can prevent or expose it reliably instead of adding the same warning everywhere.
+- **Do Not Build Coconut Airports.** Copy mechanisms only after understanding the local pressure, causal mechanism, cost, and evidence—not because the visible form looks mature.
 
-Adjacent owners:
-  model-run behavior and held-out evidence -> $skill-evaluation-system
-  individual Skill design quality -> the affected Skill owner
-  shared machine contracts -> $ai-coding-os-suite-contracts
-  documentation lifecycle and Current Homes -> $docs-governance
-  domain semantics -> each semantic Skill and project Authority
-```
+## Diagnose before adding guidance
 
-It may propose changes to every Skill, including itself. A candidate has no
-release Authority merely because the candidate or its author judges it better.
-
-## Three Evolution Speeds
+When an Agent performs poorly, first locate the missing surface:
 
 ```text
-Semantic Constitution
-  slow: Authority, ownership, source/decision distinction, evidence bounds,
-  no silent material assumption, current/target/future
-
-Capability Scaffolding
-  medium: fixed output templates, detailed steps, examples, reminders,
-  static decision trees, compatibility guidance
-
-Evaluation and Tooling
-  fast: evals, rubrics, Harnesses, ablations, corpus, reports, release tooling
+accepted meaning or authority is unavailable
+source hides the capability or fact writer
+there is no discoverable run or reproduction command
+the first wrong state is not observable
+a type, contract, test, or tool could prevent the error
+routing loads the wrong or excessive knowledge
+a portable default is absent, so every project invents a dialect
+the instruction itself is ambiguous or wrong
+context is sufficient and this was a one-off execution mistake
 ```
 
-Do not delete a semantic invariant merely because a stronger model can usually
-infer it. Do not retain capability scaffolding merely because an older model once
-needed it.
+Prefer improving project knowledge, source boundaries, types, commands, tests, logs, diagnostics, and low-cost conventions. A new prompt rule is the last long-term owner.
 
-## Evolution Coverage
+## Enter from the current pressure
 
-Cover the applicable decisions; Agent count and orchestration remain dynamic.
-
-| Decision | Completion criterion |
+| Current pressure | Continue into |
 | --- | --- |
-| Freeze | Current Suite, source hash, accepted release, target Agent Capability Profile, protected corpus, and release Authority are fixed. |
-| Intake | Model/provider/tool changes and field observations become explicit capability hypotheses, not immediate edits. |
-| Discover | Independent contexts review the Suite without sharing one contaminated narrative; historical failure reasons remain available to at least one review lane. |
-| Attribute | Redundancy, overlap, failure, or cost is traced to semantics, scaffolding, routing, retrieval, tools, evaluation, or compatibility. |
-| Synthesize | Candidate changes are bounded, owner-aware, source-complete, and preserve rejected-proposal knowledge. |
-| Evaluate | Current, Candidate, Minimal Kernel, and No-Suite baselines pass through `$skill-evaluation-system` at the required levels. |
-| Decide | Semantic owners accept domain changes; release Authority accepts the Suite; unsupported Agent profiles remain explicit. |
-| Release | Manifest, audit, change report, model-run evidence, compatibility boundary, checkpoint, and rollback anchor are retained. |
-| Learn | Field corrections enter the next Discovery pool without contaminating the previous sealed Test. |
+| knowledge must be placed in main Skill, reference, project, example, template, convention, or tool | [Knowledge portfolio](references/knowledge-portfolio.md) |
+| a new instruction is proposed or an old one may be removable | [Instruction admission and ablation](references/instruction-admission-and-ablation.md) |
+| a model improvement, accidental success, or failure needs causal attribution | [Behavior evidence and failure attribution](references/behavior-evidence-and-failure-attribution.md) |
+| a Skill may not deserve independent existence | [Skill independence and retirement](references/skill-independence-and-retirement.md) |
+| a portable default may reduce cross-project entropy | [Portable conventions and defaults](references/portable-conventions-and-defaults.md) |
+| the Suite may be copying a fashionable form or violating its own principles | [Self-application and cargo cult](references/self-application-and-cargo-cult.md) |
 
-## Fresh-Context Review Lanes
+## Core judgment
 
-Use different information conditions rather than identical repeated opinions:
+- Keep a semantic invariant while the distinction remains real.
+- Keep a specialist causal model while it independently changes decisions.
+- Move conditional depth into references.
+- Keep a template or example only when it repeatedly saves real reasoning.
+- Keep a portable default when it reduces cross-project search, review, and tooling ambiguity at low cost.
+- Keep a schema or tool only when a real consumer exists.
+- Keep compatibility and historical material out of ordinary task context.
+- A new Skill needs an independent semantic problem, change axis, and repeatedly expensive context.
+- Skills that always co-trigger, change together, or own only an output shape should merge or retire.
 
-```text
-Clean-room Review          current Suite and goals, no historical defense
-Failure Archaeology        changelog, protected failures, human corrections
-First-principles Rebuild   goals and constraints, not current directory shape
-Capability Maximization    interfaces/tools/dynamic Harness/context reduction
-Adversarial Review         attack candidate and search for old regressions
-Project Simulation         apply to representative real repository tasks
-```
+## Strong-Agent correction
 
-The exact number of Agents and sequencing is selected for the current evolution
-run; these lanes are coverage, not a fixed workflow.
+A convention is not obsolete merely because a strong Agent could infer a valid answer. Inference does not guarantee cross-project compatibility. Retain a short owner-local default when it resolves a recurring underdetermined choice and materially reduces reinvention.
 
-## Instruction Admission
+Conversely, do not keep a convention merely because it is familiar. It should preserve a real invariant, reduce entropy, remain safely overridable, and avoid forcing unused structure.
 
-A hard instruction belongs in a main Skill only when it protects a stable
-semantic invariant or a repeatedly observed protected failure and cannot be
-better expressed by an interface, type, Tool, test, Reference, rubric, or
-project-local Standard.
+## Model upgrades
 
-Disposition options:
+A new model is a reason to observe again, not an automatic license to rewrite every Skill. Ask:
 
 ```text
-retain | narrow | move to Reference | interface | tool | rubric
-compatibility overlay | delete
+what the Agent now infers reliably without guidance
+which distinctions still change independent decisions
+which failures remain in fresh project contexts
+whether a shorter node plus better project routes outperforms a complete process
+whether the Suite teaches judgment or forces translation into private language
+which portable defaults still reduce cross-project entropy
 ```
 
-## Capability Profiles and Compatibility
+## Output principle
 
-Evaluate the actual Agent system, not the foundation model alone:
-
-```text
-model and version
-reasoning/effort mode
-context and Skill loading
-available tools and permissions
-Harness and memory
-subagents / dynamic workflows
-cost and latency envelope
-target task classes
-```
-
-Optimize the canonical Suite for one declared primary baseline. Add a
-Compatibility Overlay only when real supported usage earns it; do not mix
-multiple capability eras into every core Skill.
-
-## Read When Needed
-
-- Profiles and epoch triggers: [Capability Profile and Epoch](references/capability-profile-and-epoch.md)
-- Full lifecycle: [Suite Evolution Cycle](references/suite-evolution-cycle.md)
-- Independent review design: [Fresh-context Review](references/fresh-context-review.md)
-- Rule admission and context reduction: [Instruction Admission and Ablation](references/instruction-admission-and-ablation.md)
-- Candidate scope and cross-owner synthesis: [Candidate Synthesis](references/candidate-synthesis.md)
-- Historical failures that changes must continue to protect: [Protected Failure Corpus](references/protected-failure-corpus.md)
-- Supported capability boundaries: [Compatibility and Support Envelope](references/compatibility-and-support-envelope.md)
-- Adoption, rollback, and evidence: [Release and Rollback](references/release-and-rollback.md)
-- Recursively reviewing this Skill: [Self-application](references/self-application.md)
-
-## Output
-
-Return an evolution proposal or release decision with the current and target
-Capability Profiles, hypotheses, affected owners, protected invariants,
-experimental evidence required, accepted/rejected changes, compatibility
-boundary, claim ceiling, and rollback anchor. Do not claim a model-run result
-that was not executed.
+Return the smallest retain, narrow, move, merge, improve-affordance, restore-default, or retire decision. State the protected meaning and real failure. Do not create release lifecycles, capability scores, fixed review lanes, or compatibility infrastructure merely to manage content changes.

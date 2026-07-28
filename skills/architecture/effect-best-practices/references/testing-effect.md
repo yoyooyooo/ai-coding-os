@@ -1,61 +1,65 @@
 # Testing Effect
 
-Match the test level to the claim and ensure every test can terminate.
+Test the capability contract, failure semantics, lifetime, and concurrency property that matter. Do not test Effect syntax for its own sake.
 
-## Layers of Proof
+## Capability substitution
 
-```text
-pure function / domain decision test
-Effect flow with fake Services
-Service/adapter contract test
-Scope/finalizer and interruption test
-Stream/Queue concurrency test
-HTTP/CLI/worker black-box test
-real database/provider/resource integration
-declared local-stack or staging recovery scenario
-```
+Provide test implementations at the Service or application Port boundary. A fake should model the relevant behavior and failure, not simply return success.
 
-A fake Layer proves application behavior against the contract, not the real
-adapter. A typecheck proves API compatibility, not runtime cleanup or network
-behavior.
+## Clock and scheduling
 
-## Determinism
+Use TestClock or the installed-version equivalent when deadlines, retry, sleep, debounce, timeout, or scheduling are part of the property. Avoid real waiting in unit tests.
 
-Inject or control Clock, random/ID, configuration, and external capabilities.
-Use TestClock or version-equivalent tools for schedules, retries, sleeps, and
-heartbeats. Avoid real sleeps in unit tests.
+## Failure channels
 
-## Termination
+Verify expected failure, defect, interruption, timeout, and unknown outcome separately when the capability distinguishes them.
 
-Use non-watch commands in automation. Give potentially blocking tests a test
-harness deadline and guarantee resource disposal in success and failure paths.
-Do not blindly add business timeouts merely to make tests end; use fake
-capabilities or explicit test cancellation where appropriate.
+## Resource tests
 
-## Failure Assertions
-
-Assert stable typed errors/tags/codes and relevant context. Do not snapshot whole
-FiberFailure stacks or runtime-rendered messages. Preserve separate tests for
-expected failure, defect reporting, and interruption when the distinction is
-part of the contract.
-
-## Runtime/Resource Tests
-
-Test:
+Observe:
 
 ```text
-Layer construction failure
-Runtime disposal
-Scope finalizers on success/failure/interruption
-idempotent close
-close-before-open
-child fiber supervision
-Queue/Stream shutdown and saturation
+acquisition occurs once per intended lifetime
+finalizer runs on success, failure, and interruption
+partial acquisition is cleaned safely
+host shutdown leaves no child work or live resource
+cleanup failure remains visible
 ```
 
-## Boundary Tests
+## Concurrency tests
 
-CLI tests spawn the real process when stdout/stderr/exit codes are claimed.
-HTTP tests use a real handler/server boundary when routing/serialization is
-claimed. Database/provider tests run real adapters when transaction or provider
-behavior is claimed. Use explicit environment gates for expensive tests.
+Use deterministic coordination where possible:
+
+```text
+barriers or latches
+controlled Queue/Deferred
+versioned state
+bounded parallelism
+explicit interruption
+```
+
+Avoid tests that pass only because of arbitrary `sleep`.
+
+## Retry and idempotency
+
+Record operation identity and call count. Test duplicate, timeout, provider success after local timeout, and reconciliation. A retry unit test alone cannot prove live-provider idempotency.
+
+## Layer tests
+
+Test that host composition provides the required Services and closes them. Do not freeze internal Layer order when only the resulting capability matters.
+
+## Runtime boundary
+
+When a framework callback runs an Effect through a Runtime, test error translation, cancellation, and resource lifetime at that boundary.
+
+## Test the test
+
+Introduce a known failure or mutate a boundary to confirm that the test and observation surface actually detect the property.
+
+## Related knowledge
+
+- Use [Service, Layer, and Runtime](service-layer-runtime.md) for substitution boundaries.
+- Use [Scope, resources, and finalization](scope-resources-and-finalization.md) for resource properties.
+- Use [Version grounding](version-grounding.md) for concrete test APIs.
+- Use `$product-harness-system` for dependency realities and claim limits.
+- Return to the [Effect map](../SKILL.md).

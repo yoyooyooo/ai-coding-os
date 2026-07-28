@@ -1,29 +1,43 @@
-# AI Coding OS Skill Suite 0.5.0-experimental.1
+# AI Coding OS
 
-这是一个面向 AI Coding Agent 的项目认知、决策与验证 Skill Suite 源码快照。
+**English** | [简体中文](README.zh-CN.md)
 
-本快照同时包含：
-
-- `skills/`：完整、分组维护的 Core Skill Suite；
-- `docs/`：按 `$docs-governance` 收敛后的当前项目知识网络；
-- `CHANGELOG.md`：本次能力纪元升级的变更摘要；
-- `release/`：机械审计、清单、变更报告与校验值。
-
-核心定位不是为 Agent 规定固定工作流，而是让项目本身成为一个可理解、可决策、可探测、可实施、可验证并可持续演进的环境。
+This package contains two aligned surfaces:
 
 ```text
-Agent-legible project, not Agent-scripted workflow
-Strong invariants, weak choreography
-Minimal context, maximal legibility
-No silent material assumption
-Evidence over confidence
-Commitment-aware autonomy
-Earned persistence
-Preserve semantics; re-earn scaffolding
+skills/  portable semantic guidance for high-capability coding Agents
+docs/    project-owned knowledge for maintaining this Skill network
 ```
 
-从 [docs/README.md](docs/README.md) 按当前问题进入；不要把文档索引理解为必读顺序。
+The Skills are canonical English. The project Docs use Chinese narrative prose while preserving canonical English paths, identifiers, and semantic anchors.
 
-## 交付边界
+AI Coding OS assumes a capable Agent can plan and implement correctly when the project makes meaning, authority, boundaries, defaults, runtime entry points, and evidence clear. The package therefore provides a self-navigating knowledge network rather than a mandatory workflow.
 
-本包只声明源码、文档、Schema、Eval 合同和离线机械审计成立。它不声明已执行独立模型行为评测、真实项目迁移、生产运行或自动采纳自演进候选。
+## Compressed doctrine
+
+```text
+Project Authority First.
+Source Is Not Decision.
+Evidence Bounds Claims.
+Route Is an Edge, Not a Sequence.
+Local Agency, Bounded Authority.
+No Silent Material Assumption.
+Strong Invariants, Weak Choreography.
+Minimal Context, Maximal Legibility.
+Shape Must Be Earned.
+Portable Defaults Standardize the Boring Choices.
+The Project Should Explain Itself.
+Feedback Horizon Sets the Safe Step Size.
+Preserve Semantics; Re-earn Scaffolding and Conventions.
+```
+
+Each sentence is a cognitive compression point, not a standalone slogan. Its formal meaning and boundaries live with the owning Skill and in the project SSoT.
+
+## Start from the current question
+
+- For portable guidance, enter any matching `skills/**/SKILL.md` directly.
+- For this project's current meaning, start at [`docs/README.md`](docs/README.md).
+- For the stable cross-Skill vocabulary, read [`docs/ssot/shared-vocabulary.md`](docs/ssot/shared-vocabulary.md).
+- For repository shape and writing rules, read [`docs/standards/README.md`](docs/standards/README.md).
+
+No reader is required to begin with the Router, traverse every Skill, or produce a fixed artifact family.

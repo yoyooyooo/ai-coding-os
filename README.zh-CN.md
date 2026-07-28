@@ -1,199 +1,115 @@
-![](https://github.com/yoyooyooo/ai-coding-os/raw/main/assets/banner.png)
-
-[English](README.md) | **中文**
-
 # AI Coding OS
 
-AI Coding OS 是一套可移植的项目级知识、规范、Authority、架构、产品定义和有界证明 Skill Suite。它帮助 Agent 找到问题的语义 owner，并维护长期项目事实，但不规定统一阅读、规划、ticket 或执行 workflow。
+[English](README.md) | **简体中文**
 
-ownership 不明确或跨多个 decision surface 时，使用 user-invoked `$ai-coding-os`；边界明确时直接调用专业 Skill。
+AI Coding OS 是一套面向高能力 Coding Agent 的工程知识网络。它不替 Agent 规定统一步骤，而是让项目中的产品意义、知识 Authority、事实写入、状态所有权、运行入口、反馈边界和工程默认值变得清楚、可发现、可验证。
 
-## 最小知识内核
+它建立在一个明确前提上：当项目能够解释自己的世界、边界和现实反馈时，成熟 Agent 已经能够自主规划、实施、诊断与验证。真正稀缺的不是更多流程，而是足够可靠的项目认知环境。
 
-```text
-Project Authority First
-Question-scoped Ownership
-One Scoped Meaning, One Current Home
-Binding Constraint Is Not Semantic Ownership
-Evidence Bounds Claims
-Route Is an Edge; Change Creates an Impact Obligation
-```
-
-可移植 canonical 版本由 `$ai-coding-os-suite-contracts` 携带，以支持独立或扁平安装；本 README 是公开说明投影。
-
-本 Suite 默认 Agent 能自行选择策略，从适用的项目 Authority 和局部模式推导普通可逆细节，隔离真正不可决定的局部 claim，并继续不受影响的工作；它不编码 Agent 的推理过程或实施顺序。
-
-`Pass` 和 decision table 表达 coverage，不表达推理顺序。只有真正拥有状态机、事务、迁移、安全协议或外部协议的 owner 才能规定顺序。Tracker、ticket Skill、实验方法和 release process 在核心 Suite 外拥有自己的 workflow 状态。
-
-## 核心 Skill Suite
-
-| Group | Skill | Decision surface |
-| --- | --- | --- |
-| `router/` | `$ai-coding-os` | user-invoked 知识 Owner Map |
-| `contracts/` | `$ai-coding-os-suite-contracts` | 可移植最小知识内核、Proof Surface、Evidence Envelope、eval 与 Harness schema |
-| `governance/` | `$docs-governance` | 文档 Authority、Routes、Earned Shape、生命周期、清理和审计 |
-| `product/` | `$product-definition` | 产品 framing、source synthesis、业务模型、决策、需求与验收 |
-| `architecture/` | `$evolvable-application-architecture` | 事实权威、事务、模块、端口、组合和迁移 |
-| `architecture/` | `$frontend-architecture` | 前端状态、feature topology、projection、Query/store/realtime |
-| `architecture/` | `$effect-best-practices` | Effect Service/Layer/Scope/runtime、错误、资源和版本映射 |
-| `capability/` | `$interface-capability-planning` | 用户工作、IA、surface、交互状态、前端归属和 proof needs |
-| `harness/` | `$product-harness-system` | Harness 共享词汇、coverage、trace、claim ceiling 和 lifecycle |
-| `harness/` | `$headless-product-harness` | Headless command、fixture/replay、DB/restart 和 boundary proof |
-| `harness/` | `$ui-product-harness` | interface-headless、render focus 和 browser-visible proof |
-| `harness/` | `$frontend-test-system` | 具体 frontend test lane 和 runner 选择 |
-| `preset/` | `$evolvable-application-preset` | 发现并选择性采用项目默认值 |
-| `tooling/` | `$effect-api-app-kit` | 从已确定 Effect API Change Spec 原子生成代码 |
-
-每个核心 Skill 都能独立安装。相对链接只指向本 Skill；跨 Skill 关系使用 `$skill-name`，不依赖 grouped source 路径。
-
-## 项目知识网络
-
-项目文档是多入口网络。Agent 可以从问题、源码区域、术语、ADR、schema、测试、Harness Result、source file、仓库入口或 docs index 进入，只沿当前 claim 相关的边探索。
+## 两个对齐的知识表面
 
 ```text
-Product / Requirements       系统应该做什么
-SSoT                         共享术语、对象、状态和不变量是什么意思
-Standards                    当前适用哪些规则和质量门
-ADR / Product decisions      为什么接受某个选择
-Architecture                 当前拓扑、ownership 和 accepted seam
-Protocols / API              接口接受什么
-Source / schema / migrations 当前存在什么实现结构和静态属性
-Tests / runtime / release    哪些行为在有界路径上被实际观察
-Harness / Evidence           哪个有界 claim 被真实观察
-Selected execution method    工作拆解、依赖、状态和完成
+skills/  面向不同项目复用的语义知识，canonical prose 使用英文
+docs/    维护本 Skill 网络的项目级 Current Home，使用中文叙事
 ```
 
-`AGENTS.md` 暴露稳定项目约束和可用知识表面；`docs/README.md` 可以按问题、Authority、code area 或 artifact 建索引。它们都不是必经根节点，也不复制当前事实。
+`skills/**` 保存可移植的因果模型、边界、Portable Default、Reference、Template 与 Example；`docs/**` 保存本项目当前接受的 Product、SSoT、Architecture、Standards、ADR 和 Future Candidates。两者表达同一套思想，但拥有不同 Authority，不能互相冒充。
 
-Portable Skill 的输出路径只是候选默认值。项目已有 Home 优先；外部 Skill 不能为已有语义创建第二份 glossary、ADR、Standard 或 execution ledger。
+## 为什么需要它
 
-## Proof 与 Evidence
-
-共享 Proof Surface 正交区分：
+代码生成越来越便宜，但下列问题会被同样加速：
 
 ```text
-surface_kind       实际观察表面
-dependency_reality none / fixture / fake / replay / real_local / real_external
-environment_class  isolated / local process / local stack / staging / production
-proof_focus        render_wiring、persistence_restart 等 owner-local property
+产品意义没有明确 Owner
+源码现实被误当成目标决策
+多个模块都能写同一事实
+前端 intent、proposal、projection 与 interaction state 混为一体
+资源、Runtime 和后台任务没有生命周期 Owner
+测试通过，却说不清实际观察了什么
+知识散落在聊天、旧文档、代码和个人记忆中
+每个项目反复发明目录、文件名和验证命令
 ```
 
-`none` 只用于纯静态证明，不能与其他 dependency reality 同时出现。
+AI Coding OS 不用一套更重的 Workflow 包住这些问题，而是把稳定语义交还给正确 Owner，把可重复的低价值选择收敛为可覆盖的默认值，并让源码、命令、测试、日志和局部知识共同形成 Agent-legible Change Surface。
 
-Evidence Envelope 只有在真实机器消费者、durable citation 或重复跨 owner handoff 需要共享 shape 时才使用。v2 无方向：保留 source、claim ceiling、observations、supported interpretation、not_proven、Evidence refs 和可选 Proof Surface，不传递 workflow 或文档生命周期。
+## 压缩原则
+
+| Anchor | 当前含义 |
+| --- | --- |
+| **Project Authority First.** | 项目已经接受的 Product、SSoT、Standard、ADR、Contract 与直接 Evidence，优先于便携式 Skill、外部模板和模型猜测。 |
+| **Source Is Not Decision.** | Source 说明当前实现现实，也能暴露漂移；它不能仅凭存在自动接受产品意义、质量、权限或目标架构。 |
+| **Evidence Bounds Claims.** | Observation 只支持实际执行的性质、入口、路径、依赖、环境与时间范围；命令通过不等于产品完成。 |
+| **Route Is an Edge, Not a Sequence.** | 链接表示相邻知识可能改变当前判断，不规定统一阅读、规划或实施顺序。 |
+| **Local Agency, Bounded Authority.** | Agent 主动完成局部、可逆选择，但不能静默改变 Accepted Meaning、持久数据、权限、公共契约或重大风险接受。 |
+| **No Silent Material Assumption.** | 足以改变结果或 Authority 的 Unknown 必须保持可见；普通低风险细节由 Agent 自主决定。 |
+| **Strong Invariants, Weak Choreography.** | 冻结稳定语义、不变量、Stop Line 与 Claim Boundary，把普通可逆策略留给 Agent。 |
+| **Minimal Context, Maximal Legibility.** | 只加载能改变当前判断的最小充分知识，同时让项目入口和因果关系容易恢复。 |
+| **Shape Must Be Earned.** | 新目录、Package、Port、Service、Schema、Registry、Template 或 Skill 必须由真实变化、所有权、失败、生命周期、信任、复用、导航或机器消费压力赚得。 |
+| **Portable Defaults Standardize the Boring Choices.** | 项目沉默时使用正确 Owner 的稳定默认，避免每个 Agent 重新发明一种方言。 |
+| **The Project Should Explain Itself.** | Product meaning、源码边界、命令、测试、日志和局部知识应让新上下文恢复完整变化路径。 |
+| **Feedback Horizon Sets the Safe Step Size.** | 自主步长取决于多久能发现错误，以及能否及时定位、停止与恢复，而不是取决于生成速度。 |
+| **Preserve Semantics; Re-earn Scaffolding and Conventions.** | 保留仍会改变判断的语义；步骤、模板、默认值、Schema 和工具必须持续证明边际价值。 |
+
+这些短句是认知压缩点，不是脱离上下文的口号。正式含义、反例、边界和具体机制仍由对应 Skill 与项目 SSoT 持有。
+
+## 八个语义节点
+
+六个项目面向 Specialist 可以直接成为入口：
+
+| 当前问题 | Owner |
+| --- | --- |
+| 用户结果、Accepted Meaning、规则、权限、Quality Boundary、范围与验收 | [`$product-definition`](skills/product/product-definition/SKILL.md) |
+| Current Home、Route、Freshness、文档拓扑、命名与清理 | [`$docs-governance`](skills/governance/docs-governance/SKILL.md) |
+| 事实 Authority、Use Case、Transaction、Port、Composition、Consistency 与 Migration | [`$evolvable-application-architecture`](skills/architecture/evolvable-application-architecture/SKILL.md) |
+| Intent、Projection、Interaction State、Realtime continuity 与 Frontend Host | [`$frontend-architecture`](skills/architecture/frontend-architecture/SKILL.md) |
+| Effect failure、Scope、Resource、Structured Concurrency、Layer 与 Runtime | [`$effect-best-practices`](skills/architecture/effect-best-practices/SKILL.md) |
+| Runnability、Observation、Diagnosis、Recovery Evidence 与 Regression Placement | [`$product-harness-system`](skills/harness/product-harness-system/SKILL.md) |
+
+两个支持节点不占普通任务默认上下文：
+
+- [`$ai-coding-os`](skills/router/ai-coding-os/SKILL.md) 只在问题确实模糊或跨域时提供薄 Owner Map，不是入口门禁。
+- [`$ai-coding-os-evolution`](skills/meta/ai-coding-os-evolution/SKILL.md) 维护知识网络自身的准入、消融、合并、Portable Default 与 anti-Cargo-Cult 判断。
+
+大型任务不自动需要全部 Skill。只加载能够改变当前判断的最小 Owner 集。
+
+## Portable Default 与项目覆盖
+
+跨项目默认遵循以下优先级：
 
 ```text
-Harness pass != execution completion
-execution status != product 或 document acceptance
-accepted target != verified implementation
-observed behavior != accepted future intent
+1. accepted project authority
+2. coherent adopted project convention
+3. owning Skill's Portable Default
+4. free invention
 ```
 
-源码可以证明当前实现结构和静态属性；runtime、reachability、deployment 和 environment claim 需要实际执行或观察 Evidence。源码和 Evidence 都不单独决定 accepted product intent。
+一个 Project Override 只要可发现、保护相关 invariant，并说明本地压力为何使默认值不合适，就继续有效。Portable Default 用来统一低价值但反复出现的选择，不要求生成未使用的完整目录或 Artifact 家族。
 
-## 使用
+## 从当前问题进入
 
-ownership 不明确或跨域：
+- 需要便携式专业知识时，直接进入匹配的 `skills/**/SKILL.md`。
+- 需要理解本项目当前意义和知识路由时，从 [`docs/README.md`](docs/README.md) 进入。
+- 需要确认八个 Owner 与共同 Doctrine 时，查看 [`docs/ssot/README.md`](docs/ssot/README.md)。
+- 需要稳定跨 Skill 词汇时，查看 [`docs/ssot/shared-vocabulary.md`](docs/ssot/shared-vocabulary.md)。
+- 需要目录、命名、Semantic Compression 与验证约束时，查看 [`docs/standards/README.md`](docs/standards/README.md)。
+- 需要理解当前网络为何如此设计时，查看 [`docs/adr/README.md`](docs/adr/README.md)。
 
-```text
-使用 $ai-coding-os 找出当前 concern 所需的最小知识 owner 集合；不要选择 workflow 或创建 durable state。
-```
+不要求先经过 Router，不要求遍历全部 Skill，也不要求先生成固定 Artifact 再开始真实工作。
 
-文档治理：
+## 明确不做什么
 
-```text
-使用 $docs-governance 收敛 Authority、多入口 Routes、Earned Shape、生命周期、source alignment 和 audit findings。
-```
+AI Coding OS 不提供：
 
-产品定义：
+- 统一 Ticket、Tracker、审批、发布或多 Agent Workflow；
+- 中央 Architecture Database、全局 Registry、固定 ADIR 或统一 Evidence Envelope；
+- 用模板完整度替代产品理解、架构判断和运行 Evidence；
+- 由 Agent 自动替有权角色接受产品、权限、安全、隐私、法律、财务或不可逆风险；
+- 把一次测试通过夸大为生产行为、产品完成或 Quality Boundary 已被接受。
 
-```text
-使用 $product-definition 综合来源、建立产品模型、挑战冲突、记录 accepted decision，并产出适量 acceptance。
-```
+它提供的是更清楚的意义、Owner、边界、默认值、路由和反馈，使高能力 Agent 能在这些约束内自主工作。
 
-应用架构：
+## 语言约定
 
-```text
-使用 $evolvable-application-architecture 检查事实 writer、事务、模块边界、capability、composition、迁移与 claim ceiling。
-```
-
-界面与证明：
-
-```text
-使用 $interface-capability-planning 处理用户工作、surface、state、frontend ownership 与 proof needs；再由对应 Harness/Test owner 选择最小诚实观察面。
-```
-
-Preset 与生成：
-
-```text
-使用 $evolvable-application-preset 发现并选择性采用兼容默认值；renderer 输出在项目 owner 合入 Current Home 前始终是 candidate。只有架构和 Effect 版本决策稳定后，才使用 $effect-api-app-kit。
-```
-
-## 核心分发
-
-核心 canonical source 位于 [`skills/**`](skills/README.md)。生成 deterministic core-only grouped-source ZIP、audit JSON 和 sidecar manifest：
-
-```bash
-bun install
-python3 -m pip install -r requirements-dev.txt
-bun run bundle:skills
-```
-
-Bundle 包含核心 Skill Suite，不包含共仓实验、CLI packages、项目 docs 和仓库 release scripts。它是自包含交付单元：`skills/VERSION` 提供 Core 版本，`skills/requirements-audit.txt` 固定 audit 依赖，解压后可以运行 bundle-local audit/builder，`source_tree_sha256` 将通过的 audit 绑定到实际打包的 `skills/**`。Builder 同目录输出 canonical audit、manifest、change report 和 composition review；canonical provenance 排除机器绝对路径与 compiler-dependent template-typecheck 状态，因此相同源码可跨路径复现。Sidecar 中的每 Skill SHA-256 用于标识未独立版本化的源码。
-
-## 共仓实验：Goal Proof
-
-Goal Proof 是关于 Goal Pack state、proof step、append-only evidence 和 completion review 的早期 user-invoked 实验，目前尚不能确认长期有效。它不是核心 Skill、Router branch、知识网络默认项或核心 Bundle 成员。
-
-- 实验边界与 Skill：[`experiments/goal-proof/`](experiments/goal-proof/README.md)
-- 实验 CLI：[`packages/cli/`](packages/cli/README.zh-CN.md)
-- 历史 dogfood：[`experiments/goal-proof/dogfood/`](experiments/goal-proof/dogfood/README.md)
-
-实验评估期间，npm package 仍叫 `goal-proof`：
-
-```bash
-npm install -g goal-proof@^0.2.0
-goal-proof --help
-```
-
-## 仓库结构
-
-```text
-skills/                              AI Coding OS 核心 grouped Skill source
-  router/ contracts/ governance/ product/
-  architecture/ capability/ harness/ preset/ tooling/
-experiments/goal-proof/              独立早期 workflow experiment
-packages/cli/                         Goal Proof 实验 CLI
-scripts/                              仓库 release support
-docs/                                 当前项目知识与规范网络
-assets/                               README media
-```
-
-## 仓库验证
-
-```bash
-bun run check:core
-bun run check:goal-proof-experiment
-bun run check
-```
-
-- `check:core`：核心 Suite audit 与 Docs Governance audit。
-- `check:goal-proof-experiment`：实验 Skill self-check、CLI build、typecheck 和 tests。
-- `check`：整仓聚合门；通过不代表 Goal Proof 属于核心 Suite。
-
-## 发布
-
-`bun run bundle:skills` 只创建带版本的核心 Skill bundle，不发布。核心 Suite 版本与 CLI package 版本独立。
-
-Tag-oriented 本地 release helper 只为实验 `goal-proof` CLI 版本化并创建 tag。实际 npm 发布是单独配置的 release step，本仓不声称已配置：
-
-```bash
-bun run release:check patch
-bun run release patch
-```
-
-npm tarball 包含 `dist/`、package README、`LICENSE` 和 package metadata，不分发核心 Skill Suite。
-
-## 许可证
-
-MIT
+- `skills/**` 的 canonical prose、路径、命令、协议、Schema 与代码符号使用英文。
+- `docs/**` 使用中文叙事，同时保留稳定英文术语作为跨项目检索和压缩锚点。
+- 本中文 README 与 [English README](README.md) 独立可读，但共享同一组 Current Homes，不维护第二套语义真相。

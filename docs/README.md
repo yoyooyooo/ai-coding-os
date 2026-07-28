@@ -1,53 +1,61 @@
 # AI Coding OS 文档网络
 
-本目录保存 AI Coding OS Skill Suite 的当前产品定位、共享事实、架构、约束、决策、未来路线和点时证据。它是一张多入口知识网络，不是阶段目录、工作流或必读清单。
+本目录保存 AI Coding OS 当前的产品意义、共享语义、架构关系、跨项目约定和已接受决策。它是一张可以从不同现场进入的知识网络，不是阶段目录、发布记录或必读清单。
 
-## By Question
+> **Route Is an Edge, Not a Sequence.** 路由帮助当前问题找到相关知识，不规定统一阅读、规划或实施顺序。
 
-| 当前问题 | Current Home / Evidence |
+## 按问题进入
+
+| 当前问题 | Current Home |
 | --- | --- |
-| AI Coding OS 解决什么问题 | [Product](product/README.md) |
-| 当前 Suite 有哪些稳定事实和 Skill Owner | [SSoT](ssot/README.md) |
-| Core、投影、ADIR、评估与演进如何组合 | [Architecture](architecture/README.md) |
-| 当前必须遵守什么规则 | [Standards](standards/README.md) |
-| 为什么采用这些边界 | [ADR](adr/README.md) |
-| 哪些能力仍是未来候选 | [Roadmap](roadmap/README.md) |
-| 本次快照做了什么、证明到哪里 | [Reports](reports/README.md) |
-| 实际 Skill 内容和机械证据 | [`skills/**`](../skills/README.md) 与 release sidecars |
+| AI Coding OS 为谁解决什么问题、成功边界是什么 | [Product Brief](product/product-brief.md) |
+| 全套共同世界观、精确术语和语义 Owner | [SSoT](ssot/README.md) |
+| 八个 Skill 如何组成自导航网络，项目如何向 Agent 解释自己 | [Architecture](architecture/README.md) |
+| 文档 Layer、目录、文件、命名、写法和演进约束 | [Standards](standards/README.md) |
+| 为什么接受当前 Owner、网络、默认值和高熵叙事 | [ADR](adr/README.md) |
+| 哪些能力仍是 Future Candidate、在什么压力下重新进入 | [Roadmap](roadmap/README.md) |
+| 实际便携式知识入口 | [`skills/**/SKILL.md`](../skills/) |
 
-## Authority Model
-
-| Layer | Owns | Must Not Own |
-| --- | --- | --- |
-| `product` | 产品定位、用户价值、非目标 | 架构实现细节、运行结果 |
-| `ssot` | 当前共享事实、术语、Owner 和版本边界 | 未来路线、点时报告 |
-| `architecture` | 当前 Suite 结构、决策与组合关系 | 产品含义、单次运行状态 |
-| `standards` | 当前强制规则、验证和发布门 | 未采纳候选、历史结论 |
-| `adr` | 已接受决策、替代方案和后果 | Current facts 的重复副本 |
-| `roadmap` | Future candidate、晋升条件与首个可证伪步骤 | 当前已完成状态 |
-| `reports` | 点时审计、来源和 Claim Ceiling | 仅因“最新”而成为 Current Authority |
-
-每个 claim、representation 和 scope 只有一个 Current Home。源码、Schema、运行结果和外部文章可以挑战 Current Home，但不能仅凭存在自动改写它。
-
-## Current / Target / Future
+## 当前一级 Home
 
 ```text
-current-binding / current-fact  -> 当前已接受且仍有效
-accepted-target                 -> 已接受目标，但不冒充当前实现
-future-candidate                -> 尚未接受，保留前提与晋升门
-historical-evidence             -> 只解释过去，不参与当前路由
+product/       当前产品结果、范围、质量与非目标
+ssot/          共享 Doctrine、语义 Owner 与统一词汇
+standards/     当前绑定文档和 Skill 内容的规则
+architecture/  当前知识网络、可发现性与跨 Owner 关系
+adr/           已接受且值得稳定引用的长期决策
+roadmap/       尚未成为 Current 的能力候选与重新准入压力
 ```
 
-## Context Legibility
+前四个是本项目已经拥有持久内容的默认核心 Home；`adr/` 与 `roadmap/` 分别由稳定引用和真实 Future Candidate 压力赚得。本项目不保留 `reports/`，因为点时发行证据不再是核心知识面。
 
-Agent 应按当前问题加载最小充分上下文：先定位语义 Owner、Current Home、直接 Evidence、material unknown 和失效条件，再读取相邻 Reference。不要预加载整套 Docs 或全部 Skills。
+## 三种现实必须分开
 
-## Routes
+```text
+Accepted Meaning  当前被有权角色接受的产品或工程含义
+Source Reality     当前源码、Schema、配置和依赖实际表达的结构
+Observed Reality   某次真实执行、测试、浏览器或外部依赖产生的观察
+```
 
-- [产品定位](product/README.md)
-- [当前事实](ssot/README.md)
+**Source Is Not Decision.** 源码可以暴露偏差，但不能静默接受产品或架构含义。
+
+**Evidence Bounds Claims.** 观察只支持它实际执行的性质、路径、依赖、环境和时间范围。
+
+## 跨项目一致性
+
+当项目已经有清楚、连贯、可发现的本地约定时，保留项目约定；项目沉默时，采用拥有该问题的 Skill 所给出的 Portable Default。默认值负责统一低价值但反复出现的选择，Agent 的判断力应留给真正影响结果的差异。
+
+## 语言策略
+
+- `skills/**` 的 canonical prose、路径、命令、协议、Schema 和代码符号使用英文。
+- `docs/**` 使用中文叙事，同时保留稳定英文术语作为跨项目检索和压缩锚点。
+- 项目外部合同的语言由合同本身决定。
+
+## 直接路由
+
+- [产品](product/README.md)
+- [共享事实与词汇](ssot/README.md)
 - [架构](architecture/README.md)
 - [标准](standards/README.md)
 - [决策](adr/README.md)
-- [未来路线](roadmap/README.md)
-- [点时报告](reports/README.md)
+- [未来候选](roadmap/README.md)

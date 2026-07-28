@@ -1,223 +1,97 @@
 ---
 name: product-definition
-description: >-
-  Product definition from ambiguous or competing inputs. Use when synthesizing
-  product sources into a versioned Baseline, modeling actors, objects,
-  workflows, rules, permissions, and metrics, preparing product decisions or
-  PRDs, eliciting tacit expectations, challenging blind spots, or defining
-  acceptance, UAT, traceability, alignment, and change impact.
+description: Clarify product outcomes and accepted meaning when a feature request may be only a means, sources conflict, roles/objects/states/rules/permissions/quality/acceptance are unclear, a prototype is mistaken for truth, or an accepted obligation must enter interface and engineering work.
 ---
 
 # Product Definition
 
-Use four leading words throughout the run:
+Product Definition owns what the product is supposed to mean. It turns business input, current implementation, user feedback, and observed behavior into a product model that an accountable authority can accept and revise. None of those inputs becomes product truth automatically.
 
 ```text
-Baseline   the accepted product target for a version, not raw input and not delivery proof
-Model      the actors, objects, workflows, states, rules, permissions, artifacts, and metrics that make the product coherent
-Challenge  the conflicts, gaps, ambiguity, assumptions, edge cases, and risks exposed before the specification hardens
-Trace      the visible path from source and decision to requirement, acceptance, and delivery handoff
+source / current behavior / observation  -> learning input
+accountable decision                     -> accepted meaning
+specification                            -> one expression of accepted meaning
+implementation                           -> current executable reality
 ```
 
-Source is not Decision. Decision is not Specification. Specification is not Delivery.
+## Semantic anchors
 
-## Operating Contract
+- **Outcome Before Requested Means.** Treat the requested feature as one candidate way to improve a user result, not as the result itself.
+- **Requirements Are Learned, Not Mined.** Product understanding changes through conversation, prototypes, Tracers, and real use.
+- **Accepted Meaning Comes from Accountable Decision.** Source, current behavior, and observation are learning inputs until the responsible authority accepts meaning.
+- **Quality Boundary Is Not Claim Ceiling.** Product and risk authority define what must be good enough; evidence defines only what can currently be claimed.
+- **Prototype Learns; Tracer Grows.** A Prototype is disposable inquiry; a Tracer is a thin, real path intended to remain and expand.
+
+## Core distinctions
+
+- Understand the user outcome, context, and pain before accepting the requested feature as the solution.
+- Requirements are a current learning model, not a fixed deposit extracted once.
+- Product invariant, changeable policy, and operational configuration are different kinds of knowledge.
+- A Quality Boundary is accepted by product/risk authority; evidence only determines the current claim ceiling.
+- A Prototype is disposable learning; a Tracer is thin, real, and intended to grow.
+- Product language should precede page, component, database, and framework vocabulary.
+
+## Enter from the current pressure
+
+| Current pressure | Continue into |
+| --- | --- |
+| a requested feature has an unclear underlying outcome or success condition | [Outcome and accepted meaning](references/outcome-and-accepted-meaning.md) |
+| documents, meetings, code, legacy behavior, and user feedback disagree | [Learning from sources and reality](references/learning-from-sources-and-reality.md) |
+| terms, actors, objects, relationships, states, and invariants lack a stable model | [Product language and model](references/product-language-and-model.md) |
+| the happy path is clear but time, concurrency, exceptions, recovery, and termination are not | [Workflow, state, and exceptions](references/workflow-state-and-exceptions.md) |
+| rules, permissions, responsibility, quality, or metrics are buried in page descriptions | [Rules, permissions, quality, and metrics](references/rules-permissions-quality-and-metrics.md) |
+| current scope, future candidates, Prototype, Tracer, MVP, or estimate are mixed together | [Scope, Prototype, Tracer, and estimation](references/scope-prototype-tracer-and-estimation.md) |
+| an accepted obligation must become operable without prematurely choosing components or state libraries | [Interface obligations](references/interface-obligations.md) |
+| it is unclear what the Agent may infer and what an accountable person must decide | [Decision boundaries and responsibility](references/decision-boundaries-and-responsibility.md) |
+| the project needs a stable default product-document shape | [Default product knowledge shape](references/default-product-knowledge-shape.md) |
+| concrete examples would help reframe a request or distinguish a POC from a product slice | [Product reframing examples](references/product-reframing-examples.md) |
+
+These are independent knowledge surfaces, not product-definition phases.
+
+## Minimum sufficient product model
+
+For the current capability, make enough meaning discoverable to answer:
 
 ```text
-Owns:
-  product framing and outcome definition
-  source registration, synthesis, and product-claim classification
-  scope baselines and version slicing
-  actors, responsibilities, business objects, relationships, workflows, states, and rules
-  product permission requirements, data visibility, artifacts, files, metrics, and quality attributes
-  conflict/gap/ambiguity/risk analysis, tacit expectation elicitation, blind-spot discovery, and product decision preparation
-  modular PRDs, acceptance criteria, UAT scope, product traceability, and product change impact
-  stakeholder alignment packs and product handoff constraints
-
-Hands off:
-  binding business/legal/policy/compliance/privacy/security choices -> accountable domain owners
-  interaction and visual solution -> design owners
-  implementation, release, and runtime state -> their delivery owners
-
-Adjacent Suite owners, when installed:
-  documentation authority, artifact home, lifecycle, and cleanup -> `$docs-governance`
-  accepted product obligations -> interface capability mapping -> `$interface-capability-planning`
-  technical facts, modules, transactions, and boundaries -> `$evolvable-application-architecture`
-  cross-owner architecture issue composition and commitment boundary -> `$architecture-decision-system`
-  proof architecture and claim ceilings -> `$product-harness-system`
+who wants what outcome in which context
+which product objects and states are real
+which actions may change them
+which rules and invariants must hold
+who is responsible, who can see, who can act, and who can accept risk
+how success, failure, waiting, recovery, and completion are perceived
+what is in scope and explicitly out of scope
+what feedback could invalidate the current understanding
 ```
 
-### Default judgment and blocking policy
+The representation may be prose, a diagram, a table, an existing PRD, source-adjacent knowledge, or a project-owned schema. Do not create a second product DSL without real reuse, risk, or machine-consumer pressure.
 
-Infer ordinary reversible details from the current Product Baseline, SSoT,
-accepted rules, and nearby project patterns. Use a low-commitment assumption
-when it does not widen scope, permissions, public contracts, durable data, or a
-trust boundary; keep the assumption visible and continue.
+## Portable default
 
-Create a Decision Packet only when materially different answers would change
-product scope, shared meaning, workflow/state semantics, permissions, rules,
-metrics, acceptance, or a version promise and current Authority cannot decide.
-Keep the run moving by isolating that unresolved claim, workflow, rule, or
-version slice; label it blocked or assumed, state the recommendation and owner,
-and continue unaffected work.
+When the project has no coherent product-document convention, use the homes and selective headings in [Default product knowledge shape](references/default-product-knowledge-shape.md). The default provides familiarity, not an obligation to fill every section or create one document per capability.
 
-Stop the whole run only when:
+## Local agency
 
-```text
-source access is too incomplete to produce an honest product model
-continuing would expose sensitive data outside the approved workspace
-the user requires an unsupported claim to be presented as accepted or delivered
-the product question cannot be separated from a binding decision and no responsible owner can be identified
-```
+An Agent may infer reversible implementation detail from accepted meaning and project conventions. Temporary assumptions may support bounded work when visible and easy to invalidate. They must not silently expand scope, permissions, public promises, persistent data meaning, or trust boundaries.
 
-Outputs are destination-neutral. Place them in the repository's established document homes and follow its routers, identifiers, and naming rules; a template name does not create a parallel document tree.
+If an external decision is required, isolate the affected rule or slice and continue unrelated reversible work. One unresolved product decision does not make the entire task impossible.
 
-## Product-Claim Labels
+## Weak product understanding signals
 
-Every material claim should carry one of these meanings, explicitly or by clear context:
+- pages and components are specified before objects, states, and user obligations;
+- current code is treated as intended behavior merely because it runs;
+- one `status` represents business progress, approval, visibility, SLA, and archive state;
+- permission is described only as button visibility;
+- "fast", "stable", or "secure" has no condition, floor, or risk owner;
+- a polished demo is treated as proof of real data, recovery, and authorization;
+- the same decision has several peer owners across meeting notes, PRDs, code, and tests.
 
-```text
-accepted                  approved product target for the stated version
-recommended               product lead recommendation awaiting decision
-assumed                    temporary working assumption with owner and expiry/decision point
-source-derived             restatement of an input, not yet promoted into product truth
-observed-behavior-derived  behavior verified by bounded execution or observation, not automatically future scope
-future-candidate           possible later capability, outside the current baseline
-rejected-or-superseded     explicitly not part of the current target
-unknown                    insufficient evidence; leave the claim unresolved
-```
+## Adjacent owners
 
-Resolve precedence by question, scope, and accountable authority rather than document age, implementation existence, stakeholder seniority, or repetition count.
+- When product rules change fact writing, transactions, external capabilities, or migration, use `$evolvable-application-architecture`.
+- When user-visible obligations require concrete query/store/realtime, route, or host ownership, use `$frontend-architecture`.
+- When the question is what timeout, restart, browser, provider, or recovery behavior actually does, use `$product-harness-system`.
+- When the question is where product knowledge is current and how it is discovered, use `$docs-governance`.
 
-## Product Definition Coverage
+## Output principle
 
-Select the applicable decisions in the order suggested by current evidence.
-Baseline, Model, accepted decisions, and requested handoffs constrain one
-another, but this coverage is not a project workflow.
-
-### Frame
-
-Identify the product question, version horizon, users, business outcomes, constraints, source set, decision owners, and the expected level of specification.
-
-Ask:
-
-```text
-What problem and outcome are being defined?
-For which version or time horizon?
-Which users, business units, or markets are in scope?
-Which inputs are evidence, wishes, current behavior, accepted decisions, or future candidates?
-What must be decided before delivery can proceed?
-What artifact set is proportionate to the product pressure?
-```
-
-Use [Artifact Selection and Readiness](references/artifact-selection-and-readiness.md).
-
-**Completion criterion:** the product problem, version boundary, candidate scope, source set, decision owners, constraints, and unsupported assumptions are visible.
-
-### Synthesize
-
-Register sources, extract claims, classify their kind and confidence, group conflicts, and distinguish current fact from target intent.
-
-Use [Source to Product Truth](references/source-to-product-truth.md) and the [Source Synthesis template](templates/source-synthesis.md).
-
-**Completion criterion:** material claims have provenance; conflicting or unsupported claims are not silently merged; source inputs remain distinguishable from accepted product truth.
-
-### Model
-
-Model before screens:
-
-```text
-actors and responsibilities
-business objects and relationships
-end-to-end workflows and handoffs
-business, approval, task, time, visibility, and archive states
-business rules, validations, calculations, and invariants
-permissions and data visibility
-files, generated artifacts, notifications, logs, and retention needs
-metrics, dimensions, time basis, and visibility rules
-product quality attributes that must be measurable
-```
-
-Use [Product Modeling](references/product-modeling.md), [Workflow and Exception Modeling](references/workflow-and-exception-modeling.md), and [Rules, Permissions, Metrics, and Quality](references/rules-permissions-metrics-quality.md).
-
-**Completion criterion:** the core product language, objects, lifecycle, role responsibilities, rule families, and metric definitions are explicit enough to expose contradictions and drive design and engineering handoff.
-
-### Challenge
-
-Attack the model before hardening it. Test the happy path, alternatives,
-exceptions, recovery, concurrent actions, delegation, expiry, cancellation,
-migration, privacy, and operational failure. Do not rely only on direct verbal
-questions when stakeholders cannot yet articulate the desired behavior. Use
-contrasting prototypes, reference products, counterexamples, state matrices, and
-recognition-based comparison to surface tacit expectations.
-
-Run a blind-spot pass:
-
-```text
-What good could look like that the current model cannot express?
-Which important question has never been asked?
-Which hidden assumption would radically change the workflow, permissions, data, or acceptance?
-Which source behavior is being mistaken for intended product meaning?
-```
-
-Use [Challenge and Decide](references/challenge-and-decide.md) and [Tacit
-Expectations and Blind Spots](references/tacit-expectation-and-blind-spots.md).
-
-**Completion criterion:** every material conflict, gap, ambiguity, assumption, drift, edge case, and risk has an impact, recommendation, owner, and decision path or an explicit deferment.
-
-### Decide
-
-Prepare decision packets with a recommendation, alternatives, tradeoffs, impact, owner, and deadline. Promote durable accepted choices into Product Decision Records when they change scope, object meaning, workflow, state, role responsibility, permission boundary, rule, metric definition, acceptance, or roadmap promise.
-
-Use the [Decision Packet template](templates/decision-packet.md) before the [Product Decision Record template](templates/product-decision-record.md).
-
-**Completion criterion:** accepted decisions are distinguishable from recommendations, assumptions, unresolved questions, future candidates, current implementation, and superseded choices.
-
-### Specify
-
-Produce the smallest specification set that can drive alignment and delivery:
-
-```text
-product brief and/or scope baseline
-product model and glossary
-workflow, state machine, or rule catalog where complexity requires them
-module PRD
-permission matrix, metric dictionary, or quality requirements when cross-cutting
-acceptance criteria and UAT scenarios
-traceability links where risk, regulation, team count, or change pressure justifies them
-```
-
-Use [PRD and Acceptance](references/prd-and-acceptance.md), [Scope and Version Baselines](references/scope-and-version-baselines.md), and [Traceability and Change Impact](references/traceability-and-change-impact.md).
-
-**Completion criterion:** the product target is coherent, observable, testable, versioned, traceable at the necessary depth, and honest about unresolved or not-yet-delivered behavior.
-
-### Align and Handoff
-
-Turn unresolved issues into a meeting-ready decision view, close decisions into the authoritative product artifacts, assess change impact, and hand accepted behavior to design, architecture, engineering, security, data, and QA without taking over their design authority.
-
-Use [Alignment and Facilitation](references/alignment-and-facilitation.md) and [Product / Adjacent Boundaries](references/product-technical-boundary.md).
-
-A Product Design Handoff carries accepted Requirement, Rule, and AC IDs plus user goals, product behavior, business objects, state obligations, permissions, exceptions, and acceptance expectations. `$interface-capability-planning` may map those obligations into IA, surfaces, regions, interaction-state ownership, and proof needs; it does not redefine the product rules. Layout, components, and frontend technology ownership do not flow back as product meaning unless product decision authority explicitly accepts a change.
-
-**Completion criterion:** the decision meeting does not become a shadow source of truth; accepted changes have named follow-up artifacts; adjacent teams receive accepted behavior, open decisions, constraints, critical edge cases, and acceptance expectations.
-
-## Output Contract
-
-Return only the artifacts material to the request, selected from:
-
-```text
-framing summary
-source register and synthesis
-scope baseline and version split
-product model, glossary, object catalog, workflow, or state model
-conflict, gap, ambiguity, assumption, drift, edge-case, and risk analysis
-decision packets or Product Decision Records
-business rules, permissions, metrics, and quality requirements
-module PRD and design handoff
-acceptance criteria and UAT scenarios
-requirements traceability and change-impact assessment
-alignment meeting pack
-handoff notes to design, architecture, engineering, security, data, QA, or documentation governance
-```
-
-Leave stakeholder approval, implementation status, test evidence, release evidence, and policy authority unproven until their owners supply them.
+Use the smallest natural expression that supports the next real decision or implementation slice. Expose accepted meaning, critical assumptions, unresolved authority, quality/acceptance boundaries, portable defaults when needed, and adjacent implementation implications. Do not create a full PRD family, decision packet, RACI matrix, or trace matrix merely to demonstrate process.

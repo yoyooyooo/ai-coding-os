@@ -2,51 +2,46 @@
 
 ## Owns
 
-- 尚未成为 Current Suite 的长期能力候选、前提、晋升门和首个可证伪步骤。
+- 尚未成为 Current Skill/Standard 的长期能力候选、成立前提和最小证明压力。
 
 ## Must Not Own
 
-- 当前事实、已接受架构、执行状态或完成声明。
+- 当前事实、已接受语义、执行状态、版本计划或完成声明。
 
-## Future Candidates
+## Future candidates
 
-### Machine-consumable ADIR
+### Model-behavior comparison runner
 
-- **Current foundation:** `$architecture-decision-system` 的语义模型、Decision Trace、Health 与项目 materialization contract。
-- **Not current:** 全局 Schema、Registry、CI graph 和自动架构数据库。
-- **Promotion gate:** 至少两个独立机器消费者需要稳定读写同一 IR，并证明 Markdown/reference 路由不足。
-- **First proof:** 在两个真实项目上用同一最小 Schema 完成 architecture diff 与 drift check，且不制造第二 Current Home。
+当前由 `$ai-coding-os-evolution` 的 Behavior Evidence 与 Failure Attribution 知识支撑，不保留常驻 Eval Skill、静态 Corpus、Dashboard 或自动 Optimizer。
 
-### Model-run Skill Evaluation Tooling
+只有当多个真实 Skill 变更反复需要相同的 Current/Candidate/Minimal/Project-native 对照，且存在可执行任务、可解释观察和稳定 evaluator 时，才值得建立独立工具。
 
-- **Current foundation:** `$skill-evaluation-system` 的 Evaluation Ladder、split integrity、attribution 和 hierarchical gates。
-- **Not current:** 通用 runner、dashboard、自动 optimizer 或 nightly Suite rewrite。
-- **Promotion gate:** 已有可执行 Oracle、Protected Corpus、重复运行预算和明确数据边界。
-- **First proof:** 对一个 Skill 比较 Current/Candidate/Minimal/No-Skill，并保留完整 manifest、held-out Gate 和 rollback。
+### Rust Skill promotion
 
-### SkillOpt Backend Adapter
+当前由 `$evolvable-application-architecture` 的 Rust Projection Reference 支撑，不建立独立 Rust Architecture Skill。
 
-- **Current foundation:** 已吸收 rollout、bounded update、held-out gate、checkpoint 和 staged adoption 语义。
-- **Not current:** 未 vendoring SkillOpt，也未声称兼容其所有 Harness。
-- **Promotion gate:** 真实 Suite Eval 证明外部 Backend 能复用项目 Harness，且不会将语义 Constitution 当作普通 Prompt 权重训练。
-- **First proof:** 一个隔离的单 Skill E1 候选优化实验。
+只有当多个结构不同的真实 Rust 项目持续暴露一组 EAA 无法清楚拥有、且具有独立变化轴的问题时，才重新评估 Skill 身份。
 
-### Rust Skill Promotion
+### Machine-consumer contracts
 
-- **Current foundation:** EAA Rust Projection、Rust Evals、Preset `rust` Profile。
-- **Not current:** 独立 `$rust-application-architecture`。
-- **Promotion gate:** Rust 形成稳定独立用户意图、完整模块/crate/trait/async/API/release/proof 决策面和独立 Corpus。
-- **First proof:** 两个结构不同的真实 Rust 项目使用同一投影，暴露出 EAA Reference 无法清晰拥有的独立决策。
+Harness result、evidence transport、semantic catalog 或 architecture profile 等 Schema 只有在真实 Runtime、CI、Agent platform 或 scanner 需要确定性消费时才建立，并由消费者或正确语义 Owner 持有。
 
-### Compatibility Overlays
+### Project operability tooling
 
-- **Current foundation:** Canonical Suite 面向默认 Agent Capability Baseline，脚手架定期 re-earn。
-- **Not current:** 为所有模型在主 Skill 内堆叠多套指导。
-- **Promotion gate:** 次级 Agent Profile 有真实部署需求，且 Protected Evals 证明需要额外显式约束。
-- **First proof:** Overlay 相对 Canonical 保持语义一致并显著减少该 Profile 的失败。
+Build、CLI、repository observability、scanner、generator 和 preset 可以作为普通 `tooling/` 能力出现，但只有在跨项目重复压力和真实使用者成立时，才考虑独立工程 Operability 知识域。
+
+## Promotion question
+
+```text
+what recurring problem is not adequately owned today?
+what independent change axis exists?
+what current lower-cost form has failed?
+what smallest real use would falsify the need?
+what new context and maintenance cost would be introduced?
+```
 
 ## Routes
 
 - [Current SSoT](../ssot/README.md)
-- [Current Architecture](../architecture/README.md)
-- [Skill Evaluation Standard](../standards/skill-evaluation-and-release.md)
+- [Suite Evolution Standard](../standards/suite-evolution.md)
+- [Skill Network](../architecture/skill-network.md)

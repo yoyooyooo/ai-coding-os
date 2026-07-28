@@ -1,94 +1,80 @@
 ---
 name: effect-best-practices
-description: >-
-  Effect execution architecture for TypeScript Services, Layers, runtimes,
-  Scope, typed failures, structured concurrency, Stream, and Queue. Use when
-  Effect is present or selected, when deciding its adoption depth, or when
-  resolving version-specific API and type failures.
+description: Use when Effect-specific failure, Scope, resource lifetime, structured concurrency, Queue/Stream, Service/Layer/Runtime composition, testing, or installed v3/v4 API semantics determine the correct implementation.
 ---
 
 # Effect Best Practices
 
-Use Effect as an execution and resource model. Product decision authority and source
-boundaries remain upstream decisions. Choose the lowest adoption level that
-solves real pressure; keep pure domain calculation ordinary TypeScript.
+Effect is an execution, dependency, failure, resource, and concurrency model. It does not decide product meaning, fact authority, module/package boundaries, or documentation topology.
 
-## Ownership
+Use Effect where its semantics make a real capability clearer. Ordinary TypeScript remains preferable for pure transformations, simple local logic, and code that gains no value from typed failure, structured resources, concurrency, or replaceable capabilities.
+
+## Semantic anchors
+
+- **Use Effect for Execution Pressure, Not Architectural Decoration.** Adopt Effect where failure, resource, dependency, concurrency, or cancellation semantics become clearer.
+- **Scope Owns Lifetime.** The Scope that can explain why a resource or child Fiber exists must also explain when and how it ends.
+- **Structured Concurrency Leaves No Orphans.** Child work remains attached to an owning lifetime, cancellation policy, budget, and observation surface.
+- **Timeout May Mean Unknown Outcome.** A local wait ended; an external effect may still have completed and may require operation identity and reconciliation.
+- **Layer Wires Capabilities; It Does Not Own Product Meaning.** Services, Layers, and Runtimes assemble execution dependencies without becoming fact authority or product policy.
+
+## Enter from the current pressure
+
+| Current pressure | Continue into |
+| --- | --- |
+| it is unclear whether Effect, Promise, plain function, Service, Layer, Queue, Stream, or Actor is warranted | [Mechanism selection](references/mechanism-selection.md) |
+| Service, Layer, Runtime, and public API responsibilities are mixed | [Service, Layer, and Runtime](references/service-layer-runtime.md) |
+| expected error, defect, interruption, timeout, and unknown outcome are conflated | [Errors, interruption, and unknown outcomes](references/errors-interruption-and-unknown-outcomes.md) |
+| a resource, subscription, worker, or Fiber lacks an owner and close path | [Scope, resources, and finalization](references/scope-resources-and-finalization.md) |
+| child work, fanout, Queue, Stream, or backpressure may escape control | [Structured concurrency, Queue, and Stream](references/structured-concurrency-queue-stream.md) |
+| tests need Clock, Layer substitution, interruption, retry, or finalizer observation | [Testing Effect](references/testing-effect.md) |
+| the project uses HttpApi or an Effect backend boundary | [HttpApi integration](references/httpapi-integration.md) |
+| Effect enters a React or frontend host | [Frontend integration](references/frontend-integration.md) |
+| Effect Config, Cause, Span, Fiber, or resource observability needs a boundary | [Effect-specific configuration and observability](references/config-and-observability.md) |
+| a long-lived state machine may benefit from a pure deterministic kernel and Actor interpreter | [Deterministic kernel and Actors](references/deterministic-kernel-and-actors.md) |
+| a greenfield project needs deterministic Effect file roles | [Default Effect module conventions](references/default-effect-module-conventions.md) |
+| concrete API syntax may differ between installed versions | [Version grounding](references/version-grounding.md) |
+| scenario mappings help | [Scenario examples](references/scenario-examples.md) |
+
+These are independent decisions, not an Effect adoption ladder.
+
+## Failure and lifetime model
+
+Keep these meanings distinct:
 
 ```text
-Owns:
-  exact-version Effect API idioms
-  Service/Layer/Runtime mapping
-  typed failures, defects, interruption, cancellation, deadlines
-  Scope and resource ownership
-  structured concurrency, Stream, Queue
-  Effect tests and runtime-bound facades
-  Effect-specific mapping of live/fake implementations to Layers, runtimes, and scopes
-
-Adjacent Suite owners, when installed:
-  fact authority, ports, transactions, modules, and source topology -> $evolvable-application-architecture
-  cross-owner ADIR, architecture diff, and health -> $architecture-decision-system
-  frontend topology/state/query/store/realtime -> $frontend-architecture
-  managed HttpApi generation after Effect choices settle -> $effect-api-app-kit
-  documentation authority -> $docs-governance
+expected failure  a modeled result the caller can handle
+defect            an implementation error or violated assumption
+interruption      cooperative cancellation from the owning Scope
+timeout           a local waiting policy
+unknown outcome   an external effect may or may not have completed
 ```
 
-## Effect Coverage
+Retry requires an understanding of idempotency, duplicate effects, deadline, backoff, and unknown outcome. Fail fast inside the smallest untrusted Scope; an outer owner decides whether to retry, degrade, isolate, or recover.
 
-Cover applicable decisions in the order exposed by the current Effect pressure; this is not a project workflow.
+Resources and child work belong to the Scope that can explain why they exist. A finalizer does not make a lifetime correct when the resource was created in the wrong host.
 
-| Decision | Completion criterion |
-| --- | --- |
-| Version gate | `package.json`, lockfile, installed `effect` declarations, and host runtime establish the exact API surface. |
-| Pressure | Typed failure, replacement, lifetime, cancellation, concurrency/backpressure, retry/timeout, observability, or deterministic-test pressure is named. |
-| Adoption | One level from [Adoption Ladder](references/adoption-ladder.md) is selected and every Effect abstraction serves the named pressure. |
-| Capabilities | Services represent genuine capabilities; pure calculations remain pure; expected errors are typed at the right boundary. |
-| Composition | Layers are built at named host roots; programs run only at owned boundaries or explicit facades. |
-| Lifetime | Acquisition, child work, interruption, deadlines, finalizers, and termination share a coherent Scope. |
-| Proof | Tests exercise the claimed error, cancellation, resource, concurrency, or version behavior; adjacent behavior is `not_proven`. |
+## Portable Effect default
 
-Use `$effect-api-app-kit` only after architecture, source topology, and Effect
-major-version choices are settled.
+When the project has no coherent Effect naming convention, use [Default Effect module conventions](references/default-effect-module-conventions.md). The default is intentionally small and does not require one Service or Layer per helper.
 
-## Invariants
+## Common smells
 
-```text
-Effect describes execution; running belongs at an owned boundary
-pure function stays pure; Service represents a capability
-Layer constructs dependencies; it does not define product authority
-Layer graph != authority graph != package graph
-resource acquisition and release share one Scope
-child work follows structured lifetime unless explicitly daemonized
-expected failures, defects, and interruption remain distinguishable
-version-specific syntax follows installed declarations
-```
+- every helper returns Effect without clearer capability, failure, or lifetime semantics;
+- every feature, query callback, or component constructs a Runtime or live Layer;
+- one catch maps expected failure, defect, and interruption to the same string;
+- an unbounded Queue or detached Fiber hides overload and shutdown behavior;
+- timeout is reported as "provider failed" without operation identity;
+- a Service mirrors one pure function for directory symmetry;
+- example code comes from another major version and is assumed correct without local verification;
+- tests replace internal implementation rather than a capability boundary.
 
-## Read When Needed
+## Adjacent owners
 
-| Condition | Reference |
-| --- | --- |
-| Establishing philosophy and boundaries | [Core Doctrine](references/core-doctrine.md) |
-| Choosing adoption depth | [Adoption Ladder](references/adoption-ladder.md) |
-| Designing Service, Layer, Runtime, or facade | [Service Layer Runtime](references/service-layer-runtime.md) |
-| Modeling errors | [Errors and Boundaries](references/errors-and-boundaries.md) |
-| Checking common APIs | [Cheatsheet](references/cheatsheet.md) |
-| Working in stable v3 | [Version v3 Stable](references/version-v3-stable.md) |
-| Working in explicit v4 beta | [Version v4 Beta](references/version-v4-beta.md) |
-| Mapping a backend slice | [Backend Integration](references/backend-capability-slice.md) |
-| Mapping React/frontend use | [Frontend Integration](references/frontend-react-integration.md) |
-| Owning resources | [Scope Resources](references/scope-resources.md) |
-| Handling Stream/Queue/concurrency | [Stream Queue Concurrency](references/stream-queue-concurrency.md) |
-| Testing Effect code | [Testing Effect](references/testing-effect.md) |
-| Building a CLI | [CLI Contract](references/cli-contract.md) |
-| Building HttpApi | [HttpApi](references/httpapi.md) |
-| Mapping modules and filenames | [Module Organization Coordination](references/module-organization-coordination.md) |
-| Reaching advanced branches | [Advanced Index](references/advanced-index.md) |
+- Fact authority, transactions, Ports, and application modules belong to `$evolvable-application-architecture`.
+- Frontend Query/store/realtime and host ownership belong to `$frontend-architecture`.
+- Runtime timeout, cancellation, restart, and leak reproduction belong to `$product-harness-system`.
+- General build/release, CLI, and organization-wide observability do not become Effect semantics merely because a project uses Effect.
 
-## Output
+## Output principle
 
-Return the smallest decision-bearing Effect view. Make the installed version or
-version gap, runtime/Scope owner, material lifecycle unknowns, `not_proven`, and
-smallest verification surface explicit when they change the answer. Use fixed
-fields, full Service/Layer graphs, error models, concurrency/backpressure design,
-source mapping, migration steps, or persistent ADIR only when a real consumer or
-the selected branch needs them.
+Choose the smallest Effect mechanism that clarifies the current capability, failure, resource, or concurrency problem. State installed-version evidence when syntax matters. Make resource owner, cancellation, unknown outcome, and key observations explicit. Do not impose a uniform Service/Layer graph or scaffold for visual consistency.

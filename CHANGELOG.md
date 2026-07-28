@@ -1,41 +1,39 @@
 # Changelog
 
+> Historical versioned-suite record. The current 8-Skill knowledge network is maintained through [`README.md`](README.md), [`docs/README.md`](docs/README.md), and the Future Candidates in [`docs/roadmap/README.md`](docs/roadmap/README.md); this history does not define the current topology.
+
+## 0.6.0-experimental.1 — 2026-07-27
+
+### Owner 与调用面收敛
+
+- Canonical Skill 从 17 收敛为 12；六个语义 Owner 是唯一 model-visible surface。
+- `$interface-capability-planning` 并入 `$product-definition` 的 Interface Capability Handoff。
+- 三个细分 Harness Skill 并入 `$product-harness-system` 的 headless、UI/browser 与 frontend-test 分支。
+- `$architecture-decision-system` 收窄为显式跨 Owner reconciliation Overlay。
+- Preset 与 App Kit 改为 user-invoked tools，不再占普通模型上下文。
+- `$skill-evaluation-system` 并入 `$ai-coding-os-evolution`；它没有独立入口或变化轴。
+
+### 知识与工程现实
+
+- `$ai-coding-os` 成为唯一完整语义 Owner Map。
+- EAA、Frontend、Effect 与 Product Harness 术语迁回 owner-local vocabulary；Contracts 只保留生成式非权威索引。
+- 建立唯一、条件加载的 Engineering Operating Doctrine，覆盖 Outcome、Authority、Reality、Changeability、Feedback、Containment、Operability 与 Responsibility；不新增 Workflow、评分或 Registry。
+- Product、Docs、EAA、Frontend、Effect、Harness 与 Evolution 各自吸收适用的 Outcome、Quality、Containment、Recovery 与 Operability 语义。
+- Harness 主 Skill 从 24 个叶子 Reference 链接收敛为五个分支入口。
+
+### 删除未赚得的治理材料
+
+- 删除 196-case 逐条迁移映射、223 个未执行静态 Eval、32 场景 coverage matrix 和 behavior-eval plan。
+- 退休 Skill/Profile 只保留短 `MIGRATION.md`；内部 case ID 不再视为公共兼容合同。
+- Release sidecar 从十二项收敛为 README、manifest、Suite audit、Docs audit 与 checksums。
+- Suite audit 只保留 source/invocation、Authority、links、Schema/fixture、Preset/Kit 可执行 smoke、deterministic packaging 与 ZIP hygiene 等机械门。
+- 模型行为改进只有在具体发布主张需要且真实运行对照后才能声明；当前为 `not_run / not_proven`。
+
 ## 0.5.0-experimental.1 — 2026-07-26
 
-### 定位升级
-
-- 将 AI Coding OS 定位为面向 Agent 的项目认知、决策与验证基础设施。
-- 确立 Agent-legible project、Minimal context / maximal legibility、No silent material assumption、Evidence over confidence、Earned persistence 等 Suite Doctrine。
-- 将目标从“消灭所有 Unknown”修正为：避免未识别、未归属、未约束但足以改变结果的 material unknown 和 false known。
-
-### 架构
-
-- 将 `$evolvable-application-architecture` 收纯为跨语言 authority-first 应用架构语义内核。
-- 将 TypeScript、点分文件名和 Monorepo 形态下沉为生态或 Preset 投影。
-- 补全 Rust Projection，覆盖所有权与事实 Authority、模块/crate、trait/dispatch、async 生命周期、类型边界、公共 API 演进和证据。
-- 新增 `$architecture-decision-system`，以局部、Earned 的 Architecture Decision IR 处理跨 Owner 决策、冲突、模糊点、Map–Territory 对账、Architecture Health 和 Diff。
-
-### Skill 评估与 Suite 演进
-
-- 新增 `$skill-evaluation-system`，吸收 SkillOpt 的 rollout、failure attribution、bounded update、held-out gate、checkpoint 和 transfer 思想。
-- 新增 `$ai-coding-os-evolution`，负责 Agent Capability Profile、能力纪元重标定、fresh-context review、instruction/context ablation、候选 Suite 合成、发布与回滚。
-- 明确“Train strategy; govern semantics”：可实验优化执行策略，不允许单一 Benchmark 分数偷换产品或架构语义 Authority。
-
-### 治理与证据
-
-- `$docs-governance` 增加 Context Legibility、Knowledge Freshness、Durable Assumption Hygiene 和失效条件治理。
-- `$product-definition` 增加 tacit expectation elicitation 与 blind-spot pass。
-- Harness Skills 支持 Empirical Unknown / Probe Request，并明确 `does_not_decide`。
-- Suite Contracts 增加 decision-and-uncertainty 共享语义，同时保持中央 Contract 最小化。
-
-### Preset 与工具
-
-- 将通用 `application-core` 与 `monorepo-core` 分离。
-- 新增 `rust` Preset Profile；`typescript-node` 不再隐式要求 Monorepo。
-- 更新 Router、Evals、Suite audit、发布边界和源码卫生检查。
-- 移除 `__MACOSX`、AppleDouble 与源码树内嵌交付 ZIP。
-
-### Claim Ceiling
-
-- 本版本仍为 experimental 快照。
-- 未执行独立模型行为 Eval、SkillOpt 训练、真实 Rust 项目迁移或生产行为验证。
+- 将 AI Coding OS 定位为 Agent-legible 项目认知、决策与验证基础设施。
+- 确立 Project Authority First、Question-scoped Ownership、Evidence Bounds Claims、Earned Persistence 等 Doctrine。
+- 将 EAA 收纯为跨语言 authority-first 内核，并增加 Rust Projection。
+- 引入 Architecture Decision、Skill Evaluation 与 Suite Evolution 的实验性分层。
+- 增强 Docs freshness、Product blind-spot、Harness empirical probes、Preset profile 和发布卫生。
+- 该版本未证明独立模型行为、真实 Rust 项目迁移或生产行为。

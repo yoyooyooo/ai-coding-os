@@ -1,77 +1,78 @@
 # Service, Layer, and Runtime
 
+> **Layer Wires Capabilities; It Does Not Own Product Meaning.** Service contracts, Layers, and Runtimes assemble execution dependencies without becoming semantic or fact authority.
+
+Service, Layer, and Runtime solve different problems. Keeping them distinct prevents dependency injection from becoming a global architecture identity.
+
 ## Service
 
-A Service is a capability contract available through Effect context. Keep the
-interface cohesive and implementation-neutral. Do not expose SDK response types,
-ORM models, host config, or React state through the capability contract.
+A Service describes an Effect-native capability contract. It is useful when:
 
-Service methods usually return `Effect<A, E, R2>` where `E` is a stable expected
-failure and `R2` contains only additional capabilities genuinely needed at call
-time.
+```text
+several callers need the capability
+tests need substitution
+failure/resource semantics belong to the capability
+implementations vary by host or environment
+```
+
+Do not create a Service for every pure function, value object, mapper, or one-use helper.
 
 ## Layer
 
-A Layer constructs one or more Services and owns construction dependencies and
-resource acquisition. It is a dependency graph, not a service locator and not a
-business workflow.
+A Layer constructs one or more Services and owns any resources required for that construction. It may decode configuration, acquire clients, and register finalizers.
+
+Layer should not:
 
 ```text
-contract Service
-  <- live Layer using transport/config/credentials
-  <- fake Layer for deterministic tests
-  <- profile composition selecting implementations
+decide product fact authority
+expose provider details through the Service contract
+be constructed deep inside business logic
+be rebuilt for every small operation unless lifetime requires it
 ```
-
-Keep vendor selection, environment loading, and live/fake choice in composition
-roots. Avoid a reusable library that imports every vendor and switches on a
-provider enum.
 
 ## Runtime
 
-A Runtime executes Effects with a supplied context. Assign a lifetime owner:
-request, command, route, tab, application, worker, or process.
+A Runtime executes Effect values against a prepared environment. The host owns it when ordinary framework callbacks, React, CLI, or transport adapters need to enter Effect.
 
-Prefer:
+Default:
 
 ```text
-build closed Layer once
--> create runtime at host boundary
--> expose ordinary runtime-bound methods when consumers are not Effect-native
--> dispose runtime at host shutdown
+one owned live graph per real host lifetime
+narrow runtime-bound facade at integration boundaries
+explicit shutdown
 ```
 
-Avoid creating a Runtime or rebuilding a live Layer inside each Query function,
-HTTP handler, component render, or domain method.
+## Public API
 
-## Runtime-Bound Facade
+Keep internal Service keys, Layer construction, and Runtime details private unless the package intentionally exposes an Effect-native public API. External consumers may receive ordinary typed functions backed by an internal Runtime.
 
-A package can use Effect internally while exposing an ordinary capability:
+## Composition
 
-```ts
-export type ProductClient = {
-  readonly fetchProjection: (id: string) => Promise<Projection>
-  readonly subscribe: (input: Input, handlers: Handlers) => Subscription
-  readonly close: () => Promise<void>
-}
+```text
+application-owned Port or Service contract
+  <- live implementation Layer
+  <- host composition
+  <- host Runtime or direct Effect program
 ```
 
-The factory is the package composition root. It normalizes host dependencies,
-builds a closed Layer, creates the Runtime, maps typed failures into public
-errors, and exposes disposal.
+A host may combine pure application Ports with Effect Services. Preserve the semantic owner of the capability.
 
-Offer a separate Effect-native API only when callers are already Effect programs.
-Do not force ordinary React/features to import Service keys and Layers.
+## Testing
 
-## Environment Hygiene
+Substitute at the capability boundary. Avoid mocking internal Effects or exact call sequences unless the interaction itself is the contract.
 
-Do not pass a “fat Context” or generic environment object through business code.
-Depend on specific Services. Avoid one Service per file; organize around
-capabilities and use cases.
+## Common smells
 
-## Test Replacement
+- a global Runtime imported everywhere;
+- live Layer construction inside request handlers or React hooks;
+- Service keys exported only to satisfy a DI style;
+- Layer composition determines which module owns product facts;
+- test Layers diverge semantically from live capability contracts.
 
-Provide fake/test Layers for true external capabilities and resource boundaries.
-Pure functions need ordinary unit tests, not fake Services. A memory repository
-must match the live contract semantics if it is used as a conformance substitute;
-a casual Map is not automatically equivalent.
+## Related knowledge
+
+- Use [Default Effect module conventions](default-effect-module-conventions.md) for filenames.
+- Use [Scope, resources, and finalization](scope-resources-and-finalization.md) for Layer lifetime.
+- Use [Frontend integration](frontend-integration.md) for React/host boundaries.
+- Use `$evolvable-application-architecture` for application Ports and composition roots.
+- Return to the [Effect map](../SKILL.md).

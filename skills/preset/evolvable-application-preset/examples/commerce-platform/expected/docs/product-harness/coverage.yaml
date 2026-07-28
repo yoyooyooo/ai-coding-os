@@ -1,7 +1,0 @@
-schema_version: 1
-capabilities:
-- capability: order.checkout
-  headless: accepted
-  interface_headless: accepted
-  browser: candidate
-  external_runtime: gap

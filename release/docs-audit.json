@@ -1,6 +1,6 @@
 {
   "version": "v3",
-  "scannedAt": "2026-07-26T00:00:00Z",
+  "scannedAt": "2026-07-27T00:00:00Z",
   "repoRoot": ".",
   "extensions": {
     "readability": true,
@@ -16,7 +16,7 @@
   "reports": {
     "baseline": {
       "version": "v2",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
       "summary": {
         "blocker": 0,
@@ -27,45 +27,45 @@
       "layers": [
         {
           "layer": "adr",
-          "markdownFiles": 8,
-          "readme": "docs/adr/README.md"
+          "markdownFiles": 11,
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/adr/README.md"
         },
         {
           "layer": "architecture",
           "markdownFiles": 5,
-          "readme": "docs/architecture/README.md"
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/architecture/README.md"
         },
         {
           "layer": "product",
           "markdownFiles": 1,
-          "readme": "docs/product/README.md"
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/product/README.md"
         },
         {
           "layer": "reports",
-          "markdownFiles": 3,
-          "readme": "docs/reports/README.md"
+          "markdownFiles": 4,
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/reports/README.md"
         },
         {
           "layer": "roadmap",
           "markdownFiles": 1,
-          "readme": "docs/roadmap/README.md"
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/roadmap/README.md"
         },
         {
           "layer": "ssot",
           "markdownFiles": 2,
-          "readme": "docs/ssot/README.md"
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/ssot/README.md"
         },
         {
           "layer": "standards",
           "markdownFiles": 5,
-          "readme": "docs/standards/README.md"
+          "readme": "/Users/yoyo/Documents/code/personal/ai-coding-os/docs/standards/README.md"
         }
       ],
       "findings": []
     },
     "structure": {
       "version": "v2",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
       "summary": {
         "blocker": 0,
@@ -78,9 +78,9 @@
     },
     "links": {
       "version": "v3",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
-      "checkedRelativeLinks": 83,
+      "checkedRelativeLinks": 93,
       "summary": {
         "blocker": 0,
         "warn": 0,
@@ -91,7 +91,7 @@
     },
     "sourceAnchors": {
       "version": "v2",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
       "checkedAnchors": 0,
       "summary": {
@@ -100,13 +100,11 @@
         "info": 0,
         "total": 0
       },
-      "findings": [],
-      "skipped": true,
-      "reason": "no recognized source roots in the scanned repository; illustrative/example anchors are not current source claims"
+      "findings": []
     },
     "futureRoutes": {
       "version": "v3",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
       "summary": {
         "blocker": 0,
@@ -122,18 +120,22 @@
     },
     "agentEntry": {
       "version": "v2",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
       "agentEntry": "AGENTS.md",
       "hostEquivalents": [],
       "presetProfile": null,
       "repoTopology": {
-        "mode": "single-project",
-        "confidence": "medium",
+        "mode": "workspace-monorepo",
+        "confidence": "high",
         "evidence": [
-          "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/AGENTS.md"
+          "package.json:workspaces",
+          "skills/preset/evolvable-application-preset/examples/commerce-platform/expected/AGENTS.md",
+          "skills/preset/evolvable-application-preset/examples/minimal-existing-repo/before/AGENTS.md",
+          "skills/preset/evolvable-application-preset/examples/minimal-existing-repo/expected/AGENTS.md",
+          "skills/preset/evolvable-application-preset/examples/small-greenfield/expected/AGENTS.md"
         ],
-        "nestedAgentCount": 1
+        "nestedAgentCount": 4
       },
       "summary": {
         "blocker": 0,
@@ -145,14 +147,9 @@
     },
     "docsAgentReadability": {
       "version": "v3",
-      "scannedAt": "2026-07-26T00:00:00Z",
+      "scannedAt": "2026-07-27T00:00:00Z",
       "repoRoot": ".",
       "findings": []
     }
-  },
-  "release_canonicalization": {
-    "version": 1,
-    "repo_root": "relative",
-    "scanned_at": "normalized-to-release-date"
   }
 }
