@@ -68,7 +68,7 @@ These are peer questions, not architecture steps.
 | a greenfield repository needs a compatible default application profile | [Default repository profile](references/default-repository-profile.md) |
 | durable architecture knowledge needs stable project-owned filenames | [Default architecture knowledge shape](references/default-architecture-knowledge-shape.md) |
 | authority, schema, API, or provider must move without a flag day | [Forward evolution and migration](references/forward-evolution-and-migration.md) |
-| only a final symptom is visible and the causal boundary is unclear | [Causal diagnosis and the first wrong state](references/causal-diagnosis-and-first-wrong-state.md) |
+| a reproducible symptom points to fact authority, use-case, capability, consistency, composition, or migration boundaries | [Architecture lens on the first wrong state](references/causal-diagnosis-and-first-wrong-state.md) |
 | an existing or AI-generated system must be understood before redesign | [Reading and taking over existing systems](references/reading-and-taking-over-existing-systems.md) |
 | product, frontend, architecture, and observed reality disagree | [Cross-owner reconciliation](references/cross-owner-reconciliation.md) |
 | TypeScript backend shape is needed | [TypeScript backend projection](references/typescript-backend-projection.md) |
@@ -108,7 +108,7 @@ migration         -> old writer fenced before authority promotion
 - Product meaning and quality belong to `$product-definition`.
 - Frontend projection and interaction ownership belong to `$frontend-architecture`.
 - Effect execution and resource mechanics belong to `$effect-best-practices`.
-- Runtime proof and diagnosis belong to `$product-harness-system`.
+- Runtime proof, general investigation mechanics, and regression placement belong to `$product-harness-system`.
 - Documentation placement and local routing belong to `$docs-governance`.
 
 ## Output principle

@@ -23,6 +23,7 @@ semantic owner != documentation home != fact authority != evidence owner
 repository directory != package/crate != host != deployable != authority boundary
 intent != proposal != projection != accepted fact
 Service/Layer/Runtime != product meaning
+Effect mechanism projection != second application source grammar
 successful local observation != broad behavioral proof
 portable default != universal mandate
 ```

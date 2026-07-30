@@ -5,7 +5,7 @@ description: Use when Effect-specific failure, Scope, resource lifetime, structu
 
 # Effect Best Practices
 
-Effect is an execution, dependency, failure, resource, and concurrency model. It does not decide product meaning, fact authority, module/package boundaries, or documentation topology.
+Effect is an execution, dependency, failure, resource, and concurrency model. It does not decide product meaning, fact authority, application module/package boundaries, or documentation topology.
 
 Use Effect where its semantics make a real capability clearer. Ordinary TypeScript remains preferable for pure transformations, simple local logic, and code that gains no value from typed failure, structured resources, concurrency, or replaceable capabilities.
 
@@ -31,7 +31,7 @@ Use Effect where its semantics make a real capability clearer. Ordinary TypeScri
 | Effect enters a React or frontend host | [Frontend integration](references/frontend-integration.md) |
 | Effect Config, Cause, Span, Fiber, or resource observability needs a boundary | [Effect-specific configuration and observability](references/config-and-observability.md) |
 | a long-lived state machine may benefit from a pure deterministic kernel and Actor interpreter | [Deterministic kernel and Actors](references/deterministic-kernel-and-actors.md) |
-| a greenfield project needs deterministic Effect file roles | [Default Effect module conventions](references/default-effect-module-conventions.md) |
+| a project needs Effect-specific Service, Layer, Runtime, or mechanism projections over its source grammar | [Default Effect module conventions](references/default-effect-module-conventions.md) |
 | concrete API syntax may differ between installed versions | [Version grounding](references/version-grounding.md) |
 | scenario mappings help | [Scenario examples](references/scenario-examples.md) |
 
@@ -53,9 +53,9 @@ Retry requires an understanding of idempotency, duplicate effects, deadline, bac
 
 Resources and child work belong to the Scope that can explain why they exist. A finalizer does not make a lifetime correct when the resource was created in the wrong host.
 
-## Portable Effect default
+## Portable Effect projection
 
-When the project has no coherent Effect naming convention, use [Default Effect module conventions](references/default-effect-module-conventions.md). The default is intentionally small and does not require one Service or Layer per helper.
+Application source roles and filenames belong to the project or `$evolvable-application-architecture`. When that grammar is silent about Effect-specific mechanics, use [Default Effect module conventions](references/default-effect-module-conventions.md) as an overlay. It is intentionally small and does not require one Service or Layer per helper, or parallel Port and Service contracts for one capability.
 
 ## Common smells
 
@@ -65,16 +65,17 @@ When the project has no coherent Effect naming convention, use [Default Effect m
 - an unbounded Queue or detached Fiber hides overload and shutdown behavior;
 - timeout is reported as "provider failed" without operation identity;
 - a Service mirrors one pure function for directory symmetry;
+- an ordinary application Port and an Effect Service duplicate the same contract without distinct consumers or translation;
 - example code comes from another major version and is assumed correct without local verification;
 - tests replace internal implementation rather than a capability boundary.
 
 ## Adjacent owners
 
-- Fact authority, transactions, Ports, and application modules belong to `$evolvable-application-architecture`.
+- Fact authority, transactions, application Ports, source grammar, and application modules belong to `$evolvable-application-architecture`.
 - Frontend Query/store/realtime and host ownership belong to `$frontend-architecture`.
 - Runtime timeout, cancellation, restart, and leak reproduction belong to `$product-harness-system`.
 - General build/release, CLI, and organization-wide observability do not become Effect semantics merely because a project uses Effect.
 
 ## Output principle
 
-Choose the smallest Effect mechanism that clarifies the current capability, failure, resource, or concurrency problem. State installed-version evidence when syntax matters. Make resource owner, cancellation, unknown outcome, and key observations explicit. Do not impose a uniform Service/Layer graph or scaffold for visual consistency.
+Choose the smallest Effect mechanism that clarifies the current capability, failure, resource, or concurrency problem. Preserve the project's application roles instead of creating a second source architecture. State installed-version evidence when syntax matters. Make resource owner, cancellation, unknown outcome, and key observations explicit. Do not impose a uniform Service/Layer graph or scaffold for visual consistency.

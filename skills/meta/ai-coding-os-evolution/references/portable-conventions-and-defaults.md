@@ -77,6 +77,18 @@ Documentation first-level homes, TypeScript semantic suffixes, frontend state-ro
 
 A project may use a different coherent directory or filename grammar while preserving authority and dependency direction. The default should not force migration for visual conformity.
 
+## Semantic roles do not require artifact symmetry
+
+A semantic distinction can change judgment without earning a separate file, document, package, Service, Schema, or Registry.
+
+```text
+first preserve the role and boundary
+then choose the smallest physical shape that keeps it legible
+promote the shape only after independent pressure appears
+```
+
+A role vocabulary is not a manifest. Command, Outcome, Receipt, Policy, transaction, idempotency, Port, Service, fake, and public surface may be meaningful while remaining co-located or absent from the first physical slice.
+
 ## Admission test
 
 ```text
@@ -98,9 +110,9 @@ what real pressure justifies a conditional variant?
 | Product knowledge | `docs/product/`, `docs/ssot/product-language.md`, selective capability documents | `$product-definition` |
 | Application repository | single-host `src/` or multi-host `apps/`; `modules/`, conditional `workflows/` and `packages/` | `$evolvable-application-architecture` |
 | Architecture knowledge | `docs/architecture/README.md`; conditional fact-authority, topology, host-runtime, and integration-boundary files | `$evolvable-application-architecture` |
-| TypeScript filenames | kebab-case semantic segments separated by dots | `$evolvable-application-architecture` |
+| TypeScript application filenames | kebab-case semantic segments separated by dots; semantic roles co-locate until independent pressure earns files | `$evolvable-application-architecture` |
 | Frontend source | `app/` or `host/`, `features/`, `shared/`; stable suffix responsibilities | `$frontend-architecture` |
-| Effect source | capability-local Port/Service/live/fake/use-case and host composition/runtime roles | `$effect-best-practices` |
+| Effect source | Effect-specific Service, Layer, Runtime, Queue, Stream, Actor, and failure/resource projections over the project/EAA source grammar | `$effect-best-practices` |
 | Verification interface | stable command roles, preferred `verify:affected` and `verify` aliases when practical | `$product-harness-system` |
 
 ## Shared path and naming defaults
@@ -123,13 +135,14 @@ Names should expose subject, operation or facet, semantic responsibility, and pr
 ## Shape defaults
 
 - Start with the smallest coherent private boundary.
+- Keep distinct semantic roles co-located while their physical separation adds no value.
 - Add a directory when it improves stable lexical grouping or discovery.
 - Add an explicit public surface when private imports need enforcement.
 - Add a package or crate when compilation, reuse, ownership, trust, or public compatibility pressure exists.
 - Add a host when runtime, resource, or independent operation pressure exists.
 - Add a deployable only for real fault, scaling, trust, or operational separation.
 
-Each promotion is independent. A directory does not imply a package; a package does not imply a deployable; none grants product fact authority.
+Each promotion is independent. A role does not imply a file; a directory does not imply a package; a package does not imply a deployable; none grants product fact authority.
 
 ## Writing shape
 
@@ -146,13 +159,16 @@ Related knowledge
 
 This is writing consistency, not an execution workflow.
 
-## Template policy
+## Template and example policy
 
-A template is retained only when it repeatedly reduces cross-project ambiguity at low cost.
+A template or example is retained only when it repeatedly reduces cross-project ambiguity at low cost.
 
 - Delete unused sections.
 - Do not create empty siblings for symmetry.
 - Do not treat a template as an authority merely because it is complete.
+- Present the smallest valid base before conditional shape.
+- Express optional files, directories, mechanisms, and documents as pressure-labelled deltas rather than a complete tree followed by disclaimers.
+- Treat role and suffix lists as vocabularies, not generation manifests.
 - Prefer a few realistic examples over a large form library.
 - Introduce a machine schema only when a real consumer needs deterministic validation.
 

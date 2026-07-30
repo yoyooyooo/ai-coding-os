@@ -16,7 +16,7 @@ memory or generic snippets
 
 ## Ground the question
 
-Before recommending code, identify:
+Before recommending concrete code, identify:
 
 ```text
 Effect package version
@@ -25,6 +25,30 @@ TypeScript version and module settings
 runtime (Node/Bun/Deno/browser)
 existing project conventions
 ```
+
+A label such as `v3-style`, `v4-like`, `modern Effect`, or `common pattern` is not version evidence.
+
+## Claim boundary
+
+Match the code shape to the evidence actually available:
+
+```text
+no installed-version evidence
+  -> explain semantic contracts and dependency/lifetime shape
+  -> use version-neutral signatures or clearly non-compiling pseudocode
+  -> do not present plausible library syntax as paste-ready implementation
+
+exact version and declarations inspected
+  -> provide a version-bound example
+  -> state the version evidence
+  -> do not claim compilation unless it was run
+
+local typecheck/test executed
+  -> report the command, path, dependencies, and observed result
+  -> claim only the properties that observation exercised
+```
+
+The more complete and copyable a snippet appears, the more clearly its claim ceiling must be stated.
 
 ## API drift examples
 
@@ -57,12 +81,13 @@ A version migration does not justify changing product authority or source topolo
 
 ## Uncertainty
 
-When exact syntax cannot be verified, state the semantic recommendation and the local evidence still required. Do not invent plausible API names.
+When exact syntax cannot be verified, state the semantic recommendation and the local evidence still required. Prefer explicit pseudocode over invented plausible API names.
 
 ## Related knowledge
 
-- Use [Default Effect module conventions](default-effect-module-conventions.md) for version-independent file roles.
+- Use [Default Effect module conventions](default-effect-module-conventions.md) for version-independent mechanism projections.
 - Use [Testing Effect](testing-effect.md) to validate the local API.
 - Use [HttpApi integration](httpapi-integration.md) for version-sensitive HTTP concerns.
+- Use `$product-harness-system` to bound claims to executed observations.
 - Use `$docs-governance` for freshness and invalidation of technical docs.
 - Return to the [Effect map](../SKILL.md).

@@ -75,6 +75,8 @@ semantic anchor spelling                exact Title Case sentence defined by Own
 
 保留模板的条件是它反复减少真实歧义、足够短、由正确 Owner 拥有且容易删除未使用章节。优先少数真实 Example，不恢复空白 Artifact 操作系统。
 
+Example 先展示 smallest valid base，再以 pressure-labelled deltas 表达可选文件、目录、机制和文档。Role 与 suffix 列表是 vocabulary，不是 generation manifest；semantic separation 不自动要求 physical separation。
+
 ## Deliberately outside canonical Skills
 
 不把版本、Release、迁移账本、统一 Machine Contract、代码生成 Kit、静态 Eval Corpus、中央 Vocabulary Registry 或 Suite Builder 作为日常 Skill 内容。真实消费者出现时，由消费者或正确 Owner 建立最小载体。

@@ -43,9 +43,9 @@ coherent project convention 必须让意义、scope、入口和例外可发现�
 | Documentation | `docs/README.md`; reserved `product/`, `ssot/`, `standards/`, `architecture/`; conditional Homes by pressure | `$docs-governance` |
 | Product knowledge | `docs/product/`, `docs/ssot/product-language.md`, selective capability documents | `$product-definition` |
 | Application repository | single-host `src/` or multi-host `apps/`; `modules/`; conditional `workflows/`, `packages/`, hosts | `$evolvable-application-architecture` |
-| TypeScript naming | kebab-case semantic segments separated by dots | `$evolvable-application-architecture` |
+| TypeScript application naming | kebab-case semantic segments separated by dots；semantic roles 默认 co-locate，独立 pressure 出现后才拆文件 | `$evolvable-application-architecture` |
 | Frontend source | `app/` or `host/`, `features/`, `shared/`; stable state-role suffixes | `$frontend-architecture` |
-| Effect source | capability-local Port/Service/live/fake/use-case and host composition/runtime roles | `$effect-best-practices` |
+| Effect source | 在项目或 EAA source grammar 上投影 Service、Layer、Runtime、Queue、Stream、Actor 与 failure/resource mechanics，不建立第二套 application grammar | `$effect-best-practices` |
 | Verification | stable command roles; preferred `verify:affected` and `verify` aliases when practical | `$product-harness-system` |
 
 ## Deviating from a default

@@ -1,6 +1,6 @@
 # Source Topology and Semantic Naming
 
-This reference owns portable source naming and directory defaults. It preserves semantic roles while allowing each ecosystem to use idiomatic enforcement.
+This reference owns portable application source naming and directory defaults. It preserves semantic roles while allowing each ecosystem to use idiomatic enforcement.
 
 ## Naming invariant
 
@@ -14,6 +14,25 @@ provider, transport, or host qualifier when needed
 ```
 
 Avoid generic buckets such as `service`, `manager`, `common`, `core`, `utils`, `helpers`, and `types` when a governed responsibility can be named.
+
+## Roles are semantic; files are earned
+
+> **Semantic separation does not imply physical separation.** Command, Outcome, Policy, Receipt, transaction, and idempotency are distinct responsibilities, but they do not each require a separate file.
+
+A role earns an independent file when one or more are durable:
+
+```text
+independent change axis
+reuse or several consumers
+public or cross-module contract
+test substitution or conformance pressure
+resource or lifecycle ownership
+security or trust boundary
+navigation pressure
+machine consumption or mechanical enforcement
+```
+
+Start co-located when the responsibility is small and local. Extract without changing its meaning when pressure appears. The role vocabulary below is not a file manifest.
 
 ## TypeScript segment grammar
 
@@ -36,21 +55,20 @@ order.http.handlers.ts
 api.composition.ts
 ```
 
-## Default TypeScript semantic filenames
+## Available TypeScript role suffixes
+
+Commonly useful roles:
 
 ```text
-<subject>.<operation>.command.ts
-<subject>.command-context.ts
+<subject>.model.ts
 <subject>.<operation>.use-case.ts
 <subject>.<read-purpose>.query.ts
 <subject>.<decision>.policy.ts
 <subject>.<capability>.port.ts
 <subject>.<capability>.<provider>.live.ts
 <subject>.<capability>.memory.fake.ts
-<subject>.transaction.port.ts
-<subject>.idempotency.port.ts
-<subject>.http.contract.ts
-<subject>.http.handlers.ts
+<subject>.<transport>.contract.ts
+<subject>.<transport>.handlers.ts
 <subject>.public.ts
 <subject>.wiring.ts
 <host>.config.ts
@@ -59,28 +77,45 @@ api.composition.ts
 <host>.shutdown.ts
 ```
 
-Do not generate the complete suffix family. A simple capability may keep command, outcome, and implementation in one `*.use-case.ts` file.
+Conditional operation roles:
+
+```text
+<subject>.<operation>.command.ts
+<subject>.command-context.ts
+<subject>.<operation>.outcome.ts
+<subject>.<operation>.receipt.ts
+<consistency-scope>.transaction.port.ts
+<operation-scope>.idempotency.port.ts
+```
+
+A simple capability may keep Command, Outcome, local Policy, and implementation in one `*.use-case.ts` file. A small transport boundary may keep contract, decoder, and mapper beside the handler. Do not generate the complete suffix family.
+
+Transaction and idempotency names follow their real semantic scope. Do not create `<subject>.transaction.port.ts` or `<subject>.idempotency.port.ts` for every module by reflex.
 
 ## Responsibility vocabulary
 
-| Role | Default suffix | Meaning |
+| Role | Optional suffix | Meaning and default physical shape |
 | --- | --- | --- |
-| model | `.model.ts` | cohesive product/domain values and behavior; not ORM or wire shape by default |
-| command | `.command.ts` | authoritative intent requesting a controlled transition |
+| model | `.model.ts` | cohesive product/domain values and behavior; keep with the use case until several operations share it |
+| Command | `.command.ts` | immutable intent and operation identity; co-locate unless reused or adopted as a contract |
+| Outcome | `.outcome.ts` | complete discriminated result of one use case; co-locate unless several consumers need a stable type |
+| Receipt | `.receipt.ts` | smallest stable evidence needed for replay or reconciliation; not every Outcome and not the whole mutable aggregate |
 | query | `.query.ts` | read of an authoritative projection without creating accepted facts |
-| use case | `.use-case.ts` | authorization, validation, transition, and commit boundary |
-| policy | `.policy.ts` | pure or explicitly contextual decision logic |
+| use case | `.use-case.ts` | authorization, validation, transition, coordination, and commit boundary |
+| policy | `.policy.ts` | pure or explicitly contextual decision logic; extract after independent change, composition, or focused property-test pressure |
 | Port | `.port.ts` | application-owned outer capability contract |
+| transaction capability | `.transaction.port.ts` | consistency-scope mechanism when it has an independent contract or several participants; not module boilerplate |
+| idempotency capability | `.idempotency.port.ts` | operation-identity/replay mechanism when its storage, policy, or reuse is independently meaningful |
 | live implementation | `.<provider>.live.ts` | selected provider/storage/transport implementation |
-| fake | `.memory.fake.ts` or a project-qualified equivalent | deterministic behavioral substitute, never silent fallback |
-| mapper | `.mapper.ts` | pure conversion between explicitly named representations |
-| schema | `.schema.ts` | runtime decoding of untrusted or wire data |
+| fake | `.memory.fake.ts` or a project-qualified equivalent | deterministic behavioral substitute added for a real test need, never silent fallback |
+| mapper | `.mapper.ts` | pure conversion between explicitly named representations; keep local while trivial |
+| schema | `.schema.ts` | runtime decoding of untrusted or wire data; keep at the owning boundary |
 | transport contract | `.<transport>.contract.ts` | adopted request/response or message shape |
 | transport handlers | `.<transport>.handlers.ts` | decode, invoke use case, and map result |
 | event | `.event.ts` | stable notification of an accepted change or named occurrence |
 | projection | `.projection.ts` | read-oriented representation derived from accepted facts |
-| public surface | `.public.ts` | deliberate cross-module collaboration surface |
-| module wiring | `.wiring.ts` | module-local constructors or adapter factories |
+| public surface | `.public.ts` | deliberate cross-module collaboration surface; omit while the module remains private |
+| module wiring | `.wiring.ts` | module-local constructors or adapter factories; omit while host composition remains clearer |
 
 Qualify generic words. Prefer `order.repository.port.ts` to `repository.ts`, and `payment.wire-to-projection.mapper.ts` to `mapper.ts`.
 
@@ -108,9 +143,9 @@ Follow the project's test-runner suffix when it is coherent. Co-locate focused u
 
 ## Public and private surfaces
 
-Prefer a named `*.public.ts` surface for a feature/module boundary. Use `index.ts` only when tooling or package convention requires it, and keep the export list explicit. Broad barrels that expose internals are not a public API.
+Prefer a named `*.public.ts` surface when a feature/module has a real cross-module consumer. Use `index.ts` only when tooling or package convention requires it, and keep the export list explicit. Broad barrels that expose internals are not a public API.
 
-`*.wiring.ts` is a module-level composition helper when useful; host-level implementation selection belongs in `<host>.composition.ts`.
+`*.wiring.ts` is a module-level composition helper when it has an independent construction responsibility; host-level implementation selection belongs in `<host>.composition.ts`.
 
 ## Directories
 
@@ -134,7 +169,7 @@ Inside a capability, keep semantic dot files flat until a durable sub-capability
   no HTTP, database, SDK, live adapter, or process-environment import
 
 *.use-case.ts
-  may import model, policy, Port, and transaction contracts
+  may import model, policy, Port, and consistency-scope contracts
   must not import *.live.ts or framework handlers
 
 *.port.ts
@@ -145,7 +180,7 @@ Inside a capability, keep semantic dot files flat until a durable sub-capability
   must not write product facts directly
 
 *.public.ts
-  normal cross-module surface
+  normal cross-module surface when one is earned
 
 *.wiring.ts / <host>.composition.ts
   select implementations; ordinary business modules do not import them
@@ -154,6 +189,8 @@ Inside a capability, keep semantic dot files flat until a durable sub-capability
 ## Ecosystem projection
 
 Rust should use idiomatic module, visibility, facade, crate, and binary naming rather than imitating TypeScript dots. Other ecosystems use their normal module/public API/build surfaces while preserving the same semantic roles.
+
+Effect does not own a second application source grammar. An application Port may be represented directly by an Effect Service, a live adapter file may export a Layer, and host composition may assemble the Layer graph. Use `$effect-best-practices` for those mechanics without duplicating Port and Service contracts by default.
 
 ## Project Standard
 
@@ -167,7 +204,9 @@ Preserve a coherent existing grammar. Record the mapping once in `AGENTS.md` or 
 
 - Use [Default repository profile](default-repository-profile.md) for directory topology.
 - Use [TypeScript backend projection](typescript-backend-projection.md) for runtime and persistence detail.
+- Use [Use cases, transactions, and idempotency](use-cases-transactions-and-idempotency.md) for Outcome, Receipt, consistency scope, and replay semantics.
 - Use [Rust projection](rust-projection.md) for idiomatic Rust shape.
 - Use `$frontend-architecture` for frontend-specific suffixes.
+- Use `$effect-best-practices` for Effect-specific Service, Layer, Runtime, and mechanism projections.
 - Use `$product-harness-system` for verification command semantics.
 - Return to the [EAA map](../SKILL.md).
