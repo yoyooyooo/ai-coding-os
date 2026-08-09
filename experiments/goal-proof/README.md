@@ -2,6 +2,12 @@
 
 Goal Proof 是与 AI Coding OS 核心知识/规范网络共仓维护的早期实验。它是否适合作为长期 AI coding 执行方法尚未确定，因此不属于核心 Skill Suite、不进入 `$ai-coding-os` 路由，也不随核心 Suite ZIP 发布。
 
+## Agent Kit mapping boundary
+
+Goal Proof 的 user-invoked Skill 位于 `experiments/goal-proof/skill/**`，由本实验拥有。它使用与八个 core Skill outbound edge 分离的 bidirectional Agent Kit mapping；不得把 Goal Proof 误写成 core outbound ownership、Synpraxis tracked roster 或 `skills/**` 的正文来源。
+
+本 Ticket 只声明 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 继续是 historical pre-import evidence，不在本 Ticket 重生成。
+
 ## 实验边界
 
 ```text

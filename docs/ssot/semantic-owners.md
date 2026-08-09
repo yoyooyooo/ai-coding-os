@@ -1,5 +1,17 @@
 # Semantic Owners
 
+这里的 `Owner` 表示语义问题的 Authority，不等同于 package copy 的写入位置。本仓映射的 `skills/**` 内容是 Agent Kit admitted snapshot 的 outbound projection；八个 tracked core Skill 的候选正文和附件来自 Synpraxis，经 AK admission 后再投影回来。package/release metadata 仍由本仓拥有。
+
+## Package and experiment mapping
+
+| Surface | Content Authority | Mapping boundary |
+| --- | --- | --- |
+| 八个 tracked core Skill under `skills/**` | Synpraxis 候选正文；Agent Kit accepted snapshot 负责采纳与分发 | outbound projection；不从本仓 mirror collect 正文 |
+| `experiments/goal-proof/skill/**` | Goal Proof experiment | 独立 bidirectional mapping；不属于 core outbound ownership、core roster 或 core ZIP |
+| package/release metadata | `ai-coding-os` | package-owned；不因此成为 Skill content Authority |
+
+本 Ticket 只声明 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 保持 historical pre-import evidence，不在本 Ticket 重生成。
+
 ## Project-facing Owners
 
 | Skill | Owns | Must not silently own | Local anchors |

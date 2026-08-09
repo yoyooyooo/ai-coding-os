@@ -3,6 +3,10 @@
 本目录保存 AI Coding OS 当前的产品意义、共享语义、架构关系、跨项目约定和已接受决策。它是一张可以从不同现场进入的知识网络，不是阶段目录、发布记录或必读清单。
 
 > **Route Is an Edge, Not a Sequence.** 路由帮助当前问题找到相关知识，不规定统一阅读、规划或实施顺序。
+>
+> **Core outbound package mirror.** 八个 core Skill 的 `skills/**` 映射内容来自 Synpraxis，经 Agent Kit upstream admission 后由 accepted snapshot outbound 投影；Skill content 问题回到 Synpraxis，package/release metadata 留在本仓维护。
+>
+> **Goal Proof boundary.** `experiments/goal-proof/skill/**` 是实验拥有的独立 bidirectional mapping，不属于八项 core outbound ownership。
 
 ## 按问题进入
 
@@ -15,6 +19,9 @@
 | 为什么接受当前 Owner、网络、默认值和高熵叙事 | [ADR](adr/README.md) |
 | 哪些能力仍是 Future Candidate、在什么压力下重新进入 | [Roadmap](roadmap/README.md) |
 | 实际便携式知识入口 | [`skills/**/SKILL.md`](../skills/) |
+| Skill content ownership 与 mirror routing | [`skills/README.md`](../skills/README.md) |
+| package contribution 与 release metadata | [`CONTRIBUTING.md`](../CONTRIBUTING.md) |
+| Goal Proof experiment mapping 与边界 | [`experiments/goal-proof/README.md`](../experiments/goal-proof/README.md) |
 
 ## 当前一级 Home
 
@@ -40,6 +47,21 @@ Observed Reality   某次真实执行、测试、浏览器或外部依赖产生�
 **Source Is Not Decision.** 源码可以暴露偏差，但不能静默接受产品或架构含义。
 
 **Evidence Bounds Claims.** 观察只支持它实际执行的性质、路径、依赖、环境和时间范围。
+
+## Package projection route
+
+```text
+Synpraxis tracked source (eight core Skills)
+  -> Agent Kit upstream admission
+  -> Agent Kit admitted snapshot
+  -> ai-coding-os skills/** outbound projection
+```
+
+Agent Kit collect 不从本 outbound mirror 回收 mapped core Skill content；dirty mirror 的 export 会安全跳过。Goal Proof 的 `experiments/goal-proof/skill/**` 保持 experiment-owned，并使用与上述 core edge 分离的 bidirectional mapping，不属于 core outbound ownership。`README*`、`skills/README.md`、`CONTRIBUTING.md`、`docs/**`、`VERSION`、`CHANGELOG.md` 与 `release/**` 仍是 package-owned surfaces。
+
+## 当前证据边界
+
+本 Ticket 只声明 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 与 [`release/README.md`](../release/README.md) 继续是 historical pre-import evidence，本 Ticket 不重生成它们。
 
 ## 跨项目一致性
 

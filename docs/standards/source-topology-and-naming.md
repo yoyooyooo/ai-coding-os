@@ -12,7 +12,9 @@ skills/
   router/        ai-coding-os
 ```
 
-目录用于 Suite source maintenance，不赋予运行时顺序或额外语义 Authority。
+目录用于 Suite package projection 和本地 audit，不赋予运行时顺序或跨仓 content Authority；本仓八个 tracked core Skill 的 `skills/**` 内容由 Agent Kit admitted snapshot outbound 投影，候选正文和附件变化按 package contribution route 回到 Synpraxis，再经 AK admission。`experiments/goal-proof/skill/**` 是 experiment-owned 的独立 bidirectional mapping，不属于 core outbound ownership。
+
+本 Ticket 的 docs/config 只声明 routing contract，不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 仍是 historical pre-import evidence，不在本 Ticket 重生成。
 
 ## Canonical roster
 
