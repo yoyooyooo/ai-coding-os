@@ -15,6 +15,16 @@ docs/    维护本 Skill 网络的项目级 Current Home，使用中文叙事
 
 `skills/**` 保存可移植的因果模型、边界、Portable Default、Reference、Template 与 Example；`docs/**` 保存本项目当前接受的 Product、SSoT、Architecture、Standards、ADR 和 Future Candidates。两者表达同一套思想，但拥有不同 Authority，不能互相冒充。
 
+## Package mirror 边界
+
+本仓 `skills/**` 下八个 tracked core Skill 的映射内容，是 Agent Kit admitted snapshot 的 outbound package projection。候选 Skill 正文和附件来源于 Synpraxis，路径是 `Synpraxis -> Agent Kit upstream admission -> accepted snapshot -> ai-coding-os outbound projection`。它不是第二个 Skill 正文来源：Agent Kit collect 不会从该 mirror 回收已映射的 core Skill 内容。八个 roster 的正文、reference、template 和 example 变更必须回到 Synpraxis；完成 upstream admission 后，再由 Agent Kit export 写入干净 mirror。mirror 工作树 dirty 时，export 会安全跳过，以保护 package 中尚未处理的工作。
+
+Goal Proof 不属于上述 core outbound ownership。它位于 `experiments/goal-proof/skill/**`，仍由实验拥有，并使用与 core outbound edge 分离的 bidirectional Agent Kit mapping；它不进入八项 core roster、core Router 或 core ZIP。
+
+本仓拥有 package-facing surface：`README.md`、`README.zh-CN.md`、`skills/README.md`、`CONTRIBUTING.md`、`docs/**`、`VERSION`、`CHANGELOG.md` 与 `release/**`。这些 package/release metadata 保持 package-owned，不因此成为 Skill content Authority。
+
+本 Ticket 只记录 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 才提供 live evidence。`release/**` 与 [`release/README.md`](release/README.md) 继续是 historical pre-import evidence，本 Ticket 不得重生成。
+
 ## 为什么需要它
 
 代码生成越来越便宜，但下列问题会被同样加速：
