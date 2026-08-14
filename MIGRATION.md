@@ -1,6 +1,6 @@
 # AI Coding OS 0.6 Migration
 
-> Historical pre-convergence migration note. It does not describe the current content-only 8-Skill network, which no longer includes Preset, App Kit, Contracts, versioned migration, or release machinery.
+> Historical pre-convergence migration note. It does not describe the current content-only network of eight core Skills plus one supporting projection Skill, which no longer includes Preset, App Kit, Contracts, versioned migration, or release machinery.
 
 `0.6.0-experimental.1` is a breaking Skill-topology cleanup. It ships no aliases
 or per-Eval migration ledger.

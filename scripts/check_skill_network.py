@@ -8,7 +8,7 @@ import re
 import sys
 from pathlib import Path
 
-EXPECTED_SKILLS = {
+SHARED_CORE_SKILLS = {
     "ai-coding-os",
     "product-definition",
     "docs-governance",
@@ -18,7 +18,11 @@ EXPECTED_SKILLS = {
     "product-harness-system",
     "ai-coding-os-evolution",
 }
-EXPECTED_VISIBLE = EXPECTED_SKILLS - {"ai-coding-os", "ai-coding-os-evolution"}
+SUPPORTING_SKILLS = {"effect-server-module-design"}
+EXPECTED_SKILLS = SHARED_CORE_SKILLS | SUPPORTING_SKILLS
+EXPECTED_VISIBLE = (
+    SHARED_CORE_SKILLS - {"ai-coding-os", "ai-coding-os-evolution"}
+) | SUPPORTING_SKILLS
 SUPPORTED_FRONTMATTER_FIELDS = {"name", "description", "disable-model-invocation"}
 EXPECTED_NETWORK_ANCHORS = (
     "Project Authority First.",
@@ -97,8 +101,15 @@ def check(root: Path) -> list[str]:
             continue
         if not description:
             fail(errors, f"missing description: {skill_file.relative_to(root)}")
-        if "## Semantic anchors" not in text:
+        if name in SHARED_CORE_SKILLS and "## Semantic anchors" not in text:
             fail(errors, f"missing Semantic anchors: {skill_file.relative_to(root)}")
+        if name in SUPPORTING_SKILLS:
+            for required_heading in ("## Authority", "## Run"):
+                if required_heading not in text:
+                    fail(
+                        errors,
+                        f"missing supporting Skill heading {required_heading}: {skill_file.relative_to(root)}",
+                    )
         if CJK_RE.search(text):
             fail(errors, f"non-English canonical Skill prose: {skill_file.relative_to(root)}")
         if name in skills:

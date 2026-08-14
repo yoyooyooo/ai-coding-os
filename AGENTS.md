@@ -14,6 +14,7 @@
 
 - Treat this repository as a self-navigating knowledge network, not a mandatory workflow.
 - Keep the eight canonical semantic Skills and their ownership boundaries coherent.
+- Treat `effect-server-module-design` as a model-visible supporting projection Skill, not a ninth semantic Owner.
 - Use exact canonical English spellings for semantic anchors, paths, identifiers, and Skill prose.
 - Project Docs use Chinese narrative prose while retaining canonical English terms where they carry shared meaning.
 - Do not add a new Skill, template family, schema, registry, or first-level Docs Home without an earned pressure and an independent owner.

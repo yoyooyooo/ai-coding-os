@@ -7,8 +7,8 @@
 应检查：
 
 ```text
-8 canonical SKILL.md entries exist
-6 project-facing Skills are model-visible
+9 mapped canonical SKILL.md entries exist
+7 Skills are model-visible: 6 semantic Owners and 1 supporting projection
 Router and Evolution remain disable-model-invocation: true
 frontmatter contains only supported fields
 all local Markdown links resolve
@@ -25,7 +25,8 @@ archive contains no __MACOSX, ._* or traversal paths
 机械链接正确不能证明思想一致。Review 还要检查：
 
 ```text
-one independent semantic Owner per Skill
+one independent semantic Owner per core semantic Skill
+supporting Skills name their upstream Authorities and non-owner boundary
 portable defaults distinguished from invariants and mandates
 no fixed workflow hidden in headings, ladders, gates, or template families
 no stale report or historical material acting as Current Home

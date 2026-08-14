@@ -46,6 +46,7 @@ coherent project convention 必须让意义、scope、入口和例外可发现�
 | TypeScript application naming | kebab-case semantic segments separated by dots；semantic roles 默认 co-locate，独立 pressure 出现后才拆文件 | `$evolvable-application-architecture` |
 | Frontend source | `app/` or `host/`, `features/`, `shared/`; stable state-role suffixes | `$frontend-architecture` |
 | Effect source | 在项目或 EAA source grammar 上投影 Service、Layer、Runtime、Queue、Stream、Actor 与 failure/resource mechanics，不建立第二套 application grammar | `$effect-best-practices` |
+| Effect Server Module shape | private-first owning kernel；由真实 consumer 赢得窄 `*.public.ts`；Host bridge 拥有 config、transport、Runtime composition 与 lifetime | `$effect-server-module-design` |
 | Verification | stable command roles; preferred `verify:affected` and `verify` aliases when practical | `$product-harness-system` |
 
 ## Deviating from a default

@@ -4,11 +4,11 @@ This directory is a portable, self-navigating knowledge network for high-capabil
 
 ## Package projection boundary
 
-The eight tracked core Skill directories and their attachments under `skills/**` are outbound projections of Agent Kit's admitted snapshot. Their candidate bodies are sourced from Synpraxis through `Synpraxis -> AK upstream admission -> accepted snapshot -> ai-coding-os` projection. This package does not provide a second editable Skill source: Agent Kit collect skips mapped core Skill content here, and Agent Kit export writes the accepted projection to a clean mirror only. Route body, reference, template, and example changes for the eight-Skill roster to Synpraxis before admission.
+The mapped Skill directories and attachments under `skills/**` are outbound projections of Agent Kit's admitted snapshot. Eight shared core Skills accept candidate deltas from Synpraxis and SMIP; the supporting `effect-server-module-design` has its own strict SMIP source group. This package does not provide a second editable Skill source: Agent Kit collect skips mapped Suite content here, and Agent Kit export writes the accepted projection to a clean mirror only. Route body, reference, template, and example changes to the owning declared source before admission.
 
-Goal Proof is outside this core mapping. Its user-invoked Skill lives under `experiments/goal-proof/skill/**`, remains experiment-owned, and uses a separate bidirectional Agent Kit mapping. Do not treat it as part of the core outbound ownership, roster, Router, or ZIP.
+Goal Proof is outside these outbound mappings. Its user-invoked Skill lives under `experiments/goal-proof/skill/**`, remains experiment-owned, and uses a separate bidirectional Agent Kit mapping. Do not treat it as part of the shared core roster, supporting Server Module Skill, Router, or Suite ZIP.
 
-This Ticket records a routing/config contract only. Current docs/config do not prove Synpraxis source merge, AK admission, export, package commit/push, or npm release. Ticket 04 supplies live evidence. `release/**` remains historical pre-import evidence and is not regenerated here.
+Config, a PR, or a staged export alone does not prove admission, mirror publication, or npm release. `release/**` remains historical pre-import evidence unless the release workflow explicitly regenerates it.
 
 This `skills/README.md` is package routing documentation, not a mapped Skill body. Package and release metadata remain owned by this repository; see [`CONTRIBUTING.md`](../CONTRIBUTING.md) and [`docs/README.md`](../docs/README.md) for routes.
 
@@ -45,7 +45,11 @@ These anchors are intentionally few. Specialist Skills decompress them in the co
 | ambiguous cross-domain routing only | `$ai-coding-os` |
 | maintenance of the knowledge network itself | `$ai-coding-os-evolution` |
 
-Any specialist may be the first entry. Use the smallest owner set that can change the current decision. These eight entries form the tracked core roster for the outbound package mapping.
+Any specialist may be the first entry. Use the smallest owner set that can change the current decision. These eight entries form the shared semantic core roster.
+
+## Supporting projection Skill
+
+`$effect-server-module-design` reviews and plans the earned file shape of an already-settled Effect v4 Server Module. It is model-visible because this concrete projection recurs independently, but it does not own product meaning, final fact authority, general application architecture, or Effect runtime semantics. Route those questions back to `$evolvable-application-architecture` and `$effect-best-practices`.
 
 ## Progressive disclosure
 

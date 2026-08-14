@@ -10,14 +10,15 @@ bun run check
 
 ## Package Mirror and Ownership
 
-- The eight tracked core Skill bodies and attachments under `skills/**` are outbound projections of Agent Kit's admitted snapshot, not editable source in this repository. Their candidate source is Synpraxis; the route is Synpraxis -> AK upstream admission -> accepted snapshot -> this package mirror.
-- The tracked core roster is `ai-coding-os`, `ai-coding-os-evolution`, `product-definition`, `docs-governance`, `evolvable-application-architecture`, `frontend-architecture`, `effect-best-practices`, and `product-harness-system`.
-- Route body, reference, template, and example changes for that roster to Synpraxis. Agent Kit admission is required before `ak export` updates this mirror.
-- Agent Kit collect must skip mapped core Skill content from this outbound mirror. Export writes only to a clean mirror; a dirty mirror is safely skipped rather than overwritten.
-- `experiments/goal-proof/skill/**` is outside the core outbound mapping. Goal Proof remains experiment-owned and uses a separate bidirectional Agent Kit mapping; do not treat it as part of the core roster, core Router, or core ZIP.
+- The mapped Skill bodies and attachments under `skills/**` are outbound projections of Agent Kit's admitted snapshot, not editable source in this repository.
+- The shared core roster is `ai-coding-os`, `ai-coding-os-evolution`, `product-definition`, `docs-governance`, `evolvable-application-architecture`, `frontend-architecture`, `effect-best-practices`, and `product-harness-system`; Synpraxis and SMIP are its declared candidate contributors.
+- `effect-server-module-design` is a model-visible supporting Skill with a separate strict SMIP source group. It does not become a ninth semantic Owner or widen the shared target set.
+- Route body, reference, template, and example changes to the owning declared project source. Agent Kit admission is required before an export may be treated as current package content.
+- Agent Kit collect must skip all mapped Suite content from this outbound mirror. Export writes only to a clean mirror; a dirty mirror is safely skipped rather than overwritten.
+- `experiments/goal-proof/skill/**` is outside the Suite outbound mapping. Goal Proof remains experiment-owned and uses a separate bidirectional Agent Kit mapping; do not treat it as part of the core roster, supporting Server Module Skill, core Router, or Suite ZIP.
 - Package-owned surfaces are `README.md`, `README.zh-CN.md`, `skills/README.md`, `CONTRIBUTING.md`, `docs/**`, `VERSION`, `CHANGELOG.md`, and `release/**`.
-- This Ticket defines a routing/config contract only. Current docs/config do not prove Synpraxis source merge, AK admission, export, package commit/push, or npm release; Ticket 04 supplies live evidence.
-- Preserve `release/**` and its [`README.md`](release/README.md) as historical pre-import evidence. Do not regenerate release artifacts in this Ticket.
+- Config, a PR, or a staged export alone does not prove admission, package publication, or npm release; cite exact accepted and mirror commits.
+- Preserve `release/**` and its [`README.md`](release/README.md) as historical pre-import evidence unless the release workflow explicitly regenerates it.
 
 ## Core Suite Changes
 
@@ -31,7 +32,7 @@ bun run check
 
 - Keep the user-invoked Skill and schemas under `experiments/goal-proof/skill/**`.
 - Keep CLI source and tests under `packages/cli/**`.
-- Do not add Goal Proof back to the core Router, core contract enums, core Skill roster, or core ZIP.
+- Do not add Goal Proof to the core Router, shared core roster, supporting Server Module mapping, or Suite ZIP.
 - Preserve historical `experiments/goal-proof/dogfood/**/evidence.jsonl`; corrections append evidence or update current experiment docs rather than rewriting history.
 - Run `bun run check:goal-proof-experiment`.
 

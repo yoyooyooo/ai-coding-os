@@ -17,13 +17,13 @@ docs/    维护本 Skill 网络的项目级 Current Home，使用中文叙事
 
 ## Package mirror 边界
 
-本仓 `skills/**` 下八个 tracked core Skill 的映射内容，是 Agent Kit admitted snapshot 的 outbound package projection。候选 Skill 正文和附件来源于 Synpraxis，路径是 `Synpraxis -> Agent Kit upstream admission -> accepted snapshot -> ai-coding-os outbound projection`。它不是第二个 Skill 正文来源：Agent Kit collect 不会从该 mirror 回收已映射的 core Skill 内容。八个 roster 的正文、reference、template 和 example 变更必须回到 Synpraxis；完成 upstream admission 后，再由 Agent Kit export 写入干净 mirror。mirror 工作树 dirty 时，export 会安全跳过，以保护 package 中尚未处理的工作。
+Agent Kit 是本仓 `skills/**` 下九项 outbound Suite mapping 的 admission authority：八个 shared core Skill，加一个 supporting `effect-server-module-design`。Synpraxis 与 SMIP 向八项 shared core roster 提供经过审查的候选增量；`effect-server-module-design` 的候选正文由 SMIP 的独立 strict source group 拥有。路径统一为 `declared project source -> Agent Kit upstream admission -> accepted snapshot -> ai-coding-os outbound projection`。本仓不是第二个 Skill 正文来源：Agent Kit collect 不会从该 mirror 回收 mapped Suite content，export 也只写入干净 mirror。
 
-Goal Proof 不属于上述 core outbound ownership。它位于 `experiments/goal-proof/skill/**`，仍由实验拥有，并使用与 core outbound edge 分离的 bidirectional Agent Kit mapping；它不进入八项 core roster、core Router 或 core ZIP。
+Goal Proof 不属于上述 outbound mappings。它位于 `experiments/goal-proof/skill/**`，仍由实验拥有，并使用独立 bidirectional Agent Kit mapping；它不进入八项 semantic core、supporting Server Module Skill、core Router 或 Suite ZIP。
 
 本仓拥有 package-facing surface：`README.md`、`README.zh-CN.md`、`skills/README.md`、`CONTRIBUTING.md`、`docs/**`、`VERSION`、`CHANGELOG.md` 与 `release/**`。这些 package/release metadata 保持 package-owned，不因此成为 Skill content Authority。
 
-本 Ticket 只记录 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 才提供 live evidence。`release/**` 与 [`release/README.md`](release/README.md) 继续是 historical pre-import evidence，本 Ticket 不得重生成。
+配置、PR 或 staged export 本身都不证明 admission 或 release。当前 package content 的主张必须同时引用 accepted Agent Kit commit 与精确 mirror commit；npm publication 需要独立 release evidence。`release/**` 与 [`release/README.md`](release/README.md) 在 release workflow 明确重生成前继续作为 historical pre-import evidence。
 
 ## 为什么需要它
 
@@ -62,7 +62,7 @@ AI Coding OS 不用一套更重的 Workflow 包住这些问题，而是把稳定
 
 这些短句是认知压缩点，不是脱离上下文的口号。正式含义、反例、边界和具体机制仍由对应 Skill 与项目 SSoT 持有。
 
-## 八个语义节点
+## 八个核心语义节点与一个支持性投影 Skill
 
 六个项目面向 Specialist 可以直接成为入口：
 
@@ -75,10 +75,12 @@ AI Coding OS 不用一套更重的 Workflow 包住这些问题，而是把稳定
 | Effect failure、Scope、Resource、Structured Concurrency、Layer 与 Runtime | [`$effect-best-practices`](skills/architecture/effect-best-practices/SKILL.md) |
 | Runnability、Observation、Diagnosis、Recovery Evidence 与 Regression Placement | [`$product-harness-system`](skills/harness/product-harness-system/SKILL.md) |
 
-两个支持节点不占普通任务默认上下文：
+两个 core supporting 节点不占普通任务默认上下文：
 
 - [`$ai-coding-os`](skills/router/ai-coding-os/SKILL.md) 只在问题确实模糊或跨域时提供薄 Owner Map，不是入口门禁。
 - [`$ai-coding-os-evolution`](skills/meta/ai-coding-os-evolution/SKILL.md) 维护知识网络自身的准入、消融、合并、Portable Default 与 anti-Cargo-Cult 判断。
+
+[`$effect-server-module-design`](skills/architecture/effect-server-module-design/SKILL.md) 是另一个 model-visible supporting projection Skill：它审查和规划已经基本定案的 Effect v4 Server Module 文件边界，但不成为第九个语义 Owner，也不接管 EAA 的事实 Authority 或 Effect Best Practices 的运行时语义。
 
 大型任务不自动需要全部 Skill。只加载能够改变当前判断的最小 Owner 集。
 
@@ -99,7 +101,7 @@ AI Coding OS 不用一套更重的 Workflow 包住这些问题，而是把稳定
 
 - 需要便携式专业知识时，直接进入匹配的 `skills/**/SKILL.md`。
 - 需要理解本项目当前意义和知识路由时，从 [`docs/README.md`](docs/README.md) 进入。
-- 需要确认八个 Owner 与共同 Doctrine 时，查看 [`docs/ssot/README.md`](docs/ssot/README.md)。
+- 需要确认八个 core semantic nodes、supporting projection 与共同 Doctrine 时，查看 [`docs/ssot/README.md`](docs/ssot/README.md)。
 - 需要稳定跨 Skill 词汇时，查看 [`docs/ssot/shared-vocabulary.md`](docs/ssot/shared-vocabulary.md)。
 - 需要目录、命名、Semantic Compression 与验证约束时，查看 [`docs/standards/README.md`](docs/standards/README.md)。
 - 需要理解当前网络为何如此设计时，查看 [`docs/adr/README.md`](docs/adr/README.md)。

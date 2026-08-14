@@ -15,8 +15,9 @@
                          \                 /
                           $product-harness-system
 
-$ai-coding-os            optional map legend
-$ai-coding-os-evolution  maintainer lens
+$effect-server-module-design  supporting projection from settled EAA + Effect decisions
+$ai-coding-os                 optional map legend
+$ai-coding-os-evolution       maintainer lens
 ```
 
 图只表达高频关系，不是调用顺序。任何 Specialist 都可以从当前症状直接进入。
@@ -28,6 +29,7 @@ $ai-coding-os-evolution  maintainer lens
 - [`$evolvable-application-architecture`](../../skills/architecture/evolvable-application-architecture/SKILL.md)
 - [`$frontend-architecture`](../../skills/architecture/frontend-architecture/SKILL.md)
 - [`$effect-best-practices`](../../skills/architecture/effect-best-practices/SKILL.md)
+- [`$effect-server-module-design`](../../skills/architecture/effect-server-module-design/SKILL.md)
 - [`$product-harness-system`](../../skills/harness/product-harness-system/SKILL.md)
 - [`$ai-coding-os`](../../skills/router/ai-coding-os/SKILL.md)
 - [`$ai-coding-os-evolution`](../../skills/meta/ai-coding-os-evolution/SKILL.md)
@@ -46,6 +48,10 @@ Harness      how a property is run, observed, diagnosed, and protected
 ```
 
 继续合并会让 Agent 必须加载更大的通用工程 Skill；继续拆分则容易把条件分支误升为独立 Owner。
+
+## Server Module projection boundary
+
+`$effect-server-module-design` 不是第七个项目语义 Owner。它只在 final writer、module/package admission 与 Effect v4 机制已经基本定案后，把这些决策投影为 private/public/Host bridge 文件边界。若 Authority、transaction、package pressure 或 Runtime 语义仍未定，必须回到 `$evolvable-application-architecture` 或 `$effect-best-practices`。
 
 ## Router boundary
 
