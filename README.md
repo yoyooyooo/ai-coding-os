@@ -1,12 +1,15 @@
+
+
 # AI Coding OS
 
 **English** | [简体中文](README.zh-CN.md)
 
-This package contains two aligned surfaces:
+This package contains three aligned surfaces:
 
 ```text
-skills/  portable semantic guidance for high-capability coding Agents
-docs/    project-owned knowledge for maintaining this Skill network
+skills/      portable semantic guidance for high-capability coding Agents
+docs/        project-owned knowledge for maintaining this Skill network
+experiments/ co-located experimental methods and tools
 ```
 
 The Skills are canonical English. The project Docs use Chinese narrative prose while preserving canonical English paths, identifiers, and semantic anchors.
