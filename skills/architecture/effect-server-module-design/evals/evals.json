@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "skill_name": "effect-server-module-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review an existing Effect v4 investigation module that has only one owning use case but exports its model, Fake, Live, and helpers through index.ts. No other module imports it. Propose the smallest forward-only target shape.",
+      "expected_output": "Classifies the module as owner-private, treats index.ts as carrying no public meaning, removes or narrows unearned exports, avoids creating *.public.ts, and does not generate a full Service/Fake/Live family merely for symmetry.",
+      "files": [],
+      "expectations": [
+        "No public surface is admitted without a real consumer.",
+        "Every retained file has an independent pressure.",
+        "Effect is not forced into pure local code."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Plan an Effect v4 UCenter scan-login capability. A second module must consume the normalized exchange contract, while endpoint, credentials, Company HTTP transport, Layer composition, callback, credential custody, and local session remain Host/project owned.",
+      "expected_output": "Proposes a narrow named public protocol surface, keeps Host-dependent transport/config/credentials in a provider-qualified Host bridge, preserves project-owned callback/session behavior outside the kernel, and assigns contract/adoption/integration proofs to their actual boundaries.",
+      "files": [],
+      "expectations": [
+        "External consumers use only the named public surface.",
+        "Host resources do not leak into the protocol kernel.",
+        "Extraction readiness is not overclaimed as a published package."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "A new server-side pure normalization helper is requested in an Effect v4 application. It has no I/O, failure channel, resource lifetime, or cross-module consumer. Decide the module/file shape.",
+      "expected_output": "Keeps the helper ordinary TypeScript and co-located, with no Effect Service, Layer, Fake, Live, public surface, wiring file, or package promotion.",
+      "files": [],
+      "expectations": [
+        "Effect v4 is the host baseline but not decorative.",
+        "The smallest private shape is selected."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review a module that defines both an ordinary PaymentGateway Port and an Effect Service with identical methods, then constructs Stripe Live inside the use case. The project has one Effect v4 Host composition root.",
+      "expected_output": "Requires one canonical contract, moves concrete Live selection to Host composition, identifies any resource Scope, and retains a translation boundary only if distinct consumers or trust pressure is demonstrated.",
+      "files": [],
+      "expectations": [
+        "Duplicate Port and Service are rejected by default.",
+        "Use cases do not select concrete Live implementations.",
+        "Host composition owns implementation choice and lifetime."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Plan a new Effect v4 server module, but the request cannot identify which module owns the persistent fact or whether another module is a reader or writer. Produce the review result without inventing product semantics.",
+      "expected_output": "Returns a blocking decision gap for final-writer and consumer authority, preserves any safe source observations, and does not turn uncertainty into a directory, public surface, transaction, or package decision.",
+      "files": [],
+      "expectations": [
+        "Unresolved authority blocks only the affected shape decision.",
+        "No speculative architecture is generated."
+      ]
+    }
+  ]
+}

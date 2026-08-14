@@ -4,7 +4,7 @@
 
 ```text
 skills/
-  architecture/  evolvable-application-architecture, frontend-architecture, effect-best-practices
+  architecture/  evolvable-application-architecture, frontend-architecture, effect-best-practices, effect-server-module-design
   governance/    docs-governance
   harness/       product-harness-system
   meta/          ai-coding-os-evolution
@@ -12,19 +12,20 @@ skills/
   router/        ai-coding-os
 ```
 
-目录用于 Suite package projection 和本地 audit，不赋予运行时顺序或跨仓 content Authority；本仓八个 tracked core Skill 的 `skills/**` 内容由 Agent Kit admitted snapshot outbound 投影，候选正文和附件变化按 package contribution route 回到 Synpraxis，再经 AK admission。`experiments/goal-proof/skill/**` 是 experiment-owned 的独立 bidirectional mapping，不属于 core outbound ownership。
+目录用于 Suite package projection 和本地 audit，不赋予运行时顺序或跨仓 content Authority；本仓 `skills/**` 的九项 outbound mapping 由 Agent Kit admitted snapshot 投影：八个 shared core Skill 接受 Synpraxis 与 SMIP 的候选增量，supporting `effect-server-module-design` 由 SMIP 的独立 strict source group 供稿。正文和附件变化必须回到对应 declared project source，再经 Agent Kit admission；本仓不成为第二正文来源。`experiments/goal-proof/skill/**` 是 experiment-owned 的独立 bidirectional mapping，不属于 Suite outbound ownership。
 
-本 Ticket 的 docs/config 只声明 routing contract，不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 仍是 historical pre-import evidence，不在本 Ticket 重生成。
+配置、PR 或 staged export 只证明候选路由，不证明 Agent Kit admission、mirror publication、runtime rollout 或 npm release；这些结论必须引用对应 accepted commit 与发布回执。`release/**` 仍是 historical pre-import evidence，除非 release workflow 明确重生成，否则不作为当前证明。
 
 ## Canonical roster
 
 ```text
 6 project-facing model-visible semantic Owners
+1 model-visible supporting projection with an explicit non-owner boundary
 1 thin Router with disable-model-invocation: true
 1 Evolution lens with disable-model-invocation: true
 ```
 
-新增 Skill 必须拥有独立语义问题、变化轴和反复昂贵的上下文；仅拥有输出格式、总与另一节点共同触发或同步变化的节点应保持为 Reference 或退出。
+新增 core semantic Skill 必须拥有独立语义问题、变化轴和反复昂贵的上下文。支持性投影 Skill 只有在一个具体决策投影会独立反复出现、输入 Authority 与非 Owner 边界明确、且 model-visible 入口能持续降低上下文成本时才成立；仅拥有输出格式、总与另一节点共同触发或同步变化的节点应保持为 Reference 或退出。
 
 ## Skill root shape
 

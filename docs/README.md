@@ -4,9 +4,9 @@
 
 > **Route Is an Edge, Not a Sequence.** 路由帮助当前问题找到相关知识，不规定统一阅读、规划或实施顺序。
 >
-> **Core outbound package mirror.** 八个 core Skill 的 `skills/**` 映射内容来自 Synpraxis，经 Agent Kit upstream admission 后由 accepted snapshot outbound 投影；Skill content 问题回到 Synpraxis，package/release metadata 留在本仓维护。
+> **Suite outbound package mirror.** `skills/**` 包含八个 shared core Skill 与 supporting `effect-server-module-design`。前者由 Synpraxis、SMIP 共同供稿，后者由 SMIP 独立 strict source group 供稿；全部经 Agent Kit admission 后由 accepted snapshot outbound 投影。package/release metadata 留在本仓维护。
 >
-> **Goal Proof boundary.** `experiments/goal-proof/skill/**` 是实验拥有的独立 bidirectional mapping，不属于八项 core outbound ownership。
+> **Goal Proof boundary.** `experiments/goal-proof/skill/**` 是实验拥有的独立 bidirectional mapping，不属于九项 Suite outbound mapping。
 
 ## 按问题进入
 
@@ -14,7 +14,7 @@
 | --- | --- |
 | AI Coding OS 为谁解决什么问题、成功边界是什么 | [Product Brief](product/product-brief.md) |
 | 全套共同世界观、精确术语和语义 Owner | [SSoT](ssot/README.md) |
-| 八个 Skill 如何组成自导航网络，项目如何向 Agent 解释自己 | [Architecture](architecture/README.md) |
+| 八个 core semantic nodes 与 supporting projection 如何组成自导航网络 | [Architecture](architecture/README.md) |
 | 文档 Layer、目录、文件、命名、写法和演进约束 | [Standards](standards/README.md) |
 | 为什么接受当前 Owner、网络、默认值和高熵叙事 | [ADR](adr/README.md) |
 | 哪些能力仍是 Future Candidate、在什么压力下重新进入 | [Roadmap](roadmap/README.md) |
@@ -51,17 +51,19 @@ Observed Reality   某次真实执行、测试、浏览器或外部依赖产生�
 ## Package projection route
 
 ```text
-Synpraxis tracked source (eight core Skills)
-  -> Agent Kit upstream admission
-  -> Agent Kit admitted snapshot
-  -> ai-coding-os skills/** outbound projection
+Synpraxis + SMIP tracked sources (eight shared core Skills) ─┐
+SMIP strict tracked source (effect-server-module-design) ───┤
+                                                            v
+                                            Agent Kit upstream admission
+                                              -> accepted snapshot
+                                              -> ai-coding-os skills/** outbound projection
 ```
 
-Agent Kit collect 不从本 outbound mirror 回收 mapped core Skill content；dirty mirror 的 export 会安全跳过。Goal Proof 的 `experiments/goal-proof/skill/**` 保持 experiment-owned，并使用与上述 core edge 分离的 bidirectional mapping，不属于 core outbound ownership。`README*`、`skills/README.md`、`CONTRIBUTING.md`、`docs/**`、`VERSION`、`CHANGELOG.md` 与 `release/**` 仍是 package-owned surfaces。
+Agent Kit collect 不从本 outbound mirror 回收 mapped Suite content；dirty mirror 的 export 会安全跳过。Goal Proof 的 `experiments/goal-proof/skill/**` 保持 experiment-owned，并使用与上述 outbound edge 分离的 bidirectional mapping。`README*`、`skills/README.md`、`CONTRIBUTING.md`、`docs/**`、`VERSION`、`CHANGELOG.md` 与 `release/**` 仍是 package-owned surfaces。
 
 ## 当前证据边界
 
-本 Ticket 只声明 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 与 [`release/README.md`](../release/README.md) 继续是 historical pre-import evidence，本 Ticket 不重生成它们。
+配置、PR 或 staged export 只证明候选关系，不证明 accepted package content。当前内容主张必须引用 accepted Agent Kit commit 与精确 mirror commit；npm publication 还需要独立 release evidence。`release/**` 与 [`release/README.md`](../release/README.md) 在 release workflow 明确重生成前继续作为 historical pre-import evidence。
 
 ## 跨项目一致性
 

@@ -1,16 +1,17 @@
 # Semantic Owners
 
-这里的 `Owner` 表示语义问题的 Authority，不等同于 package copy 的写入位置。本仓映射的 `skills/**` 内容是 Agent Kit admitted snapshot 的 outbound projection；八个 tracked core Skill 的候选正文和附件来自 Synpraxis，经 AK admission 后再投影回来。package/release metadata 仍由本仓拥有。
+这里的 `Owner` 表示语义问题的 Authority，不等同于 package copy 的写入位置。本仓映射的 `skills/**` 内容是 Agent Kit admitted snapshot 的 outbound projection；八个 shared core Skill 接受 Synpraxis 与 SMIP 的候选增量，supporting `effect-server-module-design` 由 SMIP 独立 source group 供稿。package/release metadata 仍由本仓拥有。
 
 ## Package and experiment mapping
 
 | Surface | Content Authority | Mapping boundary |
 | --- | --- | --- |
-| 八个 tracked core Skill under `skills/**` | Synpraxis 候选正文；Agent Kit accepted snapshot 负责采纳与分发 | outbound projection；不从本仓 mirror collect 正文 |
-| `experiments/goal-proof/skill/**` | Goal Proof experiment | 独立 bidirectional mapping；不属于 core outbound ownership、core roster 或 core ZIP |
+| 八个 shared core Skill under `skills/**` | Synpraxis 与 SMIP 候选增量；Agent Kit accepted snapshot 负责采纳与分发 | outbound projection；不从本仓 mirror collect 正文 |
+| `skills/architecture/effect-server-module-design/**` | SMIP 独立 strict tracked source；Agent Kit 负责采纳与分发 | supporting outbound projection；不扩大 shared core roster |
+| `experiments/goal-proof/skill/**` | Goal Proof experiment | 独立 bidirectional mapping；不属于 Suite outbound ownership 或 Suite ZIP |
 | package/release metadata | `ai-coding-os` | package-owned；不因此成为 Skill content Authority |
 
-本 Ticket 只声明 routing/config contract。当前 docs/config 不证明 Synpraxis source merge、AK admission、export、package commit/push 或 npm release；Ticket 04 提供 live evidence。`release/**` 保持 historical pre-import evidence，不在本 Ticket 重生成。
+配置、PR 或 staged export 只证明候选关系。accepted package content 必须同时绑定 Agent Kit accepted commit 与精确 mirror commit；npm publication 另需 release evidence。`release/**` 在 release workflow 明确重生成前保持 historical pre-import evidence。
 
 ## Project-facing Owners
 
@@ -29,6 +30,7 @@
 | --- | --- | --- |
 | [`$ai-coding-os`](../../skills/router/ai-coding-os/SKILL.md) | 仅在问题真正模糊或跨域时提供薄 Owner Map | 不是入口门禁、任务状态机或编排器 |
 | [`$ai-coding-os-evolution`](../../skills/meta/ai-coding-os-evolution/SKILL.md) | 维护知识投资组合、Portable Default、Instruction ablation、Skill independence 与 anti-Cargo-Cult 判断 | 不拥有项目产品/架构含义，不建立发布或评测 Workflow |
+| [`$effect-server-module-design`](../../skills/architecture/effect-server-module-design/SKILL.md) | 将已定案的 application/Effect v4 决策投影为 earned Server Module source shape | 不拥有产品意义、final writer、package admission 或 Effect Runtime 语义；不是第九个 semantic Owner |
 
 ## Common relationships
 
@@ -47,6 +49,9 @@ $evolvable-application-architecture <-> $frontend-architecture
 
 $evolvable-application-architecture <-> $effect-best-practices
   semantic capability and execution mechanism
+
+$evolvable-application-architecture + $effect-best-practices -> $effect-server-module-design
+  settled authority and Effect v4 semantics projected into earned module files
 
 all Owners <-> $product-harness-system
   claimed property and observed reality

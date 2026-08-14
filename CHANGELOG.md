@@ -1,6 +1,6 @@
 # Changelog
 
-> Historical versioned-suite record. The current 8-Skill knowledge network is maintained through [`README.md`](README.md), [`docs/README.md`](docs/README.md), and the Future Candidates in [`docs/roadmap/README.md`](docs/roadmap/README.md); this history does not define the current topology.
+> Historical versioned-suite record. The current network of eight core Skills plus one supporting projection Skill is maintained through [`README.md`](README.md), [`docs/README.md`](docs/README.md), and the Future Candidates in [`docs/roadmap/README.md`](docs/roadmap/README.md); this history does not define the current topology.
 
 ## 0.6.0-experimental.1 — 2026-07-27
 

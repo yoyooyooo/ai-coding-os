@@ -2,7 +2,7 @@
 
 ## Owns
 
-- AI Coding OS 当前共同 Doctrine、八个语义 Owner、稳定高熵词汇和核心边界。
+- AI Coding OS 当前共同 Doctrine、八个 core semantic nodes、一个 supporting projection Skill、稳定高熵词汇和核心边界。
 
 ## Must Not Own
 
@@ -11,7 +11,7 @@
 ## Current Homes
 
 - [Operating Doctrine](operating-doctrine.md) — 网络级慢变原则。
-- [Semantic Owners](semantic-owners.md) — 八个 Skill 的问题域和边界。
+- [Semantic Owners](semantic-owners.md) — 八个 core nodes 与 supporting projection 的问题域和边界。
 - [Shared Vocabulary](shared-vocabulary.md) — 精确拼写、压缩含义与正式 Owner。
 
 ## Project-specific topology
@@ -21,8 +21,10 @@
 ## Current facts
 
 ```text
-8 canonical Skills
+9 outbound-mapped canonical Skills
+8 shared core semantic nodes
 6 project-facing model-visible semantic Owners
+1 model-visible supporting Server Module projection
 1 thin optional Router
 1 maintainer Evolution lens
 English canonical Skill prose
