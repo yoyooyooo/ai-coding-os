@@ -17,7 +17,7 @@
 - Treat `effect-server-module-design` as a model-visible supporting projection Skill, not a ninth semantic Owner.
 - Use exact canonical English spellings for semantic anchors, paths, identifiers, and Skill prose.
 - Project Docs use Chinese narrative prose while retaining canonical English terms where they carry shared meaning.
-- Do not add a new Skill, template family, schema, registry, or first-level Docs Home without an earned pressure and an independent owner.
+- Do not add a new Skill, template family, schema, registry, or first-level Docs Home without an earned pressure and an explicit owning Authority; a supporting projection must also state its upstream semantic Owners and non-owner boundary.
 - Prefer improving project knowledge, source boundaries, commands, tests, logs, or tools before adding another instruction.
 
 ## Verification route
